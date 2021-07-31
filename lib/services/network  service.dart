@@ -11,4 +11,10 @@ class WebServices {
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }
+  static Future<http.Response> fetchWorkOuts(String sessionKey, int timestamp) async {
+    final url = Uri.https(baseUrl,  workouts);
+    final body = {'sessionKey': '$sessionKey', 'dateTimestampMs': '$timestamp'};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SeetingsScreen extends StatefulWidget {
-  const SeetingsScreen();
+   final height;
+   SeetingsScreen(this.height);
 
   @override
   _SeetingsScreenState createState() => _SeetingsScreenState();

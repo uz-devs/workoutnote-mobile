@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CalendarScreen extends StatefulWidget {
-  const CalendarScreen();
+  final height;
+   CalendarScreen(this.height);
 
   @override
   _CalendarScreenState createState() => _CalendarScreenState();
