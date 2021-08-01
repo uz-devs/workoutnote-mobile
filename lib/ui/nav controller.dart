@@ -32,9 +32,9 @@ class _NavControllerState extends State<NavController> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    var screens = [_buildHomeScreen(height), _buildCalendarScreen(height), _buildSettingsScreen(height), _buildSettingsScreen(height)];
+    var screens = [_buildHomeScreen(height, width), _buildCalendarScreen(height), _buildSettingsScreen(height), _buildSettingsScreen(height)];
     return Scaffold(
-      backgroundColor: Colors.deepPurpleAccent,
+
       body: screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: "Home"),
@@ -53,8 +53,8 @@ class _NavControllerState extends State<NavController> {
     );
   }
 
-  Widget _buildHomeScreen(double height) {
-    return HomeScreen(height);
+  Widget _buildHomeScreen(double height,  double width) {
+    return HomeScreen(height, width);
   }
 
   Widget _buildCalendarScreen(double height) {

@@ -17,4 +17,12 @@ class WebServices {
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }
+
+  static Future<http.Response> fetchExercises() async {
+    final url = Uri.https(baseUrl,exerc );
+    final body = {};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
+
 }

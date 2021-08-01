@@ -40,5 +40,12 @@ class MainScreenProvider extends ChangeNotifier{
 
   }
 
+  Future<void> fecthExercises()async{
+    var  response = await WebServices.fetchExercises();
+    print(response.body);
+    print(response.statusCode);
+
+  }
+
   List<WorkOut> get workOuts => _workOuts;
 }
