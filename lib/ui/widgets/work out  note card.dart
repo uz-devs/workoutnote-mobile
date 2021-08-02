@@ -37,7 +37,7 @@ class WorkOutNote extends StatelessWidget {
                   alignment: Alignment.center,
                   margin: EdgeInsets.only(right: 10),
                   child: SvgPicture.asset("assets/icons/menu.svg", height: 24,
-                    width: 24,),
+                    width: 24, color: Colors.black12,),
                 )
 
                 ],

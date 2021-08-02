@@ -7,6 +7,14 @@ const String login = "api/login/";
 const String workouts = "api/fetch_workouts/";
 const String  exerc = "api/fetch_exercises/";
 
+//network  states
+int LOADING = 0;
+int TIMEOUT_EXCEPTION = 1;
+int SOCKET_EXCEPTION = 2;
+int MISC_EXCEPTION = 3;
+int  SUCCESS = 4;
+
+//util  methods
 SharedPreferences? userPreferences;
 
 Future<void> initPreferences() async {
@@ -19,3 +27,7 @@ String toDate(int timestamp) {
 
   return formattedDate;
 }
+
+
+
+

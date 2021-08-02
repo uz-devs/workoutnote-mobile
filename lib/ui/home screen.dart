@@ -18,24 +18,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   var navProvider = MainScreenProvider();
-
-  var fetched = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-  }
-
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-
-    if(!fetched){
-      fetched= true;
-      navProvider = Provider.of<MainScreenProvider>(context, listen: true);
-
+    navProvider = Provider.of<MainScreenProvider>(context, listen: true);
+    if(!navProvider.requestDone1){
+      navProvider.requestDone1 = true;
       navProvider.fetchWorkOuts(userPreferences!.getString("sessionKey") ?? "", 1627689600000).then((value) {
       });
     }
@@ -43,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return  ListView.builder(
-
         itemCount: navProvider.workOuts.length+2,  itemBuilder: (context,  index) {
 
       if(index == 0)
