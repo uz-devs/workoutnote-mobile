@@ -3,12 +3,18 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart';
 import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/services/network%20%20service.dart';
 import 'package:workoutnote/utils/utils.dart';
 
 class MainScreenProvider extends ChangeNotifier {
+  String secs = "00";
+  String mins = "00";
+  String hrs = "00";
+  StreamSubscription? timerSubscription;
+
   List<WorkOut> _workOuts = [];
   List<Exercise> _exercises = [];
   int _responseCode1 = 0;
@@ -69,6 +75,42 @@ class MainScreenProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, int duration) async {
+    try {
+      Response? insertLift;
+      var response = await WebServices.insertWorkOut(sessionKey, title, timestamp, duration);
+      print(response.body);
+      if (response.statusCode == 200) {
+        Map workout = jsonDecode(response.body);
+        for (int i = 0; i < _selectedExercises.length; i++) {
+          print(_selectedExercises[i].keys.first.id);
+          print(_selectedExercises[i].keys.first.name);
+
+
+
+
+
+         print( workout["workout_session"]["id"]);
+          insertLift = await WebServices.insertLift(sessionKey, timestamp, 1, _selectedExercises[i].keys.first.id ?? -1, workout["workout_session"]["id"]);
+          print(insertLift.body);
+        }
+        if (insertLift!.statusCode == 200) {
+          _selectedExercises.clear();
+        }
+      }
+      notifyListeners();
+    } on TimeoutException catch (e) {
+      _responseCode2 = TIMEOUT_EXCEPTION;
+      print(e);
+    } on SocketException catch (e) {
+      _responseCode2 = SOCKET_EXCEPTION;
+      print(e);
+    } on Error catch (e) {
+      _responseCode2 = MISC_EXCEPTION;
+      print(e);
+    }
+  }
+
   List<WorkOut> get workOuts => _workOuts;
 
   List<Exercise> get exercises => _exercises;
@@ -90,12 +132,8 @@ class MainScreenProvider extends ChangeNotifier {
   }
 
   void removeExercises() {
-    for(int i = 0; i<_selectedExercises.length; i++){
-      if(_selectedExercises[i].values.first)
-        _selectedExercises.remove(_selectedExercises[i]);
-    }
+    _selectedExercises.removeWhere((element) => element.values.first);
     notifyListeners();
-
   }
 
   Exercise? get unselectedExercise => _unselectedExercise;
@@ -119,5 +157,26 @@ class MainScreenProvider extends ChangeNotifier {
 
   set requestDone2(bool value) {
     _requestDone2 = value;
+  }
+
+  void startTimer() {
+    var timerStream = stopWatchStream();
+    timerSubscription = timerStream.listen((int newTick) {
+      hrs = ((newTick / (60 * 60)) % 60).floor().toString().padLeft(2, '0');
+      mins = ((newTick / 60) % 60).floor().toString().padLeft(2, '0');
+      secs = (newTick % 60).floor().toString().padLeft(2, '0');
+
+      notifyListeners();
+    });
+  }
+
+  void pauseTimer() {
+    timerSubscription!.pause();
+    notifyListeners();
+  }
+
+  void resumeTimer() {
+    timerSubscription!.resume();
+    notifyListeners();
   }
 }

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business%20logic/main%20%20screen%20provider.dart';
 import 'package:workoutnote/models/exercises%20model.dart';
+import 'package:workoutnote/utils/utils.dart';
 
 class CreateWorkOutCard extends StatelessWidget {
   var titleContoller = TextEditingController();
@@ -15,11 +16,10 @@ class CreateWorkOutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       margin: EdgeInsets.all(10),
       child: Consumer<MainScreenProvider>(builder: (context, exProvider, child) {
-        int count =exProvider.selectedExercises.length+ 7;
+        int count = exProvider.selectedExercises.length + 7;
         print(count);
         return Card(
             elevation: 10,
@@ -76,37 +76,52 @@ class CreateWorkOutCard extends StatelessWidget {
                             Container(
                               margin: EdgeInsets.only(top: 10.0),
                               child: Text(
-                                "00:00:00",
+                                "${exProvider.hrs}:${exProvider.mins}:${exProvider.secs}",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 40, color: Colors.deepPurpleAccent, fontWeight: FontWeight.bold),
                               ),
                             ),
                             Spacer(),
                             Container(
-                              margin: EdgeInsets.only(right: 10.0, bottom: 10.0),
-                              child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.play_circle_outline,
-                                    color: Colors.deepPurpleAccent,
-                                    size: 50,
-                                  )),
+                              margin: EdgeInsets.only(right: 20.0, bottom: 10.0),
+                              child: (exProvider.timerSubscription == null || exProvider.timerSubscription!.isPaused)
+                                  ? IconButton(
+                                      onPressed: () {
+                                        if (exProvider.timerSubscription == null) {
+                                          exProvider.startTimer();
+                                        } else if (exProvider.timerSubscription!.isPaused) {
+                                          exProvider.resumeTimer();
+                                        }
+                                      },
+                                      icon: Icon(
+                                        Icons.play_circle_outline,
+                                        color: Colors.deepPurpleAccent,
+                                        size: 50,
+                                      ))
+                                  : IconButton(
+                                      onPressed: () {
+                                        exProvider.pauseTimer();
+                                      },
+                                      icon: Icon(
+                                        Icons.pause_circle_outline,
+                                        color: Colors.deepPurpleAccent,
+                                        size: 50,
+                                      )),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(right: 15.0, bottom: 10.0),
-                              child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.stop_circle_outlined,
-                                    color: Colors.deepPurpleAccent,
-                                    size: 50,
-                                  )),
-                            ),
+                            // Container(
+                            //   margin: EdgeInsets.only(right: 15.0, bottom: 10.0),
+                            //   child: IconButton(
+                            //       onPressed: () {},
+                            //       icon: Icon(
+                            //         Icons.stop_circle_outlined,
+                            //         color: Colors.deepPurpleAccent,
+                            //         size: 50,
+                            //       )),
+                            // ),
                           ],
                         ),
                       );
-                    }
-                    else if (index == 3) {
+                    } else if (index == 3) {
                       return Container(
                         margin: EdgeInsets.only(left: 10.0, top: 30),
                         child: Align(
@@ -124,8 +139,8 @@ class CreateWorkOutCard extends StatelessWidget {
                           ),
                         ),
                       );
-                    }
-                    else if (index == 4) {return Container(
+                    } else if (index == 4) {
+                      return Container(
                         padding: EdgeInsets.all(10),
                         margin: EdgeInsets.only(bottom: 10, left: 10.0, right: 10.0),
                         decoration: BoxDecoration(
@@ -167,8 +182,7 @@ class CreateWorkOutCard extends StatelessWidget {
                           ],
                         ),
                       );
-                    }
-                    else if (index == count-2) {
+                    } else if (index == count - 2) {
                       return Container(
                         padding: EdgeInsets.only(left: 10, right: 10.0),
                         margin: EdgeInsets.only(bottom: 10, left: 10.0, right: 10.0),
@@ -212,10 +226,9 @@ class CreateWorkOutCard extends StatelessWidget {
                               width: 0.1 * width,
                               child: IconButton(
                                 onPressed: () {
-                                  exProvider.addExercise({exProvider.unselectedExercise??Exercise(-1, "dummy", "dummy", "dummy"):true});
+                                  exProvider.addExercise({exProvider.unselectedExercise ?? Exercise(-1, "dummy", "dummy", "dummy"): true});
                                 },
                                 icon: Icon(
-
                                   Icons.add_circle_outline,
                                   color: Colors.grey,
                                   size: 40,
@@ -225,65 +238,64 @@ class CreateWorkOutCard extends StatelessWidget {
                           ],
                         ),
                       );
-                    }
-                    else if(index > 4 && index < count - 2 && index < count-1 ) {
-                        index = index - 5;
-                            return Container(
-                              padding: EdgeInsets.only(left: 10, right: 10.0),
-                              margin: EdgeInsets.only(bottom: 10, left: 10.0, right: 10.0),
-                          child:Row(
-                            children: [
-                              Container(
-                                width: 0.1 * width,
+                    } else if (index > 4 && index < count - 2 && index < count - 1) {
+                      index = index - 5;
+                      return Container(
+                        key: Key(index.toString()),
+                        padding: EdgeInsets.only(left: 10, right: 10.0),
+                        margin: EdgeInsets.only(bottom: 10, left: 10.0, right: 10.0),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 0.1 * width,
+                              child: Text(
+                                "${index + 1}",
+                                style: TextStyle(color: exProvider.selectedExercises[index].values.first ? Colors.deepPurpleAccent : Colors.grey),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () async {},
+                              child: Container(
+                                width: 0.4 * width,
                                 child: Text(
-                                  "${index+1}",
-                                  style: TextStyle(color: exProvider.selectedExercises[index].values.first? Colors.deepPurpleAccent:Colors.grey),
+                                  exProvider.selectedExercises[index].keys.first.name ?? "",
+                                  style: TextStyle(color: exProvider.selectedExercises[index].values.first ? Colors.deepPurpleAccent : Colors.grey),
                                 ),
                               ),
-                              InkWell(
-                                onTap: () async {
+                            ),
+                            Container(
+                              width: 0.1 * width,
+                              child: Text(
+                                "1",
+                                style: TextStyle(color: exProvider.selectedExercises[index].values.first ? Colors.deepPurpleAccent : Colors.grey),
+                              ),
+                            ),
+                            Container(
+                              width: 0.1 * width,
+                              child: Text(
+                                "1",
+                                style: TextStyle(color: exProvider.selectedExercises[index].values.first ? Colors.deepPurpleAccent : Colors.grey),
+                              ),
+                            ),
+                            Spacer(),
+                            Container(
+                              width: 0.1 * width,
+                              child: IconButton(
+                                onPressed: () {
+                                  exProvider.updateExercise(index);
                                 },
-                                child: Container(
-                                  width: 0.4 * width,
-                                  child: Text(
-                                    exProvider.selectedExercises[index].keys.first.name??"",
-                                    style: TextStyle(color: exProvider.selectedExercises[index].values.first? Colors.deepPurpleAccent:Colors.grey),
-                                  ),
+                                icon: Icon(
+                                  Icons.check_box,
+                                  size: 40,
+                                  color: exProvider.selectedExercises[index].values.first ? Colors.deepPurpleAccent : Colors.grey,
                                 ),
                               ),
-                              Container(
-                                width: 0.1 * width,
-                                child: Text(
-                                  "1",
-                                  style: TextStyle(color: exProvider.selectedExercises[index].values.first? Colors.deepPurpleAccent:Colors.grey),
-                                ),
-                              ),
-                              Container(
-                                width: 0.1 * width,
-                                child: Text(
-                                  "1",
-                                  style: TextStyle(color: exProvider.selectedExercises[index].values.first? Colors.deepPurpleAccent:Colors.grey),
-                                ),
-                              ),
-                              Spacer(),
-                              Container(
-                                width: 0.1 * width,
-                                child: IconButton(
-                                  onPressed: () {
-                                    exProvider.updateExercise(index);
-                                    },
-                                  icon: Icon(
-                                    Icons.check_box,
-                                   size: 40,
-                                   color: exProvider.selectedExercises[index].values.first? Colors.deepPurpleAccent:Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ) ,
-                        );
-                      }
-                    else return Container(
+                            ),
+                          ],
+                        ),
+                      );
+                    } else
+                      return Container(
                         margin: EdgeInsets.only(bottom: 10.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -312,7 +324,12 @@ class CreateWorkOutCard extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(32.0),
                                 ),
                                 color: Colors.deepPurpleAccent,
-                                onPressed: () {},
+                                onPressed: () {
+                                  exProvider.createWorkOutSession(userPreferences!.getString("sessionKey")??"wefjhweiu", "Dummy title", 1628006431000, 5).then((value) {
+
+                                  });
+
+                                },
                                 textColor: Colors.white,
                                 child: Text("save"),
                               ),
