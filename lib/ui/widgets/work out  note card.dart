@@ -57,8 +57,7 @@ class WorkOutNote extends StatelessWidget {
 
                 }
                 ),
-              )
-              ,
+              ),
               Container(
                 alignment: Alignment.center,
                 child: Text("00:00:${workout.duration!=0?workout.duration:00}", style: TextStyle(

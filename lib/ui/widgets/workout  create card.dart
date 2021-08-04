@@ -108,16 +108,7 @@ class CreateWorkOutCard extends StatelessWidget {
                                         size: 50,
                                       )),
                             ),
-                            // Container(
-                            //   margin: EdgeInsets.only(right: 15.0, bottom: 10.0),
-                            //   child: IconButton(
-                            //       onPressed: () {},
-                            //       icon: Icon(
-                            //         Icons.stop_circle_outlined,
-                            //         color: Colors.deepPurpleAccent,
-                            //         size: 50,
-                            //       )),
-                            // ),
+
                           ],
                         ),
                       );
@@ -349,7 +340,7 @@ class CreateWorkOutCard extends StatelessWidget {
         builder: (BuildContext context) {
           return Consumer<MainScreenProvider>(builder: (context, exProvider, child) {
             if (!exProvider.requestDone2) {
-              print("eifuhieprugipeqrhgiqerp");
+
               exProvider.requestDone2 = true;
               exProvider.fecthExercises().then((value) {});
             }
@@ -375,6 +366,7 @@ class CreateWorkOutCard extends StatelessWidget {
                                     ),
                                   ),
                                   Align(
+
                                     alignment: Alignment.centerRight,
                                     child: IconButton(
                                         icon: Icon(Icons.clear),
@@ -387,16 +379,21 @@ class CreateWorkOutCard extends StatelessWidget {
                             );
                           else if (index == 1)
                             return Container(
+                              height: 40,
                               margin: EdgeInsets.only(left: 10, right: 10.0),
                               child: TextFormField(
+                                controller: exProvider.searchController,
                                 autofocus: true,
+                                onChanged: (searchWord){
+                                  exProvider.searchResults(searchWord);
+                                },
                                 decoration: InputDecoration(
                                   prefixIcon: IconButton(
                                     onPressed: () {},
                                     icon: Icon(Icons.search),
                                   ),
                                   suffixIcon: IconButton(
-                                    onPressed: titleContoller.clear,
+                                    onPressed: () => exProvider.searchController.clear(),
                                     icon: Icon(Icons.clear, color: Colors.deepPurpleAccent),
                                   ),
                                   isDense: true,
@@ -430,7 +427,7 @@ class CreateWorkOutCard extends StatelessWidget {
                             index = index - 3;
                             return InkWell(
                               onTap: () {
-                                exProvider.unselectedExercise = exProvider.exercises[index];
+                                exProvider.unselectedExercise =  exProvider.searchController.text.isEmpty?   exProvider.exercises[index]:exProvider.searchexercies[index];
                                 Navigator.pop(context);
                               },
                               child: Container(
@@ -442,7 +439,7 @@ class CreateWorkOutCard extends StatelessWidget {
                                       height: 30,
                                       width: 30,
                                     ),
-                                    Container(margin: EdgeInsets.only(left: 10.0), child: Text("${exProvider.exercises[index].name}")),
+                                    Container(margin: EdgeInsets.only(left: 10.0), child: Text("${exProvider.searchController.text.isEmpty  ? exProvider.exercises[index].name:exProvider.searchexercies[index].name}")),
                                   ],
                                 ),
                               ),
@@ -454,7 +451,7 @@ class CreateWorkOutCard extends StatelessWidget {
                             color: index > 2 ? Colors.grey : Colors.white,
                           );
                         },
-                        itemCount: exProvider.exercises.length + 3)),
+                        itemCount: exProvider.searchController.text.isEmpty? exProvider.exercises.length + 3: exProvider.searchexercies.length+3)),
               ),
             );
           });

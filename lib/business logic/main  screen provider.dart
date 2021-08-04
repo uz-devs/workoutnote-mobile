@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:workoutnote/models/exercises%20model.dart';
@@ -10,6 +11,8 @@ import 'package:workoutnote/services/network%20%20service.dart';
 import 'package:workoutnote/utils/utils.dart';
 
 class MainScreenProvider extends ChangeNotifier {
+
+  //region vars
   String secs = "00";
   String mins = "00";
   String hrs = "00";
@@ -17,14 +20,17 @@ class MainScreenProvider extends ChangeNotifier {
 
   List<WorkOut> _workOuts = [];
   List<Exercise> _exercises = [];
+  List<Exercise> searchexercies = [];
+  List<Map<Exercise, bool>> _selectedExercises = [];
+
   int _responseCode1 = 0;
   bool _requestDone1 = false;
   int _responseCode2 = 0;
   bool _requestDone2 = false;
-
-  List<Map<Exercise, bool>> _selectedExercises = [];
   Exercise? _unselectedExercise;
-
+  TextEditingController searchController = TextEditingController();
+  //endregion
+  //region api  request
   Future<void> fetchWorkOuts(String sessionKey, int timestamp) async {
     try {
       var response = await WebServices.fetchWorkOuts(sessionKey, timestamp);
@@ -105,13 +111,38 @@ class MainScreenProvider extends ChangeNotifier {
       print(e);
     }
   }
-
+  //endregion
+  //region getters and setters
   List<WorkOut> get workOuts => _workOuts;
 
   List<Exercise> get exercises => _exercises;
 
   List<Map<Exercise, bool>> get selectedExercises => _selectedExercises;
 
+  Exercise? get unselectedExercise => _unselectedExercise;
+
+  int get responseCode1 => _responseCode1;
+
+  bool get requestDone1 => _requestDone1;
+
+  bool get requestDone2 => _requestDone2;
+
+  int get reponseCode2 => _responseCode2;
+
+  set unselectedExercise(Exercise? value) {
+    _unselectedExercise = value;
+    notifyListeners();
+  }
+
+  set requestDone1(bool value) {
+    _requestDone1 = value;
+  }
+
+  set requestDone2(bool value) {
+    _requestDone2 = value;
+  }
+  //endregion
+  //region util  methods
   void addExercise(Map<Exercise, bool> exercise) {
     selectedExercises.add(exercise);
     notifyListeners();
@@ -129,29 +160,6 @@ class MainScreenProvider extends ChangeNotifier {
   void removeExercises() {
     _selectedExercises.removeWhere((element) => element.values.first);
     notifyListeners();
-  }
-
-  Exercise? get unselectedExercise => _unselectedExercise;
-
-  set unselectedExercise(Exercise? value) {
-    _unselectedExercise = value;
-    notifyListeners();
-  }
-
-  int get responseCode1 => _responseCode1;
-
-  bool get requestDone1 => _requestDone1;
-
-  set requestDone1(bool value) {
-    _requestDone1 = value;
-  }
-
-  bool get requestDone2 => _requestDone2;
-
-  int get reponseCode2 => _responseCode2;
-
-  set requestDone2(bool value) {
-    _requestDone2 = value;
   }
 
   void startTimer() {
@@ -174,4 +182,17 @@ class MainScreenProvider extends ChangeNotifier {
     timerSubscription!.resume();
     notifyListeners();
   }
+
+  void searchResults(String searchWord) {
+    if (searchexercies.isNotEmpty) searchexercies.clear();
+
+    for (int i = 0; i < _exercises.length; i++) {
+      if (_exercises[i].name == searchWord){
+        print(_exercises[i].name);
+        searchexercies.add(_exercises[i]);
+    }}
+
+    notifyListeners();
+  }
+  //endregion
 }
