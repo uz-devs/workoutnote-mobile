@@ -86,11 +86,6 @@ class MainScreenProvider extends ChangeNotifier {
           print(_selectedExercises[i].keys.first.id);
           print(_selectedExercises[i].keys.first.name);
 
-
-
-
-
-         print( workout["workout_session"]["id"]);
           insertLift = await WebServices.insertLift(sessionKey, timestamp, 1, _selectedExercises[i].keys.first.id ?? -1, workout["workout_session"]["id"]);
           print(insertLift.body);
         }

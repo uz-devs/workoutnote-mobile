@@ -10,6 +10,7 @@ const String workouts = "api/fetch_workouts/";
 const String  exerc = "api/fetch_exercises/";
 const String insert_workout = "/api/insert_workout";
 const String insert_lift = "/api/insert_lift";
+const String fetch_settings = "/api/fetch_settings";
 
 //network  states
 int LOADING = 0;

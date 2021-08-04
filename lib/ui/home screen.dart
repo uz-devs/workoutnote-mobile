@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: navProvider.workOuts.length+2,  itemBuilder: (context,  index) {
 
       if(index == 0)
-        return _buildIntroWidget("Ilyosbek");
+        return _buildIntroWidget("${userPreferences!.getString("name")}");
       else if (index == 1){
         return CreateWorkOutCard(widget.width,  widget.height);
       }

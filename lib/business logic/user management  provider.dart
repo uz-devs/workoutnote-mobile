@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:workoutnote/models/user%20model.dart';
 import 'package:workoutnote/services/network%20%20service.dart';
@@ -16,16 +17,21 @@ class UserManagement extends ChangeNotifier {
   Future<bool> login(String email, String password) async {
     try {
       Response response = await WebServices.userLogin(email, password);
-       print(response);
       if (response.statusCode == 200) {
-
         var user = User.fromJson(jsonDecode(response.body));
-        print(user.authSuccess);
-        print(user.sessionKey);
-
         if (user.authSuccess) {
-          userPreferences!.setString("sessionKey", user.sessionKey ?? "");
-          return true;
+          Response settingsResponse = await WebServices.fetchSettins(user.sessionKey??"");
+          if(settingsResponse.statusCode == 200){
+
+            var  settings = Settings.fromJson(jsonDecode(settingsResponse.body));
+            await userPreferences!.setString("name", settings.name??"unknown");
+            await userPreferences!.setString("birthDate", settings.dateOfBirth??"unknown");
+            await userPreferences!.setString("gender", settings.gender??"unknown");
+            await userPreferences!.setBool("isShared", settings.iProfileShared);
+            await userPreferences!.setString("sessionKey", user.sessionKey ?? "");
+            return true;
+          }
+
         }
       }
     } catch (e) {
@@ -34,4 +40,9 @@ class UserManagement extends ChangeNotifier {
     }
     return false;
   }
+  Future<bool> logout()async{
+    return await userPreferences!.clear();
+  }
+
+
 }
