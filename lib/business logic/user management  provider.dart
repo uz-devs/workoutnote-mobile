@@ -20,7 +20,7 @@ class UserManagement extends ChangeNotifier {
       if (response.statusCode == 200) {
         var user = User.fromJson(jsonDecode(response.body));
         if (user.authSuccess) {
-          Response settingsResponse = await WebServices.fetchSettins(user.sessionKey??"");
+          Response settingsResponse = await WebServices.fetchSettings(user.sessionKey??"");
           if(settingsResponse.statusCode == 200){
 
             var  settings = Settings.fromJson(jsonDecode(settingsResponse.body));

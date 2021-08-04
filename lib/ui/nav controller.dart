@@ -32,7 +32,7 @@ class _NavControllerState extends State<NavController> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    var screens = [_buildHomeScreen(height, width), _buildCalendarScreen(height), _buildSettingsScreen(height), _buildSettingsScreen(height)];
+    var screens = [_buildHomeScreen(height, width), _buildCalendarScreen(height),  _builCalculateScreen(height), _buildSettingsScreen(height),];
     return Scaffold(
 
       body: screens[_selectedIndex],
