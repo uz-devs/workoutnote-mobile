@@ -57,7 +57,7 @@ class AuthScreen extends StatelessWidget {
                       width: double.infinity,
                       margin: EdgeInsets.only(left: 10, right: 10.0),
                       child: CupertinoButton(
-                          color: Colors.blue,
+                          color: Colors.deepPurpleAccent,
                           borderRadius: const BorderRadius.all(Radius.circular(120)),
                           child: Text("login"),
                           onPressed: () {

@@ -14,14 +14,14 @@ class WebServices {
   }
 
   static Future<http.Response> fetchWorkOuts(String sessionKey, int timestamp) async {
-    final url = Uri.https(baseUrl, workouts);
+    final url = Uri.https(baseUrl, fetch_workouts);
     final body = {'sessionKey': '$sessionKey', 'dateTimestampMs': '$timestamp'};
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }
 
   static Future<http.Response> fetchExercises() async {
-    final url = Uri.https(baseUrl, exerc);
+    final url = Uri.https(baseUrl, fetch_exercises);
     final body = {};
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
      return response;
@@ -47,6 +47,12 @@ class WebServices {
     return response;
   }
 
+  static Future<http.Response> updateSettings(String  sessionKey, String  name) async {
+    final url = Uri.https(baseUrl,fetch_settings );
+    final body = {'sessionKey': sessionKey, 'name': name};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
 
 
 
