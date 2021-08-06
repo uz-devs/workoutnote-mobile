@@ -32,9 +32,10 @@ Future<void> initPreferences() async {
 }
 
 String toDate(int timestamp) {
-  var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-  var formattedDate = DateFormat('yyyy.mm.dd').format(date);
 
+  var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+  var formattedDate = DateFormat('yyyy.MM.dd').format(date);
+   print(formattedDate);
   return formattedDate;
 }
 

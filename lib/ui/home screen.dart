@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business%20logic/config%20provider.dart';
@@ -36,8 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return  ListView.builder(
         itemCount: navProvider.workOuts.length+2,  itemBuilder: (context,  index) {
-
-      if(index == 0)
+          if(index == 0)
         return Container (
           margin: EdgeInsets.only(left: 20, top: 30),
           child: Text("${welcomeMessage[configProvider.activeLanguage()]}, ${userPreferences!.getString("name")}",  style: TextStyle(
@@ -49,6 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       else {
         index = index - 2;
+
+
         return WorkOutNote(widget.height, navProvider.workOuts[index]);
       }
       });

@@ -20,18 +20,15 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   List<String>? months = List.generate(12, (index) => "${index + 1}");
   List<String>? days = List.generate(30, (index) => "${index + 2}");
   String? selectedYear, selectedMonth, selectedDay;
-
   int _val = 1;
 
   @override
   void initState() {
     super.initState();
-
   }
-
   @override
   Widget build(BuildContext context) {
-    var configProvider = Provider.of<ConfigProvider>(context, listen: true );
+    var configProvider = Provider.of<ConfigProvider>(context, listen: true);
 
     return Scaffold(
         appBar: AppBar(
@@ -58,7 +55,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                   itemBuilder: (context, index) {
                     if (index == 0)
                       return Container(
-                        margin: EdgeInsets.only(left: 15.0, right: 15.0),
+                        margin: const EdgeInsets.only(left: 15.0, right: 15.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -73,7 +70,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                               decoration: InputDecoration(
                                   isDense: true,
                                   contentPadding: EdgeInsets.only(top: 5.0),
-                                  hintText: "${nameHint[configProvider.activeLanguage()]}"),
+                                  hintText:
+                                      "${nameHint[configProvider.activeLanguage()]}"),
                             )
                           ],
                         ),
@@ -108,7 +106,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                     });
                                   },
                                 ),
-                                Text("${male[configProvider.activeLanguage()]}"),
+                                Text(
+                                    "${male[configProvider.activeLanguage()]}"),
                                 Radio(
                                   activeColor: Colors.deepPurpleAccent,
                                   value: userPreferences!.getString("gender") ==
@@ -127,7 +126,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                     });
                                   },
                                 ),
-                                Text("${female[configProvider.activeLanguage()]}"),
+                                Text(
+                                    "${female[configProvider.activeLanguage()]}"),
                               ],
                             )
                           ],
@@ -150,7 +150,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                               DropdownButton(
                                 underline: SizedBox(),
                                 value: selectedYear,
-                                hint: Text("${year[configProvider.activeLanguage()]}"),
+                                hint: Text(
+                                    "${year[configProvider.activeLanguage()]}"),
                                 onChanged: (item) {
                                   setState(() {
                                     selectedYear = item.toString();
@@ -164,7 +165,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                               DropdownButton(
                                 value: selectedMonth,
                                 underline: SizedBox(),
-                                hint: Text("${month[configProvider.activeLanguage()]}"),
+                                hint: Text(
+                                    "${month[configProvider.activeLanguage()]}"),
                                 onChanged: (item) {
                                   setState(() {
                                     selectedMonth = item.toString();
@@ -178,7 +180,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                               DropdownButton(
                                 underline: SizedBox(),
                                 value: selectedDay,
-                                hint: Text("${day[configProvider.activeLanguage()]}"),
+                                hint: Text(
+                                    "${day[configProvider.activeLanguage()]}"),
                                 onChanged: (item) {
                                   setState(() {
                                     selectedDay = item.toString();
@@ -207,7 +210,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                               decoration: InputDecoration(
                                   isDense: true,
                                   contentPadding: EdgeInsets.only(top: 5.0),
-                                  hintText: "${emailHint[configProvider.activeLanguage()]}"),
+                                  hintText:
+                                      "${emailHint[configProvider.activeLanguage()]}"),
                             ),
                           )
                         ],
@@ -232,7 +236,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                 decoration: InputDecoration(
                                     isDense: true,
                                     contentPadding: EdgeInsets.only(top: 5.0),
-                                    hintText: "${phoneNumberHint[configProvider.activeLanguage()]}"),
+                                    hintText:
+                                        "${phoneNumberHint[configProvider.activeLanguage()]}"),
                               ),
                             )
                           ],
@@ -245,17 +250,19 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                             color: Colors.deepPurpleAccent,
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(120)),
-                            child: Text("${update[configProvider.activeLanguage()]}"),
+                            child: Text(
+                                "${update[configProvider.activeLanguage()]}"),
                             onPressed: () {
                               provider
                                   .updateProfileSettings(
                                       userPreferences!
-                                          .getString("sessionKey") ??
+                                              .getString("sessionKey") ??
                                           "",
                                       nameController.text,
                                       gender)
                                   .then((value) {
-                                showToast("${updateToastMessage[configProvider.activeLanguage()]}");
+                                showToast(
+                                    "${updateToastMessage[configProvider.activeLanguage()]}");
                               });
                             }),
                       );
@@ -272,7 +279,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                           child: Divider(
                             color: Colors.deepPurpleAccent,
                           ));
-                    return Divider();
+                    return const Divider();
                   },
                   itemCount: 5);
             })));

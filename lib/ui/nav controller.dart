@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-
 import 'package:workoutnote/ui/calculate%20screen.dart';
 import 'package:workoutnote/ui/calendar%20screen.dart';
 import 'package:workoutnote/ui/home%20screen.dart';

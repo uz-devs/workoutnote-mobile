@@ -7,6 +7,7 @@ import 'package:workoutnote/ui/nav%20controller.dart';
 import 'package:workoutnote/utils/utils.dart';
 
 
+import 'business logic/calendar provider.dart';
 import 'business logic/config provider.dart';
 import 'business logic/user management  provider.dart';
 
@@ -18,6 +19,7 @@ void main() async{
     ChangeNotifierProvider(create: (_) => UserManagement(),),
     ChangeNotifierProvider(create: (_) => MainScreenProvider(),),
     ChangeNotifierProvider(create: (_) => ConfigProvider(),),
+    ChangeNotifierProvider(create: (_) => CalendarProvider(),),
 
   ];
   runApp(MultiProvider(providers: providers, child: MyApp(),));

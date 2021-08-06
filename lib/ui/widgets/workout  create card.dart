@@ -377,9 +377,9 @@ class CreateWorkOutCard extends StatelessWidget {
                                           userPreferences!
                                                   .getString("sessionKey") ??
                                               "wefjhweiu",
-                                          "Dummy title",
+                                          "Error case",
                                           1628006431000,
-                                          5)
+                                          -1)
                                       .then((value) {});
                                 },
                                 textColor: Colors.white,
