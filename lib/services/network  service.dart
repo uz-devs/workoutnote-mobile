@@ -47,9 +47,9 @@ class WebServices {
     return response;
   }
 
-  static Future<http.Response> updateSettings(String  sessionKey, String  name) async {
-    final url = Uri.https(baseUrl,fetch_settings );
-    final body = {'sessionKey': sessionKey, 'name': name};
+  static Future<http.Response> updateSettings(String  sessionKey, String  name,  String gender) async {
+    final url = Uri.https(baseUrl,update_settings );
+    final body = {'sessionKey': sessionKey, 'name': name, 'gender': gender};
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }

@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:workoutnote/business%20logic/config%20provider.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
+import 'package:workoutnote/utils/strings.dart';
+import 'package:workoutnote/utils/utils.dart';
 
 class WorkOutNote extends StatelessWidget {
    final height;
@@ -10,6 +14,10 @@ class WorkOutNote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    var configProvider = Provider.of<ConfigProvider>(context, listen: true );
+
+
     return Container(
       margin: EdgeInsets.all(10),
       height: 0.4*height,
@@ -75,7 +83,7 @@ class WorkOutNote extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20)),
                   color: Colors.deepPurpleAccent,
                   textColor: Colors.white,
-                  child: Text("반복하기"),
+                  child: Text("${repeat[configProvider.activeLanguage()]}"),
                   onPressed: () {},
                 ),
               )

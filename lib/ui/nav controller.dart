@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:workoutnote/business%20logic/main%20%20screen%20provider.dart';
-import 'package:workoutnote/ui/auth%20screen%20.dart';
+
+
 import 'package:workoutnote/ui/calculate%20screen.dart';
 import 'package:workoutnote/ui/calendar%20screen.dart';
 import 'package:workoutnote/ui/home%20screen.dart';
 import 'package:workoutnote/ui/settings%20%20screen.dart';
-import 'package:workoutnote/ui/widgets/work%20out%20%20note%20card.dart';
-import 'package:workoutnote/utils/utils.dart';
 
 class NavController extends StatefulWidget {
   static String route = "/";
@@ -34,14 +31,16 @@ class _NavControllerState extends State<NavController> {
     double width = MediaQuery.of(context).size.width;
     var screens = [_buildHomeScreen(height, width), _buildCalendarScreen(height),  _builCalculateScreen(height), _buildSettingsScreen(height),];
     return Scaffold(
-
+      resizeToAvoidBottomInset: false,
       body: screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: "Home"),
-        BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: "Calendar"),
-        BottomNavigationBarItem(icon: Icon(Icons.calculate), label: "Calculation"),
-
-        BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings"),
+      bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(icon: Icon(Icons.home_outlined,  size: 30,), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.calendar_today,  size: 30,), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.calculate, size: 30,), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.settings, size: 30,), label: ""),
 
       ],
         onTap: _onItemSelected,

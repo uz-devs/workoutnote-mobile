@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:workoutnote/business%20logic/config%20provider.dart';
 import 'package:workoutnote/business%20logic/user%20management%20%20provider.dart';
 import 'package:workoutnote/ui/auth%20screen%20.dart';
 import 'package:workoutnote/ui/language%20%20change%20screen.dart';
 import 'package:workoutnote/ui/profile%20update%20screen.dart';
+import 'package:workoutnote/utils/strings.dart';
 
 class SeetingsScreen extends StatefulWidget {
   final height;
@@ -18,7 +20,10 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
   @override
   Widget build(BuildContext context) {
     var userProvider = Provider.of<UserManagement>(context, listen: false);
+    var configProvider = Provider.of<ConfigProvider>(context, listen: true );
+
     return ListView.separated(
+
         itemBuilder: (context, index) {
           if (index == 0)
             return Container(
@@ -30,8 +35,8 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                   Container(
                     margin: EdgeInsets.only(left: 5.0),
                     child: Text(
-                      "Profile info",
-                      style: TextStyle(fontWeight: FontWeight.bold,  color: Colors.deepPurpleAccent),
+                      "${profileInfo[configProvider.activeLanguage()]}",
+                      style: TextStyle(fontWeight: FontWeight.bold,  color: Colors.deepPurpleAccent, fontSize: 18),
                     ),
                   ),
                 ],
@@ -43,7 +48,8 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileUpdateScreen()));
               },
               child: ListTile(
-                leading: Text("Profile info"),
+                dense: true,
+                leading: Text("${profileInfo[configProvider.activeLanguage()]}"),
                 trailing: Icon(Icons.arrow_forward_ios_outlined),
               ),
             );
@@ -53,13 +59,14 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => LanguageChangeScreen()));
               },
               child: ListTile(
-                leading: Text("Language settings"),
+                dense: true,
+                leading: Text("${languageChange[configProvider.activeLanguage()]}"),
                 trailing: Icon(Icons.arrow_forward_ios_outlined),
               ),
             );
           else if (index == 3)
             return Container(
-              margin: EdgeInsets.only(top: 10.0),
+
               padding: EdgeInsets.all(10.0),
               child: Row(
                 children: [
@@ -67,8 +74,8 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                   Container(
                     margin: EdgeInsets.only(left: 5.0),
                     child: Text(
-                      "App info",
-                      style: TextStyle(fontWeight: FontWeight.bold,  color: Colors.deepPurpleAccent),
+                      "${appInfo[configProvider.activeLanguage()]}",
+                      style: TextStyle(fontWeight: FontWeight.bold,  color: Colors.deepPurpleAccent,  fontSize: 18),
                     ),
                   ),
                 ],
@@ -77,27 +84,30 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
           else if (index == 4)
             return InkWell(
               child: ListTile(
-                leading: Text("App usage guide"),
+                dense: true,
+                leading: Text("${appUsageGuide[configProvider.activeLanguage()]}"),
                 trailing: Icon(Icons.arrow_forward_ios_outlined),
               ),
             );
           else if (index == 5)
             return InkWell(
               child: ListTile(
-                leading: Text("Terms and Conditions"),
+                dense: true,
+                leading: Text("${termsAndConditions[configProvider.activeLanguage()]}"),
                 trailing: Icon(Icons.arrow_forward_ios_outlined),
               ),
             );
           else if (index == 6)
             return InkWell(
               child: ListTile(
-                leading: Text("Privacy Policy"),
+                dense: true,
+                leading: Text("${privacyPolicy[configProvider.activeLanguage()]}"),
                 trailing: Icon(Icons.arrow_forward_ios_outlined),
               ),
             );
           else if (index == 7)
             return Container(
-              margin: EdgeInsets.only(top: 10.0),
+
               padding: EdgeInsets.all(10.0),
               child: Row(
                 children: [
@@ -105,8 +115,8 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                   Container(
                     margin: EdgeInsets.only(left: 5.0),
                     child: Text(
-                      "Customer center",
-                      style: TextStyle(fontWeight: FontWeight.bold,  color: Colors.deepPurpleAccent),
+                      "${customerCenter[configProvider.activeLanguage()]}",
+                      style: TextStyle(fontWeight: FontWeight.bold,  color: Colors.deepPurpleAccent,  fontSize: 18),
                     ),
                   ),
                 ],
@@ -115,13 +125,15 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
           else if (index == 8)
             return InkWell(
               child: ListTile(
-                leading: Text("Customer center"),
+                dense: true,
+                leading: Text( "${customerCenter[configProvider.activeLanguage()]}"),
                 trailing: Icon(Icons.arrow_forward_ios_outlined),
               ),
             );
           else if (index == 9)
             return InkWell(
               child: ListTile(
+                dense: true,
                 leading: Text("Q&A"),
                 trailing: Icon(Icons.arrow_forward_ios_outlined),
               ),
@@ -134,14 +146,16 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
 
               },
               child: ListTile(
-                leading: Text("Logout"),
+                dense: true,
+                leading: Text("${logout[configProvider.activeLanguage()]}"),
                 trailing: Icon(Icons.arrow_forward_ios_outlined),
               ),
             );
           else {
             return InkWell(
               child: ListTile(
-                leading: Text("Delete account"),
+                dense: true,
+                leading: Text("${deleteAccount[configProvider.activeLanguage()]}"),
                 trailing: Icon(
                   Icons.arrow_forward_ios_outlined,
                 ),

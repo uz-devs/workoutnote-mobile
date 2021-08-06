@@ -44,12 +44,13 @@ class UserManagement extends ChangeNotifier {
   Future<bool> logout()async{
     return await userPreferences!.clear();
   }
-  Future<bool> updateProfileSettings(String sessionKey, String name) async {
+  Future<bool> updateProfileSettings(String sessionKey, String name, String gender) async {
 
     try{
-      var response = await  WebServices.updateSettings(sessionKey, name);
+      var response = await  WebServices.updateSettings(sessionKey, name,  gender);
       if(response.statusCode == 200 && jsonDecode(response.body)["success"]){
         userPreferences!.setString("name", name);
+        userPreferences!.setString("gender", gender);
         notifyListeners();
         return true;
       }
@@ -62,6 +63,8 @@ class UserManagement extends ChangeNotifier {
 
 
   }
+
+
 
 
 }

@@ -1,9 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:workoutnote/business%20logic/config%20provider.dart';
 import 'package:workoutnote/business%20logic/main%20%20screen%20provider.dart';
 import 'package:workoutnote/ui/widgets/work%20out%20%20note%20card.dart';
 import 'package:workoutnote/ui/widgets/workout%20%20create%20card.dart';
+import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,11 +32,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    var configProvider = Provider.of<ConfigProvider>(context, listen: true );
+
     return  ListView.builder(
         itemCount: navProvider.workOuts.length+2,  itemBuilder: (context,  index) {
 
       if(index == 0)
-        return _buildIntroWidget("${userPreferences!.getString("name")}");
+        return Container (
+          margin: EdgeInsets.only(left: 20, top: 30),
+          child: Text("${welcomeMessage[configProvider.activeLanguage()]}, ${userPreferences!.getString("name")}",  style: TextStyle(
+            fontSize: 20,
+          ),),
+        );
       else if (index == 1){
         return CreateWorkOutCard(widget.width,  widget.height);
       }
@@ -45,12 +54,5 @@ class _HomeScreenState extends State<HomeScreen> {
       });
   }
 
-  Widget _buildIntroWidget(String  name){
-    return  Container (
-      margin: EdgeInsets.only(left: 20, top: 30),
-      child: Text("Hello, ${name}",  style: TextStyle(
-        fontSize: 20,
-      ),),
-    );
-  }
+
 }
