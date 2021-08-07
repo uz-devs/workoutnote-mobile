@@ -8,7 +8,7 @@ Map<String, String> repeat = {english: "Repeat",  korean: "반복하기"};
 Map<String, String> loginText = {english: "Log In",  korean: "로그인"};
 Map<String, String> signUpText = {english: "Sign up",  korean: "화원 가입"};
 Map<String, String> verificationText = {english: "Verification",  korean: "화원 가입"};
-
+Map<String, String> workOutSuccess = {english: "Workout has been created  successfully",  korean: "워크아웃이 성공적으로 작성되었습니다."};
 Map<String, String> title = {english: "Title",  korean: "제목"};
 Map<String, String> seeExercises = {english: "See all exercises",  korean: "모든 연습 보기"};
 Map<String, String> exercisesName = {english: "Exercises",  korean: "연습"};

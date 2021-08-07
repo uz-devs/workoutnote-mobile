@@ -1,41 +1,38 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart';
+
 import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/services/network%20%20service.dart';
 import 'package:workoutnote/utils/utils.dart';
 
 class MainScreenProvider extends ChangeNotifier {
-
-  //region vars
+  //vars
   String secs = "00";
   String mins = "00";
   String hrs = "00";
+
   StreamSubscription? timerSubscription;
   TextEditingController _titleContoller = TextEditingController();
-
-
   List<WorkOut> _workOuts = [];
   List<Exercise> _exercises = [];
-  List<Exercise> searchexercies = [];
-  List<Map<Exercise, bool>> _selectedExercises = [];
-  List<int>? masseses = List.generate(100, (index) => index+ 1);
-  List<int>? repetitions = List.generate(100, (index) => index+ 1);
-  int? selectedMass,  selectedRep;
 
+  List<Exercise> searchExercises = [];
+  List<Map<Exercise, bool>> _selectedExercises = [];
+  List<int>? masses = List.generate(100, (index) => index + 1);
+  List<int>? repetitions = List.generate(100, (index) => index + 1);
+  int? selectedMass, selectedRep;
   int _responseCode1 = 0;
   bool _requestDone1 = false;
   int _responseCode2 = 0;
   bool _requestDone2 = false;
   Exercise? _unselectedExercise;
   TextEditingController searchController = TextEditingController();
-  //endregion
-  //region api  request
+
+  //api  calls
   Future<void> fetchWorkOuts(String sessionKey, int timestamp) async {
     try {
       var response = await WebServices.fetchWorkOuts(sessionKey, timestamp);
@@ -61,7 +58,7 @@ class MainScreenProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> fecthExercises() async {
+  Future<void> fetchExercises() async {
     try {
       var response = await WebServices.fetchExercises();
 
@@ -88,19 +85,21 @@ class MainScreenProvider extends ChangeNotifier {
 
   Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, int duration) async {
     try {
-      Response? insertLift;
+      List<Lift> lifts = [];
+      int count = 0;
       var response = await WebServices.insertWorkOut(sessionKey, title, timestamp, duration);
-      print(response.body);
-      if (response.statusCode == 200) {
-        Map workout = jsonDecode(response.body);
+      if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         for (int i = 0; i < _selectedExercises.length; i++) {
-          print(_selectedExercises[i].keys.first.id);
-          print(_selectedExercises[i].keys.first.name);
-
-          insertLift = await WebServices.insertLift(sessionKey, timestamp, 1, _selectedExercises[i].keys.first.id ?? -1, workout["workout_session"]["id"]);
-          print(insertLift.body);
+          var insertLift = await WebServices.insertLift(sessionKey, timestamp, 10, _selectedExercises[i].keys.first.id ?? -1, jsonDecode(response.body)["workout_session"]["id"]);
+          var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
+          if (insertLift.statusCode == 200 && jsonDecode(insertLift.body)["success"]) {
+            count++;
+            lifts.add(Lift.create(lift.liftId, lift.timestamp, lift.oneRepMax, lift.exerciseId, lift.exerciseName, lift.liftMas, lift.repetitions));
+          }
         }
-        if (insertLift!.statusCode == 200) {
+        if (count == _selectedExercises.length) {
+          var  workout = WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
+          _workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration));
           _selectedExercises.clear();
         }
       }
@@ -117,15 +116,7 @@ class MainScreenProvider extends ChangeNotifier {
     }
   }
 
-
-  TextEditingController get titleContoller => _titleContoller;
-
-  set titleContoller(TextEditingController value) {
-    _titleContoller = value;
-  } //region getters and setters
-
-
-
+  //getters&setters
   List<WorkOut> get workOuts => _workOuts;
 
   List<Exercise> get exercises => _exercises;
@@ -142,6 +133,12 @@ class MainScreenProvider extends ChangeNotifier {
 
   int get reponseCode2 => _responseCode2;
 
+  TextEditingController get titleContoller => _titleContoller;
+
+  set titleContoller(TextEditingController value) {
+    _titleContoller = value;
+  } //region getters and setters
+
   set unselectedExercise(Exercise? value) {
     _unselectedExercise = value;
     notifyListeners();
@@ -154,8 +151,8 @@ class MainScreenProvider extends ChangeNotifier {
   set requestDone2(bool value) {
     _requestDone2 = value;
   }
-  //endregion
-  //region util  methods
+
+  //utils
   void addExercise(Map<Exercise, bool> exercise) {
     selectedExercises.add(exercise);
     notifyListeners();
@@ -197,18 +194,24 @@ class MainScreenProvider extends ChangeNotifier {
   }
 
   void searchResults(String searchWord) {
-    if (searchexercies.isNotEmpty) searchexercies.clear();
+    if (searchExercises.isNotEmpty) searchExercises.clear();
 
     for (int i = 0; i < _exercises.length; i++) {
-      if (_exercises[i].name == searchWord){
+      if (_exercises[i].name == searchWord) {
         print(_exercises[i].name);
-        searchexercies.add(_exercises[i]);
-    }}
+        searchExercises.add(_exercises[i]);
+      }
+    }
 
     notifyListeners();
   }
-
-
-
-  //endregion
 }
+
+
+/*
+
+
+
+
+
+ */

@@ -400,7 +400,7 @@ class CreateWorkOutCard extends StatelessWidget {
               builder: (context, exProvider, child) {
             if (!exProvider.requestDone2) {
               exProvider.requestDone2 = true;
-              exProvider.fecthExercises().then((value) {});
+              exProvider.fetchExercises().then((value) {});
             }
             return Dialog(
               shape: RoundedRectangleBorder(
@@ -507,7 +507,7 @@ class CreateWorkOutCard extends StatelessWidget {
                                 exProvider.unselectedExercise =
                                     exProvider.searchController.text.isEmpty
                                         ? exProvider.exercises[index]
-                                        : exProvider.searchexercies[index];
+                                        : exProvider.searchExercises[index];
                                 Navigator.pop(context);
                               },
                               child: Container(
@@ -522,7 +522,7 @@ class CreateWorkOutCard extends StatelessWidget {
                                     Container(
                                         margin: EdgeInsets.only(left: 10.0),
                                         child: Text(
-                                            "${exProvider.searchController.text.isEmpty ? exProvider.exercises[index].name : exProvider.searchexercies[index].name}")),
+                                            "${exProvider.searchController.text.isEmpty ? exProvider.exercises[index].name : exProvider.searchExercises[index].name}")),
                                   ],
                                 ),
                               ),
@@ -536,7 +536,7 @@ class CreateWorkOutCard extends StatelessWidget {
                         },
                         itemCount: exProvider.searchController.text.isEmpty
                             ? exProvider.exercises.length + 3
-                            : exProvider.searchexercies.length + 3)),
+                            : exProvider.searchExercises.length + 3)),
               ),
             );
           });

@@ -16,11 +16,8 @@ class WorkOutNote extends StatelessWidget {
   Widget build(BuildContext context) {
 
     var configProvider = Provider.of<ConfigProvider>(context, listen: true );
-    print(workout.timestamp);
-
     return Column(
-
-  crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
             margin: EdgeInsets.only(left: 15),
@@ -47,9 +44,7 @@ class WorkOutNote extends StatelessWidget {
                     children: [Container(
                         margin: EdgeInsets.only(left: 10),
 
-                        child: Text(workout.title??"UNKNOWN",  style: TextStyle(
-                          fontSize: 20
-                        ),)),
+                        child: Text(workout.title??"UNKNOWN",  style: TextStyle(fontSize: 20),)),
 
                     Container(
                       alignment: Alignment.center,

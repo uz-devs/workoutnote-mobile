@@ -46,8 +46,4 @@ class  Exercise{
      return Exercise(parsedJson["id"], parsedJson["name"], parsedJson["body_part_str"], parsedJson["category_str"]);
 
   }
-
-
-
-
 }
