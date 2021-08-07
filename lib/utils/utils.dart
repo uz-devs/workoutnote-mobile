@@ -16,6 +16,7 @@ const String fetch_settings = "/api/fetch_settings";
 const String update_settings = "/api/update_settings";
 const String sendVerificationCode = "/api/send_verification_code";
 const String verify = "/api/verify_register";
+const String fetchBody = "/api/fetch_body_parts";
 
 //network  state codes
 const int LOADING = 0;

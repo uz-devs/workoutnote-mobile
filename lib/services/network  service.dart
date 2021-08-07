@@ -24,6 +24,12 @@ class WebServices {
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
      return response;
   }
+  static Future<http.Response> fetchBodyParts() async {
+    final url = Uri.https(baseUrl, fetchBody);
+    final body = {};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
   static Future<http.Response> insertLift(String sessionKey, int  timestamp, int liftMass, int  exerciseId, int workoutSessioId) async {
     final url = Uri.https(baseUrl, insert_lift);
     final body = {'sessionKey':  sessionKey, 'timestamp': timestamp,'lift_mass': liftMass, 'exercise_id': exerciseId, 'workout_session_id': workoutSessioId, "repetitions": 1};

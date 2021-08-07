@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:workoutnote/models/body%20%20parts%20model.dart';
+import 'package:workoutnote/models/editible%20lift%20model.dart';
 
 import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
@@ -14,22 +16,20 @@ class MainScreenProvider extends ChangeNotifier {
   String secs = "00";
   String mins = "00";
   String hrs = "00";
-
   StreamSubscription? timerSubscription;
-  TextEditingController _titleContoller = TextEditingController();
   List<WorkOut> _workOuts = [];
   List<Exercise> _exercises = [];
-
+  List<BodyPart> _bodyParts = [];
   List<Exercise> searchExercises = [];
-  List<Map<Exercise, bool>> _selectedExercises = [];
-  List<int>? masses = List.generate(100, (index) => index + 1);
-  List<int>? repetitions = List.generate(100, (index) => index + 1);
+  List<EditableLift> _selectedExercises = [];
   int? selectedMass, selectedRep;
   int _responseCode1 = 0;
   bool _requestDone1 = false;
   int _responseCode2 = 0;
   bool _requestDone2 = false;
+  EditableLift? _unselectedLift = EditableLift();
   Exercise? _unselectedExercise;
+  TextEditingController _titleContoller = TextEditingController();
   TextEditingController searchController = TextEditingController();
 
   //api  calls
@@ -82,6 +82,30 @@ class MainScreenProvider extends ChangeNotifier {
       print(e);
     }
   }
+  Future<void> fetchBodyParts() async {
+    if(_bodyParts.isNotEmpty) _bodyParts.clear();
+    try {
+      var response = await WebServices.fetchBodyParts();
+
+
+
+      if (response.statusCode == 200) {
+        var bodyParts = BodyPartsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+          print(response.body);
+         _bodyParts.addAll(bodyParts.bodyParts);
+      }
+    } on TimeoutException catch (e) {
+      _responseCode2 = TIMEOUT_EXCEPTION;
+      print(e);
+    } on SocketException catch (e) {
+      _responseCode2 = SOCKET_EXCEPTION;
+      print(e);
+    } on Error catch (e) {
+      _responseCode2 = MISC_EXCEPTION;
+      print(e);
+    }
+  }
+
 
   Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, int duration) async {
     try {
@@ -90,7 +114,7 @@ class MainScreenProvider extends ChangeNotifier {
       var response = await WebServices.insertWorkOut(sessionKey, title, timestamp, duration);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         for (int i = 0; i < _selectedExercises.length; i++) {
-          var insertLift = await WebServices.insertLift(sessionKey, timestamp, 10, _selectedExercises[i].keys.first.id ?? -1, jsonDecode(response.body)["workout_session"]["id"]);
+          var insertLift = await WebServices.insertLift(sessionKey, timestamp, 10, _selectedExercises[i].exercise!.id ?? -1, jsonDecode(response.body)["workout_session"]["id"]);
           var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
           if (insertLift.statusCode == 200 && jsonDecode(insertLift.body)["success"]) {
             count++;
@@ -116,14 +140,29 @@ class MainScreenProvider extends ChangeNotifier {
     }
   }
 
-  //getters&setters
+  List<BodyPart> get bodyParts => _bodyParts;
+
+  set bodyParts(List<BodyPart> value) {
+    _bodyParts = value;
+  } //getters&setters
+
+
+
+
   List<WorkOut> get workOuts => _workOuts;
 
   List<Exercise> get exercises => _exercises;
 
-  List<Map<Exercise, bool>> get selectedExercises => _selectedExercises;
+  List<EditableLift> get selectedExercises => _selectedExercises;
 
   Exercise? get unselectedExercise => _unselectedExercise;
+
+  set unselectedExercise(Exercise? value) {
+    _unselectedExercise = value;
+    notifyListeners();
+  }
+
+  EditableLift? get unselectedLift => _unselectedLift;
 
   int get responseCode1 => _responseCode1;
 
@@ -139,8 +178,8 @@ class MainScreenProvider extends ChangeNotifier {
     _titleContoller = value;
   } //region getters and setters
 
-  set unselectedExercise(Exercise? value) {
-    _unselectedExercise = value;
+  set unselectedLift(EditableLift? value) {
+    _unselectedLift = value;
     notifyListeners();
   }
 
@@ -153,22 +192,23 @@ class MainScreenProvider extends ChangeNotifier {
   }
 
   //utils
-  void addExercise(Map<Exercise, bool> exercise) {
+  void addExercise(EditableLift exercise) {
     selectedExercises.add(exercise);
+    print(selectedExercises.length);
     notifyListeners();
   }
 
   void updateExercise(int index) {
-    if (_selectedExercises[index].values.first == false)
-      _selectedExercises[index][_selectedExercises[index].keys.first] = true;
+    if (_selectedExercises[index].isSelected == false)
+      _selectedExercises[index].isSelected = true;
     else
-      _selectedExercises[index][_selectedExercises[index].keys.first] = false;
+      _selectedExercises[index].isSelected = false;
 
     notifyListeners();
   }
 
   void removeExercises() {
-    _selectedExercises.removeWhere((element) => element.values.first);
+    _selectedExercises.removeWhere((element) => element.isSelected);
     notifyListeners();
   }
 
@@ -195,6 +235,7 @@ class MainScreenProvider extends ChangeNotifier {
 
   void searchResults(String searchWord) {
     if (searchExercises.isNotEmpty) searchExercises.clear();
+
 
     for (int i = 0; i < _exercises.length; i++) {
       if (_exercises[i].name == searchWord) {
