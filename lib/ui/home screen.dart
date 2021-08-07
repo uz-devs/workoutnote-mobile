@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     navProvider = Provider.of<MainScreenProvider>(context, listen: true);
     if(!navProvider.requestDone1){
       navProvider.requestDone1 = true;
-      navProvider.fetchWorkOuts(userPreferences!.getString("sessionKey") ?? "", 1627689600000).then((value) {
+      navProvider.fetchWorkOuts(userPreferences!.getString("sessionKey") ?? "", DateTime.now().millisecondsSinceEpoch).then((value) {
       });
     }
   }

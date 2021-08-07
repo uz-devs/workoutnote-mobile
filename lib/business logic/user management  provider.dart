@@ -10,10 +10,44 @@ import 'package:workoutnote/utils/utils.dart';
 class UserManagement extends ChangeNotifier {
 
 
+  String? n, p,  e;
+  Future<bool> sendVerificationCode(String email, name, String password) async {
 
-  bool signup() {
-    return true;
+    n = name;
+    p = password;
+    e = email;
+
+    try{
+      var  response = await WebServices.sendVerification(email);
+      if(response.statusCode == 200 &&  jsonDecode(response.body)["success"]){
+        return  true;
+      }
+    }
+    catch(e){
+      print(e);
+      return  false;
+    }
+    return  false;
   }
+
+  Future<bool> verifyUser(String verificationCode) async {
+    try{
+      var  response =await  WebServices.verifyRegister(n!, e!, verificationCode, p!);
+      if(response.statusCode == 200 && jsonDecode(response.body)["success"]){
+         if(await login(e!, p!)){
+           return  true;
+         }
+      }
+      return false;
+    }
+    catch(e){
+      print(e);
+      return  false;
+    }
+  }
+
+
+
   Future<bool> login(String email, String password) async {
     try {
       Response response = await WebServices.userLogin(email, password);
@@ -59,8 +93,6 @@ class UserManagement extends ChangeNotifier {
       print(e);
       return false;
     }
-
-
   }
 
 

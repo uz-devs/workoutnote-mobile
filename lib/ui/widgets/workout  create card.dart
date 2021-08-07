@@ -19,7 +19,6 @@ class CreateWorkOutCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var configProvider = Provider.of<ConfigProvider>(context, listen: true);
-
     return Container(
       margin: EdgeInsets.all(10),
       child:
@@ -64,15 +63,15 @@ class CreateWorkOutCard extends StatelessWidget {
                         margin: EdgeInsets.only(left: 10, right: 10.0),
                         child: TextField(
                           decoration: InputDecoration(
-                            hintText:
-                                "${title[configProvider.activeLanguage()]}",
+                            hintText: "${title[configProvider.activeLanguage()]}",
                             suffixIcon: IconButton(
-                              onPressed: titleContoller.clear,
+
+                              onPressed: exProvider.titleContoller.clear,
                               icon: Icon(Icons.clear,
                                   color: Colors.deepPurpleAccent),
                             ),
                           ),
-                          controller: titleContoller,
+                          controller: exProvider.titleContoller,
                         ),
                       );
                     else if (index == 2) {
@@ -93,8 +92,7 @@ class CreateWorkOutCard extends StatelessWidget {
                             ),
                             Spacer(),
                             Container(
-                              margin:
-                                  EdgeInsets.only(right: 20.0, bottom: 10.0),
+                              margin: EdgeInsets.only(right: 20.0, bottom: 10.0),
                               child: (exProvider.timerSubscription == null ||
                                       exProvider.timerSubscription!.isPaused)
                                   ? IconButton(
@@ -374,12 +372,10 @@ class CreateWorkOutCard extends StatelessWidget {
                                 onPressed: () {
                                   exProvider
                                       .createWorkOutSession(
-                                          userPreferences!
-                                                  .getString("sessionKey") ??
-                                              "wefjhweiu",
-                                          "Error case",
-                                          1628006431000,
-                                          -1)
+                                          userPreferences!.getString("sessionKey") ?? "fuck",
+                                          exProvider.titleContoller.text,
+                                          DateTime.now().microsecondsSinceEpoch,
+                                          1)
                                       .then((value) {});
                                 },
                                 textColor: Colors.white,
@@ -396,8 +392,7 @@ class CreateWorkOutCard extends StatelessWidget {
     );
   }
 
-  Future<void> showdialog(
-      BuildContext context, ConfigProvider configProvider) async {
+  Future<void> showdialog(BuildContext context, ConfigProvider configProvider) async {
     await showDialog(
         context: context,
         builder: (BuildContext context) {

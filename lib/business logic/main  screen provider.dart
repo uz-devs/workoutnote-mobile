@@ -17,11 +17,16 @@ class MainScreenProvider extends ChangeNotifier {
   String mins = "00";
   String hrs = "00";
   StreamSubscription? timerSubscription;
+  TextEditingController _titleContoller = TextEditingController();
+
 
   List<WorkOut> _workOuts = [];
   List<Exercise> _exercises = [];
   List<Exercise> searchexercies = [];
   List<Map<Exercise, bool>> _selectedExercises = [];
+  List<int>? masseses = List.generate(100, (index) => index+ 1);
+  List<int>? repetitions = List.generate(100, (index) => index+ 1);
+  int? selectedMass,  selectedRep;
 
   int _responseCode1 = 0;
   bool _requestDone1 = false;
@@ -111,8 +116,16 @@ class MainScreenProvider extends ChangeNotifier {
       print(e);
     }
   }
-  //endregion
-  //region getters and setters
+
+
+  TextEditingController get titleContoller => _titleContoller;
+
+  set titleContoller(TextEditingController value) {
+    _titleContoller = value;
+  } //region getters and setters
+
+
+
   List<WorkOut> get workOuts => _workOuts;
 
   List<Exercise> get exercises => _exercises;
@@ -194,5 +207,8 @@ class MainScreenProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+
+
   //endregion
 }

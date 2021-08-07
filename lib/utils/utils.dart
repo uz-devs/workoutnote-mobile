@@ -14,6 +14,8 @@ const String insert_workout = "/api/insert_workout";
 const String insert_lift = "/api/insert_lift";
 const String fetch_settings = "/api/fetch_settings";
 const String update_settings = "/api/update_settings";
+const String sendVerificationCode = "/api/send_verification_code";
+const String verify = "/api/verify_register";
 
 //network  state codes
 const int LOADING = 0;
@@ -94,3 +96,4 @@ class Language {
 
   Language(this.name, this.index);
 }
+
