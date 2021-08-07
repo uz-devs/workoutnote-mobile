@@ -16,6 +16,7 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var configProvider = Provider.of<ConfigProvider>(context, listen: true);
 
+
     return Scaffold(
       body: SafeArea(
         child: Consumer<UserManagement>(

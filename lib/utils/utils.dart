@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:workoutnote/utils/strings.dart';
 
 const String baseUrl = "workoutnote.com";
 const String login = "api/login/";
@@ -25,10 +24,9 @@ const int SUCCESS = 4;
 
 //util  methods
 SharedPreferences? userPreferences;
-SharedPreferences? languagePreferences;
 Future<void> initPreferences() async {
   userPreferences = await SharedPreferences.getInstance();
-  languagePreferences = await SharedPreferences.getInstance();
+
 }
 
 String toDate(int timestamp) {

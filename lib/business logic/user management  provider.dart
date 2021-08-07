@@ -22,7 +22,6 @@ class UserManagement extends ChangeNotifier {
         if (user.authSuccess) {
           Response settingsResponse = await WebServices.fetchSettings(user.sessionKey??"");
           if(settingsResponse.statusCode == 200){
-
             var  settings = Settings.fromJson(jsonDecode(settingsResponse.body));
             await userPreferences!.setString("email", email);
             await userPreferences!.setString("name", settings.name??"unknown");
@@ -42,7 +41,7 @@ class UserManagement extends ChangeNotifier {
     return false;
   }
   Future<bool> logout()async{
-    return await userPreferences!.clear();
+     return await userPreferences!.clear();
   }
   Future<bool> updateProfileSettings(String sessionKey, String name, String gender) async {
 
