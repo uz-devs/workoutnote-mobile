@@ -15,8 +15,8 @@ class  WorkOutsResponse{
   bool get success => _success;
 
   factory WorkOutsResponse.fromJson(Map<String, dynamic> parsedJson){
-    List<dynamic>? list = [];
-    list = parsedJson['workouts'] as List;
+
+   var list = parsedJson['workouts'] as List;
 
     print(list.length);
     print(parsedJson["success"]);

@@ -22,6 +22,7 @@ class MainScreenProvider extends ChangeNotifier {
   List<BodyPart> _bodyParts = [];
   List<Exercise> searchExercises = [];
   List<EditableLift> _selectedExercises = [];
+  List<Exercise> _exercisesByBodyParts = [];
   int? selectedMass, selectedRep;
   int _responseCode1 = 0;
   bool _requestDone1 = false;
@@ -31,6 +32,12 @@ class MainScreenProvider extends ChangeNotifier {
   Exercise? _unselectedExercise;
   TextEditingController _titleContoller = TextEditingController();
   TextEditingController searchController = TextEditingController();
+  String activeBodyPart = "";
+
+
+  bool appRefereshed = false;
+  bool  ticksReefrshed = false;
+  bool timeRefreshed = false;
 
   //api  calls
   Future<void> fetchWorkOuts(String sessionKey, int timestamp) async {
@@ -82,17 +89,16 @@ class MainScreenProvider extends ChangeNotifier {
       print(e);
     }
   }
+
   Future<void> fetchBodyParts() async {
-    if(_bodyParts.isNotEmpty) _bodyParts.clear();
+    if (_bodyParts.isNotEmpty) _bodyParts.clear();
     try {
       var response = await WebServices.fetchBodyParts();
 
-
-
       if (response.statusCode == 200) {
         var bodyParts = BodyPartsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
-          print(response.body);
-         _bodyParts.addAll(bodyParts.bodyParts);
+        print(response.body);
+        _bodyParts.addAll(bodyParts.bodyParts);
       }
     } on TimeoutException catch (e) {
       _responseCode2 = TIMEOUT_EXCEPTION;
@@ -106,7 +112,6 @@ class MainScreenProvider extends ChangeNotifier {
     }
   }
 
-
   Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, int duration) async {
     try {
       List<Lift> lifts = [];
@@ -114,15 +119,22 @@ class MainScreenProvider extends ChangeNotifier {
       var response = await WebServices.insertWorkOut(sessionKey, title, timestamp, duration);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         for (int i = 0; i < _selectedExercises.length; i++) {
-          var insertLift = await WebServices.insertLift(sessionKey, timestamp, 10, _selectedExercises[i].exercise!.id ?? -1, jsonDecode(response.body)["workout_session"]["id"]);
+          var insertLift = await WebServices.insertLift(sessionKey, timestamp, 10, _selectedExercises[i].exerciseId ?? -1, jsonDecode(response.body)["workout_session"]["id"]);
           var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
           if (insertLift.statusCode == 200 && jsonDecode(insertLift.body)["success"]) {
             count++;
-            lifts.add(Lift.create(lift.liftId, lift.timestamp, lift.oneRepMax, lift.exerciseId, lift.exerciseName, lift.liftMas, lift.repetitions));
+            lifts.add(Lift.create(
+                lift.liftId,
+                lift.timestamp,
+                lift.oneRepMax,
+                lift.exerciseId,
+                lift.exerciseName,
+                lift.liftMas,
+                lift.repetitions));
           }
         }
         if (count == _selectedExercises.length) {
-          var  workout = WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
+          var workout = WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
           _workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration));
           _selectedExercises.clear();
         }
@@ -140,14 +152,12 @@ class MainScreenProvider extends ChangeNotifier {
     }
   }
 
+  //getters&setters
   List<BodyPart> get bodyParts => _bodyParts;
 
   set bodyParts(List<BodyPart> value) {
     _bodyParts = value;
-  } //getters&setters
-
-
-
+  }
 
   List<WorkOut> get workOuts => _workOuts;
 
@@ -161,6 +171,20 @@ class MainScreenProvider extends ChangeNotifier {
     _unselectedExercise = value;
     notifyListeners();
   }
+
+  void firstEnterApp() {
+    appRefereshed = true;
+    if (userPreferences!.getString("title") != null) titleContoller.text = userPreferences!.getString("title") ?? "";
+    print(titleContoller.text);
+    if (userPreferences!.getString("lifts") != null) {
+      List<EditableLift> lifts = EditableLift.decode(userPreferences!.getString("lifts") ?? "");
+      for (int i = 0; i < lifts.length; i++) {
+        _selectedExercises.add(lifts[i]);
+        print(_selectedExercises[i].exerciseName);
+      }
+    }
+  }
+
 
   EditableLift? get unselectedLift => _unselectedLift;
 
@@ -191,10 +215,27 @@ class MainScreenProvider extends ChangeNotifier {
     _requestDone2 = value;
   }
 
-  //utils
+  List<Exercise> get exercisesByBodyParts => _exercisesByBodyParts;
+
+  set exercisesByBodyParts(List<Exercise> value) {
+    _exercisesByBodyParts = value;
+  } //utils
+
+  Future<void> saveListToSharePreference() async {
+    await userPreferences!.setString("lifts", EditableLift.encode(_selectedExercises));
+  }
+
+  Future<void> saveTitleToSharedPreference(String title) async {
+    await userPreferences!.setString("title", title);
+  }
+
+  Future<void> saveTimeToSharedPreference(int time) async {
+    await userPreferences!.setInt("time", time);
+  }
+
   void addExercise(EditableLift exercise) {
-    selectedExercises.add(exercise);
-    print(selectedExercises.length);
+    _selectedExercises.add(exercise);
+    print(_selectedExercises.length);
     notifyListeners();
   }
 
@@ -212,13 +253,89 @@ class MainScreenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void onBodyPartBressed(String bodyPart) {
+    print(bodyPart);
+
+    if (_exercisesByBodyParts.isNotEmpty) _exercisesByBodyParts.clear();
+    if (activeBodyPart.isEmpty || activeBodyPart != bodyPart) {
+      activeBodyPart = bodyPart;
+      for (int i = 0; i < _exercises.length; i++) {
+        if (_exercises[i].bodyPart == bodyPart) {
+          print(_exercises[i].bodyPart);
+          exercisesByBodyParts.add(_exercises[i]);
+        }
+      }
+    } else if (activeBodyPart == bodyPart) {
+      activeBodyPart = "";
+    }
+    notifyListeners();
+    print("length");
+    print(_exercisesByBodyParts.length);
+  }
+
   void startTimer() {
-    var timerStream = stopWatchStream();
-    timerSubscription = timerStream.listen((int newTick) {
-      hrs = ((newTick / (60 * 60)) % 60).floor().toString().padLeft(2, '0');
+     var timerStream = stopWatchStream();
+     timerSubscription = timerStream.listen((int newTick) async {
+       hrs = ((newTick / (60 * 60)) % 60).floor().toString().padLeft(2, '0');
       mins = ((newTick / 60) % 60).floor().toString().padLeft(2, '0');
       secs = (newTick % 60).floor().toString().padLeft(2, '0');
+      await saveTimeToSharedPreference(newTick.toInt());
 
+      notifyListeners();
+    });
+  }
+  Stream<int> stopWatchStream() {
+    StreamController<int>? streamController;
+    Timer? timer;
+    Duration timerInterval = Duration(seconds: 1);
+
+    int  counter;
+    if(userPreferences!.getInt("time") !=  null &&  !ticksReefrshed ) {
+      counter = userPreferences!.getInt("time")!;
+      ticksReefrshed = true;
+    }
+    else counter = 0;
+
+    void tick(_) {
+      counter++;
+      streamController!.add(counter);
+    }
+
+    void stopTimer() {
+      if (timer != null) {
+        timer!.cancel();
+        timer = null;
+        counter = 0;
+        streamController!.close();
+      }
+    }
+
+    void pauseTimer() {
+      if (timer != null) {
+        timer!.cancel();
+      }
+    }
+
+    void startTimer() {
+      timer = Timer.periodic(timerInterval, tick);
+    }
+
+    streamController = StreamController<int>(
+      onListen: startTimer,
+      onCancel: stopTimer,
+      onResume: startTimer,
+      onPause: pauseTimer,
+    );
+
+    return streamController.stream;
+  }
+
+  void stopTimer() {
+    timerSubscription!.cancel().then((value) {
+      hrs = "00";
+      mins = "00";
+      secs = "00";
+      timerSubscription = null;
       notifyListeners();
     });
   }
@@ -236,7 +353,6 @@ class MainScreenProvider extends ChangeNotifier {
   void searchResults(String searchWord) {
     if (searchExercises.isNotEmpty) searchExercises.clear();
 
-
     for (int i = 0; i < _exercises.length; i++) {
       if (_exercises[i].name == searchWord) {
         print(_exercises[i].name);
@@ -247,12 +363,3 @@ class MainScreenProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-
-/*
-
-
-
-
-
- */

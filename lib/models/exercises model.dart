@@ -1,5 +1,7 @@
 
 
+import 'dart:convert';
+
 class ExercisesResponse{
   bool  _success = false;
   List<Exercise>? _exercises;
