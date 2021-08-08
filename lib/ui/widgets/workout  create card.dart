@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:workoutnote/business%20logic/config%20provider.dart';
 import 'package:workoutnote/business%20logic/main%20%20screen%20provider.dart';
 import 'package:workoutnote/models/editible%20lift%20model.dart';
+import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
@@ -116,6 +117,7 @@ class CreateWorkOutCard extends StatelessWidget {
                                   ? IconButton(
                                       onPressed: () {
                                         if (exProvider.timerSubscription == null) {
+                                          print("start timer");
                                           exProvider.startTimer();
                                         } else if (exProvider.timerSubscription!.isPaused) {
                                           exProvider.resumeTimer();
@@ -275,7 +277,14 @@ class CreateWorkOutCard extends StatelessWidget {
                               ),
                             ),
                             InkWell(
-                              onTap: () async {},
+                              onTap: () async {
+
+                                exProvider.unselectedExercise = Exercise(
+                                    exProvider.selectedExercises[index].exerciseId,
+                                    exProvider.selectedExercises[index].exerciseName,
+                                    exProvider.selectedExercises[index].bodyPart, "");
+
+                                },
                               child: Container(
                                 width: 0.4 * width,
                                 child: Text(
@@ -347,7 +356,11 @@ class CreateWorkOutCard extends StatelessWidget {
                                 ),
                                 color: Colors.deepPurpleAccent,
                                 onPressed: () {
-                                  exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "fuck", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, 1).then((value) {});
+                                  exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "fuck", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch).then((value) {
+
+
+
+                                  });
                                 },
                                 textColor: Colors.white,
                                 child: Text("${save[configProvider.activeLanguage()]}"),

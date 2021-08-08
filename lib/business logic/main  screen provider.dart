@@ -38,6 +38,7 @@ class MainScreenProvider extends ChangeNotifier {
   bool appRefereshed = false;
   bool  ticksReefrshed = false;
   bool timeRefreshed = false;
+  int duration = 0;
 
   //api  calls
   Future<void> fetchWorkOuts(String sessionKey, int timestamp) async {
@@ -112,12 +113,13 @@ class MainScreenProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, int duration) async {
+  Future<void> createWorkOutSession(String sessionKey, String title, int timestamp) async {
     try {
       List<Lift> lifts = [];
       int count = 0;
       var response = await WebServices.insertWorkOut(sessionKey, title, timestamp, duration);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+        print(response.body);
         for (int i = 0; i < _selectedExercises.length; i++) {
           var insertLift = await WebServices.insertLift(sessionKey, timestamp, 10, _selectedExercises[i].exerciseId ?? -1, jsonDecode(response.body)["workout_session"]["id"]);
           var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
@@ -137,6 +139,7 @@ class MainScreenProvider extends ChangeNotifier {
           var workout = WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
           _workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration));
           _selectedExercises.clear();
+           stopTimer();
         }
       }
       notifyListeners();
@@ -273,9 +276,10 @@ class MainScreenProvider extends ChangeNotifier {
     print(_exercisesByBodyParts.length);
   }
 
-  void startTimer() {
+  Future<void > startTimer() async{
      var timerStream = stopWatchStream();
-     timerSubscription = timerStream.listen((int newTick) async {
+     timerSubscription =timerStream.listen((int newTick) async {
+       duration = newTick;
        hrs = ((newTick / (60 * 60)) % 60).floor().toString().padLeft(2, '0');
       mins = ((newTick / 60) % 60).floor().toString().padLeft(2, '0');
       secs = (newTick % 60).floor().toString().padLeft(2, '0');
@@ -283,6 +287,7 @@ class MainScreenProvider extends ChangeNotifier {
 
       notifyListeners();
     });
+    notifyListeners();
   }
   Stream<int> stopWatchStream() {
     StreamController<int>? streamController;
