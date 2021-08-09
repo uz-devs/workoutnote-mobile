@@ -64,14 +64,11 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                               style: TextStyle(color: Colors.deepPurpleAccent),
                             ),
                             TextFormField(
-                              controller: nameController
-                                ..text =
-                                    userPreferences!.getString("name") ?? "",
+                              controller: nameController..text = userPreferences!.getString("name") ?? "",
                               decoration: InputDecoration(
                                   isDense: true,
                                   contentPadding: EdgeInsets.only(top: 5.0),
-                                  hintText:
-                                      "${nameHint[configProvider.activeLanguage()]}"),
+                                  hintText: "${nameHint[configProvider.activeLanguage()]}"),
                             )
                           ],
                         ),
@@ -205,8 +202,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                             margin: EdgeInsets.only(left: 15.0, right: 15.0),
                             child: TextFormField(
                               controller: TextEditingController()
-                                ..text =
-                                    userPreferences!.getString("email") ?? "",
+                                ..text = userPreferences!.getString("email") ?? "",
                               decoration: InputDecoration(
                                   isDense: true,
                                   contentPadding: EdgeInsets.only(top: 5.0),

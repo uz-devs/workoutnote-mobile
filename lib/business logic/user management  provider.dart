@@ -33,6 +33,7 @@ class UserManagement extends ChangeNotifier {
   Future<bool> verifyUser(String verificationCode) async {
     try{
       var  response =await  WebServices.verifyRegister(n!, e!, verificationCode, p!);
+      print(response.body);
       if(response.statusCode == 200 && jsonDecode(response.body)["success"]){
          if(await login(e!, p!)){
            return  true;

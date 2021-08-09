@@ -20,7 +20,6 @@ class _NavControllerState extends State<NavController> {
   void initState() {
     super.initState();
 
-
   }
 
   @override
@@ -32,13 +31,12 @@ class _NavControllerState extends State<NavController> {
       resizeToAvoidBottomInset: false,
       body: screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
+
         items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(icon: Icon(Icons.home_outlined,  size: 30,), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.calendar_today,  size: 30,), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.calculate, size: 30,), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.settings, size: 30,), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.home_outlined,  size: 30,), label: "Home"),
+        BottomNavigationBarItem(icon: Icon(Icons.calendar_today,  size: 30,), label: "Calendar"),
+        BottomNavigationBarItem(icon: Icon(Icons.calculate, size: 30,), label: "Calculation"),
+          BottomNavigationBarItem(icon: Icon(Icons.settings, size: 30,), label: "Settings"),
 
       ],
         onTap: _onItemSelected,

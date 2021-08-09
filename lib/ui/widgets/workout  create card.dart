@@ -18,6 +18,7 @@ class CreateWorkOutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     var configProvider = Provider.of<ConfigProvider>(context, listen: true);
     return Container(
       margin: EdgeInsets.all(10),
@@ -61,6 +62,7 @@ class CreateWorkOutCard extends StatelessWidget {
                     if (index == 0)
                       return Container(
                           margin: EdgeInsets.only(left: 10),
+                          padding: EdgeInsets.only(top:10 ),
                           child: Text(
                             "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now())}",
                             style: TextStyle(
@@ -69,17 +71,16 @@ class CreateWorkOutCard extends StatelessWidget {
                           ));
                     else if (index == 1)
                       return Container(
-                        margin: EdgeInsets.only(left: 10, right: 10.0),
-                        child: TextField(
+                        margin: EdgeInsets.only(left: 10, right: 10.0,  top: 10),
+                        child: TextFormField(
                           onChanged: (c) async{
                          await exProvider.saveTitleToSharedPreference(c);
                           },
                           decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.only(top: 5.0),
                             hintText: "${title[configProvider.activeLanguage()]}",
-                            suffixIcon: IconButton(
-                              onPressed: exProvider.titleContoller.clear,
-                              icon: Icon(Icons.clear, color: Colors.deepPurpleAccent),
-                            ),
+                           
                           ),
                           controller: exProvider.titleContoller,
                         ),
@@ -288,7 +289,7 @@ class CreateWorkOutCard extends StatelessWidget {
                               child: Container(
                                 width: 0.4 * width,
                                 child: Text(
-                                  "${exProvider.selectedExercises[index].exerciseName}(${exProvider.selectedExercises[index].bodyPart})" ?? "",
+                                  "${exProvider.selectedExercises[index].exerciseName}(${exProvider.selectedExercises[index].bodyPart})",
                                   style: TextStyle(color: exProvider.selectedExercises[index].isSelected ? Colors.deepPurpleAccent : Colors.grey),
                                 ),
                               ),
@@ -427,6 +428,7 @@ class CreateWorkOutCard extends StatelessWidget {
                                   exProvider.searchResults(searchWord);
                                 },
                                 decoration: InputDecoration(
+
                                   prefixIcon: IconButton(
                                     onPressed: () {},
                                     icon: Icon(Icons.search),
@@ -436,8 +438,7 @@ class CreateWorkOutCard extends StatelessWidget {
                                     icon: Icon(Icons.clear, color: Colors.deepPurpleAccent),
                                   ),
                                   isDense: true,
-                                  // Added this
-                                  contentPadding: EdgeInsets.all(8),
+                                  contentPadding: EdgeInsets.all(5),
                                   // Added this
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(30),

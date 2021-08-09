@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    navProvider = Provider.of<MainScreenProvider>(context, listen: true);
+    navProvider = Provider.of<MainScreenProvider>(context, listen: false);
     if(!navProvider.requestDone1){
       navProvider.requestDone1 = true;
       navProvider.fetchWorkOuts(userPreferences!.getString("sessionKey") ?? "", DateTime.now().millisecondsSinceEpoch).then((value) {
@@ -31,6 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   @override
   Widget build(BuildContext context) {
+
+
+    print("build is being  called");
     var configProvider = Provider.of<ConfigProvider>(context, listen: true );
 
     return  ListView.builder(

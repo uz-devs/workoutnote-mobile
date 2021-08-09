@@ -14,7 +14,6 @@ class WorkOutNote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     var configProvider = Provider.of<ConfigProvider>(context, listen: true );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
