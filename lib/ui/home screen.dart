@@ -40,9 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: navProvider.workOuts.length+2,  itemBuilder: (context,  index) {
           if(index == 0)
         return Container (
-          margin: EdgeInsets.only(left: 20, top: 30),
+          margin: EdgeInsets.only(left: 20, top: 30, bottom: 20),
           child: Text("${welcomeMessage[configProvider.activeLanguage()]}, ${userPreferences!.getString("name")}",  style: TextStyle(
-            fontSize: 20,
+            fontSize: 30,
           ),),
         );
       else if (index == 1){

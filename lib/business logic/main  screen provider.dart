@@ -23,7 +23,6 @@ class MainScreenProvider extends ChangeNotifier {
   List<Exercise> searchExercises = [];
   List<EditableLift> _selectedExercises = [];
   List<Exercise> _exercisesByBodyParts = [];
-  int? selectedMass, selectedRep;
   int _responseCode1 = 0;
   bool _requestDone1 = false;
   int _responseCode2 = 0;
@@ -33,6 +32,11 @@ class MainScreenProvider extends ChangeNotifier {
   TextEditingController _titleContoller = TextEditingController();
   TextEditingController searchController = TextEditingController();
   String activeBodyPart = "";
+
+  //drop down buttons
+
+
+
 
 
   bool appRefereshed = false;
@@ -366,5 +370,21 @@ class MainScreenProvider extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+
+  void updateMass(int index, int val){
+    _selectedExercises[index].mass = val;
+    notifyListeners();
+  }
+
+  void  updateRep(index, int  val){
+    _selectedExercises[index].rep = val;
+    notifyListeners();
+
+  }
+
+  void updateRM(int mass, int rep){
+
   }
 }

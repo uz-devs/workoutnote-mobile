@@ -8,9 +8,11 @@ class EditableLift{
   int? _exerciseId;
   String?   _bodyPart;
 
-  int? _mass;
-  int? _rep;
+  int _mass = 1;
+  int _rep = 1;
   bool  _isSelected = false;
+  List<int> kgs = List.generate(51, (index) => (index));
+  List<int> reps = List.generate(51, (index) => (index));
 
   EditableLift.create(this._exerciseName, this._exerciseId, this._bodyPart, this._mass, this._rep, this._isSelected);
 
@@ -21,15 +23,15 @@ class EditableLift{
     _isSelected = value;
   }
 
-  int? get rep => _rep;
+  int get rep => _rep;
 
-  set rep(int? value) {
+  set rep(int value) {
     _rep = value;
   }
 
-  int? get mass => _mass;
+  int get mass => _mass;
 
-  set mass(int? value) {
+  set mass(int value) {
     _mass = value;
   }
 

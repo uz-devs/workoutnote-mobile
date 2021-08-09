@@ -28,6 +28,7 @@ class _NavControllerState extends State<NavController> {
     double width = MediaQuery.of(context).size.width;
     var screens = [_buildHomeScreen(height, width), _buildCalendarScreen(height),  _builCalculateScreen(height), _buildSettingsScreen(height),];
     return Scaffold(
+      backgroundColor: Color.fromRGBO(231, 223, 247, 1),
       resizeToAvoidBottomInset: false,
       body: screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(

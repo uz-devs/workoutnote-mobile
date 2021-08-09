@@ -33,6 +33,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+        focusColor: Color.fromRGBO(102, 51, 204, 1),
+        cursorColor: Color.fromRGBO(102, 51, 204, 1)
       ),
      home: userPreferences!.getString("sessionKey")==null?AuthScreen():NavController(),
 
