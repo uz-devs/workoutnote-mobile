@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business%20logic/config%20provider.dart';
-import 'package:workoutnote/business%20logic/main%20%20screen%20provider.dart';
+import 'package:workoutnote/business%20logic/home%20%20%20screen%20provider.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';

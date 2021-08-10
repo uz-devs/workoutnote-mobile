@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business%20logic/config%20provider.dart';
-import 'package:workoutnote/business%20logic/main%20%20screen%20provider.dart';
+import 'package:workoutnote/business%20logic/create%20workout%20provider.dart';
 import 'package:workoutnote/models/editible%20lift%20model.dart';
 import 'package:workoutnote/models/exercises%20model.dart';
+import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/ui/widgets/search%20dialog.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
@@ -13,22 +14,24 @@ import 'package:workoutnote/utils/utils.dart';
 class CreateWorkOutCard extends StatelessWidget {
   final width;
   final height;
+  List<WorkOut> workOuts;
+  Function updateHome;
 
-  CreateWorkOutCard(this.width, this.height);
+  CreateWorkOutCard(this.width, this.height,  this.workOuts, this.updateHome);
 
-  @override
+
   Widget build(BuildContext context) {
     var configProvider = Provider.of<ConfigProvider>(context, listen: true);
     return Container(
       margin: EdgeInsets.only(bottom: 50.0),
-      child: Consumer<MainScreenProvider>(builder: (context, exProvider, child) {
+      child: Consumer<CreateWorkoutProvider>(builder: (context, exProvider, child) {
         if (!exProvider.timeRefreshed && userPreferences!.getInt("time") != null) {
           exProvider.timeRefreshed = true;
           exProvider.hrs = ((userPreferences!.getInt("time")! / (60 * 60)) % 60).floor().toString().padLeft(2, '0');
           exProvider.mins = ((userPreferences!.getInt("time")! / 60) % 60).floor().toString().padLeft(2, '0');
           exProvider.secs = (userPreferences!.getInt("time")! % 60).floor().toString().padLeft(2, '0');
         }
-        int count = exProvider.selectedExercises.length + 7;
+        int count = exProvider.selectedLifts.length + 7;
         if (!exProvider.appRefereshed) exProvider.firstEnterApp();
         return Card(
             shape: RoundedRectangleBorder(
@@ -190,7 +193,7 @@ class CreateWorkOutCard extends StatelessWidget {
                             bottom: 10,
                           ),
                           child: _buildExerciseListItem(
-                              (index + 1).toString(), "${exProvider.selectedExercises[index].exerciseName}(${exProvider.selectedExercises[index].bodyPart})", "0.0", "0.0", exProvider.selectedExercises[index].rm.toString(), Colors.black, 2, exProvider, index, context, configProvider));
+                              (index + 1).toString(), "${exProvider.selectedLifts[index].exerciseName}(${exProvider.selectedLifts[index].bodyPart})", "0.0", "0.0", exProvider.selectedLifts[index].rm.toString(), Colors.black, 2, exProvider, index, context, configProvider));
                     } else
                       return Container(
                         margin: EdgeInsets.only(bottom: 10.0),
@@ -222,9 +225,7 @@ class CreateWorkOutCard extends StatelessWidget {
                                 ),
                                 color: Color.fromRGBO(102, 51, 204, 1),
                                 onPressed: () async {
-
-
-                                  await exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "fuck", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch);
+                                  await exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "fuck", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, updateHome );
                                   await exProvider.saveListToSharePreference();
                                 },
                                 textColor: Colors.white,
@@ -240,7 +241,7 @@ class CreateWorkOutCard extends StatelessWidget {
     );
   }
 
-  Future<void> _showdialog(BuildContext context, ConfigProvider configProvider, MainScreenProvider exProvider) async {
+  Future<void> _showdialog(BuildContext context, ConfigProvider configProvider, CreateWorkoutProvider exProvider) async {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -250,7 +251,7 @@ class CreateWorkOutCard extends StatelessWidget {
         });
   }
 
-  Widget _buildExerciseListItem(String exerciseNumber, String exerciseName, String kg, String rep, String rm, Color color, int mode, MainScreenProvider mainScreenProvider, int index, BuildContext context, ConfigProvider configProvider) {
+  Widget _buildExerciseListItem(String exerciseNumber, String exerciseName, String kg, String rep, String rm, Color color, int mode, CreateWorkoutProvider mainScreenProvider, int index, BuildContext context, ConfigProvider configProvider) {
     return Row(
       children: [
         Expanded(
@@ -270,7 +271,7 @@ class CreateWorkOutCard extends StatelessWidget {
               if (mode == 1) {
 
               } else if (mode == 2) {
-                mainScreenProvider.unselectedExercise = Exercise(mainScreenProvider.selectedExercises[index].exerciseId, mainScreenProvider.selectedExercises[index].exerciseName, mainScreenProvider.selectedExercises[index].bodyPart, "");
+                mainScreenProvider.unselectedExercise = Exercise(mainScreenProvider.selectedLifts[index].exerciseId, mainScreenProvider.selectedLifts[index].exerciseName, mainScreenProvider.selectedLifts[index].bodyPart, "");
               } else {
                 await _showdialog(context, configProvider, mainScreenProvider);
               }
@@ -292,12 +293,12 @@ class CreateWorkOutCard extends StatelessWidget {
             isExpanded:true,
             underline: SizedBox(),
             iconSize: 0.0,
-            value:   mainScreenProvider.selectedExercises[index].mass,
+            value:   mainScreenProvider.selectedLifts[index].mass,
             onChanged: (newValue) {
               print(newValue);
               mainScreenProvider.updateMass(index, newValue!);
             },
-            items:  mainScreenProvider.selectedExercises[index].kgs.map((int value) {
+            items:  mainScreenProvider.selectedLifts[index].kgs.map((int value) {
               return DropdownMenuItem<int>(
                 value: value,
                 child: Text("${value}kg"),
@@ -314,12 +315,12 @@ class CreateWorkOutCard extends StatelessWidget {
             isExpanded:true,
             underline: SizedBox(),
             iconSize: 0.0,
-            value: mainScreenProvider.selectedExercises[index].rep,
+            value: mainScreenProvider.selectedLifts[index].rep,
             onChanged: (newValue) {
               mainScreenProvider.updateRep(index, newValue!);
 
             },
-            items:  mainScreenProvider.selectedExercises[index].reps.map((int value) {
+            items:  mainScreenProvider.selectedLifts[index].reps.map((int value) {
               return DropdownMenuItem<int>(
                 value: value,
                 child: Text("$value"),
@@ -348,7 +349,7 @@ class CreateWorkOutCard extends StatelessWidget {
                         mainScreenProvider.updateExercise(index);
                         mainScreenProvider.saveListToSharePreference();
                       },
-                      icon: mainScreenProvider.selectedExercises[index].isSelected
+                      icon: mainScreenProvider.selectedLifts[index].isSelected
                           ? Icon(
                               Icons.check_circle,
                               color: Color.fromRGBO(102, 51, 204, 1),

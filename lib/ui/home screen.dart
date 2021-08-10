@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business%20logic/config%20provider.dart';
-import 'package:workoutnote/business%20logic/main%20%20screen%20provider.dart';
+import 'package:workoutnote/business%20logic/home%20%20%20screen%20provider.dart';
 import 'package:workoutnote/ui/widgets/work%20out%20%20note%20card.dart';
 import 'package:workoutnote/ui/widgets/workout%20%20create%20card.dart';
 import 'package:workoutnote/utils/strings.dart';
@@ -34,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
 
 
-    print("build is being  called");
     var configProvider = Provider.of<ConfigProvider>(context, listen: false);
 
     return  ListView.builder(
@@ -47,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),),
         );
       else if (index == 1){
-        return CreateWorkOutCard(widget.width,  widget.height);
+        return CreateWorkOutCard(widget.width,  widget.height, navProvider.workOuts, rerunHome);
       }
 
       else if (index == 2 ){
@@ -57,15 +56,19 @@ class _HomeScreenState extends State<HomeScreen> {
               "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now())}",
               style: TextStyle(fontSize: 25, color: Color.fromRGBO(102, 51, 204, 1)),
             ));
-
       }
       else {
         index = index - 2;
-
-
         return WorkOutNote(widget.height, navProvider.workOuts[index]);
       }
       });
+  }
+
+
+  void rerunHome(){
+    setState(() {
+
+    });
   }
 
 
