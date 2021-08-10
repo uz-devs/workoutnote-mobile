@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 
 class  WorkOutsResponse{
   bool _success = false;
@@ -34,8 +33,9 @@ class WorkOut {
   int? _timestamp;
   int? _duration;
   List<Lift>? lifts;
+  bool  _isFavorite = false;
 
-  WorkOut(this._id,  this._title, this._timestamp, this.lifts, this._duration);
+  WorkOut(this._id,  this._title, this._timestamp, this.lifts, this._duration, this._isFavorite);
   int? get timestamp => _timestamp;
 
   String? get title => _title;
@@ -45,6 +45,11 @@ class WorkOut {
   int? get duration  => _duration;
 
 
+  bool get isFavorite => _isFavorite;
+
+  set isFavorite(bool value) {
+    _isFavorite = value;
+  }
 
   factory WorkOut.fromJson(Map<String,  dynamic> parsedJson){
     List<dynamic>? list = [];
@@ -54,7 +59,7 @@ class WorkOut {
     list = parsedJson['lifts'] as List;
     else  list  = [];
    List<Lift> lifts = list.map((e) => Lift.fromJson(e)).toList();
-    return WorkOut(parsedJson["id"], parsedJson["title"],  parsedJson["timestamp"], lifts, parsedJson["duration"] );
+    return WorkOut(parsedJson["id"], parsedJson["title"],  parsedJson["timestamp"], lifts, parsedJson["duration"], parsedJson["isFavorite"]??false );
   }
 
 }

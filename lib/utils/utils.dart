@@ -17,6 +17,12 @@ const String update_settings = "/api/update_settings";
 const String sendVerificationCode = "/api/send_verification_code";
 const String verify = "/api/verify_register";
 const String fetchBody = "/api/fetch_body_parts";
+const String setFavoriteWorkout = "/api/set_favorite_workout";
+const String unsetFavoriteWorkout = "/api/unset_favorite_workout";
+const String fetchFavoriteWorkouts = "/api/fetch_favorite_workouts";
+const String setFavoriteExercise = "/api/set_favorite_exercise";
+const String unsetFavoriteExercise = "/api/unset_favorite_exercise";
+const String fetchFavoriteExercises = "/api/fetch_favorite_exercises";
 
 //network  state codes
 const int LOADING = 0;
@@ -27,30 +33,20 @@ const int SUCCESS = 4;
 
 //util  methods
 SharedPreferences? userPreferences;
+
 Future<void> initPreferences() async {
   userPreferences = await SharedPreferences.getInstance();
-
 }
 
 String toDate(int timestamp) {
-
   var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
   var formattedDate = DateFormat('yyyy.MM.dd').format(date);
-   print(formattedDate);
+  print(formattedDate);
   return formattedDate;
 }
 
-
-
 void showToast(String message) {
-  Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.black54,
-      textColor: Colors.white,
-      fontSize: 16.0);
+  Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIosWeb: 1, backgroundColor: Colors.black54, textColor: Colors.white, fontSize: 16.0);
 }
 
 class Language {
@@ -59,4 +55,3 @@ class Language {
 
   Language(this.name, this.index);
 }
-

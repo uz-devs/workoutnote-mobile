@@ -68,6 +68,17 @@ class WebServices {
     return response;
   }
 
-
+  static Future<http.Response> setFavoriteWorkOut(String sessionKey,  int workoutSessionId) async {
+    final url = Uri.https(baseUrl, setFavoriteWorkout );
+   final body = {'sessionKey': sessionKey, 'workout_session_id': workoutSessionId};
+   http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
+  static Future<http.Response> unsetFavoriteWorkOut(String sessionKey,  int workoutSessionId) async {
+    final url = Uri.https(baseUrl, unsetFavoriteWorkout );
+    final body = {'sessionKey': sessionKey, 'workout_session_id': workoutSessionId};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
 
 }

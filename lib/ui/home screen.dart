@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
     print("build is being  called");
-    var configProvider = Provider.of<ConfigProvider>(context, listen: true );
+    var configProvider = Provider.of<ConfigProvider>(context, listen: false);
 
     return  ListView.builder(
         itemCount: navProvider.workOuts.length+2,  itemBuilder: (context,  index) {

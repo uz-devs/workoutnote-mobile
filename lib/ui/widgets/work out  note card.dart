@@ -3,20 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business%20logic/config%20provider.dart';
+import 'package:workoutnote/business%20logic/main%20%20screen%20provider.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/utils/strings.dart';
+import 'package:workoutnote/utils/utils.dart';
 
-class WorkOutNote extends StatelessWidget {
+class WorkOutNote extends StatefulWidget {
   final height;
   WorkOut workout;
 
   WorkOutNote(this.height, this.workout);
 
   @override
+  _WorkOutNoteState createState() => _WorkOutNoteState();
+}
+
+class _WorkOutNoteState extends State<WorkOutNote> {
+  @override
   Widget build(BuildContext context) {
     var configProvider = Provider.of<ConfigProvider>(context, listen: true);
-    int count = workout.lifts!.length + 3;
+    var mainProvider = Provider.of<MainScreenProvider>(context, listen: true);
 
+    int count = widget.workout.lifts!.length + 3;
     return Container(
       margin: EdgeInsets.all(10),
       child: Card(
@@ -42,7 +50,7 @@ class WorkOutNote extends StatelessWidget {
                               child: RichText(
                                 overflow: TextOverflow.ellipsis,
                                 strutStyle: StrutStyle(fontSize: 20.0),
-                                text: TextSpan(style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1),  fontSize: 20), text: '${workout.title}'),
+                                text: TextSpan(style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1),  fontSize: 20), text: '${widget.workout.title}'),
                               ),
                             ),
                           ),
@@ -51,9 +59,21 @@ class WorkOutNote extends StatelessWidget {
                             flex: 1,
                             child: Container(
                                 padding: EdgeInsets.only(top: 10.0, right: 10.0),
-                                child: Icon(
-                                  Icons.favorite_border,
-                                  color: Colors.red,
+                                child: InkWell(
+                                  onTap: () {
+                                    if(!widget.workout.isFavorite)
+                                     mainProvider.setFavoriteWorkOut(userPreferences!.getString("sessionKey")??"", widget.workout.id??-1).then((value) {
+                                       setState(() {});
+                                     });
+                                     else  mainProvider.unsetFavoriteWorkOut(userPreferences!.getString("sessionKey")??"", widget.workout.id??-1).then((value) {
+                                       setState(() {});
+                                     });
+                                  },
+                                  child: Icon(
+                                    !widget.workout.isFavorite?Icons.favorite_border:Icons.favorite,
+                                    size: 30,
+                                    color: Colors.red,
+                                  ),
                                 )),
                           ),
                           Expanded(
@@ -82,7 +102,7 @@ class WorkOutNote extends StatelessWidget {
                     alignment: Alignment.center,
                     margin: EdgeInsets.only(top: 15.0),
                     child: Text(
-                      "00:00:${workout.duration != 0 ? workout.duration : 00}",
+                      "00:00:${widget.workout.duration != 0 ? widget.workout.duration : 00}",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.deepPurpleAccent),
                     ),
                   );
@@ -103,7 +123,7 @@ class WorkOutNote extends StatelessWidget {
                   return Container(
                       margin: EdgeInsets.only(left: 15.0),
                       padding: EdgeInsets.only(bottom: 10.0),
-                      child: Text("${index+1}. ${workout.lifts![index].exerciseName}, ${workout.lifts![index].liftMas}kg, ${workout.lifts![index].repetitions}rep, 2 sets"));
+                      child: Text("${index+1}. ${widget.workout.lifts![index].exerciseName}, ${widget.workout.lifts![index].liftMas}kg, ${widget.workout.lifts![index].repetitions}rep, 2 sets"));
                 }
               })),
     );

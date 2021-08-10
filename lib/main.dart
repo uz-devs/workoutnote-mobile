@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:workoutnote/business%20logic/main%20%20screen%20provider.dart';
+import 'package:workoutnote/business%20logic/search%20%20dialog%20provider%20.dart';
 import 'package:workoutnote/ui/auth%20screen%20.dart';
 import 'package:workoutnote/ui/nav%20controller.dart';
 import 'package:workoutnote/utils/utils.dart';
@@ -20,6 +21,7 @@ void main() async{
     ChangeNotifierProvider(create: (_) => MainScreenProvider(),),
     ChangeNotifierProvider(create: (_) => ConfigProvider(),),
     ChangeNotifierProvider(create: (_) => CalendarProvider(),),
+    ChangeNotifierProvider(create: (_) => SearchDialogProvider(),),
 
   ];
   runApp(MultiProvider(providers: providers, child: MyApp(),));
