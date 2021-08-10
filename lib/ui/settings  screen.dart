@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/business%20logic/config%20provider.dart';
-import 'package:workoutnote/business%20logic/user%20management%20%20provider.dart';
+
+import 'package:workoutnote/providers/config%20provider.dart';
+import 'package:workoutnote/providers/user%20management%20%20provider.dart';
 import 'package:workoutnote/ui/auth%20screen%20.dart';
 import 'package:workoutnote/ui/language%20%20change%20screen.dart';
 import 'package:workoutnote/ui/profile%20update%20screen.dart';

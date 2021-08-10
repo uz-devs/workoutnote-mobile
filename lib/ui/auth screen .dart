@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/business%20logic/config%20provider.dart';
-import 'package:workoutnote/business%20logic/user%20management%20%20provider.dart';
+import 'package:workoutnote/providers/config%20provider.dart';
+import 'package:workoutnote/providers/user%20management%20%20provider.dart';
+
 import 'package:workoutnote/ui/nav%20controller.dart';
 import 'package:workoutnote/ui/signup%20%20screen.dart';
 import 'package:workoutnote/utils/strings.dart';

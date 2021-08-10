@@ -15,6 +15,7 @@ class  SearchDialogProvider extends ChangeNotifier{
 
 
   //vars
+  List<Exercise> favoriteExercises = [];
   List<Exercise> exercises = [];
   List<BodyPart> myBodyParts = [];
   List<Exercise> exercisesByBodyParts = [];
@@ -22,8 +23,6 @@ class  SearchDialogProvider extends ChangeNotifier{
   int responseCode = LOADING;
   bool requestDone = false ;
   String activeBodyPart = "";
-
-
 
   //api calls
   Future<void> fetchExercises() async {
@@ -70,11 +69,50 @@ class  SearchDialogProvider extends ChangeNotifier{
       print(e);
     }
   }
-
-
-
+  Future<void> setFavoriteExercise( String sessionKey , int exerciseId) async{
+    try {
+      var response = await WebServices.setMyFavoriteExercise(sessionKey, exerciseId);
+      print(response.body);
+      if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+        updateExerciseFavoriteStatus(exerciseId);
+      }
+    }
+    catch(e){
+      print(e);
+    }
+  }
+  Future<void> unsetFavoriteExercise(String sessionKey, int exerciseId) async{
+    try {
+      var response = await WebServices.unsetMyFavoriteExercise(sessionKey, exerciseId);
+      print(response.body);
+      if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+        updateExerciseFavoriteStatus(exerciseId);
+      }
+    }
+    catch(e){
+      print(e);
+    }
+  }
 
   //utils
+  void updateExerciseFavoriteStatus(int id){
+    if(exercisesByBodyParts.isEmpty)
+      for(int i = 0; i<exercises.length; i++){
+        if(exercises[i].id == id){
+          exercises[i].isFavorite = !exercises[i].isFavorite;
+          notifyListeners();
+          break;
+        }
+      }
+
+    else for(int i = 0; i<exercisesByBodyParts.length; i++){
+      if(exercisesByBodyParts[i].id == id){
+        exercisesByBodyParts[i].isFavorite = !exercisesByBodyParts[i].isFavorite;
+        notifyListeners();
+        break;
+      }
+    }
+  }
   void searchResults(String searchWord) {
     if (searchExercises.isNotEmpty) searchExercises.clear();
     for (int i = 0; i < exercises.length; i++) {
@@ -105,12 +143,5 @@ class  SearchDialogProvider extends ChangeNotifier{
     print("length");
     print(exercisesByBodyParts.length);
   }
-
-
-  //getters&setters
-
-
-
-
 
 }

@@ -16,19 +16,23 @@ class NavController extends StatefulWidget {
 class _NavControllerState extends State<NavController> {
   int _selectedIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-
-  }
 
   @override
   Widget build(BuildContext context) {
+
+
+    Color backGroundColor;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     var screens = [_buildHomeScreen(height, width), _buildCalendarScreen(height),  _builCalculateScreen(height), _buildSettingsScreen(height),];
+
+    if(_selectedIndex == 0 ||  _selectedIndex ==1 || _selectedIndex == 2)
+      backGroundColor =  Color.fromRGBO(231, 223, 247, 1);
+
+    else backGroundColor = Color.fromRGBO(255, 255, 255, 1);
+
     return Scaffold(
-      backgroundColor: Color.fromRGBO(231, 223, 247, 1),
+      backgroundColor: backGroundColor,
       resizeToAvoidBottomInset: false,
       body: screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(

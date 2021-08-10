@@ -233,9 +233,6 @@ class CreateWorkoutProvider  extends ChangeNotifier{
     _selectedLifts.add(exercise);
     notifyListeners();
   }
-
-
-
   EditableLift? get unselectedLift => _unselectedLift;
 
 

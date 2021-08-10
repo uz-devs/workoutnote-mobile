@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:workoutnote/business%20logic/calendar%20provider.dart';
+import 'package:workoutnote/providers/calendar%20provider.dart';
 import 'package:workoutnote/ui/widgets/work%20out%20%20note%20card.dart';
 import 'package:workoutnote/utils/utils.dart';
 

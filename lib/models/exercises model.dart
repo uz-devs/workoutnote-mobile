@@ -31,10 +31,18 @@ class  Exercise{
   String?  _name;
   String?  _bodyPart;
   String?  _category;
+  bool  _isFavorite = false;
 
-  Exercise(this._id, this._name, this._bodyPart, this._category);
 
 
+  Exercise(this._id, this._name, this._bodyPart, this._category, this._isFavorite);
+
+
+  bool get isFavorite => _isFavorite;
+
+  set isFavorite(bool value) {
+    _isFavorite = value;
+  }
 
   String? get category => _category;
 
@@ -45,7 +53,7 @@ class  Exercise{
   int? get id => _id;
 
   factory Exercise.fromJson(Map<String,  dynamic> parsedJson){
-     return Exercise(parsedJson["id"], parsedJson["name"], parsedJson["body_part_str"], parsedJson["category_str"]);
+     return Exercise(parsedJson["id"], parsedJson["name"], parsedJson["body_part_str"], parsedJson["category_str"], parsedJson["isFavorite"]??false);
 
   }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/business%20logic/search%20%20dialog%20provider%20.dart';
+import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
 import 'package:workoutnote/utils/strings.dart';
+import 'package:workoutnote/utils/utils.dart';
 
 class SearchDialog extends StatefulWidget {
   final height;
@@ -139,10 +140,21 @@ class _SearchDialogState extends State<SearchDialog> {
                               Expanded(
                                   flex: 2,
                                   child: IconButton(
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                    if( !exProvider.exercises[index].isFavorite){
+                                     await  exProvider.setFavoriteExercise(userPreferences!.getString("sessionKey")??"", exProvider.exercises[index].id??-1);
+                                    }
+                                    else {
+                                      await  exProvider.unsetFavoriteExercise(userPreferences!.getString("sessionKey")??"", exProvider.exercises[index].id??-1);
+
+                                    }
+
+                                    },
                                     icon: Icon(
-                                      Icons.favorite_border,
+
+                                     !exProvider.exercises[index].isFavorite? Icons.favorite_border: Icons.favorite,
                                       color: Colors.red,
+                                      size: 30,
                                     ),
                                   ))
                             ],
