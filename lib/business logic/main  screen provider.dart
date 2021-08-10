@@ -35,12 +35,8 @@ class MainScreenProvider extends ChangeNotifier {
 
   //drop down buttons
 
-
-
-
-
   bool appRefereshed = false;
-  bool  ticksReefrshed = false;
+  bool ticksReefrshed = false;
   bool timeRefreshed = false;
   int duration = 0;
 
@@ -118,6 +114,15 @@ class MainScreenProvider extends ChangeNotifier {
   }
 
   Future<void> createWorkOutSession(String sessionKey, String title, int timestamp) async {
+
+    bool  canCreateSession = false;
+    for(int i = 0; i<_selectedExercises.length; i++){
+      if(_selectedExercises[i].isSelected) {
+        canCreateSession = true;
+        break;
+      }
+    }
+   if(canCreateSession){
     try {
       List<Lift> lifts = [];
       int count = 0;
@@ -125,24 +130,17 @@ class MainScreenProvider extends ChangeNotifier {
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         print(response.body);
         for (int i = 0; i < _selectedExercises.length; i++) {
-          var insertLift = await WebServices.insertLift(sessionKey, timestamp, 10, _selectedExercises[i].exerciseId ?? -1, jsonDecode(response.body)["workout_session"]["id"]);
+          var insertLift = await WebServices.insertLift(sessionKey, timestamp, _selectedExercises[i].mass, _selectedExercises[i].exerciseId ?? -1, jsonDecode(response.body)["workout_session"]["id"]);
           var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
           if (insertLift.statusCode == 200 && jsonDecode(insertLift.body)["success"]) {
             count++;
-            lifts.add(Lift.create(
-                lift.liftId,
-                lift.timestamp,
-                lift.oneRepMax,
-                lift.exerciseId,
-                lift.exerciseName,
-                lift.liftMas,
-                lift.repetitions));
+            lifts.add(Lift.create(lift.liftId, lift.timestamp, lift.oneRepMax, lift.exerciseId, lift.exerciseName, lift.liftMas, lift.repetitions));
           }
         }
         if (count == _selectedExercises.length) {
           var workout = WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
           _workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration));
-          _selectedExercises.clear();
+          _selectedExercises.removeWhere((element) => element.isSelected);
            stopTimer();
         }
       }
@@ -157,6 +155,10 @@ class MainScreenProvider extends ChangeNotifier {
       _responseCode2 = MISC_EXCEPTION;
       print(e);
     }
+   }
+   else{
+     showToast("You need to add at least one exercise for one workout session!");
+   }
   }
 
   //getters&setters
@@ -179,18 +181,7 @@ class MainScreenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void firstEnterApp() {
-    appRefereshed = true;
-    if (userPreferences!.getString("title") != null) titleContoller.text = userPreferences!.getString("title") ?? "";
-    print(titleContoller.text);
-    if (userPreferences!.getString("lifts") != null) {
-      List<EditableLift> lifts = EditableLift.decode(userPreferences!.getString("lifts") ?? "");
-      for (int i = 0; i < lifts.length; i++) {
-        _selectedExercises.add(lifts[i]);
-        print(_selectedExercises[i].exerciseName);
-      }
-    }
-  }
+
 
 
   EditableLift? get unselectedLift => _unselectedLift;
@@ -246,6 +237,22 @@ class MainScreenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+
+
+  //utils
+  void firstEnterApp() {
+    appRefereshed = true;
+    if (userPreferences!.getString("title") != null) titleContoller.text = userPreferences!.getString("title") ?? "";
+    print(titleContoller.text);
+    if (userPreferences!.getString("lifts") != null) {
+      List<EditableLift> lifts = EditableLift.decode(userPreferences!.getString("lifts") ?? "");
+      for (int i = 0; i < lifts.length; i++) {
+        _selectedExercises.add(lifts[i]);
+        print(_selectedExercises[i].exerciseName);
+      }
+    }
+  }
+
   void updateExercise(int index) {
     if (_selectedExercises[index].isSelected == false)
       _selectedExercises[index].isSelected = true;
@@ -280,11 +287,11 @@ class MainScreenProvider extends ChangeNotifier {
     print(_exercisesByBodyParts.length);
   }
 
-  Future<void > startTimer() async{
-     var timerStream = stopWatchStream();
-     timerSubscription =timerStream.listen((int newTick) async {
-       duration = newTick;
-       hrs = ((newTick / (60 * 60)) % 60).floor().toString().padLeft(2, '0');
+  Future<void> startTimer() async {
+    var timerStream = stopWatchStream();
+    timerSubscription = timerStream.listen((int newTick) async {
+      duration = newTick;
+      hrs = ((newTick / (60 * 60)) % 60).floor().toString().padLeft(2, '0');
       mins = ((newTick / 60) % 60).floor().toString().padLeft(2, '0');
       secs = (newTick % 60).floor().toString().padLeft(2, '0');
       await saveTimeToSharedPreference(newTick.toInt());
@@ -293,17 +300,18 @@ class MainScreenProvider extends ChangeNotifier {
     });
     notifyListeners();
   }
+
   Stream<int> stopWatchStream() {
     StreamController<int>? streamController;
     Timer? timer;
     Duration timerInterval = Duration(seconds: 1);
 
-    int  counter;
-    if(userPreferences!.getInt("time") !=  null &&  !ticksReefrshed ) {
+    int counter;
+    if (userPreferences!.getInt("time") != null && !ticksReefrshed) {
       counter = userPreferences!.getInt("time")!;
       ticksReefrshed = true;
-    }
-    else counter = 0;
+    } else
+      counter = 0;
 
     void tick(_) {
       counter++;
@@ -340,13 +348,14 @@ class MainScreenProvider extends ChangeNotifier {
   }
 
   void stopTimer() {
-    timerSubscription!.cancel().then((value) {
-      hrs = "00";
-      mins = "00";
-      secs = "00";
-      timerSubscription = null;
-      notifyListeners();
-    });
+    if (timerSubscription != null)
+      timerSubscription!.cancel().then((value) {
+        hrs = "00";
+        mins = "00";
+        secs = "00";
+        timerSubscription = null;
+        notifyListeners();
+      });
   }
 
   void pauseTimer() {
@@ -372,19 +381,19 @@ class MainScreenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
-  void updateMass(int index, int val){
+  void updateMass(int index, int val) {
     _selectedExercises[index].mass = val;
+    updateRM(val,  _selectedExercises[index].rep, index);
     notifyListeners();
   }
 
-  void  updateRep(index, int  val){
+  void updateRep(index, int val) {
     _selectedExercises[index].rep = val;
+    updateRM(_selectedExercises[index].mass, val, index);
     notifyListeners();
-
   }
 
-  void updateRM(int mass, int rep){
-
+  void updateRM(int mass, int rep, index) {
+    _selectedExercises[index].rm = mass + mass * rep * 0.025;
   }
 }

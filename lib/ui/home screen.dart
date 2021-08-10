@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business%20logic/config%20provider.dart';
 import 'package:workoutnote/business%20logic/main%20%20screen%20provider.dart';
@@ -22,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    navProvider = Provider.of<MainScreenProvider>(context, listen: false);
+    navProvider = Provider.of<MainScreenProvider>(context, listen: true);
     if(!navProvider.requestDone1){
       navProvider.requestDone1 = true;
       navProvider.fetchWorkOuts(userPreferences!.getString("sessionKey") ?? "", DateTime.now().millisecondsSinceEpoch).then((value) {
@@ -47,6 +48,16 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       else if (index == 1){
         return CreateWorkOutCard(widget.width,  widget.height);
+      }
+
+      else if (index == 2 ){
+        return Container(
+          margin: EdgeInsets.only(left: 20.0),
+            child: Text(
+              "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now())}",
+              style: TextStyle(fontSize: 25, color: Color.fromRGBO(102, 51, 204, 1)),
+            ));
+
       }
       else {
         index = index - 2;

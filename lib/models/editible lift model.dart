@@ -10,14 +10,21 @@ class EditableLift{
 
   int _mass = 1;
   int _rep = 1;
+  double _rm = 1.0;
   bool  _isSelected = false;
   List<int> kgs = List.generate(51, (index) => (index));
   List<int> reps = List.generate(51, (index) => (index));
 
-  EditableLift.create(this._exerciseName, this._exerciseId, this._bodyPart, this._mass, this._rep, this._isSelected);
+  EditableLift.create(this._exerciseName, this._exerciseId, this._bodyPart, this._mass, this._rep, this._rm, this._isSelected);
 
   EditableLift();
   bool get isSelected => _isSelected;
+
+  double get rm => _rm;
+
+  set rm(double value) {
+    _rm = value;
+  }
 
   set isSelected(bool value) {
     _isSelected = value;
@@ -44,7 +51,7 @@ class EditableLift{
 
   factory EditableLift.fromJson(Map<String,  dynamic> parsedJson){
 
-    return EditableLift.create(parsedJson["exercise_name"], parsedJson["id"], parsedJson["body_part"], parsedJson["mass"], parsedJson["rep"], parsedJson["is_selected"]);
+    return EditableLift.create(parsedJson["exercise_name"], parsedJson["id"], parsedJson["body_part"], parsedJson["mass"], parsedJson["rep"], parsedJson["rm"]   ,parsedJson["is_selected"]);
   }
 
 
@@ -67,6 +74,7 @@ class EditableLift{
       'body_part': lift.bodyPart,
       'mass': lift.mass,
       'rep': lift.rep,
+      'rm':lift.rm,
       'is_selected': lift.isSelected,
     };
   }

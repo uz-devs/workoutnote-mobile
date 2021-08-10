@@ -10,7 +10,6 @@ import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
 class CreateWorkOutCard extends StatelessWidget {
-  var titleContoller = TextEditingController();
   final width;
   final height;
 
@@ -20,6 +19,7 @@ class CreateWorkOutCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var configProvider = Provider.of<ConfigProvider>(context, listen: true);
     return Container(
+      margin: EdgeInsets.only(bottom: 50.0),
       child: Consumer<MainScreenProvider>(builder: (context, exProvider, child) {
         if (!exProvider.timeRefreshed && userPreferences!.getInt("time") != null) {
           exProvider.timeRefreshed = true;
@@ -29,7 +29,6 @@ class CreateWorkOutCard extends StatelessWidget {
         }
         int count = exProvider.selectedExercises.length + 7;
         if (!exProvider.appRefereshed) exProvider.firstEnterApp();
-        print(count);
         return Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0.0),
@@ -105,6 +104,7 @@ class CreateWorkOutCard extends StatelessWidget {
                                 margin: EdgeInsets.only(bottom: 10.0),
                                 child: IconButton(
                                     onPressed: () {
+                                      print("heyyy");
                                       exProvider.stopTimer();
                                     },
                                     icon: Icon(
@@ -172,7 +172,8 @@ class CreateWorkOutCard extends StatelessWidget {
                               ),
                               borderRadius: BorderRadius.all(Radius.circular(20))),
                           child: _buildExerciseListItem("No.", "${exercisesName[configProvider.activeLanguage()]}", "KG", "REP", "RM", Color.fromRGBO(102, 51, 204, 1), 1, exProvider, index, context, configProvider));
-                    } else if (index == count - 2) {
+                    }
+                    else if (index == count - 2) {
                       return Container(
                           padding: EdgeInsets.only(left: 10, right: 10.0),
                           margin: EdgeInsets.only(
@@ -188,7 +189,7 @@ class CreateWorkOutCard extends StatelessWidget {
                             bottom: 10,
                           ),
                           child: _buildExerciseListItem(
-                              (index + 1).toString(), "${exProvider.selectedExercises[index].exerciseName}(${exProvider.selectedExercises[index].bodyPart})", "100KG", "1", "1.0", Colors.black, 2, exProvider, index, context, configProvider));
+                              (index + 1).toString(), "${exProvider.selectedExercises[index].exerciseName}(${exProvider.selectedExercises[index].bodyPart})", "0.0", "0.0", exProvider.selectedExercises[index].rm.toString(), Colors.black, 2, exProvider, index, context, configProvider));
                     } else
                       return Container(
                         margin: EdgeInsets.only(bottom: 10.0),
@@ -220,6 +221,8 @@ class CreateWorkOutCard extends StatelessWidget {
                                 ),
                                 color: Color.fromRGBO(102, 51, 204, 1),
                                 onPressed: () async {
+
+
                                   await exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "fuck", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch);
                                   await exProvider.saveListToSharePreference();
                                 },
@@ -387,9 +390,6 @@ class CreateWorkOutCard extends StatelessWidget {
   }
 
   Widget _buildExerciseListItem(String exerciseNumber, String exerciseName, String kg, String rep, String rm, Color color, int mode, MainScreenProvider mainScreenProvider, int index, BuildContext context, ConfigProvider configProvider) {
-
-
-
     return Row(
       children: [
         Expanded(
@@ -499,7 +499,7 @@ class CreateWorkOutCard extends StatelessWidget {
                   : IconButton(
                       onPressed: () async {
                         if (mainScreenProvider.unselectedExercise != null) {
-                          mainScreenProvider.addExercise(EditableLift.create(mainScreenProvider.unselectedExercise!.name, mainScreenProvider.unselectedExercise!.id, mainScreenProvider.unselectedExercise!.bodyPart, 1, 1, true));
+                          mainScreenProvider.addExercise(EditableLift.create(mainScreenProvider.unselectedExercise!.name, mainScreenProvider.unselectedExercise!.id, mainScreenProvider.unselectedExercise!.bodyPart, 1, 1, 1.0, true));
                           await mainScreenProvider.saveListToSharePreference();
                         } else
                           showToast("Please, select exercise!");
