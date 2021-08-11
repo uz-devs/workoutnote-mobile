@@ -25,14 +25,47 @@ class  SearchDialogProvider extends ChangeNotifier{
   String activeBodyPart = "";
 
   //api calls
-  Future<void> fetchExercises() async {
+  Future<void> fetchFavoriteExercises(String  sessionKey) async  {
     try {
-      var response = await WebServices.fetchExercises();
+      var response = await WebServices.fetchFavoriteExercises(sessionKey);
 
       if (response.statusCode == 200) {
         var workoutsResponse = ExercisesResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
         if (workoutsResponse.success) {
           exercises.addAll(workoutsResponse.exercises ?? []);
+          responseCode = SUCCESS;
+          notifyListeners();
+        }
+      }
+    } on TimeoutException catch (e) {
+      responseCode = TIMEOUT_EXCEPTION;
+      print(e);
+    } on SocketException catch (e) {
+      responseCode= SOCKET_EXCEPTION;
+      print(e);
+    } on Error catch (e) {
+      responseCode = MISC_EXCEPTION;
+      print(e);
+    }
+  }
+  Future<void> fetchExercises() async {
+    try {
+      var response = await WebServices.fetchExercises();
+
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+      if (response.statusCode == 200) {
+        var workoutsResponse = ExercisesResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+        if (workoutsResponse.success) {
+
+          print(workoutsResponse.exercises!.length);
+
+
+          exercises.addAll(workoutsResponse.exercises ?? []);
+
+          for(int i = 0; i<exercises.length; i++){
+            print("wefgyewjf");
+            print(exercises[i].namedTranslations!.english);
+          }
           responseCode = SUCCESS;
           notifyListeners();
         }
@@ -74,7 +107,7 @@ class  SearchDialogProvider extends ChangeNotifier{
       var response = await WebServices.setMyFavoriteExercise(sessionKey, exerciseId);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
-        updateExerciseFavoriteStatus(exerciseId);
+        _updateExerciseFavoriteStatus(exerciseId);
       }
     }
     catch(e){
@@ -86,7 +119,7 @@ class  SearchDialogProvider extends ChangeNotifier{
       var response = await WebServices.unsetMyFavoriteExercise(sessionKey, exerciseId);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
-        updateExerciseFavoriteStatus(exerciseId);
+        _updateExerciseFavoriteStatus(exerciseId);
       }
     }
     catch(e){
@@ -95,7 +128,7 @@ class  SearchDialogProvider extends ChangeNotifier{
   }
 
   //utils
-  void updateExerciseFavoriteStatus(int id){
+  void _updateExerciseFavoriteStatus(int id){
     if(exercisesByBodyParts.isEmpty)
       for(int i = 0; i<exercises.length; i++){
         if(exercises[i].id == id){
@@ -125,14 +158,14 @@ class  SearchDialogProvider extends ChangeNotifier{
     notifyListeners();
   }
   void onBodyPartBressed(String bodyPart) {
-    print(bodyPart);
+
 
     if (exercisesByBodyParts.isNotEmpty) exercisesByBodyParts.clear();
     if (activeBodyPart.isEmpty || activeBodyPart != bodyPart) {
       activeBodyPart = bodyPart;
       for (int i = 0; i < exercises.length; i++) {
         if (exercises[i].bodyPart == bodyPart) {
-          print(exercises[i].bodyPart);
+
           exercisesByBodyParts.add(exercises[i]);
         }
       }
@@ -140,8 +173,7 @@ class  SearchDialogProvider extends ChangeNotifier{
       activeBodyPart = "";
     }
     notifyListeners();
-    print("length");
-    print(exercisesByBodyParts.length);
+
   }
 
 }

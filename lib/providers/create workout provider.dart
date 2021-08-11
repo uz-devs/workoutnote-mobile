@@ -28,9 +28,6 @@ class CreateWorkoutProvider  extends ChangeNotifier{
   bool appRefereshed = false;
   bool ticksReefrshed = false;
   bool timeRefreshed = false;
-
-
-
   Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, List<WorkOut> workOuts, Function updateHome) async {
 
     bool  canCreateSession = false;
@@ -75,7 +72,6 @@ class CreateWorkoutProvider  extends ChangeNotifier{
       showToast("You need to add at least one exercise for one workout session!");
     }
   }
-
   set unselectedExercise(Exercise? value) {
     _unselectedExercise = value;
     notifyListeners();

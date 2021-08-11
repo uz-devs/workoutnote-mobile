@@ -272,7 +272,7 @@ class CreateWorkOutCard extends StatelessWidget {
               if (mode == 1) {
 
               } else if (mode == 2) {
-                mainScreenProvider.unselectedExercise = Exercise(mainScreenProvider.selectedLifts[index].exerciseId, mainScreenProvider.selectedLifts[index].exerciseName, mainScreenProvider.selectedLifts[index].bodyPart, "", false );
+                mainScreenProvider.unselectedExercise = Exercise(mainScreenProvider.selectedLifts[index].exerciseId, mainScreenProvider.selectedLifts[index].exerciseName, mainScreenProvider.selectedLifts[index].bodyPart, "", false , NameTranslation(""));
               } else {
                 await _showdialog(context, configProvider, mainScreenProvider);
               }

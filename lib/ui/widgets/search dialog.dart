@@ -19,7 +19,8 @@ class _SearchDialogState extends State<SearchDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SearchDialogProvider>(builder: (context, exProvider, child) {
+    return Consumer<SearchDialogProvider>(
+        builder: (context, exProvider, child) {
       if (!exProvider.requestDone) {
         exProvider.requestDone = true;
         exProvider.fetchBodyParts().then((value) {});
@@ -43,7 +44,9 @@ class _SearchDialogState extends State<SearchDialog> {
                               alignment: Alignment.center,
                               child: Text(
                                 "${exercises[widget.configProvider.activeLanguage()]}",
-                                style: TextStyle(fontSize: 21, color: Colors.deepPurpleAccent),
+                                style: TextStyle(
+                                    fontSize: 21,
+                                    color: Colors.deepPurpleAccent),
                               ),
                             ),
                             Align(
@@ -73,7 +76,8 @@ class _SearchDialogState extends State<SearchDialog> {
                             ),
                             suffixIcon: IconButton(
                               onPressed: () => searchController.clear(),
-                              icon: Icon(Icons.clear, color: Colors.deepPurpleAccent),
+                              icon: Icon(Icons.clear,
+                                  color: Colors.deepPurpleAccent),
                             ),
                             isDense: true,
                             contentPadding: EdgeInsets.all(5),
@@ -89,10 +93,12 @@ class _SearchDialogState extends State<SearchDialog> {
                         height: widget.height * 0.1,
                         child: ListView(
                             scrollDirection: Axis.horizontal,
-                            children: List.generate(exProvider.myBodyParts.length, (index) {
+                            children: List.generate(
+                                exProvider.myBodyParts.length, (index) {
                               if (index == 0) {
                                 return Container(
-                                  margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                                  margin:
+                                      EdgeInsets.only(left: 10.0, right: 10.0),
                                   child: InkWell(
                                       onTap: () {},
                                       child: Chip(
@@ -109,11 +115,20 @@ class _SearchDialogState extends State<SearchDialog> {
                                     margin: EdgeInsets.only(right: 10.0),
                                     child: InkWell(
                                         onTap: () {
-                                          exProvider.onBodyPartBressed(exProvider.myBodyParts[index].name);
+                                          exProvider.onBodyPartBressed(
+                                              exProvider
+                                                  .myBodyParts[index].name);
                                         },
                                         child: Chip(
-                                          label: Text(exProvider.myBodyParts[index].name),
-                                          backgroundColor: exProvider.activeBodyPart == exProvider.myBodyParts[index].name ? Colors.grey : Colors.black12,
+                                          label: Text(exProvider
+                                              .myBodyParts[index].name),
+                                          backgroundColor:
+                                              exProvider.activeBodyPart ==
+                                                      exProvider
+                                                          .myBodyParts[index]
+                                                          .name
+                                                  ? Colors.grey
+                                                  : Colors.black12,
                                         )));
                               }
                             })),
@@ -125,7 +140,8 @@ class _SearchDialogState extends State<SearchDialog> {
                           if (exProvider.exercisesByBodyParts.isEmpty)
                             Navigator.pop(context, exProvider.exercises[index]);
                           else
-                            Navigator.pop(context, exProvider.exercisesByBodyParts[index]);
+                            Navigator.pop(context,
+                                exProvider.exercisesByBodyParts[index]);
                         },
                         child: Container(
                           margin: EdgeInsets.only(left: 10),
@@ -133,26 +149,46 @@ class _SearchDialogState extends State<SearchDialog> {
                             children: [
                               Expanded(
                                   flex: 8,
-                                  child: Container(
-                                      margin: EdgeInsets.only(left: 10.0),
-                                      child: Text(
-                                          "${exProvider.exercisesByBodyParts.isEmpty ? exProvider.exercises[index].name : exProvider.exercisesByBodyParts[index].name} (${exProvider.exercisesByBodyParts.isEmpty ? exProvider.exercises[index].bodyPart : exProvider.exercisesByBodyParts[index].bodyPart})"))),
+                                  child: exProvider.exercises[index].namedTranslations!.english == null
+                                      ? Container(child:
+
+                                  Text("${exProvider.exercisesByBodyParts.isEmpty ? exProvider.exercises[index].name : exProvider.exercisesByBodyParts[index].name} (${exProvider.exercisesByBodyParts.isEmpty ? exProvider.exercises[index].bodyPart : exProvider.exercisesByBodyParts[index].bodyPart})")) :
+
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                              children:
+                                              [
+                                                Text("${exProvider.exercisesByBodyParts.isEmpty?exProvider.exercises[index].namedTranslations!.english:exProvider.exercisesByBodyParts[index].namedTranslations!.english}"),
+                                                Text("${exProvider.exercisesByBodyParts.isEmpty ? exProvider.exercises[index].name : exProvider.exercisesByBodyParts[index].name} (${exProvider.exercisesByBodyParts.isEmpty ? exProvider.exercises[index].bodyPart : exProvider.exercisesByBodyParts[index].bodyPart})", style: TextStyle(
+                                                color: Colors.blue.withOpacity(0.7)
+                                              ),) ,],
+                                            )
+                                         ),
                               Expanded(
                                   flex: 2,
                                   child: IconButton(
                                     onPressed: () async {
-                                    if( !exProvider.exercises[index].isFavorite){
-                                     await  exProvider.setFavoriteExercise(userPreferences!.getString("sessionKey")??"", exProvider.exercises[index].id??-1);
-                                    }
-                                    else {
-                                      await  exProvider.unsetFavoriteExercise(userPreferences!.getString("sessionKey")??"", exProvider.exercises[index].id??-1);
-
-                                    }
-
+                                      if (!exProvider
+                                          .exercises[index].isFavorite) {
+                                        await exProvider.setFavoriteExercise(
+                                            userPreferences!
+                                                    .getString("sessionKey") ??
+                                                "",
+                                            exProvider.exercises[index].id ??
+                                                -1);
+                                      } else {
+                                        await exProvider.unsetFavoriteExercise(
+                                            userPreferences!
+                                                    .getString("sessionKey") ??
+                                                "",
+                                            exProvider.exercises[index].id ??
+                                                -1);
+                                      }
                                     },
                                     icon: Icon(
-
-                                     !exProvider.exercises[index].isFavorite? Icons.favorite_border: Icons.favorite,
+                                      !exProvider.exercises[index].isFavorite
+                                          ? Icons.favorite_border
+                                          : Icons.favorite,
                                       color: Colors.red,
                                       size: 30,
                                     ),
@@ -168,7 +204,9 @@ class _SearchDialogState extends State<SearchDialog> {
                       color: index > 2 ? Colors.grey : Colors.white,
                     );
                   },
-                  itemCount: exProvider.exercisesByBodyParts.isEmpty ? exProvider.exercises.length + 3 : exProvider.exercisesByBodyParts.length + 3)),
+                  itemCount: exProvider.exercisesByBodyParts.isEmpty
+                      ? exProvider.exercises.length + 3
+                      : exProvider.exercisesByBodyParts.length + 3)),
         ),
       );
     });
