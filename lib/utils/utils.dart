@@ -22,7 +22,7 @@ const String unsetFavoriteWorkout = "/api/unset_favorite_workout";
 const String fetchFavoriteWorkouts = "/api/fetch_favorite_workouts";
 const String setFavoriteExercise = "/api/set_favorite_exercise";
 const String unsetFavoriteExercise = "/api/unset_favorite_exercise";
-const String fetchFavoriteExercises = "/api/fetch_favorite_exercises";
+const String fetchFavoriteExercise = "/api/fetch_favorite_exercises";
 
 //network  state codes
 const int LOADING = 0;

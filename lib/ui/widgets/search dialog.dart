@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
@@ -19,12 +20,49 @@ class _SearchDialogState extends State<SearchDialog> {
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return Consumer<SearchDialogProvider>(builder: (context, exProvider, child) {
+
+      List<Exercise> showExercises = [];
+
       if (!exProvider.requestDone) {
         exProvider.requestDone = true;
         exProvider.fetchBodyParts().then((value) {});
         exProvider.fetchExercises().then((value) {});
+        exProvider.fetchFavoriteExercises(userPreferences!.getString("sessionKey")??"fuck").then((value){});
       }
+
+
+      if(exProvider.showFavorite){
+        print("show  favorite");
+        print(exProvider.favoriteExercises.length);
+        if(exProvider.activeBodyPart.isNotEmpty){
+          for(int i = 0; i<exProvider.favoriteExercises.length; i++){
+            if(exProvider.favoriteExercises[i].bodyPart == exProvider.activeBodyPart)
+              showExercises.add(exProvider.favoriteExercises[i]);
+          }
+        }
+        else{
+          showExercises.addAll(exProvider.favoriteExercises);
+        }
+      }
+      else{
+        if(exProvider.activeBodyPart.isNotEmpty){
+          for(int i = 0; i<exProvider.exercises.length; i++){
+             if(exProvider.exercises[i].bodyPart == exProvider.activeBodyPart)
+               showExercises.add(exProvider.exercises[i]);
+          }
+        }
+        else{
+          showExercises.addAll(exProvider.exercises);
+        }
+
+      }
+
+
+
       return Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         insetPadding: EdgeInsets.all(20),
@@ -43,16 +81,19 @@ class _SearchDialogState extends State<SearchDialog> {
                               alignment: Alignment.center,
                               child: Text(
                                 "${exercises[widget.configProvider.activeLanguage()]}",
-                                style: TextStyle(fontSize: 21, color: Colors.deepPurpleAccent),
+                                style: TextStyle(fontSize: 21, color: Color.fromRGBO(102, 51, 204, 1)),
                               ),
                             ),
                             Align(
                               alignment: Alignment.centerRight,
-                              child: IconButton(
-                                  icon: Icon(Icons.clear),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  }),
+                              child: Container(
+                                margin: EdgeInsets.only(right: 10.0),
+                                child: IconButton(
+                                    icon: Icon(Icons.clear, color: Color.fromRGBO(102, 51, 204, 1)),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    }),
+                              ),
                             )
                           ],
                         ),
@@ -69,12 +110,16 @@ class _SearchDialogState extends State<SearchDialog> {
                           decoration: InputDecoration(
                             prefixIcon: IconButton(
                               onPressed: () {},
-                              icon: Icon(Icons.search),
+                              icon: Icon(Icons.search, color: Color.fromRGBO(102, 51, 204, 1)),
                             ),
                             suffixIcon: IconButton(
-                              onPressed: () => searchController.clear(),
-                              icon: Icon(Icons.clear, color: Colors.deepPurpleAccent),
+                              onPressed: () {
+                                searchController.clear();
+                              },
+                              icon: Icon(Icons.close),
+                              color: Color.fromRGBO(102, 51, 204, 1),
                             ),
+                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
                             isDense: true,
                             contentPadding: EdgeInsets.all(5),
                             // Added this
@@ -95,26 +140,34 @@ class _SearchDialogState extends State<SearchDialog> {
                                   margin: EdgeInsets.only(left: 10.0, right: 10.0),
                                   child: InkWell(
                                       onTap: () {},
-                                      child: Chip(
+                                      child: FilterChip(
+                                        onSelected: (bool  val){
+                                          setState(() {
+                                            exProvider.showFavorite = !exProvider.showFavorite;
+                                          });
+                                          },
+                                        shape: StadiumBorder(side: BorderSide(color: Color.fromRGBO(102, 51, 204, 1))),
+
                                         label: Text(
                                           "Favorites",
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(color: exProvider.showFavorite?Colors.white:  Color.fromRGBO(102, 51, 204, 1)),
                                         ),
-                                        backgroundColor: Colors.red,
+                                        backgroundColor: exProvider.showFavorite?Color.fromRGBO(102, 51, 204, 1):Colors.transparent,
                                       )),
                                 );
-                              } else {
+                              }
+                              else {
                                 index = index - 1;
                                 return Container(
                                     margin: EdgeInsets.only(right: 10.0),
-                                    child: InkWell(
-                                        onTap: () {
-                                          exProvider.onBodyPartBressed(exProvider.myBodyParts[index].name);
-                                        },
-                                        child: Chip(
-                                          label: Text(exProvider.myBodyParts[index].name),
-                                          backgroundColor: exProvider.activeBodyPart == exProvider.myBodyParts[index].name ? Colors.grey : Colors.black12,
-                                        )));
+                                    child:  FilterChip(
+                                          onSelected: (bool val) {
+                                            exProvider.onBodyPartBressed(exProvider.myBodyParts[index].name);
+                                            },
+                                        shape: StadiumBorder(side: BorderSide(color: Color.fromRGBO(102, 51, 204, 1))),
+                                          label: Text(exProvider.myBodyParts[index].name, style: TextStyle(color: exProvider.activeBodyPart == exProvider.myBodyParts[index].name?Colors.white:Color.fromRGBO(102, 51, 204, 1)),),
+                                          backgroundColor: exProvider.activeBodyPart == exProvider.myBodyParts[index].name ? Color.fromRGBO(102, 51, 204, 1):Colors.transparent,
+                                        ));
                               }
                             })),
                       );
@@ -133,20 +186,16 @@ class _SearchDialogState extends State<SearchDialog> {
                             children: [
                               Expanded(
                                   flex: 8,
-                                  child: exProvider.exercises[index].namedTranslations!.english == null
-                                      ? Container(
-                                          child: Text(
-                                              "${exProvider.exercisesByBodyParts.isEmpty ? exProvider.exercises[index].name : exProvider.exercisesByBodyParts[index].name} (${exProvider.exercisesByBodyParts.isEmpty ? exProvider.exercises[index].bodyPart : exProvider.exercisesByBodyParts[index].bodyPart})"))
-                                      : Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text("${exProvider.exercisesByBodyParts.isEmpty ? exProvider.exercises[index].namedTranslations!.english : exProvider.exercisesByBodyParts[index].namedTranslations!.english}"),
-                                            Text(
-                                              "${exProvider.exercisesByBodyParts.isEmpty ? exProvider.exercises[index].name : exProvider.exercisesByBodyParts[index].name} (${exProvider.exercisesByBodyParts.isEmpty ? exProvider.exercises[index].bodyPart : exProvider.exercisesByBodyParts[index].bodyPart})",
-                                              style: TextStyle(color: Colors.blue.withOpacity(0.7)),
-                                            ),
-                                          ],
-                                        )),
+                                  child: showExercises[index].namedTranslations!.english == null?
+                                   Text("${showExercises[index].name}(${showExercises[index].bodyPart})"):
+                                   Column(
+                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                     children: [
+                                       Text("${showExercises[index].namedTranslations!.english}"),
+                                       Text("${showExercises[index].name}(${showExercises[index].bodyPart})")
+                                        ],
+                                   )
+                              ),
                               Expanded(
                                   flex: 2,
                                   child: IconButton(
@@ -170,8 +219,11 @@ class _SearchDialogState extends State<SearchDialog> {
                     }
                   },
                   separatorBuilder: (BuildContext context, index) {
-                    return Divider(
-                      color: index > 2 ? Colors.grey : Colors.white,
+                    return Container(
+                      margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                      child: Divider(
+                        color: index > 2 ? Color.fromRGBO(102, 51, 204, 1) : Colors.white,
+                      ),
                     );
                   },
                   itemCount: exProvider.exercisesByBodyParts.isEmpty ? exProvider.exercises.length + 3 : exProvider.exercisesByBodyParts.length + 3)),

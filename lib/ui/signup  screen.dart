@@ -56,8 +56,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         decoration: InputDecoration(
                           hintText: "NAME",
                           hintStyle: TextStyle(color: Colors.grey),
-                          suffixIcon: IconButton(onPressed: (){},  icon: Icon(Icons.close),  color: Color.fromRGBO(102, 51, 204, 1),),
                           contentPadding: EdgeInsets.all(10),
+                          suffixIcon: IconButton(onPressed: (){},  icon: Icon(Icons.close),  color: Color.fromRGBO(102, 51, 204, 1),),
+
                           focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                                 borderSide: BorderSide(
