@@ -12,9 +12,7 @@ import 'package:workoutnote/ui/nav%20controller.dart';
 import 'package:workoutnote/utils/utils.dart';
 
 
-
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initPreferences();
 
@@ -28,20 +26,22 @@ void main() async{
 
   ];
   runApp(MultiProvider(providers: providers, child: MyApp(),));
-
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
+
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+
+        fontFamily: 'NotoSansKR',
         focusColor: Color.fromRGBO(102, 51, 204, 1),
         cursorColor: Color.fromRGBO(102, 51, 204, 1)
-      ),
-     home: userPreferences!.getString("sessionKey")==null?AuthScreen():NavController(),
+    ),
+    home: userPreferences!.getString("sessionKey")==null?AuthScreen():NavController(),
 
     );
   }
