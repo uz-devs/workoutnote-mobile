@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
+import 'package:workoutnote/providers/create%20workout%20provider.dart';
+import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
 import 'package:workoutnote/providers/home%20%20%20screen%20provider.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
@@ -24,6 +26,8 @@ class _WorkOutNoteState extends State<WorkOutNote> {
   Widget build(BuildContext context) {
     var configProvider = Provider.of<ConfigProvider>(context, listen: true);
     var mainProvider = Provider.of<MainScreenProvider>(context, listen: true);
+    var createWorkOutProvider = Provider.of<CreateWorkoutProvider>(context, listen: false);
+    var dialogProvider = Provider.of<SearchDialogProvider>(context, listen: false );
 
     int count = widget.workout.lifts!.length + 3;
     return Container(
@@ -116,7 +120,10 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                       color: Color.fromRGBO(102, 51, 204, 1),
                       textColor: Colors.white,
                       child: Text("${repeat[configProvider.activeLanguage()]}"),
-                      onPressed: () {},
+                      onPressed: () {
+                        mainProvider.repeatExercise(widget.workout.id??-1,  createWorkOutProvider, dialogProvider.allExercises);
+
+                        },
                     ),
                   );
                 } else {

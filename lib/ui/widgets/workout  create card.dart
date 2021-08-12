@@ -18,8 +18,7 @@ class CreateWorkOutCard extends StatelessWidget {
   List<WorkOut> workOuts;
   Function updateHome;
 
-  CreateWorkOutCard(this.width, this.height,  this.workOuts, this.updateHome);
-
+  CreateWorkOutCard(this.width, this.height, this.workOuts, this.updateHome);
 
   Widget build(BuildContext context) {
     var configProvider = Provider.of<ConfigProvider>(context, listen: true);
@@ -82,9 +81,6 @@ class CreateWorkOutCard extends StatelessWidget {
                             isDense: true,
                             contentPadding: EdgeInsets.only(top: 5.0),
                             hintText: "${title[configProvider.activeLanguage()]}",
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color.fromRGBO(102, 51, 204, 1)),
-                            ),
                           ),
                           controller: exProvider.titleContoller,
                         ),
@@ -104,12 +100,11 @@ class CreateWorkOutCard extends StatelessWidget {
                               ),
                             ),
                             Spacer(),
-                            if (exProvider.timerSubscription != null)
+                            if (exProvider.timerSubscription != null || ((exProvider.secs.isNotEmpty && exProvider.secs != "00" || exProvider.hrs.isNotEmpty && exProvider.hrs != "00" || exProvider.mins.isNotEmpty  && exProvider.mins != "00")))
                               Container(
                                 margin: EdgeInsets.only(bottom: 10.0),
                                 child: IconButton(
                                     onPressed: () {
-                                      print("heyyy");
                                       exProvider.stopTimer();
                                     },
                                     icon: Icon(
@@ -177,8 +172,7 @@ class CreateWorkOutCard extends StatelessWidget {
                               ),
                               borderRadius: BorderRadius.all(Radius.circular(20))),
                           child: _buildExerciseListItem("No.", "${exercisesName[configProvider.activeLanguage()]}", "KG", "REP", "RM", Color.fromRGBO(102, 51, 204, 1), 1, exProvider, index, context, configProvider));
-                    }
-                    else if (index == count - 2) {
+                    } else if (index == count - 2) {
                       return Container(
                           padding: EdgeInsets.only(left: 10, right: 10.0),
                           margin: EdgeInsets.only(
@@ -193,8 +187,8 @@ class CreateWorkOutCard extends StatelessWidget {
                           margin: EdgeInsets.only(
                             bottom: 10,
                           ),
-                          child: _buildExerciseListItem(
-                              (index + 1).toString(), "${exProvider.selectedLifts[index].exerciseName}(${exProvider.selectedLifts[index].bodyPart})", "0.0", "0.0", exProvider.selectedLifts[index].rm.toString(), Colors.black, 2, exProvider, index, context, configProvider));
+                          child: _buildExerciseListItem((index + 1).toString(), "${exProvider.selectedLifts[index].exerciseName}(${exProvider.selectedLifts[index].bodyPart})", "0.0", "0.0", exProvider.selectedLifts[index].rm.toString(), Colors.black,
+                              2, exProvider, index, context, configProvider));
                     } else
                       return Container(
                         margin: EdgeInsets.only(bottom: 10.0),
@@ -226,7 +220,7 @@ class CreateWorkOutCard extends StatelessWidget {
                                 ),
                                 color: Color.fromRGBO(102, 51, 204, 1),
                                 onPressed: () async {
-                                  await exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, updateHome );
+                                  await exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, updateHome);
                                   await exProvider.saveListToSharePreference();
                                 },
                                 textColor: Colors.white,
@@ -248,8 +242,8 @@ class CreateWorkOutCard extends StatelessWidget {
         builder: (BuildContext context) {
           return SearchDialog(height, configProvider);
         }).then((value) {
-          exProvider.unselectedExercise = value as  Exercise;
-        });
+      exProvider.unselectedExercise = value as Exercise;
+    });
   }
 
   Widget _buildExerciseListItem(String exerciseNumber, String exerciseName, String kg, String rep, String rm, Color color, int mode, CreateWorkoutProvider mainScreenProvider, int index, BuildContext context, ConfigProvider configProvider) {
@@ -270,10 +264,10 @@ class CreateWorkOutCard extends StatelessWidget {
           child: InkWell(
             onTap: () async {
               if (mode == 1) {
-
                 print("hell====");
               } else if (mode == 2) {
-                mainScreenProvider.unselectedExercise = Exercise(mainScreenProvider.selectedLifts[index].exerciseId, mainScreenProvider.selectedLifts[index].exerciseName, mainScreenProvider.selectedLifts[index].bodyPart, "", false , NameTranslation(""));
+                mainScreenProvider.unselectedExercise =
+                    Exercise(mainScreenProvider.selectedLifts[index].exerciseId, mainScreenProvider.selectedLifts[index].exerciseName, mainScreenProvider.selectedLifts[index].bodyPart, "", false, NameTranslation(""));
               } else {
                 await _showdialog(context, configProvider, mainScreenProvider);
               }
@@ -289,48 +283,50 @@ class CreateWorkOutCard extends StatelessWidget {
         Expanded(flex: 1, child: Container()),
         Expanded(
           flex: 2,
-          child:
-
-          mode == 2? DropdownButton<int>(
-            isExpanded:true,
-            underline: SizedBox(),
-            iconSize: 0.0,
-            value:   mainScreenProvider.selectedLifts[index].mass,
-            onChanged: (newValue) {
-              print(newValue);
-              mainScreenProvider.updateMass(index, newValue!);
-            },
-            items:  mainScreenProvider.selectedLifts[index].kgs.map((int value) {
-              return DropdownMenuItem<int>(
-                value: value,
-                child: Text("${value}kg"),
-              );
-            }).toList(),
-          ):Text("KG",  style: TextStyle(
-           color: mode == 1?  Color.fromRGBO(102, 51, 204, 1):Colors.grey
-         ),),
+          child: mode == 2
+              ? DropdownButton<int>(
+                  isExpanded: true,
+                  underline: SizedBox(),
+                  iconSize: 0.0,
+                  value: mainScreenProvider.selectedLifts[index].mass,
+                  onChanged: (newValue) {
+                    print(newValue);
+                    mainScreenProvider.updateMass(index, newValue!);
+                  },
+                  items: mainScreenProvider.selectedLifts[index].kgs.map((int value) {
+                    return DropdownMenuItem<int>(
+                      value: value,
+                      child: Text("${value}kg"),
+                    );
+                  }).toList(),
+                )
+              : Text(
+                  "KG",
+                  style: TextStyle(color: mode == 1 ? Color.fromRGBO(102, 51, 204, 1) : Colors.grey),
+                ),
         ),
         Expanded(
           flex: 2,
-          child:
-          mode ==2? DropdownButton<int>(
-            isExpanded:true,
-            underline: SizedBox(),
-            iconSize: 0.0,
-            value: mainScreenProvider.selectedLifts[index].rep,
-            onChanged: (newValue) {
-              mainScreenProvider.updateRep(index, newValue!);
-
-            },
-            items:  mainScreenProvider.selectedLifts[index].reps.map((int value) {
-              return DropdownMenuItem<int>(
-                value: value,
-                child: Text("$value"),
-              );
-            }).toList(),
-          ):Text("REP", style: TextStyle(
-             color: mode == 1?  Color.fromRGBO(102, 51, 204, 1):Colors.grey
-         ),),
+          child: mode == 2
+              ? DropdownButton<int>(
+                  isExpanded: true,
+                  underline: SizedBox(),
+                  iconSize: 0.0,
+                  value: mainScreenProvider.selectedLifts[index].rep,
+                  onChanged: (newValue) {
+                    mainScreenProvider.updateRep(index, newValue!);
+                  },
+                  items: mainScreenProvider.selectedLifts[index].reps.map((int value) {
+                    return DropdownMenuItem<int>(
+                      value: value,
+                      child: Text("$value"),
+                    );
+                  }).toList(),
+                )
+              : Text(
+                  "REP",
+                  style: TextStyle(color: mode == 1 ? Color.fromRGBO(102, 51, 204, 1) : Colors.grey),
+                ),
         ),
         Expanded(
           flex: 2,

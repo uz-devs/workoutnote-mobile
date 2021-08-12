@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:workoutnote/models/editible%20lift%20model.dart';
+import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
+import 'package:workoutnote/providers/create%20workout%20provider.dart';
 import 'package:workoutnote/services/network%20%20service.dart';
 import 'package:workoutnote/utils/utils.dart';
 
@@ -66,6 +69,21 @@ class MainScreenProvider extends ChangeNotifier {
   }
 
   //utils
+
+  void repeatExercise(int id,  CreateWorkoutProvider createWorkoutProvider, List<Exercise> exercises){
+    List<EditableLift> lifts = [];
+    String? title;
+    for (int i = 0; i<workOuts.length; i++){
+      if(workOuts[i].id == id ){
+          for(int j = 0; j<workOuts[i].lifts!.length; j++ ){
+            title = workOuts[i].title??"[]";
+            lifts.add(EditableLift.create(workOuts[i].lifts![j].exerciseName, workOuts[i].lifts![j].exerciseId, exercises.isNotEmpty?exercises.where((element) => element.id == workOuts[i].lifts![j].exerciseId).first.bodyPart:"", workOuts[i].lifts![j].liftMas!.toInt(), workOuts[i].lifts![j].repetitions??0, 1.2, true));
+          }
+      }
+    }
+    createWorkoutProvider.repeatExercise(lifts,  title??"[]");
+  }
+
   void _updateWorkoutFavoriteStatus(int id){
     for(int i = 0; i<workOuts.length; i++){
       if(workOuts[i].id == id){

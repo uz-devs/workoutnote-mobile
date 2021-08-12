@@ -26,8 +26,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
   bool timeRefreshed = false;
 
   //api calls
-  Future<void> createWorkOutSession(String sessionKey, String title,
-      int timestamp, List<WorkOut> workOuts, Function updateHome) async {
+  Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, List<WorkOut> workOuts, Function updateHome) async {
     bool canCreateSession = false;
     for (int i = 0; i < _selectedLifts.length; i++) {
       if (_selectedLifts[i].isSelected) {
@@ -39,37 +38,20 @@ class CreateWorkoutProvider extends ChangeNotifier {
       try {
         List<Lift> lifts = [];
         int count = 0;
-        var response = await WebServices.insertWorkOut(
-            sessionKey, title, timestamp, duration);
-        if (response.statusCode == 200 &&
-            jsonDecode(response.body)["success"]) {
+        var response = await WebServices.insertWorkOut(sessionKey, title, timestamp, duration);
+        if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
           for (int i = 0; i < _selectedLifts.length; i++) {
-            var insertLift = await WebServices.insertLift(
-                sessionKey,
-                timestamp,
-                _selectedLifts[i].mass,
-                _selectedLifts[i].exerciseId ?? -1,
-                jsonDecode(response.body)["workout_session"]["id"]);
+            var insertLift = await WebServices.insertLift(sessionKey, timestamp, _selectedLifts[i].mass, _selectedLifts[i].exerciseId ?? -1, jsonDecode(response.body)["workout_session"]["id"]);
             var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
             print(jsonDecode(insertLift.body)["success"]);
-            if (insertLift.statusCode == 200 &&
-                jsonDecode(insertLift.body)["success"]) {
+            if (insertLift.statusCode == 200 && jsonDecode(insertLift.body)["success"]) {
               count++;
-              lifts.add(Lift.create(
-                  lift.liftId,
-                  lift.timestamp,
-                  lift.oneRepMax,
-                  lift.exerciseId,
-                  lift.exerciseName,
-                  lift.liftMas,
-                  lift.repetitions));
+              lifts.add(Lift.create(lift.liftId, lift.timestamp, lift.oneRepMax, lift.exerciseId, lift.exerciseName, lift.liftMas, lift.repetitions));
             }
           }
           if (count == _selectedLifts.length) {
-            var workout =
-                WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
-            workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp,
-                lifts, workout.duration, false));
+            var workout = WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
+            workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
             updateHome();
             _selectedLifts.removeWhere((element) => element.isSelected);
             stopTimer();
@@ -80,8 +62,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
         print(e);
       }
     } else {
-      showToast(
-          "You need to add at least one exercise for one workout session!");
+      showToast("You need to add at least one exercise for one workout session!");
     }
   }
 
@@ -93,12 +74,10 @@ class CreateWorkoutProvider extends ChangeNotifier {
 
   void firstEnterApp() {
     appRefereshed = true;
-    if (userPreferences!.getString("title") != null)
-      titleContoller.text = userPreferences!.getString("title") ?? "";
+    if (userPreferences!.getString("title") != null) titleContoller.text = userPreferences!.getString("title") ?? "";
     print(titleContoller.text);
     if (userPreferences!.getString("lifts") != null) {
-      List<EditableLift> lifts =
-          EditableLift.decode(userPreferences!.getString("lifts") ?? "");
+      List<EditableLift> lifts = EditableLift.decode(userPreferences!.getString("lifts") ?? "");
       for (int i = 0; i < lifts.length; i++) {
         _selectedLifts.add(lifts[i]);
         print(selectedLifts[i].exerciseName);
@@ -107,7 +86,11 @@ class CreateWorkoutProvider extends ChangeNotifier {
   }
 
   List<EditableLift> get selectedLifts => _selectedLifts;
+
   Exercise? get unselectedExercise => _unselectedExercise;
+  EditableLift? get unselectedLift => _unselectedLift;
+
+
   set unselectedLift(EditableLift? value) {
     _unselectedLift = value;
     notifyListeners();
@@ -138,7 +121,6 @@ class CreateWorkoutProvider extends ChangeNotifier {
 
       notifyListeners();
     });
-    notifyListeners();
   }
 
   Stream<int> stopWatchStream() {
@@ -196,10 +178,20 @@ class CreateWorkoutProvider extends ChangeNotifier {
         timerSubscription = null;
         notifyListeners();
       });
+    else {
+
+      print("eferfqef");
+      timerSubscription = null;
+      hrs = "00";
+      mins = "00";
+      secs = "00";
+      saveTimeToSharedPreference(0);
+      notifyListeners();
+    }
   }
 
   void pauseTimer() {
-    timerSubscription!.pause();
+    if (timerSubscription != null) timerSubscription!.pause();
     notifyListeners();
   }
 
@@ -225,8 +217,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
   }
 
   Future<void> saveListToSharePreference() async {
-    await userPreferences!
-        .setString("lifts", EditableLift.encode(_selectedLifts));
+    await userPreferences!.setString("lifts", EditableLift.encode(_selectedLifts));
   }
 
   Future<void> saveTitleToSharedPreference(String title) async {
@@ -242,7 +233,6 @@ class CreateWorkoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  EditableLift? get unselectedLift => _unselectedLift;
 
   void reset() {
     titleContoller.clear();
@@ -257,5 +247,16 @@ class CreateWorkoutProvider extends ChangeNotifier {
     appRefereshed = false;
     ticksReefrshed = false;
     timeRefreshed = false;
+  }
+
+  void repeatExercise(List<EditableLift> lifts, String title) async {
+    _selectedLifts.clear();
+    _selectedLifts.addAll(lifts);
+    titleContoller.text = title;
+    await saveListToSharePreference();
+    await saveTimeToSharedPreference(0);
+    await saveTitleToSharedPreference(title);
+
+    stopTimer();
   }
 }

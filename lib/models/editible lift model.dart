@@ -6,7 +6,6 @@ class EditableLift{
   String? _exerciseName;
   int? _exerciseId;
   String?   _bodyPart;
-
   int _mass = 1;
   int _rep = 1;
   double _rm = 1.0;
