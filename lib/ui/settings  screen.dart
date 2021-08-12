@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:workoutnote/providers/calendar%20provider.dart';
 
 import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/user%20management%20%20provider.dart';
+import 'package:workoutnote/providers/create%20workout%20provider.dart';
+import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
+import 'package:workoutnote/providers/home%20%20%20screen%20provider.dart';
 import 'package:workoutnote/ui/auth%20screen%20.dart';
 import 'package:workoutnote/ui/language%20%20change%20screen.dart';
 import 'package:workoutnote/ui/profile%20update%20screen.dart';
@@ -20,9 +23,12 @@ class SeetingsScreen extends StatefulWidget {
 class _SeetingsScreenState extends State<SeetingsScreen> {
   @override
   Widget build(BuildContext context) {
-    var userProvider = Provider.of<UserManagement>(context, listen: false);
-    var configProvider = Provider.of<ConfigProvider>(context, listen: true );
 
+    var configProvider = Provider.of<ConfigProvider>(context, listen: true );
+    var homeProvider = Provider.of<MainScreenProvider>(context, listen: false );
+    var dialogProvider = Provider.of<SearchDialogProvider>(context, listen: false );
+    var createWorkOutProvider = Provider.of<CreateWorkoutProvider>(context, listen: false );
+    var calendarProvider = Provider.of<CalendarProvider>(context, listen: false );
     return ListView.separated(
 
         itemBuilder: (context, index) {
@@ -142,7 +148,11 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
           else if (index == 10)
             return InkWell(
               onTap: (){
-                userProvider.logout();
+                configProvider.logout();
+                homeProvider.reset();
+                dialogProvider.reset();
+                calendarProvider.reset();
+                createWorkOutProvider.reset();
                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => AuthScreen()), (Route<dynamic> route) => false);
 
               },

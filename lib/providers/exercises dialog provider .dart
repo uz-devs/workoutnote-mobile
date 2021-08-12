@@ -23,7 +23,6 @@ class SearchDialogProvider extends ChangeNotifier {
   String activeBodyPart = "";
 
   //api calls
-
   Future<void> fetchExercises() async {
     try {
       var response = await WebServices.fetchExercises();
@@ -34,17 +33,17 @@ class SearchDialogProvider extends ChangeNotifier {
             jsonDecode(utf8.decode(response.bodyBytes)));
         if (workoutsResponse.success) {
           allExercises.addAll(workoutsResponse.exercises ?? []);
-          var response = await WebServices.fetchFavoriteExercises(userPreferences!.getString("sessionKey")??"");
-          var execResponse = ExercisesResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
-          if(execResponse.success){
+          var response = await WebServices.fetchFavoriteExercises(
+              userPreferences!.getString("sessionKey") ?? "");
+          var execResponse = ExercisesResponse.fromJson(
+              jsonDecode(utf8.decode(response.bodyBytes)));
+          if (execResponse.success) {
             favoriteExercises.addAll(execResponse.exercises ?? []);
             for (int i = 0; i < favoriteExercises.length; i++) {
-
               for (int j = 0; j < allExercises.length; j++) {
                 if (allExercises[j].name == favoriteExercises[i].name) {
                   allExercises[j].isFavorite = true;
                   favoriteExercises[i].isFavorite = true;
-
                 }
               }
             }
@@ -88,25 +87,28 @@ class SearchDialogProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> setFavoriteExercise(String sessionKey, int exerciseId, Exercise exercise) async {
+  Future<void> setFavoriteExercise(
+      String sessionKey, int exerciseId, Exercise exercise) async {
     try {
-      var response = await WebServices.setMyFavoriteExercise(sessionKey, exerciseId);
+      var response =
+          await WebServices.setMyFavoriteExercise(sessionKey, exerciseId);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
-        _updateExerciseFavoriteStatus( exerciseId,  1);
+        _updateExerciseFavoriteStatus(exerciseId, 1);
       }
     } catch (e) {
       print(e);
     }
   }
 
-  Future<void> unsetFavoriteExercise(String sessionKey, int exerciseId, Exercise exercise) async {
+  Future<void> unsetFavoriteExercise(
+      String sessionKey, int exerciseId, Exercise exercise) async {
     try {
       var response =
-      await WebServices.unsetMyFavoriteExercise(sessionKey, exerciseId);
+          await WebServices.unsetMyFavoriteExercise(sessionKey, exerciseId);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
-        _updateExerciseFavoriteStatus( exerciseId, 0);
+        _updateExerciseFavoriteStatus(exerciseId, 0);
       }
     } catch (e) {
       print(e);
@@ -114,81 +116,67 @@ class SearchDialogProvider extends ChangeNotifier {
   }
 
   //utils
-  void filterExercises(List<Exercise> showExercises){
-    if(showFavorite){
-      if(activeBodyPart.isNotEmpty){
-        for(int i = 0; i<favoriteExercises.length; i++){
-          if(favoriteExercises[i].bodyPart == activeBodyPart)
+  void filterExercises(List<Exercise> showExercises) {
+    if (showFavorite) {
+      if (activeBodyPart.isNotEmpty) {
+        for (int i = 0; i < favoriteExercises.length; i++) {
+          if (favoriteExercises[i].bodyPart == activeBodyPart)
             showExercises.add(favoriteExercises[i]);
         }
-      }
-      else{
+      } else {
         showExercises.addAll(favoriteExercises);
       }
-    }
-    else{
-      if(activeBodyPart.isNotEmpty){
-        for(int i = 0; i<allExercises.length; i++){
-          if(allExercises[i].bodyPart == activeBodyPart)
+    } else {
+      if (activeBodyPart.isNotEmpty) {
+        for (int i = 0; i < allExercises.length; i++) {
+          if (allExercises[i].bodyPart == activeBodyPart)
             showExercises.add(allExercises[i]);
         }
-      }
-      else{
+      } else {
         showExercises.addAll(allExercises);
       }
-
     }
-
   }
-  void  searchExercises(String searchWord, List<Exercise> showExercises){
+
+  void searchExercises(String searchWord, List<Exercise> showExercises) {
     print(searchWord);
     List<Exercise> temps = [];
-    if(searchWord.isNotEmpty){
-      for(int i = 0; i<showExercises.length; i++){
-        if(showExercises[i].name!.contains(searchWord)){
+    if (searchWord.isNotEmpty) {
+      for (int i = 0; i < showExercises.length; i++) {
+        if (showExercises[i].name!.contains(searchWord)) {
           temps.add(showExercises[i]);
           print("hey");
           print(showExercises[i].name);
         }
       }
 
-        showExercises.clear();
-        showExercises.addAll(temps);
-      }
-
-
-
-  }
-  void _updateExerciseFavoriteStatus( int  id, int rem) {
-    if(showFavorite){
-      favoriteExercises.removeWhere((element) => element.id == id);
-      for(int i = 0; i<allExercises.length; i++){
-        if(allExercises[i].id == id)
-          allExercises[i].isFavorite = false;
-      }
+      showExercises.clear();
+      showExercises.addAll(temps);
     }
-    else{
-      if(rem == 1) {
-        for (int i = 0; i < allExercises.length; i++) {
-          if (allExercises[i].id == id)
-            allExercises[i].isFavorite = true;
-        }
-        favoriteExercises.addAll(
-            allExercises.where((element) => element.id == id));
+  }
+
+  void _updateExerciseFavoriteStatus(int id, int rem) {
+    if (showFavorite) {
+      favoriteExercises.removeWhere((element) => element.id == id);
+      for (int i = 0; i < allExercises.length; i++) {
+        if (allExercises[i].id == id) allExercises[i].isFavorite = false;
       }
-        else {
-        for(int i = 0; i<allExercises.length; i++){
-          if(allExercises[i].id == id)
-            allExercises[i].isFavorite = false;
+    } else {
+      if (rem == 1) {
+        for (int i = 0; i < allExercises.length; i++) {
+          if (allExercises[i].id == id) allExercises[i].isFavorite = true;
+        }
+        favoriteExercises
+            .addAll(allExercises.where((element) => element.id == id));
+      } else {
+        for (int i = 0; i < allExercises.length; i++) {
+          if (allExercises[i].id == id) allExercises[i].isFavorite = false;
         }
         favoriteExercises.removeWhere((element) => element.id == id);
-        }
+      }
     }
     notifyListeners();
-
   }
-
-
 
   void onBodyPartBressed(String bodyPart) {
     if (activeBodyPart.isEmpty || activeBodyPart != bodyPart) {
@@ -197,5 +185,16 @@ class SearchDialogProvider extends ChangeNotifier {
       activeBodyPart = "";
     }
     notifyListeners();
+  }
+
+  void reset() {
+    favoriteExercises.clear();
+    allExercises.clear();
+    myBodyParts.clear();
+    exercisesByBodyParts.clear();
+    responseCode = LOADING;
+    requestDone = false;
+    showFavorite = false;
+    activeBodyPart = "";
   }
 }

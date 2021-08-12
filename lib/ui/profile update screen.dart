@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/user%20management%20%20provider.dart';
 
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
@@ -51,7 +50,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         body: Container(
             margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
             child:
-                Consumer<UserManagement>(builder: (context, provider, child) {
+                Consumer<ConfigProvider>(builder: (context, provider, child) {
               return ListView.separated(
                   itemBuilder: (context, index) {
                     if (index == 0)

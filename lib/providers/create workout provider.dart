@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 import 'dart:convert';
 
@@ -11,10 +9,8 @@ import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/services/network%20%20service.dart';
 import 'package:workoutnote/utils/utils.dart';
 
-class CreateWorkoutProvider  extends ChangeNotifier{
-
-
-
+class CreateWorkoutProvider extends ChangeNotifier {
+  //vars
   TextEditingController titleContoller = TextEditingController();
   String secs = "00";
   String mins = "00";
@@ -28,62 +24,81 @@ class CreateWorkoutProvider  extends ChangeNotifier{
   bool appRefereshed = false;
   bool ticksReefrshed = false;
   bool timeRefreshed = false;
-  Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, List<WorkOut> workOuts, Function updateHome) async {
 
-    bool  canCreateSession = false;
-    for(int i = 0; i<_selectedLifts.length; i++){
-      if(_selectedLifts[i].isSelected) {
+  //api calls
+  Future<void> createWorkOutSession(String sessionKey, String title,
+      int timestamp, List<WorkOut> workOuts, Function updateHome) async {
+    bool canCreateSession = false;
+    for (int i = 0; i < _selectedLifts.length; i++) {
+      if (_selectedLifts[i].isSelected) {
         canCreateSession = true;
         break;
       }
     }
-    if(canCreateSession){
+    if (canCreateSession) {
       try {
         List<Lift> lifts = [];
         int count = 0;
-        var response = await WebServices.insertWorkOut(sessionKey, title, timestamp, duration);
-        if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+        var response = await WebServices.insertWorkOut(
+            sessionKey, title, timestamp, duration);
+        if (response.statusCode == 200 &&
+            jsonDecode(response.body)["success"]) {
           for (int i = 0; i < _selectedLifts.length; i++) {
-            var insertLift = await WebServices.insertLift(sessionKey, timestamp, _selectedLifts[i].mass, _selectedLifts[i].exerciseId ?? -1, jsonDecode(response.body)["workout_session"]["id"]);
+            var insertLift = await WebServices.insertLift(
+                sessionKey,
+                timestamp,
+                _selectedLifts[i].mass,
+                _selectedLifts[i].exerciseId ?? -1,
+                jsonDecode(response.body)["workout_session"]["id"]);
             var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
-           print( jsonDecode(insertLift.body)["success"]);
-            if (insertLift.statusCode == 200 && jsonDecode(insertLift.body)["success"]) {
+            print(jsonDecode(insertLift.body)["success"]);
+            if (insertLift.statusCode == 200 &&
+                jsonDecode(insertLift.body)["success"]) {
               count++;
-              lifts.add(Lift.create(lift.liftId, lift.timestamp, lift.oneRepMax, lift.exerciseId, lift.exerciseName, lift.liftMas, lift.repetitions));
+              lifts.add(Lift.create(
+                  lift.liftId,
+                  lift.timestamp,
+                  lift.oneRepMax,
+                  lift.exerciseId,
+                  lift.exerciseName,
+                  lift.liftMas,
+                  lift.repetitions));
             }
           }
           if (count == _selectedLifts.length) {
-            var workout = WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
-             workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false ));
-             updateHome();
+            var workout =
+                WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
+            workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp,
+                lifts, workout.duration, false));
+            updateHome();
             _selectedLifts.removeWhere((element) => element.isSelected);
             stopTimer();
           }
         }
         notifyListeners();
-      }
-
-      catch(e){
+      } catch (e) {
         print(e);
-
       }
-    }
-    else{
-      showToast("You need to add at least one exercise for one workout session!");
+    } else {
+      showToast(
+          "You need to add at least one exercise for one workout session!");
     }
   }
+
+  //utils
   set unselectedExercise(Exercise? value) {
     _unselectedExercise = value;
     notifyListeners();
   }
 
-
   void firstEnterApp() {
     appRefereshed = true;
-    if (userPreferences!.getString("title") != null) titleContoller.text = userPreferences!.getString("title") ?? "";
+    if (userPreferences!.getString("title") != null)
+      titleContoller.text = userPreferences!.getString("title") ?? "";
     print(titleContoller.text);
     if (userPreferences!.getString("lifts") != null) {
-      List<EditableLift> lifts = EditableLift.decode(userPreferences!.getString("lifts") ?? "");
+      List<EditableLift> lifts =
+          EditableLift.decode(userPreferences!.getString("lifts") ?? "");
       for (int i = 0; i < lifts.length; i++) {
         _selectedLifts.add(lifts[i]);
         print(selectedLifts[i].exerciseName);
@@ -98,8 +113,6 @@ class CreateWorkoutProvider  extends ChangeNotifier{
     notifyListeners();
   }
 
-
-
   void updateExercise(int index) {
     if (_selectedLifts[index].isSelected == false)
       _selectedLifts[index].isSelected = true;
@@ -113,7 +126,6 @@ class CreateWorkoutProvider  extends ChangeNotifier{
     _selectedLifts.removeWhere((element) => element.isSelected);
     notifyListeners();
   }
-
 
   Future<void> startTimer() async {
     var timerStream = stopWatchStream();
@@ -198,7 +210,7 @@ class CreateWorkoutProvider  extends ChangeNotifier{
 
   void updateMass(int index, int val) {
     _selectedLifts[index].mass = val;
-    updateRM(val,  _selectedLifts[index].rep, index);
+    updateRM(val, _selectedLifts[index].rep, index);
     notifyListeners();
   }
 
@@ -212,9 +224,9 @@ class CreateWorkoutProvider  extends ChangeNotifier{
     _selectedLifts[index].rm = mass + mass * rep * 0.025;
   }
 
-
   Future<void> saveListToSharePreference() async {
-    await userPreferences!.setString("lifts", EditableLift.encode(_selectedLifts));
+    await userPreferences!
+        .setString("lifts", EditableLift.encode(_selectedLifts));
   }
 
   Future<void> saveTitleToSharedPreference(String title) async {
@@ -229,8 +241,21 @@ class CreateWorkoutProvider  extends ChangeNotifier{
     _selectedLifts.add(exercise);
     notifyListeners();
   }
+
   EditableLift? get unselectedLift => _unselectedLift;
 
-
-
+  void reset() {
+    titleContoller.clear();
+    secs = "00";
+    mins = "00";
+    hrs = "00";
+    if (timerSubscription != null) timerSubscription!.cancel();
+    _selectedLifts.clear();
+    unselectedLift = EditableLift();
+    _unselectedExercise = null;
+    duration = 0;
+    appRefereshed = false;
+    ticksReefrshed = false;
+    timeRefreshed = false;
+  }
 }

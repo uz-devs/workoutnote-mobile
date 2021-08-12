@@ -9,11 +9,11 @@ import 'package:workoutnote/utils/utils.dart';
 
 class MainScreenProvider extends ChangeNotifier {
   //vars
-
   List<WorkOut> workOuts = [];
   int responseCode1 = 0;
   bool requestDone1 = false;
 
+  //api calls
   Future<void> fetchWorkOuts(String sessionKey, int timestamp) async {
     try {
       var response = await WebServices.fetchWorkOuts(sessionKey, timestamp);
@@ -64,6 +64,8 @@ class MainScreenProvider extends ChangeNotifier {
       print(e);
     }
   }
+
+  //utils
   void _updateWorkoutFavoriteStatus(int id){
     for(int i = 0; i<workOuts.length; i++){
       if(workOuts[i].id == id){
@@ -71,6 +73,12 @@ class MainScreenProvider extends ChangeNotifier {
         break;
       }
     }
+  }
+
+  void reset(){
+    workOuts.clear();
+    responseCode1 = 0;
+    requestDone1 = false;
   }
 
 

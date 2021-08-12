@@ -104,7 +104,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                     margin: EdgeInsets.only(top: 15.0),
                     child: Text(
                       "00:00:${widget.workout.duration != 0 ? widget.workout.duration : 00}",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.deepPurpleAccent),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Color.fromRGBO(102, 51, 204, 1)),
                     ),
                   );
                 } else if (index == count - 1) {
@@ -113,7 +113,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                     margin: EdgeInsets.only(bottom: 10, left: 20, right: 20),
                     child: MaterialButton(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      color: Colors.deepPurpleAccent,
+                      color: Color.fromRGBO(102, 51, 204, 1),
                       textColor: Colors.white,
                       child: Text("${repeat[configProvider.activeLanguage()]}"),
                       onPressed: () {},

@@ -35,7 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
 
 
-    var configProvider = Provider.of<ConfigProvider>(context, listen: false);
+    var configProvider = Provider.of<ConfigProvider>(context, listen: true);
+
+
+    if(userPreferences!.getString("sessionKey") == null){
+        navProvider.reset();
+    }
 
     return  ListView.builder(
         itemCount: navProvider.workOuts.length+2,  itemBuilder: (context,  index) {

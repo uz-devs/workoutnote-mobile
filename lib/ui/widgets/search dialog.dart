@@ -24,8 +24,6 @@ class _SearchDialogState extends State<SearchDialog> {
     return Consumer<SearchDialogProvider>(builder: (context, dialogProvider, child) {
 
       List<Exercise> showExercises = [];
-
-
       if (!dialogProvider.requestDone) {
         dialogProvider.requestDone = true;
         dialogProvider.fetchBodyParts().then((value) {});
@@ -42,8 +40,7 @@ class _SearchDialogState extends State<SearchDialog> {
               thickness: 3,
               child: ListView.separated(
                   itemBuilder: (context, index) {
-                    if (index == 0)
-                      return Container(
+                    if (index == 0) return Container(
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
@@ -68,8 +65,7 @@ class _SearchDialogState extends State<SearchDialog> {
                           ],
                         ),
                       );
-                    else if (index == 1)
-                      return Container(
+                    else if (index == 1) return Container(
                         height: 40,
                         margin: EdgeInsets.only(left: 10, right: 10.0),
                         child: TextFormField(
@@ -215,5 +211,20 @@ class _SearchDialogState extends State<SearchDialog> {
     });
   }
 
+
+
+  //for future use
+  Widget _buildSearchWidget(){
+    return Container();
+  }
+  Widget _buildTitle(){
+    return Container();
+  }
+  Widget _buildFilterButtons(){
+    return Container();
+  }
+  Widget _buildExercise(){
+    return  Container();
+  }
 
 }

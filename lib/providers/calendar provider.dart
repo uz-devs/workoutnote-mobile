@@ -9,8 +9,6 @@ import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/services/network%20%20service.dart';
 import 'package:workoutnote/utils/utils.dart';
 
-
-
 class CalendarProvider extends ChangeNotifier{
  List<WorkOut> _workOuts = [];
  int _responseCode1 = 0;
@@ -43,4 +41,11 @@ class CalendarProvider extends ChangeNotifier{
  }
 
  List<WorkOut> get workOuts => _workOuts;
+
+ void reset(){
+   _workOuts.clear();
+    _responseCode1 = 0;
+    _requestDone1 = false;
+
+ }
 }

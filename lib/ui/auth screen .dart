@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/user%20management%20%20provider.dart';
 
 import 'package:workoutnote/ui/nav%20controller.dart';
 import 'package:workoutnote/ui/signup%20%20screen.dart';
@@ -20,7 +19,7 @@ class AuthScreen extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Consumer<UserManagement>(
+        child: Consumer<ConfigProvider>(
           builder: (context, user, child) {
             return Container(
               child: SingleChildScrollView(
