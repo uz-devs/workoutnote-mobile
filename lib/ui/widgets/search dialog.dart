@@ -17,52 +17,22 @@ class SearchDialog extends StatefulWidget {
 
 class _SearchDialogState extends State<SearchDialog> {
   TextEditingController searchController = TextEditingController();
+  String _searchWord = "";
 
   @override
   Widget build(BuildContext context) {
-
-
-
-    return Consumer<SearchDialogProvider>(builder: (context, exProvider, child) {
+    return Consumer<SearchDialogProvider>(builder: (context, dialogProvider, child) {
 
       List<Exercise> showExercises = [];
 
-      if (!exProvider.requestDone) {
-        exProvider.requestDone = true;
-        exProvider.fetchBodyParts().then((value) {});
-        exProvider.fetchExercises().then((value) {});
-        exProvider.fetchFavoriteExercises(userPreferences!.getString("sessionKey")??"fuck").then((value){});
+
+      if (!dialogProvider.requestDone) {
+        dialogProvider.requestDone = true;
+        dialogProvider.fetchBodyParts().then((value) {});
+        dialogProvider.fetchExercises().then((value) {});
       }
-
-
-      if(exProvider.showFavorite){
-        print("show  favorite");
-        print(exProvider.favoriteExercises.length);
-        if(exProvider.activeBodyPart.isNotEmpty){
-          for(int i = 0; i<exProvider.favoriteExercises.length; i++){
-            if(exProvider.favoriteExercises[i].bodyPart == exProvider.activeBodyPart)
-              showExercises.add(exProvider.favoriteExercises[i]);
-          }
-        }
-        else{
-          showExercises.addAll(exProvider.favoriteExercises);
-        }
-      }
-      else{
-        if(exProvider.activeBodyPart.isNotEmpty){
-          for(int i = 0; i<exProvider.exercises.length; i++){
-             if(exProvider.exercises[i].bodyPart == exProvider.activeBodyPart)
-               showExercises.add(exProvider.exercises[i]);
-          }
-        }
-        else{
-          showExercises.addAll(exProvider.exercises);
-        }
-
-      }
-
-
-
+      dialogProvider.filterExercises(showExercises);
+      dialogProvider.searchExercises(_searchWord,  showExercises);
       return Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         insetPadding: EdgeInsets.all(20),
@@ -103,11 +73,20 @@ class _SearchDialogState extends State<SearchDialog> {
                         height: 40,
                         margin: EdgeInsets.only(left: 10, right: 10.0),
                         child: TextFormField(
+                          onFieldSubmitted: (word){
+                            setState(() {
+                               dialogProvider.searchExercises(word, showExercises);
+                            });
+                            },
                           controller: searchController,
                           onChanged: (searchWord) {
-                            exProvider.searchResults(searchWord);
+                            setState(() {
+                              _searchWord = searchWord;
+                            });
                           },
                           decoration: InputDecoration(
+                            hintText: "Exercise name",
+                            hintStyle: TextStyle(color: Colors.grey),
                             prefixIcon: IconButton(
                               onPressed: () {},
                               icon: Icon(Icons.search, color: Color.fromRGBO(102, 51, 204, 1)),
@@ -115,6 +94,9 @@ class _SearchDialogState extends State<SearchDialog> {
                             suffixIcon: IconButton(
                               onPressed: () {
                                 searchController.clear();
+                                setState(() {
+                                  _searchWord = "";
+                                });
                               },
                               icon: Icon(Icons.close),
                               color: Color.fromRGBO(102, 51, 204, 1),
@@ -134,7 +116,7 @@ class _SearchDialogState extends State<SearchDialog> {
                         height: widget.height * 0.1,
                         child: ListView(
                             scrollDirection: Axis.horizontal,
-                            children: List.generate(exProvider.myBodyParts.length, (index) {
+                            children: List.generate(dialogProvider.myBodyParts.length, (index) {
                               if (index == 0) {
                                 return Container(
                                   margin: EdgeInsets.only(left: 10.0, right: 10.0),
@@ -142,17 +124,18 @@ class _SearchDialogState extends State<SearchDialog> {
                                       onTap: () {},
                                       child: FilterChip(
                                         onSelected: (bool  val){
+
                                           setState(() {
-                                            exProvider.showFavorite = !exProvider.showFavorite;
+                                            dialogProvider.showFavorite = !dialogProvider.showFavorite;
                                           });
                                           },
                                         shape: StadiumBorder(side: BorderSide(color: Color.fromRGBO(102, 51, 204, 1))),
 
                                         label: Text(
                                           "Favorites",
-                                          style: TextStyle(color: exProvider.showFavorite?Colors.white:  Color.fromRGBO(102, 51, 204, 1)),
+                                          style: TextStyle(color: dialogProvider.showFavorite?Colors.white:  Color.fromRGBO(102, 51, 204, 1)),
                                         ),
-                                        backgroundColor: exProvider.showFavorite?Color.fromRGBO(102, 51, 204, 1):Colors.transparent,
+                                        backgroundColor: dialogProvider.showFavorite?Color.fromRGBO(102, 51, 204, 1):Colors.transparent,
                                       )),
                                 );
                               }
@@ -162,11 +145,11 @@ class _SearchDialogState extends State<SearchDialog> {
                                     margin: EdgeInsets.only(right: 10.0),
                                     child:  FilterChip(
                                           onSelected: (bool val) {
-                                            exProvider.onBodyPartBressed(exProvider.myBodyParts[index].name);
+                                            dialogProvider.onBodyPartBressed(dialogProvider.myBodyParts[index].name);
                                             },
                                         shape: StadiumBorder(side: BorderSide(color: Color.fromRGBO(102, 51, 204, 1))),
-                                          label: Text(exProvider.myBodyParts[index].name, style: TextStyle(color: exProvider.activeBodyPart == exProvider.myBodyParts[index].name?Colors.white:Color.fromRGBO(102, 51, 204, 1)),),
-                                          backgroundColor: exProvider.activeBodyPart == exProvider.myBodyParts[index].name ? Color.fromRGBO(102, 51, 204, 1):Colors.transparent,
+                                          label: Text(dialogProvider.myBodyParts[index].name, style: TextStyle(color: dialogProvider.activeBodyPart == dialogProvider.myBodyParts[index].name?Colors.white:Color.fromRGBO(102, 51, 204, 1)),),
+                                          backgroundColor: dialogProvider.activeBodyPart == dialogProvider.myBodyParts[index].name ? Color.fromRGBO(102, 51, 204, 1):Colors.transparent,
                                         ));
                               }
                             })),
@@ -175,10 +158,10 @@ class _SearchDialogState extends State<SearchDialog> {
                       index = index - 3;
                       return InkWell(
                         onTap: () {
-                          if (exProvider.exercisesByBodyParts.isEmpty)
-                            Navigator.pop(context, exProvider.exercises[index]);
-                          else
-                            Navigator.pop(context, exProvider.exercisesByBodyParts[index]);
+
+
+                          Navigator.pop(context, showExercises[index]);
+
                         },
                         child: Container(
                           margin: EdgeInsets.only(left: 10),
@@ -200,14 +183,14 @@ class _SearchDialogState extends State<SearchDialog> {
                                   flex: 2,
                                   child: IconButton(
                                     onPressed: () async {
-                                      if (!exProvider.exercises[index].isFavorite) {
-                                        await exProvider.setFavoriteExercise(userPreferences!.getString("sessionKey") ?? "", exProvider.exercises[index].id ?? -1);
+                                      if (!showExercises[index].isFavorite) {
+                                        await dialogProvider.setFavoriteExercise(userPreferences!.getString("sessionKey") ?? "", showExercises[index].id ?? -1, showExercises[index]);
                                       } else {
-                                        await exProvider.unsetFavoriteExercise(userPreferences!.getString("sessionKey") ?? "", exProvider.exercises[index].id ?? -1);
+                                        await dialogProvider.unsetFavoriteExercise(userPreferences!.getString("sessionKey") ?? "", showExercises[index].id ?? -1, showExercises[index]);
                                       }
                                     },
                                     icon: Icon(
-                                      !exProvider.exercises[index].isFavorite ? Icons.favorite_border : Icons.favorite,
+                                      showExercises[index].isFavorite? Icons.favorite : Icons.favorite_border,
                                       color: Colors.red,
                                       size: 30,
                                     ),
@@ -226,9 +209,11 @@ class _SearchDialogState extends State<SearchDialog> {
                       ),
                     );
                   },
-                  itemCount: exProvider.exercisesByBodyParts.isEmpty ? exProvider.exercises.length + 3 : exProvider.exercisesByBodyParts.length + 3)),
+                  itemCount: showExercises.length+3)),
         ),
       );
     });
   }
+
+
 }

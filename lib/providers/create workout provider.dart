@@ -43,10 +43,10 @@ class CreateWorkoutProvider  extends ChangeNotifier{
         int count = 0;
         var response = await WebServices.insertWorkOut(sessionKey, title, timestamp, duration);
         if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
-          print(response.body);
           for (int i = 0; i < _selectedLifts.length; i++) {
             var insertLift = await WebServices.insertLift(sessionKey, timestamp, _selectedLifts[i].mass, _selectedLifts[i].exerciseId ?? -1, jsonDecode(response.body)["workout_session"]["id"]);
             var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
+           print( jsonDecode(insertLift.body)["success"]);
             if (insertLift.statusCode == 200 && jsonDecode(insertLift.body)["success"]) {
               count++;
               lifts.add(Lift.create(lift.liftId, lift.timestamp, lift.oneRepMax, lift.exerciseId, lift.exerciseName, lift.liftMas, lift.repetitions));

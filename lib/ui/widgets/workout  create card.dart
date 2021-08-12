@@ -184,7 +184,7 @@ class CreateWorkOutCard extends StatelessWidget {
                           margin: EdgeInsets.only(
                             bottom: 10,
                           ),
-                          child: _buildExerciseListItem("", "${exProvider.unselectedExercise == null ? "dummy" : exProvider.unselectedExercise!.name}(${(exProvider.unselectedExercise == null ? "" : exProvider.unselectedExercise!.bodyPart)})", "KG",
+                          child: _buildExerciseListItem("", "${exProvider.unselectedExercise == null ? "운동 이름" : exProvider.unselectedExercise!.name}(${(exProvider.unselectedExercise == null ? "" : exProvider.unselectedExercise!.bodyPart)})", "KG",
                               "REP", "RM", Colors.grey, 3, exProvider, index, context, configProvider));
                     } else if (index > 4 && index < count - 2 && index < count - 1) {
                       index = index - 5;
@@ -271,6 +271,7 @@ class CreateWorkOutCard extends StatelessWidget {
             onTap: () async {
               if (mode == 1) {
 
+                print("hell====");
               } else if (mode == 2) {
                 mainScreenProvider.unselectedExercise = Exercise(mainScreenProvider.selectedLifts[index].exerciseId, mainScreenProvider.selectedLifts[index].exerciseName, mainScreenProvider.selectedLifts[index].bodyPart, "", false , NameTranslation(""));
               } else {
