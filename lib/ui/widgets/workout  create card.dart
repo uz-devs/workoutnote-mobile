@@ -226,7 +226,7 @@ class CreateWorkOutCard extends StatelessWidget {
                                 ),
                                 color: Color.fromRGBO(102, 51, 204, 1),
                                 onPressed: () async {
-                                  await exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "fuck", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, updateHome );
+                                  await exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, updateHome );
                                   await exProvider.saveListToSharePreference();
                                 },
                                 textColor: Colors.white,
