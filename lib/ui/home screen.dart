@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
       else {
         index = index - 2;
-        return WorkOutNote(widget.height, navProvider.workOuts[index]);
+        return WorkOutNote(widget.height, navProvider.workOuts[index], 1);
       }
       });
   }

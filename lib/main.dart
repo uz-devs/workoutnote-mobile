@@ -37,7 +37,6 @@ class MyApp extends StatelessWidget {
 
         fontFamily: 'NotoSansKR',
         focusColor: Color.fromRGBO(102, 51, 204, 1),
-        cursorColor: Color.fromRGBO(102, 51, 204, 1)
     ),
     home: userPreferences!.getString("sessionKey")==null?AuthScreen():NavController(),
 

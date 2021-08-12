@@ -35,7 +35,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
-            color: Colors.deepPurpleAccent,
+            color:  Color.fromRGBO(102, 51, 204, 1),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -44,7 +44,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
           backgroundColor: Colors.white,
           title: Text(
             "${profileInfo[configProvider.activeLanguage()]}",
-            style: TextStyle(color: Colors.deepPurpleAccent),
+            style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
           ),
         ),
         body: Container(
@@ -61,11 +61,14 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                           children: [
                             Text(
                               "${name[configProvider.activeLanguage()]}",
-                              style: TextStyle(color: Colors.deepPurpleAccent),
+                              style: TextStyle(color:  Color.fromRGBO(102, 51, 204, 1)),
                             ),
                             TextFormField(
                               controller: nameController..text = userPreferences!.getString("name") ?? "",
                               decoration: InputDecoration(
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromRGBO(102, 51, 204, 1)),
+                                  ),
                                   isDense: true,
                                   contentPadding: EdgeInsets.only(top: 5.0),
                                   hintText: "${nameHint[configProvider.activeLanguage()]}"),
@@ -81,13 +84,13 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                           children: [
                             Text(
                               "Gender",
-                              style: TextStyle(color: Colors.deepPurpleAccent),
+                              style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Radio(
-                                  activeColor: Colors.deepPurpleAccent,
+                                  activeColor:  Color.fromRGBO(102, 51, 204, 1),
                                   value: userPreferences!.getString("gender") ==
                                           "MALE"
                                       ? 1
@@ -106,7 +109,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                 Text(
                                     "${male[configProvider.activeLanguage()]}"),
                                 Radio(
-                                  activeColor: Colors.deepPurpleAccent,
+                                  activeColor: Color.fromRGBO(102, 51, 204, 1),
                                   value: userPreferences!.getString("gender") ==
                                           "FEMALE"
                                       ? 1
@@ -195,7 +198,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                             margin: EdgeInsets.only(left: 15, top: 15),
                             child: Text(
                               "${email[configProvider.activeLanguage()]}",
-                              style: TextStyle(color: Colors.deepPurpleAccent),
+                              style: TextStyle(color:  Color.fromRGBO(102, 51, 204, 1)),
                             ),
                           ),
                           Container(
@@ -204,6 +207,9 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                               controller: TextEditingController()
                                 ..text = userPreferences!.getString("email") ?? "",
                               decoration: InputDecoration(
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromRGBO(102, 51, 204, 1)),
+                                  ),
                                   isDense: true,
                                   contentPadding: EdgeInsets.only(top: 5.0),
                                   hintText:
@@ -223,13 +229,16 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                               child: Text(
                                 "${phoneNumber[configProvider.activeLanguage()]}",
                                 style:
-                                    TextStyle(color: Colors.deepPurpleAccent),
+                                    TextStyle(color:  Color.fromRGBO(102, 51, 204, 1)),
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 15.0, right: 15.0),
                               child: TextFormField(
                                 decoration: InputDecoration(
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Color.fromRGBO(102, 51, 204, 1)),
+                                    ),
                                     isDense: true,
                                     contentPadding: EdgeInsets.only(top: 5.0),
                                     hintText:
@@ -243,7 +252,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                       return Container(
                         margin: EdgeInsets.all(15.0),
                         child: CupertinoButton(
-                            color: Colors.deepPurpleAccent,
+                            color:  Color.fromRGBO(102, 51, 204, 1),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(120)),
                             child: Text(
@@ -273,7 +282,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                       return Container(
                           margin: EdgeInsets.only(left: 15, right: 15),
                           child: Divider(
-                            color: Colors.deepPurpleAccent,
+                            color:  Color.fromRGBO(102, 51, 204, 1),
                           ));
                     return const Divider();
                   },

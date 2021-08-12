@@ -11,6 +11,7 @@ import 'package:workoutnote/utils/utils.dart';
 
 class CalendarProvider extends ChangeNotifier{
  List<WorkOut> _workOuts = [];
+ DateTime? selectedDate;
  int _responseCode1 = 0;
  bool _requestDone1 = false;
 

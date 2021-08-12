@@ -43,7 +43,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                     margin: EdgeInsets.only(left: 5.0),
                     child: Text(
                       "${profileInfo[configProvider.activeLanguage()]}",
-                      style: TextStyle(fontWeight: FontWeight.bold,  color: Colors.deepPurpleAccent, fontSize: 18),
+                      style: TextStyle(fontWeight: FontWeight.bold,  color: Color.fromRGBO(102, 51, 204, 1), fontSize: 18),
                     ),
                   ),
                 ],
@@ -82,7 +82,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                     margin: EdgeInsets.only(left: 5.0),
                     child: Text(
                       "${appInfo[configProvider.activeLanguage()]}",
-                      style: TextStyle(fontWeight: FontWeight.bold,  color: Colors.deepPurpleAccent,  fontSize: 18),
+                      style: TextStyle(fontWeight: FontWeight.bold,  color: Color.fromRGBO(102, 51, 204, 1),  fontSize: 18),
                     ),
                   ),
                 ],
@@ -123,7 +123,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                     margin: EdgeInsets.only(left: 5.0),
                     child: Text(
                       "${customerCenter[configProvider.activeLanguage()]}",
-                      style: TextStyle(fontWeight: FontWeight.bold,  color: Colors.deepPurpleAccent,  fontSize: 18),
+                      style: TextStyle(fontWeight: FontWeight.bold,  color:  Color.fromRGBO(102, 51, 204, 1),  fontSize: 18),
                     ),
                   ),
                 ],

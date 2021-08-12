@@ -26,7 +26,7 @@ class _NavControllerState extends State<NavController> {
     double width = MediaQuery.of(context).size.width;
     var screens = [_buildHomeScreen(height, width), _buildCalendarScreen(height),  _builCalculateScreen(height), _buildSettingsScreen(height),];
 
-    if(_selectedIndex == 0 ||  _selectedIndex ==1 || _selectedIndex == 2)
+    if(_selectedIndex == 0  || _selectedIndex == 2)
       backGroundColor =  Color.fromRGBO(231, 223, 247, 1);
 
     else backGroundColor = Color.fromRGBO(255, 255, 255, 1);
@@ -37,6 +37,9 @@ class _NavControllerState extends State<NavController> {
       body: screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
 
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+
         items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: Icon(Icons.home_outlined,  size: 30,), label: "Home"),
         BottomNavigationBarItem(icon: Icon(Icons.calendar_today,  size: 30,), label: "Calendar"),
@@ -45,7 +48,7 @@ class _NavControllerState extends State<NavController> {
 
       ],
         onTap: _onItemSelected,
-        selectedItemColor: Colors.deepPurpleAccent,
+        selectedItemColor:  Color.fromRGBO(102, 51, 204, 1),
         currentIndex: _selectedIndex,
 
         unselectedItemColor: Colors.black38,

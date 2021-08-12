@@ -17,80 +17,46 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
 
 
-  DateTime? selectedDay;
 
   @override
   Widget build(BuildContext context) {
     var calendarProvider = Provider.of<CalendarProvider>(context, listen: true);
 
     return Container(
+      margin: EdgeInsets.only(top: 10.0),
         child: ListView.builder(itemCount: calendarProvider.workOuts.isNotEmpty?calendarProvider.workOuts.length +2:3,  itemBuilder: (ctx, index) {
       if(index == 0)
         return TableCalendar(
-          firstDay: DateTime.utc(2020, 08, 07),
-          lastDay: DateTime.utc(2030, 3, 14),
-          rowHeight: 40,
-          calendarBuilders: CalendarBuilders(
-            todayBuilder: (context,  day,  focusedDay){
-              return Center(
-                child: Container(
 
-
-                  height: 20,
-                  width: 20,
-                  color: Colors.deepPurpleAccent,
-                  child: Text(
-                    "${focusedDay.day}", style: TextStyle(
-
-                    color: Colors.white,
-
-                  ),),),
-              );
-            } ,
-            dowBuilder: (context, day) {if (day.weekday == DateTime.sunday ||day.weekday == DateTime.saturday ) {
-                final text = DateFormat.E().format(day);
-                return Center(
-                  child: Text(
-                    text,
-                    style: TextStyle(color: Colors.red),
-                  ),
-                );
-              }},
-            selectedBuilder: (context, day, focusedDay){
-              print("graergreth");
-              print(day);
-              print(focusedDay);
-
-              return Container(
-               color: Colors.deepPurpleAccent,
-                child: Text("$focusedDay"),
-              );
-
-            }
-          ),
-          focusedDay: selectedDay??DateTime.now(),
-          onDaySelected: (selectedDay, focusDay) {
-
-             calendarProvider.fetchWorkOutsBYDate(userPreferences!.getString("sessionKey")??"", selectedDay.millisecondsSinceEpoch).then((value) {
+          calendarStyle: CalendarStyle(
+              outsideDaysVisible: false ,
+              selectedDecoration: BoxDecoration(shape: BoxShape.circle, border:Border.all(color: Colors.red, width: 2), color: Colors.white), selectedTextStyle: TextStyle(color: Colors.black),
+              todayDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Color.fromRGBO(102, 51, 204, 1), width: 2),   color: Colors.white), todayTextStyle: TextStyle(color: Colors.black)),
+          firstDay: DateTime.utc(2015, 08, 07),
+          lastDay: DateTime.utc(2025, 08, 07),
+          focusedDay: DateTime.now(),
+          onDaySelected: (selectedDay, focusDay) {calendarProvider.fetchWorkOutsBYDate(userPreferences!.getString("sessionKey")??"", selectedDay.millisecondsSinceEpoch).then((value) {
                setState(() {
-                 selectedDay = selectedDay;
+                 calendarProvider.selectedDate = selectedDay;
                });
              });
-
-
-             },
+            },
+          selectedDayPredicate: (day){
+            return calendarProvider.selectedDate == day;
+            },
         );
       else  if(index == 1)
-        return Divider(thickness: 5, color: Colors.deepPurpleAccent.withOpacity(0.5),);
+        return Divider(thickness: 5, color: Color.fromRGBO(102, 51, 204, 0.5),);
+
       else  {
         if(calendarProvider.workOuts.isNotEmpty) {
           index = index - 2;
-          return WorkOutNote(widget.height, calendarProvider.workOuts[index]);
+          return WorkOutNote(widget.height, calendarProvider.workOuts[index], 2);
         }
       else return Center(child: Text("No workouts to show", style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: Colors.deepPurpleAccent
+          color: Color.fromRGBO(102, 51, 204, 1)
         ),),);
       }
     })

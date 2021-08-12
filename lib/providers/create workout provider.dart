@@ -17,6 +17,8 @@ class CreateWorkoutProvider extends ChangeNotifier {
   String hrs = "00";
   StreamSubscription? timerSubscription;
 
+  bool  boq = false;
+
   List<EditableLift> _selectedLifts = [];
   EditableLift? _unselectedLift = EditableLift();
   Exercise? _unselectedExercise;
@@ -110,9 +112,9 @@ class CreateWorkoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> startTimer() async {
+  void startTimer()   {
     var timerStream = stopWatchStream();
-    timerSubscription = timerStream.listen((int newTick) async {
+    timerSubscription =  timerStream.listen((int newTick) async {
       duration = newTick;
       hrs = ((newTick / (60 * 60)) % 60).floor().toString().padLeft(2, '0');
       mins = ((newTick / 60) % 60).floor().toString().padLeft(2, '0');
@@ -120,7 +122,9 @@ class CreateWorkoutProvider extends ChangeNotifier {
       await saveTimeToSharedPreference(newTick.toInt());
 
       notifyListeners();
+
     });
+    notifyListeners();
   }
 
   Stream<int> stopWatchStream() {
@@ -179,7 +183,6 @@ class CreateWorkoutProvider extends ChangeNotifier {
         notifyListeners();
       });
     else {
-
       print("eferfqef");
       timerSubscription = null;
       hrs = "00";

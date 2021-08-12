@@ -14,8 +14,9 @@ import 'package:workoutnote/utils/utils.dart';
 class WorkOutNote extends StatefulWidget {
   final height;
   WorkOut workout;
+  final  mode;
 
-  WorkOutNote(this.height, this.workout);
+  WorkOutNote(this.height, this.workout,  this.mode);
 
   @override
   _WorkOutNoteState createState() => _WorkOutNoteState();
@@ -105,13 +106,14 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                 } else if (index == count - 2) {
                   return Container(
                     alignment: Alignment.center,
-                    margin: EdgeInsets.only(top: 15.0),
+                    margin: EdgeInsets.only(top: 15.0,  bottom: widget.mode == 1?0.0:15.0),
                     child: Text(
                       "00:00:${widget.workout.duration != 0 ? widget.workout.duration : 00}",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Color.fromRGBO(102, 51, 204, 1)),
                     ),
                   );
                 } else if (index == count - 1) {
+                  if(widget.mode == 1)
                   return Container(
                     width: double.infinity,
                     margin: EdgeInsets.only(bottom: 10, left: 20, right: 20),
@@ -126,6 +128,8 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                         },
                     ),
                   );
+
+                  return  Container();
                 } else {
                   index = index - 1;
                   return Container(

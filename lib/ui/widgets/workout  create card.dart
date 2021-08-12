@@ -78,9 +78,13 @@ class CreateWorkOutCard extends StatelessWidget {
                             await exProvider.saveTitleToSharedPreference(c);
                           },
                           decoration: InputDecoration(
+
                             isDense: true,
                             contentPadding: EdgeInsets.only(top: 5.0),
                             hintText: "${title[configProvider.activeLanguage()]}",
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color.fromRGBO(102, 51, 204, 1)),
+                            ),
                           ),
                           controller: exProvider.titleContoller,
                         ),
@@ -115,11 +119,12 @@ class CreateWorkOutCard extends StatelessWidget {
                               ),
                             Container(
                               margin: EdgeInsets.only(right: 20.0, bottom: 10.0),
-                              child: (exProvider.timerSubscription == null || exProvider.timerSubscription!.isPaused)
-                                  ? IconButton(
+                              child: (exProvider.timerSubscription == null || exProvider.timerSubscription!.isPaused) ?
+                              IconButton(
                                       onPressed: () {
                                         if (exProvider.timerSubscription == null) {
                                           print("start timer");
+
                                           exProvider.startTimer();
                                         } else if (exProvider.timerSubscription!.isPaused) {
                                           exProvider.resumeTimer();

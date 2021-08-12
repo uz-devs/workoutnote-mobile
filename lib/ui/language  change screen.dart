@@ -39,7 +39,7 @@ class _LanguageChangeScreenState extends State<LanguageChangeScreen> {
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        title: Text("${languagesettingsscreenTitle[configProvider.activeLanguage()]}",  style: TextStyle(color: Colors.deepPurpleAccent),),
+        title: Text("${languagesettingsscreenTitle[configProvider.activeLanguage()]}",  style: TextStyle(color:  Color.fromRGBO(102, 51, 204, 1)),),
       ),
 
       body: Consumer<ConfigProvider>(builder: (context, config, widget) {
