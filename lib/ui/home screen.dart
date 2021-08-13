@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return  ListView.builder(
-        itemCount: navProvider.workOuts.length+2,  itemBuilder: (context,  index) {
+        itemCount: navProvider.workOuts.length+3,  itemBuilder: (context,  index) {
           if(index == 0)
         return Container (
           margin: EdgeInsets.only(left: 20, top: 30, bottom: 20),
@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ));
       }
       else {
-        index = index - 2;
+        index = index - 3;
         return WorkOutNote(widget.height, navProvider.workOuts[index], 1);
       }
       });
