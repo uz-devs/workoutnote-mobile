@@ -34,9 +34,9 @@ class WebServices {
     return response;
   }
 
-  static Future<http.Response> insertLift(String sessionKey, int timestamp, int liftMass, int exerciseId, int workoutSessioId) async {
+  static Future<http.Response> insertLift(String sessionKey, int timestamp, int liftMass, int exerciseId, int workoutSessioId, int repetitions,  double rm) async {
     final url = Uri.https(baseUrl, insert_lift);
-    final body = {'sessionKey': sessionKey, 'timestamp': timestamp, 'lift_mass': liftMass, 'exercise_id': exerciseId, 'workout_session_id': workoutSessioId, "repetitions": 1};
+    final body = {'sessionKey': sessionKey, 'timestamp': timestamp, 'lift_mass': liftMass, 'exercise_id': exerciseId, 'workout_session_id': workoutSessioId, "repetitions": repetitions, 'one_rep_max': rm };
 
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;

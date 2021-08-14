@@ -137,12 +137,13 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                     );
 
                   return Container();
-                } else {
+                }
+                else {
                   index = index - 1;
                   return Container(
                       margin: EdgeInsets.only(left: 15.0),
                       padding: EdgeInsets.only(bottom: 10.0),
-                      child: Text("${index + 1}. ${widget.workout.lifts![index].exerciseName}, ${widget.workout.lifts![index].liftMas}kg, ${widget.workout.lifts![index].repetitions}rep, 2 sets"));
+                      child: Text("${index + 1}. ${widget.workout.lifts![index].exerciseName}, ${widget.workout.lifts![index].liftMas}kg, ${widget.workout.lifts![index].repetitions}rep, ${widget.workout.lifts![index].oneRepMax} RM"));
                 }
               })),
     );

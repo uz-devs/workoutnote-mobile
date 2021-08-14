@@ -149,13 +149,8 @@ class AuthScreen extends StatelessWidget {
                                   style: TextStyle(color: Colors.grey, fontSize: 12.0),
                                 ),
                               ),
-                              Text("|",  style: TextStyle(color: Colors.grey),),
-                              TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    "비밀번호 찾기",
-                                    style: TextStyle(color: Colors.grey, fontSize: 12.0),
-                                  ))
+
+
                             ],
                           )),
                       Container(
