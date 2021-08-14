@@ -8,6 +8,7 @@ import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/providers/create%20workout%20provider.dart';
+import 'package:workoutnote/ui/widgets/all%20%20workouts%20dialog.dart';
 import 'package:workoutnote/ui/widgets/search%20dialog.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
@@ -162,7 +163,7 @@ class CreateWorkOutCard extends StatelessWidget {
                               ),
                               color: Color.fromRGBO(102, 51, 204, 1),
                               onPressed: () async {
-                                await _showdialog(context, configProvider, exProvider);
+                                await _showDialog1(context, configProvider, exProvider);
                               },
                               textColor: Colors.white,
                               child: Text("${seeExercises[configProvider.activeLanguage()]}"),
@@ -246,13 +247,19 @@ class CreateWorkOutCard extends StatelessWidget {
   }
 
   Future<void> _showdialog(BuildContext context, ConfigProvider configProvider, CreateWorkoutProvider exProvider) async {
-    showDialog(
+    await showDialog(
         context: context,
         builder: (BuildContext context) {
           return SearchDialog(height, configProvider);
         }).then((value) {
       exProvider.unselectedExercise = value as Exercise;
     });
+  }
+
+  Future<void> _showDialog1(BuildContext context, ConfigProvider configProvider, CreateWorkoutProvider exProvider)async {
+     await showDialog(context: context, builder: (BuildContext context){
+       return AllWorkoutsDialog();
+     });
   }
 
   Widget _buildExerciseListItem(String exerciseNumber, String exerciseName, String kg, String rep, String rm, Color color, int mode, CreateWorkoutProvider mainScreenProvider, int index, BuildContext context, ConfigProvider configProvider) {

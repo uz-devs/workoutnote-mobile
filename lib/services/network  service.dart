@@ -132,4 +132,12 @@ class WebServices {
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }
+
+  static Future<http.Response> fetchFavoriteWorkoutSessions(String sessionKey) async {
+    final url = Uri.https(baseUrl, fetchFavoriteWorkouts);
+    final body = {'sessionKey': sessionKey};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
+
 }

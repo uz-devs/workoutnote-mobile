@@ -14,13 +14,17 @@ class MainScreenProvider extends ChangeNotifier {
   //vars
   List<WorkOut> workOuts = [];
   List<WorkOut> calendarWorkouts = [];
+  List<WorkOut> favoriteWorkOuts = [];
   int responseCode1 = 0;
+  bool  requestDone2 = false;
   bool requestDone1 = false;
   DateTime? selectedDate;
 
   //api calls
   Future<void> fetchWorkOuts(String sessionKey, int timestamp) async {
     try {
+
+
       var response = await WebServices.fetchWorkOuts(sessionKey, timestamp);
       print(sessionKey);
 
@@ -70,6 +74,27 @@ class MainScreenProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> fetchFavoriteWorkoutSessions(String sessionKey) async {
+    try {
+      var response = await WebServices.fetchFavoriteWorkoutSessions(sessionKey);
+      print("workouts");
+      print(response.body);
+      if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+        var workoutsResponse = WorkOutsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+        favoriteWorkOuts.addAll(workoutsResponse.workouts);
+        requestDone2 = true;
+        notifyListeners();
+        return true;
+      }
+      return false;
+    }
+
+    catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   Future<void> setFavoriteWorkOut(String sessionKey, int workoutId, int mode) async {
     try {
       var response = await WebServices.setFavoriteWorkOut(sessionKey, workoutId);
@@ -98,8 +123,12 @@ class MainScreenProvider extends ChangeNotifier {
     try {
       var response = await WebServices.updateWorkout(sessionKey, id, newTitle, newDuration);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
-        var workout = workOuts.where((element) => element.id == id).single;
-        var calendarWorkout = calendarWorkouts.where((element) => element.id == id).single;
+        var workout = workOuts
+            .where((element) => element.id == id)
+            .single;
+        var calendarWorkout = calendarWorkouts
+            .where((element) => element.id == id)
+            .single;
         workout.title = newTitle;
         workout.duration = newDuration;
         calendarWorkout.title = newTitle;
@@ -140,8 +169,17 @@ class MainScreenProvider extends ChangeNotifier {
       if (workOuts[i].id == id) {
         for (int j = 0; j < workOuts[i].lifts!.length; j++) {
           title = workOuts[i].title ?? "[]";
-          lifts.add(EditableLift.create(workOuts[i].lifts![j].exerciseName, workOuts[i].lifts![j].exerciseId, exercises.isNotEmpty ? exercises.where((element) => element.id == workOuts[i].lifts![j].exerciseId).first.bodyPart : "",
-              workOuts[i].lifts![j].liftMas!.toInt(), workOuts[i].lifts![j].repetitions ?? 0, 1.2, true));
+          lifts.add(EditableLift.create(
+              workOuts[i].lifts![j].exerciseName,
+              workOuts[i].lifts![j].exerciseId,
+              exercises.isNotEmpty ? exercises
+                  .where((element) => element.id == workOuts[i].lifts![j].exerciseId)
+                  .first
+                  .bodyPart : "",
+              workOuts[i].lifts![j].liftMas!.toInt(),
+              workOuts[i].lifts![j].repetitions ?? 0,
+              1.2,
+              true));
         }
       }
     }
@@ -153,7 +191,10 @@ class MainScreenProvider extends ChangeNotifier {
       for (int i = 0; i < workOuts.length; i++) {
         if (workOuts[i].id == id) {
           workOuts[i].isFavorite = !workOuts[i].isFavorite;
-          calendarWorkouts.where((element) => element.id == id).first.isFavorite = workOuts[i].isFavorite;
+          calendarWorkouts
+              .where((element) => element.id == id)
+              .first
+              .isFavorite = workOuts[i].isFavorite;
           break;
         }
       }
@@ -161,7 +202,10 @@ class MainScreenProvider extends ChangeNotifier {
       for (int i = 0; i < calendarWorkouts.length; i++) {
         if (calendarWorkouts[i].id == id) {
           calendarWorkouts[i].isFavorite = !calendarWorkouts[i].isFavorite;
-          workOuts.where((element) => element.id == id).first.isFavorite = calendarWorkouts[i].isFavorite;
+          workOuts
+              .where((element) => element.id == id)
+              .first
+              .isFavorite = calendarWorkouts[i].isFavorite;
 
           break;
         }

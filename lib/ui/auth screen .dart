@@ -132,7 +132,7 @@ class AuthScreen extends StatelessWidget {
                                 onPressed: () {
                                   if (_emailController.text.isNotEmpty)
                                     user.passwordReset(_emailController.text).then((value) {
-                                      print("value ${value}");
+                                      print("value $value");
                                       if (value) {
                                         showToast("${sendEmailForReset[configProvider.activeLanguage()]}");
                                       }

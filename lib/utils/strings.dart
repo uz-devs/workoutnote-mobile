@@ -38,7 +38,7 @@ Map<String, String> logout = {english: "Logout",  korean: "로그아웃"};
 Map<String, String> deleteAccount = {english: "Delete account",  korean: "계정 삭제"};
 Map<String, String> languagesettingsscreenTitle = {english: "Language Settings",  korean: "언어 설정"};
 Map<String, String> deleteSuccess =  {english: "Workout session has been deleted successfully", korean: "워크아웃 세션이 성공적으로 삭제되었습니다"};
-
+Map<String,  String> favoriteWorkoutSesions = {english: "Favorite workout sessions", korean: "운동세트 불러오기"};
 Map<String, String> name = {english: "Name",  korean: "이름"};
 Map<String, String> nameHint = {english: "Enter your name",  korean: "이름을 압력해주세"};
 Map<String, String> gender  = {english: "Gender",  korean: "성별"};
