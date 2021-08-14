@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_file.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:splash_screen_view/SplashScreenView.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/providers/create%20workout%20provider.dart';
 import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
@@ -29,18 +29,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-
-        fontFamily: 'NotoSansKR',
+          fontFamily: 'NotoSansKR',
         focusColor: Color.fromRGBO(102, 51, 204, 1),
     ),
-    home: userPreferences!.getString("sessionKey")==null?AuthScreen():NavController(),
+    home: SplashScreenView(
+      navigateRoute: userPreferences!.getString("sessionKey")==null?AuthScreen():NavController(),
+      duration: 5000,
+      imageSize: 100,
+      imageSrc: "assets/images/splash_screen.png",
+      backgroundColor: Color.fromRGBO(102, 51, 204, 1),
+    )
 
     );
   }
 }
-
 

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
+import 'package:workoutnote/ui/intro%20screen.dart';
 import 'package:workoutnote/ui/nav%20controller.dart';
 import 'package:workoutnote/utils/strings.dart';
 
@@ -104,7 +105,7 @@ class _LanguageSetScreenState extends State<LanguageSetScreen> {
                             child: Text("${languageConfirm[configProvider.activeLanguage()]}"),
                             onPressed: () {
                               configProvider.changeLanguage(languageCode).then((value) {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => NavController()));
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyIntroductionScreen()));
                               });
                             }),
                       ),
