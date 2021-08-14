@@ -48,7 +48,7 @@ class _LanguageChangeScreenState extends State<LanguageChangeScreen> {
           => RadioListTile<int?>(
               title: Text("${e.name}"),
               value:e.index, groupValue: config.value(), onChanged: (val) {
-                config.changeLanguage(val!, lList).then((value) {
+                config.changeLanguage(val!).then((value) {
                   setState(() {
                   });
                 });

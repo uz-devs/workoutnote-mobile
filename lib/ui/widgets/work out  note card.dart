@@ -30,6 +30,9 @@ class _WorkOutNoteState extends State<WorkOutNote> {
     var createWorkOutProvider = Provider.of<CreateWorkoutProvider>(context, listen: false);
     var dialogProvider = Provider.of<SearchDialogProvider>(context, listen: false );
 
+
+
+
     int count = widget.workout.lifts!.length + 3;
     return Container(
       margin: EdgeInsets.all(10),
@@ -56,7 +59,9 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                               child: RichText(
                                 overflow: TextOverflow.ellipsis,
                                 strutStyle: StrutStyle(fontSize: 20.0),
-                                text: TextSpan(style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1),  fontSize: 20), text: '${widget.workout.title}'),
+                                text: TextSpan(style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1),  fontSize: 20),
+
+                                    text: widget.workout.title!.isNotEmpty ? '${widget.workout.title}': '[....]'),
                               ),
                             ),
                           ),
@@ -68,10 +73,10 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                                 child: InkWell(
                                   onTap: () {
                                     if(!widget.workout.isFavorite)
-                                     mainProvider.setFavoriteWorkOut(userPreferences!.getString("sessionKey")??"", widget.workout.id??-1).then((value) {
+                                     mainProvider.setFavoriteWorkOut(userPreferences!.getString("sessionKey")??"", widget.workout.id??-1, widget.mode).then((value) {
                                        setState(() {});
                                      });
-                                     else  mainProvider.unsetFavoriteWorkOut(userPreferences!.getString("sessionKey")??"", widget.workout.id??-1).then((value) {
+                                     else  mainProvider.unsetFavoriteWorkOut(userPreferences!.getString("sessionKey")??"", widget.workout.id??-1, widget.mode).then((value) {
                                        setState(() {});
                                      });
                                   },
@@ -108,7 +113,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                     alignment: Alignment.center,
                     margin: EdgeInsets.only(top: 15.0,  bottom: widget.mode == 1?0.0:15.0),
                     child: Text(
-                      "00:00:${widget.workout.duration != 0 ? widget.workout.duration : 00}",
+                      "${calculateDuration(widget.workout.duration??0).item1}:${calculateDuration(widget.workout.duration??0).item2}:${calculateDuration(widget.workout.duration??0).item3}",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Color.fromRGBO(102, 51, 204, 1)),
                     ),
                   );

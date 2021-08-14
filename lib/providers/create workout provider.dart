@@ -41,6 +41,8 @@ class CreateWorkoutProvider extends ChangeNotifier {
         List<Lift> lifts = [];
         int count = 0;
         var response = await WebServices.insertWorkOut(sessionKey, title, timestamp, duration);
+        print("insert workout");
+        print(response.body);
         if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
           for (int i = 0; i < _selectedLifts.length; i++) {
             var insertLift = await WebServices.insertLift(sessionKey, timestamp, _selectedLifts[i].mass, _selectedLifts[i].exerciseId ?? -1, jsonDecode(response.body)["workout_session"]["id"]);

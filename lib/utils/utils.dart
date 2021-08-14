@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tuple/tuple.dart';
+import 'package:workoutnote/utils/strings.dart';
 
 const String baseUrl = "workoutnote.com";
 const String login = "api/login/";
@@ -48,6 +50,35 @@ String toDate(int timestamp) {
 void showToast(String message) {
   Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIosWeb: 1, backgroundColor: Colors.black54, textColor: Colors.white, fontSize: 16.0);
 }
+
+Tuple3<String, String, String> calculateDuration(int duration) {
+  String hrs, mins, secs;
+  if (duration < 60) {
+    secs = duration.toString();
+    if (duration < 10)
+        secs = "0" + secs;
+    mins = "00";
+    hrs = "00";
+  } else if (duration >= 60 && duration < 3600) {
+    secs = (duration % 60).toString();
+    mins = (duration ~/ 60).toString();
+    if(duration ~/60  < 10)
+      mins = "0" + mins;
+    hrs = "00";
+  } else {
+    hrs = (duration ~/ 3600) .toString();
+
+    if(duration ~/3600 < 10)
+       hrs = "0" + hrs;
+    int temp = duration - 3600;
+    mins = (temp ~/ 60).toString();
+    secs = (temp % 60).toString();
+  }
+
+  return Tuple3(hrs, mins, secs);
+}
+
+List<Language> lList = [Language(english, 1), Language(korean, 2)];
 
 class Language {
   String? name;

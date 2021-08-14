@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if(index == 0)
         return Container (
           margin: EdgeInsets.only(left: 20, top: 30, bottom: 20),
-          child: Text("${welcomeMessage[configProvider.activeLanguage()]}, ${userPreferences!.getString("name")}",  style: TextStyle(
+          child: Text("${welcomeMessage[configProvider.activeLanguage()]}, ${userPreferences!.getString("name")??""}",  style: TextStyle(
             fontSize: 30,
           ),),
         );

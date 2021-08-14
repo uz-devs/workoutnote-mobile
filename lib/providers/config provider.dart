@@ -104,14 +104,14 @@ class ConfigProvider extends ChangeNotifier {
 
 
   //utils
-  Future<void> changeLanguage(int  val, List<Language> lList) async{
+  Future<void> changeLanguage(int  val) async{
     switch(val){
       case 1: {
-        await userPreferences!.setString("language", lList[0].name??english);
+        await userPreferences!.setString("language", lList[0].name??korean);
         break;
       }
       case 2:{
-        await  userPreferences!.setString("language", lList[1].name??english);
+        await  userPreferences!.setString("language", lList[1].name??korean);
         break;
       }
 
@@ -133,6 +133,6 @@ class ConfigProvider extends ChangeNotifier {
     }
   }
   String? activeLanguage () {
-    return  userPreferences!.getString("language")??english;
+    return  userPreferences!.getString("language")??korean;
   }
 }

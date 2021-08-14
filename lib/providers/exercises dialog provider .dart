@@ -38,6 +38,7 @@ class SearchDialogProvider extends ChangeNotifier {
           var execResponse = ExercisesResponse.fromJson(
               jsonDecode(utf8.decode(response.bodyBytes)));
           if (execResponse.success) {
+            responseCode = SUCCESS;
             favoriteExercises.addAll(execResponse.exercises ?? []);
             for (int i = 0; i < favoriteExercises.length; i++) {
               for (int j = 0; j < allExercises.length; j++) {
@@ -48,7 +49,7 @@ class SearchDialogProvider extends ChangeNotifier {
               }
             }
           }
-          responseCode = SUCCESS;
+
           notifyListeners();
         }
       }

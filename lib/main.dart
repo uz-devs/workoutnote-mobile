@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_file.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:workoutnote/providers/calendar%20provider.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/providers/create%20workout%20provider.dart';
 import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
@@ -18,7 +18,6 @@ void main() async {
   final List<SingleChildWidget> providers = [
     ChangeNotifierProvider(create: (_) => MainScreenProvider(),),
     ChangeNotifierProvider(create: (_) => ConfigProvider(),),
-    ChangeNotifierProvider(create: (_) => CalendarProvider(),),
     ChangeNotifierProvider(create: (_) => SearchDialogProvider(),),
     ChangeNotifierProvider(create: (_) => CreateWorkoutProvider(),),
 

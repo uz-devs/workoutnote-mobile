@@ -33,210 +33,214 @@ class CreateWorkOutCard extends StatelessWidget {
         }
         int count = exProvider.selectedLifts.length + 7;
         if (!exProvider.appRefereshed) exProvider.firstEnterApp();
-        return Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0.0),
-            ),
-            elevation: 10,
-            margin: EdgeInsets.zero,
-            clipBehavior: Clip.antiAlias,
-            child: Container(
-              margin: EdgeInsets.only(top: 10),
-              child: ListView.separated(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  separatorBuilder: (BuildContext context, int index) {
-                    if (index > 4 && index != count - 2)
-                      return Container(
-                        margin: EdgeInsets.only(left: 10.0, right: 10.0),
-                        child: Divider(
-                          height: 1,
-                          color: Colors.black54,
-                        ),
-                      );
-                    else
-                      return Divider(
-                        height: 0,
-                        color: Colors.white,
-                      );
-                  },
-                  itemCount: count,
-                  itemBuilder: (context, index) {
-                    if (index == 0)
-                      return Container(
-                          margin: EdgeInsets.only(left: 20),
-                          padding: EdgeInsets.only(top: 10),
-                          child: Text(
-                            "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now())}",
-                            style: TextStyle(fontSize: 15, color: Colors.grey),
-                          ));
-                    else if (index == 1)
-                      return Container(
-                        margin: EdgeInsets.only(left: 20.0, right: 10.0, top: 10),
-                        child: TextFormField(
-                          onChanged: (c) async {
-                            await exProvider.saveTitleToSharedPreference(c);
-                          },
-                          decoration: InputDecoration(
+        return Container(
+          margin: EdgeInsets.all(10),
 
-                            isDense: true,
-                            contentPadding: EdgeInsets.only(top: 5.0),
-                            hintText: "${title[configProvider.activeLanguage()]}",
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color.fromRGBO(102, 51, 204, 1)),
-                            ),
+          child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              elevation: 10,
+              margin: EdgeInsets.zero,
+              clipBehavior: Clip.antiAlias,
+              child: Container(
+                margin: EdgeInsets.only(top: 10),
+                child: ListView.separated(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    separatorBuilder: (BuildContext context, int index) {
+                      if (index > 4 && index != count - 2)
+                        return Container(
+                          margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                          child: Divider(
+                            height: 1,
+                            color: Colors.black54,
                           ),
-                          controller: exProvider.titleContoller,
-                        ),
-                      );
-                    else if (index == 2) {
-                      return Container(
-                        margin: EdgeInsets.only(left: 10.0),
-                        child: Row(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(top: 10.0, left: 15.0),
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                "${exProvider.hrs}:${exProvider.mins}:${exProvider.secs}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 40, color: Color.fromRGBO(102, 51, 204, 1)),
+                        );
+                      else
+                        return Divider(
+                          height: 0,
+                          color: Colors.white,
+                        );
+                    },
+                    itemCount: count,
+                    itemBuilder: (context, index) {
+                      if (index == 0)
+                        return Container(
+                            margin: EdgeInsets.only(left: 20),
+                            padding: EdgeInsets.only(top: 10),
+                            child: Text(
+                              "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now())}",
+                              style: TextStyle(fontSize: 15, color: Colors.grey),
+                            ));
+                      else if (index == 1)
+                        return Container(
+                          margin: EdgeInsets.only(left: 20.0, right: 10.0, top: 10),
+                          child: TextFormField(
+                            onChanged: (c) async {
+                              await exProvider.saveTitleToSharedPreference(c);
+                            },
+                            decoration: InputDecoration(
+
+                              isDense: true,
+                              contentPadding: EdgeInsets.only(top: 5.0),
+                              hintText: "${title[configProvider.activeLanguage()]}",
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Color.fromRGBO(102, 51, 204, 1)),
                               ),
                             ),
-                            Spacer(),
-                            if (exProvider.timerSubscription != null || ((exProvider.secs.isNotEmpty && exProvider.secs != "00" || exProvider.hrs.isNotEmpty && exProvider.hrs != "00" || exProvider.mins.isNotEmpty  && exProvider.mins != "00")))
+                            controller: exProvider.titleContoller,
+                          ),
+                        );
+                      else if (index == 2) {
+                        return Container(
+                          margin: EdgeInsets.only(left: 10.0),
+                          child: Row(
+                            children: [
                               Container(
-                                margin: EdgeInsets.only(bottom: 10.0),
-                                child: IconButton(
-                                    onPressed: () {
-                                      exProvider.stopTimer();
-                                    },
-                                    icon: Icon(
-                                      Icons.stop_circle_outlined,
-                                      color: Color.fromRGBO(102, 51, 204, 1),
-                                      size: 50,
-                                    )),
+                                margin: EdgeInsets.only(top: 10.0, left: 15.0),
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "${exProvider.hrs}:${exProvider.mins}:${exProvider.secs}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 36, color: Color.fromRGBO(102, 51, 204, 1)),
+                                ),
                               ),
-                            Container(
-                              margin: EdgeInsets.only(right: 20.0, bottom: 10.0),
-                              child: (exProvider.timerSubscription == null || exProvider.timerSubscription!.isPaused) ?
-                              IconButton(
+                              Spacer(),
+                              if (exProvider.timerSubscription != null || ((exProvider.secs.isNotEmpty && exProvider.secs != "00" || exProvider.hrs.isNotEmpty && exProvider.hrs != "00" || exProvider.mins.isNotEmpty  && exProvider.mins != "00")))
+                                Container(
+                                  margin: EdgeInsets.only(bottom: 10.0),
+                                  child: IconButton(
                                       onPressed: () {
-                                        if (exProvider.timerSubscription == null) {
-                                          print("start timer");
-
-                                          exProvider.startTimer();
-                                        } else if (exProvider.timerSubscription!.isPaused) {
-                                          exProvider.resumeTimer();
-                                        }
+                                        exProvider.stopTimer();
                                       },
                                       icon: Icon(
-                                        Icons.play_circle_outline,
-                                        color: Color.fromRGBO(102, 51, 204, 1),
-                                        size: 50,
-                                      ))
-                                  : IconButton(
-                                      onPressed: () {
-                                        exProvider.pauseTimer();
-                                      },
-                                      icon: Icon(
-                                        Icons.pause_circle_outline,
+                                        Icons.stop_circle_outlined,
                                         color: Color.fromRGBO(102, 51, 204, 1),
                                         size: 50,
                                       )),
-                            ),
-                          ],
-                        ),
-                      );
-                    } else if (index == 3) {
-                      return Container(
-                        margin: EdgeInsets.only(left: 20.0, top: 30),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: MaterialButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32.0),
-                            ),
-                            color: Color.fromRGBO(102, 51, 204, 1),
-                            onPressed: () async {
-                              await _showdialog(context, configProvider, exProvider);
-                            },
-                            textColor: Colors.white,
-                            child: Text("${seeExercises[configProvider.activeLanguage()]}"),
-                          ),
-                        ),
-                      );
-                    } else if (index == 4) {
-                      return Container(
-                          padding: EdgeInsets.all(10),
-                          margin: EdgeInsets.only(bottom: 10),
-                          decoration: BoxDecoration(
-                              color: Color.fromRGBO(231, 223, 247, 1),
-                              border: Border.all(
-                                color: Color.fromRGBO(230, 230, 250, 1),
-                              ),
-                              borderRadius: BorderRadius.all(Radius.circular(20))),
-                          child: _buildExerciseListItem("No.", "${exercisesName[configProvider.activeLanguage()]}", "KG", "REP", "RM", Color.fromRGBO(102, 51, 204, 1), 1, exProvider, index, context, configProvider));
-                    } else if (index == count - 2) {
-                      return Container(
-                          padding: EdgeInsets.only(left: 10, right: 10.0),
-                          margin: EdgeInsets.only(
-                            bottom: 10,
-                          ),
-                          child: _buildExerciseListItem("", "${exProvider.unselectedExercise == null ? "운동 이름" : exProvider.unselectedExercise!.name}(${(exProvider.unselectedExercise == null ? "" : exProvider.unselectedExercise!.bodyPart)})", "KG",
-                              "REP", "RM", Colors.grey, 3, exProvider, index, context, configProvider));
-                    } else if (index > 4 && index < count - 2 && index < count - 1) {
-                      index = index - 5;
-                      return Container(
-                          padding: EdgeInsets.only(left: 10, right: 10.0),
-                          margin: EdgeInsets.only(
-                            bottom: 10,
-                          ),
-                          child: _buildExerciseListItem((index + 1).toString(), "${exProvider.selectedLifts[index].exerciseName}(${exProvider.selectedLifts[index].bodyPart})", "0.0", "0.0", exProvider.selectedLifts[index].rm.toString(), Colors.black,
-                              2, exProvider, index, context, configProvider));
-                    } else
-                      return Container(
-                        margin: EdgeInsets.only(bottom: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(left: 10.0),
-                              width: 100,
-                              child: MaterialButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(32.0),
                                 ),
-                                color: Color.fromRGBO(102, 51, 204, 1),
-                                onPressed: () async {
-                                  exProvider.removeExercises();
-                                  await exProvider.saveListToSharePreference();
-                                },
-                                textColor: Colors.white,
-                                child: Text("${remove[configProvider.activeLanguage()]}"),
+                              Container(
+                                margin: EdgeInsets.only(right: 20.0, bottom: 10.0),
+                                child: (exProvider.timerSubscription == null || exProvider.timerSubscription!.isPaused) ?
+                                IconButton(
+                                        onPressed: () {
+                                          if (exProvider.timerSubscription == null) {
+                                            print("start timer");
+
+                                            exProvider.startTimer();
+                                          } else if (exProvider.timerSubscription!.isPaused) {
+                                            exProvider.resumeTimer();
+                                          }
+                                        },
+                                        icon: Icon(
+                                          Icons.play_circle_outline,
+                                          color: Color.fromRGBO(102, 51, 204, 1),
+                                          size: 50,
+                                        ))
+                                    : IconButton(
+                                        onPressed: () {
+                                          exProvider.pauseTimer();
+                                        },
+                                        icon: Icon(
+                                          Icons.pause_circle_outline,
+                                          color: Color.fromRGBO(102, 51, 204, 1),
+                                          size: 50,
+                                        )),
                               ),
+                            ],
+                          ),
+                        );
+                      } else if (index == 3) {
+                        return Container(
+                          margin: EdgeInsets.only(left: 20.0, top: 30),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: MaterialButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
+                              color: Color.fromRGBO(102, 51, 204, 1),
+                              onPressed: () async {
+                                await _showdialog(context, configProvider, exProvider);
+                              },
+                              textColor: Colors.white,
+                              child: Text("${seeExercises[configProvider.activeLanguage()]}"),
                             ),
-                            Container(
-                              width: 100,
-                              margin: EdgeInsets.only(right: 10.0),
-                              child: MaterialButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(32.0),
+                          ),
+                        );
+                      } else if (index == 4) {
+                        return Container(
+                            padding: EdgeInsets.all(10),
+                            margin: EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(231, 223, 247, 1),
+                                border: Border.all(
+                                  color: Color.fromRGBO(230, 230, 250, 1),
                                 ),
-                                color: Color.fromRGBO(102, 51, 204, 1),
-                                onPressed: () async {
-                                  await exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, updateHome);
-                                  await exProvider.saveListToSharePreference();
-                                },
-                                textColor: Colors.white,
-                                child: Text("${save[configProvider.activeLanguage()]}"),
-                              ),
+                                borderRadius: BorderRadius.all(Radius.circular(20))),
+                            child: _buildExerciseListItem("No.", "${exercisesName[configProvider.activeLanguage()]}", "KG", "REP", "RM", Color.fromRGBO(102, 51, 204, 1), 1, exProvider, index, context, configProvider));
+                      } else if (index == count - 2) {
+                        return Container(
+                            padding: EdgeInsets.only(left: 10, right: 10.0),
+                            margin: EdgeInsets.only(
+                              bottom: 10,
                             ),
-                          ],
-                        ),
-                      );
-                  }),
-            ));
+                            child: _buildExerciseListItem("", "${exProvider.unselectedExercise == null ? "운동 이름" : exProvider.unselectedExercise!.name}(${(exProvider.unselectedExercise == null ? "" : exProvider.unselectedExercise!.bodyPart)})", "KG",
+                                "REP", "RM", Colors.grey, 3, exProvider, index, context, configProvider));
+                      } else if (index > 4 && index < count - 2 && index < count - 1) {
+                        index = index - 5;
+                        return Container(
+                            padding: EdgeInsets.only(left: 10, right: 10.0),
+                            margin: EdgeInsets.only(
+                              bottom: 10,
+                            ),
+                            child: _buildExerciseListItem((index + 1).toString(), "${exProvider.selectedLifts[index].exerciseName}(${exProvider.selectedLifts[index].bodyPart})", "0.0", "0.0", exProvider.selectedLifts[index].rm.toString(), Colors.black,
+                                2, exProvider, index, context, configProvider));
+                      } else
+                        return Container(
+                          margin: EdgeInsets.only(bottom: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 10.0),
+                                width: 100,
+                                child: MaterialButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32.0),
+                                  ),
+                                  color: Color.fromRGBO(102, 51, 204, 1),
+                                  onPressed: () async {
+                                    exProvider.removeExercises();
+                                    await exProvider.saveListToSharePreference();
+                                  },
+                                  textColor: Colors.white,
+                                  child: Text("${remove[configProvider.activeLanguage()]}"),
+                                ),
+                              ),
+                              Container(
+                                width: 100,
+                                margin: EdgeInsets.only(right: 10.0),
+                                child: MaterialButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32.0),
+                                  ),
+                                  color: Color.fromRGBO(102, 51, 204, 1),
+                                  onPressed: () async {
+                                    await exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, updateHome);
+                                    await exProvider.saveListToSharePreference();
+                                  },
+                                  textColor: Colors.white,
+                                  child: Text("${save[configProvider.activeLanguage()]}"),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                    }),
+              )),
+        );
       }),
     );
   }
@@ -295,12 +299,12 @@ class CreateWorkOutCard extends StatelessWidget {
                   iconSize: 0.0,
                   value: mainScreenProvider.selectedLifts[index].mass,
                   onChanged: (newValue) {
-                    print(newValue);
                     mainScreenProvider.updateMass(index, newValue!);
                   },
                   items: mainScreenProvider.selectedLifts[index].kgs.map((int value) {
                     return DropdownMenuItem<int>(
                       value: value,
+
                       child: Text("${value}kg"),
                     );
                   }).toList(),

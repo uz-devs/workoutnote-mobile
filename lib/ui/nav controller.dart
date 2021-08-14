@@ -26,7 +26,7 @@ class _NavControllerState extends State<NavController> {
     double width = MediaQuery.of(context).size.width;
     var screens = [_buildHomeScreen(height, width), _buildCalendarScreen(height),  _builCalculateScreen(height), _buildSettingsScreen(height),];
 
-    if(_selectedIndex == 0  || _selectedIndex == 2)
+    if(_selectedIndex == 0  || _selectedIndex == 2 || _selectedIndex == 1)
       backGroundColor =  Color.fromRGBO(231, 223, 247, 1);
 
     else backGroundColor = Color.fromRGBO(255, 255, 255, 1);
@@ -40,7 +40,8 @@ class _NavControllerState extends State<NavController> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
 
-        items: const <BottomNavigationBarItem>[
+        items:
+        const <BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: Icon(Icons.home_outlined,  size: 30,), label: "Home"),
         BottomNavigationBarItem(icon: Icon(Icons.calendar_today,  size: 30,), label: "Calendar"),
         BottomNavigationBarItem(icon: Icon(Icons.calculate, size: 30,), label: "Calculation"),

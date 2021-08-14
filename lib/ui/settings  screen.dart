@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/providers/calendar%20provider.dart';
 
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/providers/create%20workout%20provider.dart';
@@ -28,7 +27,6 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
     var homeProvider = Provider.of<MainScreenProvider>(context, listen: false );
     var dialogProvider = Provider.of<SearchDialogProvider>(context, listen: false );
     var createWorkOutProvider = Provider.of<CreateWorkoutProvider>(context, listen: false );
-    var calendarProvider = Provider.of<CalendarProvider>(context, listen: false );
     return ListView.separated(
 
         itemBuilder: (context, index) {
@@ -151,7 +149,6 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                 configProvider.logout();
                 homeProvider.reset();
                 dialogProvider.reset();
-                calendarProvider.reset();
                 createWorkOutProvider.reset();
                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => AuthScreen()), (Route<dynamic> route) => false);
 

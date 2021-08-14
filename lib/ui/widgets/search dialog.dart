@@ -34,9 +34,25 @@ class _SearchDialogState extends State<SearchDialog> {
       return Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         insetPadding: EdgeInsets.all(20),
-        child: Container(
+        child:
+
+
+
+        Container(
           height: 0.9 * widget.height,
-          child: Scrollbar(
+          child:
+          dialogProvider.responseCode != SUCCESS?Center(
+            heightFactor: 1,
+            widthFactor: 1,
+            child: SizedBox(
+              height: 30,
+              width: 30,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.0
+              ),
+            ),
+          ):
+          Scrollbar(
               thickness: 3,
               child: ListView.separated(
                   itemBuilder: (context, index) {
@@ -48,7 +64,7 @@ class _SearchDialogState extends State<SearchDialog> {
                               alignment: Alignment.center,
                               child: Text(
                                 "${exercises[widget.configProvider.activeLanguage()]}",
-                                style: TextStyle(fontSize: 21, color: Color.fromRGBO(102, 51, 204, 1)),
+                                style: TextStyle(fontSize: 18, color: Color.fromRGBO(102, 51, 204, 1)),
                               ),
                             ),
                             Align(
@@ -205,7 +221,7 @@ class _SearchDialogState extends State<SearchDialog> {
                       ),
                     );
                   },
-                  itemCount: showExercises.length+3)),
+                  itemCount:  showExercises.length+3)),
         ),
       );
     });
@@ -213,18 +229,5 @@ class _SearchDialogState extends State<SearchDialog> {
 
 
 
-  //for future use
-  Widget _buildSearchWidget(){
-    return Container();
-  }
-  Widget _buildTitle(){
-    return Container();
-  }
-  Widget _buildFilterButtons(){
-    return Container();
-  }
-  Widget _buildExercise(){
-    return  Container();
-  }
 
 }
