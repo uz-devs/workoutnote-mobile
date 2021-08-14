@@ -29,9 +29,9 @@ class MainScreenProvider extends ChangeNotifier {
         if (workoutsResponse.success) {
           workOuts.addAll(workoutsResponse.workouts);
           print("durations");
-           for(int i = 0; i<workOuts.length; i++){
-             print(workOuts[i].duration);
-           }
+          for (int i = 0; i < workOuts.length; i++) {
+            print(workOuts[i].duration);
+          }
           responseCode1 = SUCCESS;
           notifyListeners();
         }
@@ -47,8 +47,9 @@ class MainScreenProvider extends ChangeNotifier {
       print(e);
     }
   }
+
   Future<void> fetchWorkOutsByDate(String sessionKey, int timestamp) async {
-    if(calendarWorkouts.isNotEmpty) calendarWorkouts.clear();
+    if (calendarWorkouts.isNotEmpty) calendarWorkouts.clear();
     try {
       var response = await WebServices.fetchWorkOuts(sessionKey, timestamp);
       print(sessionKey);
@@ -68,62 +69,97 @@ class MainScreenProvider extends ChangeNotifier {
       print(e);
     }
   }
-  Future<void> setFavoriteWorkOut(String sessionKey, int workoutId, int  mode) async{
+
+  Future<void> setFavoriteWorkOut(String sessionKey, int workoutId, int mode) async {
     try {
       var response = await WebServices.setFavoriteWorkOut(sessionKey, workoutId);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         _updateWorkoutFavoriteStatus(workoutId, mode);
       }
-
+    } catch (e) {
+      print(e);
     }
-    catch(e){
-        print(e);
+  }
 
-      }
-    }
-  Future<void> unsetFavoriteWorkOut(String sessionKey, int workoutId, int mode) async{
+  Future<void> unsetFavoriteWorkOut(String sessionKey, int workoutId, int mode) async {
     try {
       var response = await WebServices.unsetFavoriteWorkOut(sessionKey, workoutId);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         _updateWorkoutFavoriteStatus(workoutId, mode);
       }
-    }
-    catch(e){
+    } catch (e) {
       print(e);
+    }
+  }
+
+  Future<bool> updateWorkoutSession(String sessionKey, int id, String newTitle, int newDuration) async {
+    try {
+      var response = await WebServices.updateWorkout(sessionKey, id, newTitle, newDuration);
+      if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+        var workout = workOuts.where((element) => element.id == id).single;
+        var calendarWorkout = calendarWorkouts.where((element) => element.id == id).single;
+        workout.title = newTitle;
+        workout.duration = newDuration;
+        calendarWorkout.title = newTitle;
+        calendarWorkout.duration = newDuration;
+        notifyListeners();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> deleteWorkoutSession(String sessionKey, int id) async {
+    try {
+      var response = await WebServices.removeWorkout(sessionKey, id);
+      print(response.body);
+      if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+        workOuts.removeWhere((element) => element.id == id);
+        calendarWorkouts.removeWhere((element) => element.id == id);
+        notifyListeners();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
     }
   }
 
   //utils
 
-  void repeatExercise(int id,  CreateWorkoutProvider createWorkoutProvider, List<Exercise> exercises){
+  void repeatExercise(int id, CreateWorkoutProvider createWorkoutProvider, List<Exercise> exercises) {
     List<EditableLift> lifts = [];
     String? title;
-    for (int i = 0; i<workOuts.length; i++){
-      if(workOuts[i].id == id ){
-          for(int j = 0; j<workOuts[i].lifts!.length; j++ ){
-            title = workOuts[i].title??"[]";
-            lifts.add(EditableLift.create(workOuts[i].lifts![j].exerciseName, workOuts[i].lifts![j].exerciseId, exercises.isNotEmpty?exercises.where((element) => element.id == workOuts[i].lifts![j].exerciseId).first.bodyPart:"", workOuts[i].lifts![j].liftMas!.toInt(), workOuts[i].lifts![j].repetitions??0, 1.2, true));
-          }
+    for (int i = 0; i < workOuts.length; i++) {
+      if (workOuts[i].id == id) {
+        for (int j = 0; j < workOuts[i].lifts!.length; j++) {
+          title = workOuts[i].title ?? "[]";
+          lifts.add(EditableLift.create(workOuts[i].lifts![j].exerciseName, workOuts[i].lifts![j].exerciseId, exercises.isNotEmpty ? exercises.where((element) => element.id == workOuts[i].lifts![j].exerciseId).first.bodyPart : "",
+              workOuts[i].lifts![j].liftMas!.toInt(), workOuts[i].lifts![j].repetitions ?? 0, 1.2, true));
+        }
       }
     }
-    createWorkoutProvider.repeatExercise(lifts,  title??"[]");
+    createWorkoutProvider.repeatExercise(lifts, title ?? "[]");
   }
 
-  void _updateWorkoutFavoriteStatus(int id, int  mode){
-
-    if(mode  == 1)
-    for(int i = 0; i<workOuts.length; i++){
-      if(workOuts[i].id == id){
-        workOuts[i].isFavorite = !workOuts[i].isFavorite;
-        calendarWorkouts.where((element) => element.id == id).first.isFavorite = workOuts[i].isFavorite;
-        break;
+  void _updateWorkoutFavoriteStatus(int id, int mode) {
+    if (mode == 1)
+      for (int i = 0; i < workOuts.length; i++) {
+        if (workOuts[i].id == id) {
+          workOuts[i].isFavorite = !workOuts[i].isFavorite;
+          calendarWorkouts.where((element) => element.id == id).first.isFavorite = workOuts[i].isFavorite;
+          break;
+        }
       }
-    }
     else
-      for(int i = 0; i<calendarWorkouts.length; i++){
-        if(calendarWorkouts[i].id == id){
+      for (int i = 0; i < calendarWorkouts.length; i++) {
+        if (calendarWorkouts[i].id == id) {
           calendarWorkouts[i].isFavorite = !calendarWorkouts[i].isFavorite;
           workOuts.where((element) => element.id == id).first.isFavorite = calendarWorkouts[i].isFavorite;
 
@@ -132,16 +168,10 @@ class MainScreenProvider extends ChangeNotifier {
       }
   }
 
-  void reset(){
+  void reset() {
     workOuts.clear();
     calendarWorkouts.clear();
     responseCode1 = 0;
     requestDone1 = false;
   }
-
-
 }
-
-
-
-

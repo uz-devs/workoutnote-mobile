@@ -38,9 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var configProvider = Provider.of<ConfigProvider>(context, listen: true);
 
 
-    if(userPreferences!.getString("sessionKey") == null){
-        navProvider.reset();
-    }
+    print(userPreferences! .getString("sessionKey"));
 
     return  ListView.builder(
         itemCount: navProvider.workOuts.length+3,  itemBuilder: (context,  index) {

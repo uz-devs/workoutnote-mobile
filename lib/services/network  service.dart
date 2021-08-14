@@ -105,7 +105,6 @@ class WebServices {
     return response;
   }
 
-
   static Future<http.Response> fetchFavoriteExercises(String sessionKey) async {
     final url = Uri.https(baseUrl, fetchFavoriteExercise);
     final body = {'sessionKey': sessionKey};
@@ -120,5 +119,17 @@ class WebServices {
     return response;
   }
 
-}
+  static Future<http.Response> updateWorkout(String sessionKey, int id, String newTitle, int newDuration) async {
+    final url = Uri.https(baseUrl, passwordReset);
+    final body = {'sessionKey': sessionKey, 'workout_session_id': id, 'new_title': newTitle, "new_duration": newDuration};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
 
+  static Future<http.Response> removeWorkout(String sessionKey, int id) async {
+    final url = Uri.https(baseUrl, removeWorkOut);
+    final body = {'sessionKey': sessionKey, 'workout_session_id': id};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
+}

@@ -45,6 +45,10 @@ class WorkOut {
   int? get duration  => _duration;
 
 
+  set id(int? value) {
+    _id = value;
+  }
+
   bool get isFavorite => _isFavorite;
 
   set isFavorite(bool value) {
@@ -62,6 +66,17 @@ class WorkOut {
     return WorkOut(parsedJson["id"], parsedJson["title"],  parsedJson["timestamp"], lifts, parsedJson["duration"], parsedJson["isFavorite"]??false );
   }
 
+  set title(String? value) {
+    _title = value;
+  }
+
+  set timestamp(int? value) {
+    _timestamp = value;
+  }
+
+  set duration(int? value) {
+    _duration = value;
+  }
 }
 
 class Lift {

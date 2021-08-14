@@ -26,6 +26,8 @@ const String setFavoriteExercise = "/api/set_favorite_exercise";
 const String unsetFavoriteExercise = "/api/unset_favorite_exercise";
 const String fetchFavoriteExercise = "/api/fetch_favorite_exercises";
 const String passwordReset = "/api/request_password_reset";
+const String updateWorkout = "/api/update_workout";
+const String removeWorkOut = "/api/remove_workout";
 //network  state codes
 const int LOADING = 0;
 const int TIMEOUT_EXCEPTION = 1;
@@ -39,7 +41,6 @@ SharedPreferences? userPreferences, appPreferences;
 Future<void> initPreferences() async {
   userPreferences = await SharedPreferences.getInstance();
   appPreferences = await SharedPreferences.getInstance();
-
 }
 
 String toDate(int timestamp) {
@@ -57,21 +58,18 @@ Tuple3<String, String, String> calculateDuration(int duration) {
   String hrs, mins, secs;
   if (duration < 60) {
     secs = duration.toString();
-    if (duration < 10)
-        secs = "0" + secs;
+    if (duration < 10) secs = "0" + secs;
     mins = "00";
     hrs = "00";
   } else if (duration >= 60 && duration < 3600) {
     secs = (duration % 60).toString();
     mins = (duration ~/ 60).toString();
-    if(duration ~/60  < 10)
-      mins = "0" + mins;
+    if (duration ~/ 60 < 10) mins = "0" + mins;
     hrs = "00";
   } else {
-    hrs = (duration ~/ 3600) .toString();
+    hrs = (duration ~/ 3600).toString();
 
-    if(duration ~/3600 < 10)
-       hrs = "0" + hrs;
+    if (duration ~/ 3600 < 10) hrs = "0" + hrs;
     int temp = duration - 3600;
     mins = (temp ~/ 60).toString();
     secs = (temp % 60).toString();

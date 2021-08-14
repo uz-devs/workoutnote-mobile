@@ -23,7 +23,8 @@ Map<String, String> signUpError  = {english: "Unexpected error happened, Please 
 Map<String, String> verificationError  = {english: "Please check your verification code!",  korean: "인증 코드를 다시 확인하십시오!"};
 Map<String, String> sendEmailForReset  = {english: "We have sent an email to you, Please  check and reset your password!",  korean: "이메일을 보냈습니다. 암호를 확인하고 재설정하십시오!"};
 Map<String, String> emptyEmail  = {english: "Email cannot be empty!",  korean: "메일이 비워 둘 수 없습니다!"};
-
+Map<String,  String> delete = {english: "Delete", korean: "삭제하기"};
+Map<String,  String> edit  = {english: "Edit", korean: "수정하기"};
 
 Map<String, String> profileInfo = {english: "Profile Info",  korean: "프로필 정보"};
 Map<String, String> profileEdit = {english: "Edit profile",  korean: "프로필 수정"};
@@ -36,6 +37,7 @@ Map<String, String> customerCenter = {english: "Customer Center",  korean: "고�
 Map<String, String> logout = {english: "Logout",  korean: "로그아웃"};
 Map<String, String> deleteAccount = {english: "Delete account",  korean: "계정 삭제"};
 Map<String, String> languagesettingsscreenTitle = {english: "Language Settings",  korean: "언어 설정"};
+Map<String, String> deleteSuccess =  {english: "Workout session has been deleted successfully", korean: "워크아웃 세션이 성공적으로 삭제되었습니다"};
 
 Map<String, String> name = {english: "Name",  korean: "이름"};
 Map<String, String> nameHint = {english: "Enter your name",  korean: "이름을 압력해주세"};
