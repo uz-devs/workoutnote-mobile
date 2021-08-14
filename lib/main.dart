@@ -10,19 +10,28 @@ import 'package:workoutnote/ui/auth%20screen%20.dart';
 import 'package:workoutnote/ui/nav%20controller.dart';
 import 'package:workoutnote/utils/utils.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initPreferences();
 
   final List<SingleChildWidget> providers = [
-    ChangeNotifierProvider(create: (_) => MainScreenProvider(),),
-    ChangeNotifierProvider(create: (_) => ConfigProvider(),),
-    ChangeNotifierProvider(create: (_) => SearchDialogProvider(),),
-    ChangeNotifierProvider(create: (_) => CreateWorkoutProvider(),),
-
+    ChangeNotifierProvider(
+      create: (_) => MainScreenProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => ConfigProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => SearchDialogProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => CreateWorkoutProvider(),
+    ),
   ];
-  runApp(MultiProvider(providers: providers, child: MyApp(),));
+  runApp(MultiProvider(
+    providers: providers,
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -33,17 +42,14 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           fontFamily: 'NotoSansKR',
-        focusColor: Color.fromRGBO(102, 51, 204, 1),
-    ),
-    home: SplashScreenView(
-      navigateRoute: userPreferences!.getString("sessionKey")==null?AuthScreen():NavController(),
-      duration: 5000,
-      imageSize: 100,
-      imageSrc: "assets/images/splash_screen.png",
-      backgroundColor: Color.fromRGBO(102, 51, 204, 1),
-    )
-
-    );
+          focusColor: Color.fromRGBO(102, 51, 204, 1),
+        ),
+        home: SplashScreenView(
+          navigateRoute: userPreferences!.getString("sessionKey") == null ? AuthScreen() : NavController(),
+          duration: 3000,
+          imageSize: 100,
+          imageSrc: "assets/images/splash_screen.png",
+          backgroundColor: Color.fromRGBO(102, 51, 204, 1),
+        ));
   }
 }
-

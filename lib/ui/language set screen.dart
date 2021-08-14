@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:introduction_screen/introduction_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/ui/intro%20screen.dart';
 import 'package:workoutnote/ui/nav%20controller.dart';
 import 'package:workoutnote/utils/strings.dart';
+import 'package:workoutnote/utils/utils.dart';
 
 class LanguageSetScreen extends StatefulWidget {
   const LanguageSetScreen();
@@ -14,7 +16,6 @@ class LanguageSetScreen extends StatefulWidget {
 }
 
 class _LanguageSetScreenState extends State<LanguageSetScreen> {
-  var _codeController = TextEditingController();
   List<String> languages = [english, korean];
   String selectedVal = korean;
   int languageCode = 2;
@@ -80,14 +81,14 @@ class _LanguageSetScreenState extends State<LanguageSetScreen> {
                                     break;
                                 }
 
-                               configProvider.changeLanguage(languageCode).then((value){});
+                                configProvider.changeLanguage(languageCode).then((value) {});
                               },
                               icon: Icon(
                                 Icons.arrow_drop_down,
                                 color: Color.fromRGBO(102, 51, 204, 1),
                               ),
                               items: languages.map((e) {
-                                return DropdownMenuItem<String>(value: e, child: Text("${e}"));
+                                return DropdownMenuItem<String>(value: e, child: Text("$e"));
                               }).toList(),
                             ),
                           ),
@@ -104,9 +105,7 @@ class _LanguageSetScreenState extends State<LanguageSetScreen> {
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
                             child: Text("${languageConfirm[configProvider.activeLanguage()]}"),
                             onPressed: () {
-                              configProvider.changeLanguage(languageCode).then((value) {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyIntroductionScreen()));
-                              });
+                              configProvider.changeLanguage(languageCode).then((value) {Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyIntroductionScreen()));});
                             }),
                       ),
                     ],

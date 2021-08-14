@@ -112,4 +112,13 @@ class WebServices {
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }
+
+  static Future<http.Response> resetPassword(String email) async {
+    final url = Uri.https(baseUrl, passwordReset);
+    final body = {'email': email};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
+
 }
+

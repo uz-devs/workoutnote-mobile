@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/ui/nav%20controller.dart';
 import 'package:workoutnote/utils/strings.dart';
+import 'package:workoutnote/utils/utils.dart';
 
 class MyIntroductionScreen extends StatefulWidget {
   const MyIntroductionScreen();
@@ -15,6 +16,15 @@ class MyIntroductionScreen extends StatefulWidget {
 class _MyIntroductionScreenState extends State<MyIntroductionScreen> {
 
   PageController controller =  PageController();
+
+  @override
+  void initState() {
+    super.initState();
+    appPreferences!.setBool("intro_started", true).then((value) {
+      print("heyyy are you okay?");
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {

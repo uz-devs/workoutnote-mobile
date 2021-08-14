@@ -5,6 +5,7 @@ import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/ui/language%20%20change%20screen.dart';
 import 'package:workoutnote/ui/nav%20controller.dart';
 import 'package:workoutnote/utils/strings.dart';
+import 'package:workoutnote/utils/utils.dart';
 
 import 'language set screen.dart';
 
@@ -18,8 +19,12 @@ class VerificationScreen extends StatefulWidget {
 class _VerificationScreenState extends State<VerificationScreen> {
   var _codeController = TextEditingController();
 
+
   @override
   Widget build(BuildContext context) {
+
+    var configProvider = Provider.of<ConfigProvider>(context, listen: true);
+
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SafeArea(
@@ -92,9 +97,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             child: Text("${verificationText["한국어"]}"),
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
-
                               user.verifyUser(_codeController.text).then((value) {
                                 if (value) {
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
+                                }
+                                else{
+                                   showToast("${verificationError[configProvider.activeLanguage()]}");
                                 }
                               });
 

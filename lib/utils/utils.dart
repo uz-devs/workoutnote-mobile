@@ -25,7 +25,7 @@ const String fetchFavoriteWorkouts = "/api/fetch_favorite_workouts";
 const String setFavoriteExercise = "/api/set_favorite_exercise";
 const String unsetFavoriteExercise = "/api/unset_favorite_exercise";
 const String fetchFavoriteExercise = "/api/fetch_favorite_exercises";
-
+const String passwordReset = "/api/request_password_reset";
 //network  state codes
 const int LOADING = 0;
 const int TIMEOUT_EXCEPTION = 1;
@@ -34,10 +34,12 @@ const int MISC_EXCEPTION = 3;
 const int SUCCESS = 4;
 
 //util  methods
-SharedPreferences? userPreferences;
+SharedPreferences? userPreferences, appPreferences;
 
 Future<void> initPreferences() async {
   userPreferences = await SharedPreferences.getInstance();
+  appPreferences = await SharedPreferences.getInstance();
+
 }
 
 String toDate(int timestamp) {

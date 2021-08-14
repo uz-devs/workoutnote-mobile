@@ -2,7 +2,6 @@
 const String english = "English";
 const String korean = "한국어";
 
-//home screen
 Map<String, String> welcomeMessage = {english: "Hello",  korean: "안녕하세요"};
 Map<String, String> repeat = {english: "Repeat",  korean: "반복하기"};
 Map<String, String> loginText = {english: "LOG IN",  korean: "로그인"};
@@ -18,10 +17,14 @@ Map<String, String> exercises = {english: "Exercises",  korean: "전제 연습"}
 Map<String, String> languageConfirm = {english: "Confirm",  korean: "확인"};
 Map<String, String> introBackButton = {english: "Skip",  korean: "건너뒤기"};
 Map<String, String> introStartButton = {english: "Start",  korean: "시작하기"};
+Map<String, String> authErrorMesage = {english: "Please check your password/email and try again!",  korean: "비밀번호/이메일을 확인하고 다시 시도하십시오!"};
+Map<String, String> authEmptyFields  = {english: "Email or/and Password cannot be empty!",  korean: "전자 메일 및 암호는 비워 둘 수 없습니다!"};
+Map<String, String> signUpError  = {english: "Unexpected error happened, Please try  again",  korean: "예기치 않은 오류가 발생했습니다. 다시 시도하십시오!"};
+Map<String, String> verificationError  = {english: "Please check your verification code!",  korean: "인증 코드를 다시 확인하십시오!"};
+Map<String, String> sendEmailForReset  = {english: "We have sent an email to you, Please  check and reset your password!",  korean: "이메일을 보냈습니다. 암호를 확인하고 재설정하십시오!"};
+Map<String, String> emptyEmail  = {english: "Email cannot be empty!",  korean: "메일이 비워 둘 수 없습니다!"};
 
 
-
-//settings  screen
 Map<String, String> profileInfo = {english: "Profile Info",  korean: "프로필 정보"};
 Map<String, String> profileEdit = {english: "Edit profile",  korean: "프로필 수정"};
 Map<String, String> languageChange = {english: "Change language",  korean: "언어 수정"};
@@ -34,7 +37,6 @@ Map<String, String> logout = {english: "Logout",  korean: "로그아웃"};
 Map<String, String> deleteAccount = {english: "Delete account",  korean: "계정 삭제"};
 Map<String, String> languagesettingsscreenTitle = {english: "Language Settings",  korean: "언어 설정"};
 
-//Profile edit screen
 Map<String, String> name = {english: "Name",  korean: "이름"};
 Map<String, String> nameHint = {english: "Enter your name",  korean: "이름을 압력해주세"};
 Map<String, String> gender  = {english: "Gender",  korean: "성별"};
