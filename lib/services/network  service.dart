@@ -13,9 +13,9 @@ class WebServices {
     return response;
   }
 
-  static Future<http.Response> fetchWorkOuts(String sessionKey, int timestamp) async {
+  static Future<http.Response> fetchWorkOuts(String sessionKey, int fromTimestamp,  int tillTimesatmp) async {
     final url = Uri.https(baseUrl, fetch_workouts);
-    final body = {'sessionKey': '$sessionKey', 'dateTimestampMs': '$timestamp'};
+    final body = {'sessionKey': '$sessionKey', 'fromTimestampMs': '$fromTimestamp', 'tillTimestampMs': tillTimesatmp};
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }

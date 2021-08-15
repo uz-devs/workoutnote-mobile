@@ -39,40 +39,43 @@ class _AllWorkoutsDialogState extends State<AllWorkoutsDialog> {
 
     print("length");
     print(mainScreenProvider.favoriteWorkOuts.length);
-    return Dialog(
-      child: ListView.builder(itemCount: mainScreenProvider.favoriteWorkOuts.length + 1,  itemBuilder: (context,  index) {
-        if(index == 0){
-          return  Container(child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "${favoriteWorkoutSesions[configProvider.activeLanguage()]}",
-                  style: TextStyle(fontSize: 18, color: Color.fromRGBO(102, 51, 204, 1)),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Dialog(
+        child: ListView.builder(itemCount: mainScreenProvider.favoriteWorkOuts.length + 1,  itemBuilder: (context,  index) {
+          if(index == 0){
+            return  Container(child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "${favoriteWorkoutSesions[configProvider.activeLanguage()]}",
+                    style: TextStyle(fontSize: 18, color: Color.fromRGBO(102, 51, 204, 1)),
+                  ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  margin: EdgeInsets.only(right: 10.0),
-                  child: IconButton(
-                      icon: Icon(Icons.clear, color: Color.fromRGBO(102, 51, 204, 1)),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }),
-                ),
-              )
-            ],
-          ),);
-        }
-        
-        else {
-          
-          index = index - 1;
-          return  WorkOutNote(height, mainScreenProvider.favoriteWorkOuts[index], 3);
-        }
-      }),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    margin: EdgeInsets.only(right: 10.0),
+                    child: IconButton(
+                        icon: Icon(Icons.clear, color: Color.fromRGBO(102, 51, 204, 1)),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                  ),
+                )
+              ],
+            ),);
+          }
+
+          else {
+
+            index = index - 1;
+            return  WorkOutNote(height, mainScreenProvider.favoriteWorkOuts[index], 3);
+          }
+        }),
+      ),
     );
   }
 }

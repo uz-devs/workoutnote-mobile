@@ -21,11 +21,11 @@ class MainScreenProvider extends ChangeNotifier {
   DateTime? selectedDate;
 
   //api calls
-  Future<void> fetchWorkOuts(String sessionKey, int timestamp) async {
+  Future<void> fetchWorkOuts(String sessionKey, int fromTimestamp, int  tillTimeStamp) async {
     try {
 
 
-      var response = await WebServices.fetchWorkOuts(sessionKey, timestamp);
+      var response = await WebServices.fetchWorkOuts(sessionKey, fromTimestamp, tillTimeStamp);
       print(sessionKey);
 
       if (response.statusCode == 200) {
@@ -52,10 +52,10 @@ class MainScreenProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchWorkOutsByDate(String sessionKey, int timestamp) async {
+  Future<void> fetchWorkOutsByDate(String sessionKey, int fromTimestamp, int tillTimestamp) async {
     if (calendarWorkouts.isNotEmpty) calendarWorkouts.clear();
     try {
-      var response = await WebServices.fetchWorkOuts(sessionKey, timestamp);
+      var response = await WebServices.fetchWorkOuts(sessionKey, fromTimestamp, tillTimestamp);
       print(sessionKey);
 
       if (response.statusCode == 200) {

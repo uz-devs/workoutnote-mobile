@@ -67,7 +67,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       setState(() {
                         calendarProvider.selectedDate = selectedDay;
                       });
-                       await  calendarProvider.fetchWorkOutsByDate(userPreferences!.getString("sessionKey") ?? "", selectedDay.millisecondsSinceEpoch);
+
+
+                      var fromTimeStamp = DateTime(selectedDay.year,  selectedDay.month,  selectedDay.day).millisecondsSinceEpoch;
+                      var tillTimeStamp = DateTime(selectedDay.year,  selectedDay.month,  selectedDay.day+1).millisecondsSinceEpoch-1;
+                      print("from timestamp: $fromTimeStamp");
+                      print("till timestamp: $tillTimeStamp");
+
+                       await  calendarProvider.fetchWorkOutsByDate(userPreferences!.getString("sessionKey") ?? "", fromTimeStamp, tillTimeStamp);
                     },
                     selectedDayPredicate: (day) {
                       return calendarProvider.selectedDate == day;

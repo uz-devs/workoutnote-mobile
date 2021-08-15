@@ -24,10 +24,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    var fromTimeStamp = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).millisecondsSinceEpoch;
+    var tillTimeStamp = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day+1).millisecondsSinceEpoch - 1;
     navProvider = Provider.of<MainScreenProvider>(context, listen: true);
     if(!navProvider.requestDone1){
       navProvider.requestDone1 = true;
-      navProvider.fetchWorkOuts(userPreferences!.getString("sessionKey") ?? "", DateTime.now().millisecondsSinceEpoch).then((value) {
+      navProvider.fetchWorkOuts(userPreferences!.getString("sessionKey") ?? "", fromTimeStamp, tillTimeStamp).then((value) {
       });
     }
   }
