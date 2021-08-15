@@ -28,7 +28,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
   bool timeRefreshed = false;
 
   //api calls
-  Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, List<WorkOut> workOuts, Function updateHome) async {
+  Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, List<WorkOut> workOuts, List<WorkOut> calendarWorkouts) async {
     bool canCreateSession = false;
     for (int i = 0; i < _selectedLifts.length; i++) {
       if (_selectedLifts[i].isSelected) {
@@ -55,7 +55,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
           if (count == _selectedLifts.length) {
             var workout = WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
             workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
-            updateHome();
+            calendarWorkouts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
             _selectedLifts.removeWhere((element) => element.isSelected);
             stopTimer();
           }
@@ -243,7 +243,8 @@ class CreateWorkoutProvider extends ChangeNotifier {
     secs = "00";
     mins = "00";
     hrs = "00";
-    if (timerSubscription != null) timerSubscription!.cancel();
+    timerSubscription!.cancel();
+    timerSubscription = null;
     _selectedLifts.clear();
     unselectedLift = EditableLift();
     _unselectedExercise = null;

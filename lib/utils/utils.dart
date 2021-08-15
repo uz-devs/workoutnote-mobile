@@ -45,7 +45,7 @@ Future<void> initPreferences() async {
 
 String toDate(int timestamp) {
   var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-  var formattedDate = DateFormat('yyyy.MM.dd').format(date);
+  var formattedDate = DateFormat('yyyy.M.d').format(date);
   print(formattedDate);
   return formattedDate;
 }

@@ -8,6 +8,7 @@ import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/providers/create%20workout%20provider.dart';
+import 'package:workoutnote/providers/home%20%20%20screen%20provider.dart';
 import 'package:workoutnote/ui/widgets/all%20%20workouts%20dialog.dart';
 import 'package:workoutnote/ui/widgets/search%20dialog.dart';
 import 'package:workoutnote/utils/strings.dart';
@@ -17,12 +18,15 @@ class CreateWorkOutCard extends StatelessWidget {
   final width;
   final height;
   List<WorkOut> workOuts;
-  Function updateHome;
+  List<WorkOut> calendarWorkouts;
 
-  CreateWorkOutCard(this.width, this.height, this.workOuts, this.updateHome);
+
+  CreateWorkOutCard(this.width, this.height, this.workOuts,  this.calendarWorkouts);
 
   Widget build(BuildContext context) {
     var configProvider = Provider.of<ConfigProvider>(context, listen: true);
+    var main = Provider.of<MainScreenProvider>(context, listen: false);
+
     return Container(
       margin: EdgeInsets.only(bottom: 50.0),
       child: Consumer<CreateWorkoutProvider>(builder: (context, exProvider, child) {
@@ -229,7 +233,9 @@ class CreateWorkOutCard extends StatelessWidget {
                                   ),
                                   color: Color.fromRGBO(102, 51, 204, 1),
                                   onPressed: () async {
-                                    await exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, updateHome);
+                                     exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, calendarWorkouts).then((value) {
+                                       main.update();
+                                     });
                                     await exProvider.saveListToSharePreference();
                                   },
                                   textColor: Colors.white,

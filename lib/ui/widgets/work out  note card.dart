@@ -62,19 +62,21 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                           ),
                           Expanded(flex: 4, child: Container()),
                           Expanded(
-                            flex: 1,
+                            flex: widget.mode==3?2:1,
                             child: Container(
-                                padding: EdgeInsets.only(top: 10.0, right: 10.0),
+                                padding: EdgeInsets.only(top: 10.0, right:  10.0),
                                 child: InkWell(
                                   onTap: () {
-                                    if (!widget.workout.isFavorite)
-                                      mainProvider.setFavoriteWorkOut(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1, widget.mode).then((value) {
-                                        setState(() {});
-                                      });
-                                    else
-                                      mainProvider.unsetFavoriteWorkOut(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1, widget.mode).then((value) {
-                                        setState(() {});
-                                      });
+                                    if (widget.mode != 3) {
+                                      if (!widget.workout.isFavorite)
+                                        mainProvider.setFavoriteWorkOut(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1, widget.mode).then((value) {
+                                          setState(() {});
+                                        });
+                                      else
+                                        mainProvider.unsetFavoriteWorkOut(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1, widget.mode).then((value) {
+                                          setState(() {});
+                                        });
+                                    }
                                   },
                                   child: Icon(
                                     !widget.workout.isFavorite ? Icons.favorite_border : Icons.favorite,
@@ -83,24 +85,25 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                                   ),
                                 )),
                           ),
-                          Expanded(
-                            flex: 1,
-                            child: InkWell(
-                              onTap: () async {
-                                await _showDialog(configProvider, mainProvider);
-                              },
-                              child: Container(
-                                padding: EdgeInsets.only(top: 10, right: 10.0),
-                                alignment: Alignment.center,
-                                child: SvgPicture.asset(
-                                  "assets/icons/menu.svg",
-                                  height: 15,
-                                  width: 50,
-                                  color: Colors.black,
+                          if (widget.mode != 3)
+                            Expanded(
+                              flex: 1,
+                              child: InkWell(
+                                onTap: () async {
+                                  await _showDialog(configProvider, mainProvider);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(top: 10, right: 10.0),
+                                  alignment: Alignment.center,
+                                  child: SvgPicture.asset(
+                                    "assets/icons/menu.svg",
+                                    height: 15,
+                                    width: 50,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                       Container(
@@ -137,8 +140,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                     );
 
                   return Container();
-                }
-                else {
+                } else {
                   index = index - 1;
                   return Container(
                       margin: EdgeInsets.only(left: 15.0),

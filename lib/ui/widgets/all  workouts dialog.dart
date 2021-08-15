@@ -42,39 +42,47 @@ class _AllWorkoutsDialogState extends State<AllWorkoutsDialog> {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Dialog(
-        child: ListView.builder(itemCount: mainScreenProvider.favoriteWorkOuts.length + 1,  itemBuilder: (context,  index) {
-          if(index == 0){
-            return  Container(child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Align(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        insetPadding: EdgeInsets.all(20),
+        child: Container(
+          height: 0.9*height,
+          child: Scrollbar(
+            thickness: 3,
+            child: ListView.builder(itemCount: mainScreenProvider.favoriteWorkOuts.length + 1,  itemBuilder: (context,  index) {
+              if(index == 0){
+                return  Container(child: Stack(
                   alignment: Alignment.center,
-                  child: Text(
-                    "${favoriteWorkoutSesions[configProvider.activeLanguage()]}",
-                    style: TextStyle(fontSize: 18, color: Color.fromRGBO(102, 51, 204, 1)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    margin: EdgeInsets.only(right: 10.0),
-                    child: IconButton(
-                        icon: Icon(Icons.clear, color: Color.fromRGBO(102, 51, 204, 1)),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }),
-                  ),
-                )
-              ],
-            ),);
-          }
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "${favoriteWorkoutSesions[configProvider.activeLanguage()]}",
+                        style: TextStyle(fontSize: 18, color: Color.fromRGBO(102, 51, 204, 1)),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 10.0),
+                        child: IconButton(
+                            icon: Icon(Icons.clear, color: Color.fromRGBO(102, 51, 204, 1)),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            }),
+                      ),
+                    )
+                  ],
+                ),);
+              }
 
-          else {
+              else {
 
-            index = index - 1;
-            return  WorkOutNote(height, mainScreenProvider.favoriteWorkOuts[index], 3);
-          }
-        }),
+                index = index - 1;
+                return  WorkOutNote(height, mainScreenProvider.favoriteWorkOuts[index], 3);
+              }
+            }),
+          ),
+        ),
       ),
     );
   }

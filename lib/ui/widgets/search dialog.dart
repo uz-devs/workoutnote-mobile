@@ -35,9 +35,6 @@ class _SearchDialogState extends State<SearchDialog> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         insetPadding: EdgeInsets.all(20),
         child:
-
-
-
         Container(
           height: 0.9 * widget.height,
           child:

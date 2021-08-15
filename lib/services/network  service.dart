@@ -17,6 +17,7 @@ class WebServices {
     final url = Uri.https(baseUrl, fetch_workouts);
     final body = {'sessionKey': '$sessionKey', 'fromTimestampMs': '$fromTimestamp', 'tillTimestampMs': tillTimesatmp};
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+
     return response;
   }
 
