@@ -51,7 +51,6 @@ class _NavControllerState extends State<NavController> {
         onTap: _onItemSelected,
         selectedItemColor:  Color.fromRGBO(102, 51, 204, 1),
         currentIndex: _selectedIndex,
-
         unselectedItemColor: Colors.black38,
       ),
     );

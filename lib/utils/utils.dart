@@ -1,5 +1,6 @@
 //api  urls
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -37,6 +38,8 @@ const int SUCCESS = 4;
 
 //util  methods
 SharedPreferences? userPreferences, appPreferences;
+List<Language> lList = [Language(english, 1), Language(korean, 2)];
+const int KG = 1,   LBS = -1;
 
 Future<void> initPreferences() async {
   userPreferences = await SharedPreferences.getInstance();
@@ -78,8 +81,12 @@ Tuple3<String, String, String> calculateDuration(int duration) {
   return Tuple3(hrs, mins, secs);
 }
 
-List<Language> lList = [Language(english, 1), Language(korean, 2)];
 
+
+double roundDouble(double value, int places){
+  num mod = pow(10.0, places);
+  return ((value * mod).round().toDouble() / mod);
+}
 class Language {
   String? name;
   int? index;

@@ -17,8 +17,6 @@ class CreateWorkoutProvider extends ChangeNotifier {
   String hrs = "00";
   StreamSubscription? timerSubscription;
 
-  bool  boq = false;
-
   List<EditableLift> _selectedLifts = [];
   EditableLift? _unselectedLift = EditableLift();
   Exercise? _unselectedExercise;
@@ -44,7 +42,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
         print(response.body);
         if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
           for (int i = 0; i < _selectedLifts.length; i++) {
-            var insertLift = await WebServices.insertLift(sessionKey, timestamp, _selectedLifts[i].mass, _selectedLifts[i].exerciseId ?? -1, jsonDecode(response.body)["workout_session"]["id"],  _selectedLifts[i].rep, _selectedLifts[i].rm);
+            var insertLift = await WebServices.insertLift(sessionKey, timestamp, _selectedLifts[i].mass, _selectedLifts[i].exerciseId ?? -1, jsonDecode(response.body)["workout_session"]["id"], _selectedLifts[i].rep, _selectedLifts[i].rm);
             var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
             print(jsonDecode(insertLift.body)["success"]);
             if (insertLift.statusCode == 200 && jsonDecode(insertLift.body)["success"]) {
@@ -69,30 +67,40 @@ class CreateWorkoutProvider extends ChangeNotifier {
     }
   }
 
-  //utils
   set unselectedExercise(Exercise? value) {
     _unselectedExercise = value;
     notifyListeners();
   }
 
-  void firstEnterApp() {
-    appRefereshed = true;
-    if (userPreferences!.getString("title") != null) titleContoller.text = userPreferences!.getString("title") ?? "";
-    print(titleContoller.text);
-    if (userPreferences!.getString("lifts") != null) {
-      List<EditableLift> lifts = EditableLift.decode(userPreferences!.getString("lifts") ?? "");
-      for (int i = 0; i < lifts.length; i++) {
-        _selectedLifts.add(lifts[i]);
-        print(selectedLifts[i].exerciseName);
+  void restoreAllExercises() {
+    if (!appRefereshed) {
+      appRefereshed = true;
+      if (userPreferences!.getString("title") != null) titleContoller.text = userPreferences!.getString("title") ?? "";
+      print(titleContoller.text);
+      if (userPreferences!.getString("lifts") != null) {
+        List<EditableLift> lifts = EditableLift.decode(userPreferences!.getString("lifts") ?? "");
+        for (int i = 0; i < lifts.length; i++) {
+          _selectedLifts.add(lifts[i]);
+          print(selectedLifts[i].exerciseName);
+        }
       }
+    }
+  }
+
+  void restoreTimer() {
+    if (!timeRefreshed && userPreferences!.getInt("time") != null) {
+      timeRefreshed = true;
+      hrs = ((userPreferences!.getInt("time")! / (60 * 60)) % 60).floor().toString().padLeft(2, '0');
+      mins = ((userPreferences!.getInt("time")! / 60) % 60).floor().toString().padLeft(2, '0');
+      secs = (userPreferences!.getInt("time")! % 60).floor().toString().padLeft(2, '0');
     }
   }
 
   List<EditableLift> get selectedLifts => _selectedLifts;
 
   Exercise? get unselectedExercise => _unselectedExercise;
-  EditableLift? get unselectedLift => _unselectedLift;
 
+  EditableLift? get unselectedLift => _unselectedLift;
 
   set unselectedLift(EditableLift? value) {
     _unselectedLift = value;
@@ -113,9 +121,9 @@ class CreateWorkoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void startTimer()   {
+  void startTimer() {
     var timerStream = stopWatchStream();
-    timerSubscription =  timerStream.listen((int newTick) async {
+    timerSubscription = timerStream.listen((int newTick) async {
       duration = newTick;
       hrs = ((newTick / (60 * 60)) % 60).floor().toString().padLeft(2, '0');
       mins = ((newTick / 60) % 60).floor().toString().padLeft(2, '0');
@@ -123,7 +131,6 @@ class CreateWorkoutProvider extends ChangeNotifier {
       await saveTimeToSharedPreference(newTick.toInt());
 
       notifyListeners();
-
     });
     notifyListeners();
   }
@@ -217,7 +224,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
   }
 
   void updateRM(int mass, int rep, index) {
-    _selectedLifts[index].rm = mass + mass * rep * 0.025;
+    _selectedLifts[index].rm = roundDouble((mass + mass * rep * 0.025), 2);
   }
 
   Future<void> saveListToSharePreference() async {
@@ -236,7 +243,6 @@ class CreateWorkoutProvider extends ChangeNotifier {
     _selectedLifts.add(exercise);
     notifyListeners();
   }
-
 
   void reset() {
     titleContoller.clear();

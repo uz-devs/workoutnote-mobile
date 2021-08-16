@@ -11,6 +11,7 @@ import 'package:workoutnote/utils/utils.dart';
 class ConfigProvider extends ChangeNotifier {
   //vars
   String? n, p, e;
+  int measureMode = KG;
 
   //api  calls
   Future<bool> sendVerificationCode(String email, name, String password) async {
@@ -129,6 +130,30 @@ class ConfigProvider extends ChangeNotifier {
         }
     }
     notifyListeners();
+  }
+
+  void changeMeasurement() {
+    if (measureMode == KG) {
+      measureMode = LBS;
+    } else {
+      measureMode = KG;
+    }
+    notifyListeners();
+  }
+
+  double getConvertedMass(double mass) {
+    if (measureMode == KG) {
+      return mass;
+    } else {
+      return roundDouble((2.2 * mass), 2);
+    }
+  }
+
+  double getConvertedRM(double rm) {
+    if (measureMode == KG) {
+      return roundDouble(rm, 2);
+    } else
+      return roundDouble(2.2*rm, 2);
   }
 
   int value() {

@@ -21,12 +21,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var navProvider = MainScreenProvider();
+  var  configProvider = ConfigProvider();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     navProvider = Provider.of<MainScreenProvider>(context, listen: true);
+    configProvider = Provider.of<ConfigProvider>(context, listen: true);
     if (!navProvider.requestDone1) {
       navProvider.requestDone1 = true;
       navProvider.fetchTodayWorkouts().then((value) {});
@@ -36,34 +38,37 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
 
-    var configProvider = Provider.of<ConfigProvider>(context, listen: true);
-    return ListView.builder(
-        itemCount: navProvider.workOuts.length + 3,
-        itemBuilder: (context, index) {
-          if (index == 0)
-            return Container(
-              margin: EdgeInsets.only(left: 20, top: 30, bottom: 20),
-              child: Text(
-                "${welcomeMessage[configProvider.activeLanguage()]}, ${userPreferences!.getString("name") ?? ""}",
-                style: TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-            );
-          else if (index == 1) {
-            return CreateWorkOutCard(widget.width, widget.height, navProvider.workOuts, navProvider.calendarWorkouts);
-          } else if (index == 2) {
-            return Container(
-                margin: EdgeInsets.only(left: 20.0),
+    return _buildItemsList();
+  }
+
+  Widget _buildItemsList(){
+      return ListView.builder(
+          itemCount: navProvider.workOuts.length + 3,
+          itemBuilder: (context, index) {
+            if (index == 0)
+              return Container(
+                margin: EdgeInsets.only(left: 20, top: 30, bottom: 20),
                 child: Text(
-                  "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now())}",
-                  style: TextStyle(fontSize: 25, color: Color.fromRGBO(102, 51, 204, 1)),
-                ));
-          } else {
-            index = index - 3;
-            return WorkOutNote(widget.height, navProvider.workOuts[index], 1);
-          }
-        });
+                  "${welcomeMessage[configProvider.activeLanguage()]}, ${userPreferences!.getString("name") ?? ""}",
+                  style: TextStyle(
+                    fontSize: 30,
+                  ),
+                ),
+              );
+            else if (index == 1) {
+              return CreateWorkOutCard(widget.width, widget.height, navProvider.workOuts, navProvider.calendarWorkouts);
+            } else if (index == 2) {
+              return Container(
+                  margin: EdgeInsets.only(left: 20.0),
+                  child: Text(
+                    "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now())}",
+                    style: TextStyle(fontSize: 25, color: Color.fromRGBO(102, 51, 204, 1)),
+                  ));
+            } else {
+              index = index - 3;
+              return WorkOutNote(widget.height, navProvider.workOuts[index], 1);
+            }
+          });
   }
 
 }
