@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workoutnote/ui/widgets/calculation%20bottom%20%20sheet.dart';
 
 class CalculateScreen extends StatefulWidget {
   const CalculateScreen();
@@ -8,9 +9,11 @@ class CalculateScreen extends StatefulWidget {
 }
 
 class _CalculateScreenState extends State<CalculateScreen> {
+  late double height;
   List<String> names = ["One Rep Max 계산기", "플레이트 바벨 계산기", "파워리프팅 강도 계산기", "Wilks 계산기"];
   @override
   Widget build(BuildContext context) {
+     height  = MediaQuery.of(context).size.height;
     return Container(
       margin: EdgeInsets.only(top: 15.0),
       child: ListView.builder(itemCount: 4,   itemBuilder: (context, index){
@@ -22,6 +25,9 @@ class _CalculateScreenState extends State<CalculateScreen> {
   Widget _buildCustomButton(String text){
 
     return  InkWell(
+      onTap: ()  async{
+        await showModal();
+      },
       child: Container(
 
         margin: EdgeInsets.only(bottom: 10.0, left: 20.0, right: 20.0),
@@ -38,5 +44,11 @@ class _CalculateScreenState extends State<CalculateScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> showModal() async {
+     await  showModalBottomSheet(
+         isScrollControlled: true,
+         context: context, builder: (context) => CalculationBottomSheet(height));
   }
 }
