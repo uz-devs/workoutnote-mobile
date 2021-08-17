@@ -33,7 +33,8 @@ class ConfigProvider extends ChangeNotifier {
 
   Future<bool> verifyUser(String verificationCode) async {
     try {
-      var response = await WebServices.verifyRegister(n!, e!, verificationCode, p!);
+      var response =
+          await WebServices.verifyRegister(n!, e!, verificationCode, p!);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         if (await login(e!, p!)) {
@@ -54,15 +55,20 @@ class ConfigProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         var user = User.fromJson(jsonDecode(response.body));
         if (user.authSuccess) {
-          Response settingsResponse = await WebServices.fetchSettings(user.sessionKey ?? "");
+          Response settingsResponse =
+              await WebServices.fetchSettings(user.sessionKey ?? "");
           if (settingsResponse.statusCode == 200) {
             var settings = Settings.fromJson(jsonDecode(settingsResponse.body));
             await userPreferences!.setString("email", email);
-            await userPreferences!.setString("name", settings.name ?? "unknown");
-            await userPreferences!.setString("birthDate", settings.dateOfBirth ?? "unknown");
-            await userPreferences!.setString("gender", settings.gender ?? "unknown");
+            await userPreferences!
+                .setString("name", settings.name ?? "unknown");
+            await userPreferences!
+                .setString("birthDate", settings.dateOfBirth ?? "unknown");
+            await userPreferences!
+                .setString("gender", settings.gender ?? "unknown");
             await userPreferences!.setBool("isShared", settings.iProfileShared);
-            await userPreferences!.setString("sessionKey", user.sessionKey ?? "");
+            await userPreferences!
+                .setString("sessionKey", user.sessionKey ?? "");
             return true;
           }
         }
@@ -153,7 +159,7 @@ class ConfigProvider extends ChangeNotifier {
     if (measureMode == KG) {
       return roundDouble(rm, 2);
     } else
-      return roundDouble(2.2*rm, 2);
+      return roundDouble(2.2 * rm, 2);
   }
 
   int value() {

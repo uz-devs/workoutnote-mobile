@@ -10,6 +10,7 @@ class WebServices {
     final url = Uri.https(baseUrl, login);
     final body = {'email': '$email', 'password': '$password'};
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    print(response.body);
     return response;
   }
 
@@ -137,6 +138,13 @@ class WebServices {
   static Future<http.Response> fetchFavoriteWorkoutSessions(String sessionKey) async {
     final url = Uri.https(baseUrl, fetchFavoriteWorkouts);
     final body = {'sessionKey': sessionKey};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
+
+  static Future<http.Response> updateLift(String sessionKey, int  workoutSessionId, int liftId, int newExerciseId, int newLiftMass , int newRep ) async {
+    final url = Uri.https(baseUrl, fetchFavoriteWorkouts);
+    final body = {'sessionKey': sessionKey, 'workout_session_id':  workoutSessionId, 'lift_id': liftId, 'new_exercise_id': newExerciseId,  'new_lift_mass': newLiftMass, 'new_repetitions': newRep};
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }

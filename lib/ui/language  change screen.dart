@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:workoutnote/models/language%20model.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
@@ -15,7 +16,7 @@ class LanguageChangeScreen extends StatefulWidget {
 class _LanguageChangeScreenState extends State<LanguageChangeScreen> {
   int value = 1;
   String item = english;
-  List<Language> lList = [Language(english, 1), Language(korean, 2)];
+  List<Language> languages = [Language(english, 1), Language(korean, 2)];
 
   @override
   void initState() {
@@ -44,7 +45,7 @@ class _LanguageChangeScreenState extends State<LanguageChangeScreen> {
 
       body: Consumer<ConfigProvider>(builder: (context, config, widget) {
         return ListView(
-          children: lList.map((e)
+          children: languages.map((e)
           => RadioListTile<int?>(
               title: Text("${e.name}"),
               value:e.index, groupValue: config.value(), onChanged: (val) {

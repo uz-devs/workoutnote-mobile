@@ -25,8 +25,15 @@ class CreateWorkoutProvider extends ChangeNotifier {
   bool ticksReefrshed = false;
   bool timeRefreshed = false;
 
+  int _workoutMode = EXERCISE_CREATE_MODE;
+
   //api calls
-  Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, List<WorkOut> workOuts, List<WorkOut> calendarWorkouts) async {
+  Future<void> createWorkOutSession(
+      String sessionKey,
+      String title,
+      int timestamp,
+      List<WorkOut> workOuts,
+      List<WorkOut> calendarWorkouts) async {
     bool canCreateSession = false;
     for (int i = 0; i < _selectedLifts.length; i++) {
       if (_selectedLifts[i].isSelected) {
@@ -38,22 +45,41 @@ class CreateWorkoutProvider extends ChangeNotifier {
       try {
         List<Lift> lifts = [];
         int count = 0;
-        var response = await WebServices.insertWorkOut(sessionKey, title, timestamp, duration);
-        print(response.body);
-        if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+        var response = await WebServices.insertWorkOut(
+            sessionKey, title, timestamp, duration);
+        if (response.statusCode == 200 &&
+            jsonDecode(response.body)["success"]) {
           for (int i = 0; i < _selectedLifts.length; i++) {
-            var insertLift = await WebServices.insertLift(sessionKey, timestamp, _selectedLifts[i].mass, _selectedLifts[i].exerciseId ?? -1, jsonDecode(response.body)["workout_session"]["id"], _selectedLifts[i].rep, _selectedLifts[i].rm);
+            var insertLift = await WebServices.insertLift(
+                sessionKey,
+                timestamp,
+                _selectedLifts[i].mass,
+                _selectedLifts[i].exerciseId ?? -1,
+                jsonDecode(response.body)["workout_session"]["id"],
+                _selectedLifts[i].rep,
+                _selectedLifts[i].rm);
             var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
             print(jsonDecode(insertLift.body)["success"]);
-            if (insertLift.statusCode == 200 && jsonDecode(insertLift.body)["success"]) {
+            if (insertLift.statusCode == 200 &&
+                jsonDecode(insertLift.body)["success"]) {
               count++;
-              lifts.add(Lift.create(lift.liftId, lift.timestamp, lift.oneRepMax, lift.exerciseId, lift.exerciseName, lift.liftMas, lift.repetitions));
+              lifts.add(Lift.create(
+                  lift.liftId,
+                  lift.timestamp,
+                  lift.oneRepMax,
+                  lift.exerciseId,
+                  lift.exerciseName,
+                  lift.liftMas,
+                  lift.repetitions));
             }
           }
           if (count == _selectedLifts.length) {
-            var workout = WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
-            workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
-            calendarWorkouts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
+            var workout =
+                WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
+            workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp,
+                lifts, workout.duration, false));
+            calendarWorkouts.add(WorkOut(workout.id, workout.title,
+                workout.timestamp, lifts, workout.duration, false));
             _selectedLifts.removeWhere((element) => element.isSelected);
             stopTimer();
           }
@@ -63,7 +89,39 @@ class CreateWorkoutProvider extends ChangeNotifier {
         print(e);
       }
     } else {
-      showToast("You need to add at least one exercise for one workout session!");
+      showToast(
+          "You need to add at least one exercise for one workout session!");
+    }
+  }
+
+  Future<bool> updateWorkoutSession(String sessionKey, int id, String newTitle, int newDuration, List<WorkOut> workouts, List<WorkOut> calendarWorkouts) async {
+    bool canUpdateSession = true;
+
+    for (int i = 0; i < _selectedLifts.length; i++) {
+      if (_selectedLifts[i].isSelected) {
+        canUpdateSession = true;
+        break;
+      }
+    }
+
+    if (canUpdateSession) {
+      try {
+        var response = await WebServices.updateWorkout(
+            sessionKey, id, newTitle, newDuration);
+        if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+           for (int i = 0; i<_selectedLifts.length; i++){
+                   var liftUpdateResponse = WebServices.updateLift(sessionKey, id, _)
+           }
+        }
+        return false;
+      } catch (e) {
+        print(e);
+        return false;
+      }
+    }
+    else  {
+
+      showToast("Sorry you  can't  update your session now:(");
     }
   }
 
@@ -72,13 +130,23 @@ class CreateWorkoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+
+  int get workoutMode => _workoutMode;
+
+  set workoutMode(int value) {
+    _workoutMode = value;
+    notifyListeners();
+  }
+
   void restoreAllExercises() {
     if (!appRefereshed) {
       appRefereshed = true;
-      if (userPreferences!.getString("title") != null) titleContoller.text = userPreferences!.getString("title") ?? "";
+      if (userPreferences!.getString("title") != null)
+        titleContoller.text = userPreferences!.getString("title") ?? "";
       print(titleContoller.text);
       if (userPreferences!.getString("lifts") != null) {
-        List<EditableLift> lifts = EditableLift.decode(userPreferences!.getString("lifts") ?? "");
+        List<EditableLift> lifts =
+            EditableLift.decode(userPreferences!.getString("lifts") ?? "");
         for (int i = 0; i < lifts.length; i++) {
           _selectedLifts.add(lifts[i]);
           print(selectedLifts[i].exerciseName);
@@ -90,9 +158,18 @@ class CreateWorkoutProvider extends ChangeNotifier {
   void restoreTimer() {
     if (!timeRefreshed && userPreferences!.getInt("time") != null) {
       timeRefreshed = true;
-      hrs = ((userPreferences!.getInt("time")! / (60 * 60)) % 60).floor().toString().padLeft(2, '0');
-      mins = ((userPreferences!.getInt("time")! / 60) % 60).floor().toString().padLeft(2, '0');
-      secs = (userPreferences!.getInt("time")! % 60).floor().toString().padLeft(2, '0');
+      hrs = ((userPreferences!.getInt("time")! / (60 * 60)) % 60)
+          .floor()
+          .toString()
+          .padLeft(2, '0');
+      mins = ((userPreferences!.getInt("time")! / 60) % 60)
+          .floor()
+          .toString()
+          .padLeft(2, '0');
+      secs = (userPreferences!.getInt("time")! % 60)
+          .floor()
+          .toString()
+          .padLeft(2, '0');
     }
   }
 
@@ -228,7 +305,8 @@ class CreateWorkoutProvider extends ChangeNotifier {
   }
 
   Future<void> saveListToSharePreference() async {
-    await userPreferences!.setString("lifts", EditableLift.encode(_selectedLifts));
+    await userPreferences!
+        .setString("lifts", EditableLift.encode(_selectedLifts));
   }
 
   Future<void> saveTitleToSharedPreference(String title) async {
@@ -250,10 +328,10 @@ class CreateWorkoutProvider extends ChangeNotifier {
     secs = "00";
     mins = "00";
     hrs = "00";
-    if(timerSubscription != null)
-    timerSubscription!.cancel();
+    if (timerSubscription != null) timerSubscription!.cancel();
     timerSubscription = null;
-    _selectedLifts.clear();  timerSubscription = null;
+    _selectedLifts.clear();
+    timerSubscription = null;
     unselectedLift = EditableLift();
     _unselectedExercise = null;
     duration = 0;
@@ -262,7 +340,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
     timeRefreshed = false;
   }
 
-  void repeatExercise(List<EditableLift> lifts, String title) async {
+  void repeatWorkoutSession(List<EditableLift> lifts, String title) async {
     _selectedLifts.clear();
     _selectedLifts.addAll(lifts);
     titleContoller.text = title;
@@ -271,5 +349,16 @@ class CreateWorkoutProvider extends ChangeNotifier {
     await saveTitleToSharedPreference(title);
 
     stopTimer();
+  }
+
+  void editWorkoutSession(List<EditableLift> lifts, String title) async {
+
+
+    _workoutMode = EXERCISE_EDIT_MODE;
+    _selectedLifts.clear();
+    _selectedLifts.addAll(lifts);
+    titleContoller.text = title;
+    stopTimer();
+    notifyListeners();
   }
 }

@@ -14,6 +14,7 @@ Map<String, String> seeFavWorkouts = {english: "See Favorite Workoust sets",  ko
 Map<String, String> exercisesName = {english: "Exercises",  korean: "연습"};
 Map<String, String> save = {english: "Save",  korean: "저장"};
 Map<String, String> remove = {english: "Remove",  korean: "삭제"};
+Map<String, String> cancelUpdate  = {english: "Cancel", korean:  "취소"};
 Map<String, String> exercises = {english: "Exercises",  korean: "전제 연습"};
 Map<String, String> languageConfirm = {english: "Confirm",  korean: "확인"};
 Map<String, String> introBackButton = {english: "Skip",  korean: "건너뒤기"};

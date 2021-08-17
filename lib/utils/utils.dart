@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
+import 'package:workoutnote/models/language%20model.dart';
 import 'package:workoutnote/utils/strings.dart';
 
 const String baseUrl = "workoutnote.com";
@@ -29,6 +30,7 @@ const String fetchFavoriteExercise = "/api/fetch_favorite_exercises";
 const String passwordReset = "/api/request_password_reset";
 const String updateWorkout = "/api/update_workout";
 const String removeWorkOut = "/api/remove_workout";
+const String updateLift = "api/update_lift";
 //network  state codes
 const int LOADING = 0;
 const int TIMEOUT_EXCEPTION = 1;
@@ -39,7 +41,9 @@ const int SUCCESS = 4;
 //util  methods
 SharedPreferences? userPreferences, appPreferences;
 List<Language> lList = [Language(english, 1), Language(korean, 2)];
-const int KG = 1,   LBS = -1;
+const int KG = 1, LBS = -1;
+const int EXERCISE_EDIT_MODE = 1;
+const int EXERCISE_CREATE_MODE = 0;
 
 Future<void> initPreferences() async {
   userPreferences = await SharedPreferences.getInstance();
@@ -54,7 +58,14 @@ String toDate(int timestamp) {
 }
 
 void showToast(String message) {
-  Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIosWeb: 1, backgroundColor: Colors.black54, textColor: Colors.white, fontSize: 16.0);
+  Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black54,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
 
 Tuple3<String, String, String> calculateDuration(int duration) {
@@ -81,15 +92,7 @@ Tuple3<String, String, String> calculateDuration(int duration) {
   return Tuple3(hrs, mins, secs);
 }
 
-
-
-double roundDouble(double value, int places){
+double roundDouble(double value, int places) {
   num mod = pow(10.0, places);
   return ((value * mod).round().toDouble() / mod);
-}
-class Language {
-  String? name;
-  int? index;
-
-  Language(this.name, this.index);
 }

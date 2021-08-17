@@ -148,7 +148,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                  textColor: Colors.white,
                  child: Text("${repeat[configProvider.activeLanguage()]}"),
                  onPressed: () {
-                   mainScreenProvider.repeatExercise(widget.workout.id ?? -1, createWorkoutProvider, dialogProvider.allExercises);
+                   mainScreenProvider.repeatWorkoutSession(widget.workout.id ?? -1, createWorkoutProvider, dialogProvider.allExercises);
                  },
                ),
              );
@@ -182,7 +182,10 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                 Container(
                     width: double.maxFinite,
                     child: MaterialButton(
-                      onPressed: () {},
+                      onPressed: ()   {
+                         mainScreenProvider.editWorkout(widget.workout.id??-1, createWorkoutProvider, dialogProvider.allExercises);
+                         Navigator.pop(context);
+                         },
                       child: Text("${edit[configProvider.activeLanguage()]}"),
                     )),
                 Divider(),
