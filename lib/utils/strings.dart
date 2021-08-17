@@ -10,6 +10,7 @@ Map<String, String> verificationText = {english: "Verification",  korean: "화�
 Map<String, String> workOutSuccess = {english: "Workout has been created  successfully",  korean: "워크아웃이 성공적으로 작성되었습니다."};
 Map<String, String> title = {english: "Title",  korean: "제목"};
 Map<String, String> seeExercises = {english: "See all exercises",  korean: "모든 연습 보기"};
+Map<String, String> seeFavWorkouts = {english: "See Favorite Workoust sets",  korean: "모든 운동 세트 보기"};
 Map<String, String> exercisesName = {english: "Exercises",  korean: "연습"};
 Map<String, String> save = {english: "Save",  korean: "저장"};
 Map<String, String> remove = {english: "Remove",  korean: "삭제"};

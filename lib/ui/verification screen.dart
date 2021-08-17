@@ -36,13 +36,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                  height: height,
                   child: Column(
                     children: [
-                      Container(
-                          padding: EdgeInsets.all(10.0),
-                          alignment: Alignment.centerLeft,
-                          child: IconButton(onPressed: (){
-                            Navigator.pop(context);
-
-                          }, icon: Icon(Icons.arrow_back_ios,  color: Color.fromRGBO(102, 51, 204, 1),))),
+                      // Container(
+                      //     padding: EdgeInsets.all(10.0),
+                      //     alignment: Alignment.centerLeft,
+                      //     child: IconButton(onPressed: (){
+                      //       Navigator.pop(context);
+                      //
+                      //     }, icon: Icon(Icons.arrow_back_ios,  color: Color.fromRGBO(102, 51, 204, 1),))),
                       Container(
                         margin: EdgeInsets.only(top: height * 0.1),
                         child: Text(

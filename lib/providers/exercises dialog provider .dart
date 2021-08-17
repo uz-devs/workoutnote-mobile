@@ -189,6 +189,8 @@ class SearchDialogProvider extends ChangeNotifier {
   }
 
   void reset() {
+    print("settings");
+
     favoriteExercises.clear();
     allExercises.clear();
     myBodyParts.clear();

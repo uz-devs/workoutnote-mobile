@@ -187,7 +187,7 @@ class CreateWorkOutCard extends StatelessWidget {
                     await _showFavoriteWorkoutsDialog(context, configProvider, exProvider);
                   },
                   textColor: Colors.white,
-                  child: Text("${seeExercises[configProvider.activeLanguage()]}"),
+                  child: Text("${seeFavWorkouts[configProvider.activeLanguage()]}"),
                 ),
               ),
             );

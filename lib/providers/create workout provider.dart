@@ -245,13 +245,15 @@ class CreateWorkoutProvider extends ChangeNotifier {
   }
 
   void reset() {
+    print("creaet");
     titleContoller.clear();
     secs = "00";
     mins = "00";
     hrs = "00";
+    if(timerSubscription != null)
     timerSubscription!.cancel();
     timerSubscription = null;
-    _selectedLifts.clear();
+    _selectedLifts.clear();  timerSubscription = null;
     unselectedLift = EditableLift();
     _unselectedExercise = null;
     duration = 0;

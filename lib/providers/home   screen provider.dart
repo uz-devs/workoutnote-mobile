@@ -213,6 +213,7 @@ class MainScreenProvider extends ChangeNotifier {
   }
 
   void reset() {
+    print("home screen");
     workOuts.clear();
     calendarWorkouts.clear();
     requestDone1 = false;
