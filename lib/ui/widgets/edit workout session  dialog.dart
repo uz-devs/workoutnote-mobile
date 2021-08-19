@@ -35,11 +35,11 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    int count = widget.workout.lifts!.length + 3;
+    int count = widget.workout.lifts!.length + 6;
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       insetPadding: EdgeInsets.all(20),
-      child: Container(height: 0.6 * widget.height, child: _buildEditWorkoutList()),
+      child: Container(height: 0.6 * widget.height, child: _buildEditWorkoutList(count)),
     );
   }
 
@@ -113,7 +113,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                   margin: EdgeInsets.only(
                     bottom: 10,
                   ),
-                  child: _buildExerciseListItem((index + 1).toString(), "${widget.workout.lifts![index].exerciseName}(${widget. workout.lifts![index].bodyPart})", "0.0", "0.0", exProvider.selectedLifts[index].rm.toString(), Colors.black, 2, exProvider, index, context, configProvider));
+                  child: _buildExerciseListItem((index + 1).toString(), "${widget.workout.lifts![index].exerciseName}(...)", "0.0", "0.0", widget.workout.lifts![index].oneRepMax.toString(), Colors.black, 2, exProvider, index, context, configProvider));
             }
             else return Container(
                 margin: EdgeInsets.only(bottom: 10.0),
