@@ -10,14 +10,14 @@ import 'package:workoutnote/utils/utils.dart';
 
 class ConfigProvider extends ChangeNotifier {
   //vars
-  String? n, p, e;
+  String? mName, mPassword, mEmail;
   int measureMode = KG;
 
   //api  calls
   Future<bool> sendVerificationCode(String email, name, String password) async {
-    n = name;
-    p = password;
-    e = email;
+    mName = name;
+    mPassword = password;
+    mEmail = email;
     try {
       var response = await WebServices.sendVerification(email);
       print(response.body);
@@ -33,11 +33,11 @@ class ConfigProvider extends ChangeNotifier {
 
   Future<bool> verifyUser(String verificationCode) async {
     try {
-      var response =
-          await WebServices.verifyRegister(n!, e!, verificationCode, p!);
+      var response = await WebServices.verifyRegister(
+          mName!, mEmail!, verificationCode, mPassword!);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
-        if (await login(e!, p!)) {
+        if (await login(mEmail!, mPassword!)) {
           return true;
         }
       }
@@ -138,7 +138,7 @@ class ConfigProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeMeasurement() {
+  void changeMassMeasurement() {
     if (measureMode == KG) {
       measureMode = LBS;
     } else {
@@ -162,7 +162,7 @@ class ConfigProvider extends ChangeNotifier {
       return roundDouble(2.2 * rm, 2);
   }
 
-  int value() {
+  int languageCode() {
     switch (userPreferences!.getString("language")) {
       case english:
         {

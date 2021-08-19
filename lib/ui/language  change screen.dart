@@ -33,7 +33,6 @@ class _LanguageChangeScreenState extends State<LanguageChangeScreen> {
           icon: Icon(Icons.arrow_back_ios),
           color: Colors.deepPurpleAccent,
 
-
           onPressed: (){
             Navigator.pop(context);
           },
@@ -48,10 +47,9 @@ class _LanguageChangeScreenState extends State<LanguageChangeScreen> {
           children: languages.map((e)
           => RadioListTile<int?>(
               title: Text("${e.name}"),
-              value:e.index, groupValue: config.value(), onChanged: (val) {
+              value:e.index, groupValue: config.languageCode(), onChanged: (val) {
                 config.changeLanguage(val!).then((value) {
-                  setState(() {
-                  });
+                  setState(() {});
                 });
 
               })).toList(),

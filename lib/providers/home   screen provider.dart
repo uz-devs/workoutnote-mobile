@@ -10,7 +10,7 @@ import 'package:workoutnote/services/network%20%20service.dart';
 import 'package:workoutnote/utils/utils.dart';
 
 class MainScreenProvider extends ChangeNotifier {
-  //vars
+  //region vars
   List<WorkOut> workOuts = [];
   List<WorkOut> calendarWorkouts = [];
   List<WorkOut> favoriteWorkOuts = [];
@@ -18,10 +18,9 @@ class MainScreenProvider extends ChangeNotifier {
   bool requestDone2 = false;
   bool requestDone3 = false;
   List<String> workOutDates = [];
-
   DateTime? selectedDate = DateTime.now();
-
-  //api calls
+  //endregion
+  //region api calls
   Future<bool> fetchTodayWorkouts() async {
     try {
       var sessionKey = userPreferences!.getString("sessionKey") ?? "";
@@ -160,8 +159,8 @@ class MainScreenProvider extends ChangeNotifier {
       return false;
     }
   }
-
-  //utils
+  //endregion
+  //region utils
   void repeatWorkoutSession(int id, CreateWorkoutProvider createWorkoutProvider, List<Exercise> exercises) {
     List<EditableLift> lifts = [];
     String? title;
@@ -188,38 +187,6 @@ class MainScreenProvider extends ChangeNotifier {
     }
     createWorkoutProvider.repeatWorkoutSession(lifts, title ?? "[]");
   }
-
-  void   editWorkout(int workoutSessionId, CreateWorkoutProvider createWorkoutProvider, List<Exercise> exercises) {
-    List<EditableLift> lifts = [];
-    String? title;
-    for (int i = 0; i < calendarWorkouts.length; i++) {
-      if (calendarWorkouts[i].id == workoutSessionId) {
-        for (int j = 0; j < calendarWorkouts[i].lifts!.length; j++) {
-          title = calendarWorkouts[i].title ?? "[]";
-
-          lifts.add(EditableLift.create(
-              calendarWorkouts[i].lifts![j].exerciseName,
-              calendarWorkouts[i].lifts![j].exerciseId,
-              exercises.isNotEmpty
-                  ? exercises
-                      .where((element) =>
-                          element.id ==
-                          calendarWorkouts[i].lifts![j].exerciseId)
-                      .single
-                      .bodyPart
-                  : "",
-              calendarWorkouts[i].lifts![j].liftMas!.toInt(),
-              calendarWorkouts[i].lifts![j].repetitions ?? 0,
-              calendarWorkouts[i].lifts![j].oneRepMax ?? 0.0,
-              true));
-        }
-      }
-    }
-
-    createWorkoutProvider.editWorkoutSession(lifts, title ?? "[]");
-
-  }
-
   void _updateWorkoutFavoriteStatus(int id, int mode) {
     if (mode == 1)
       for (int i = 0; i < workOuts.length; i++) {
@@ -285,4 +252,5 @@ class MainScreenProvider extends ChangeNotifier {
   void update() {
     notifyListeners();
   }
+  //endregion
 }

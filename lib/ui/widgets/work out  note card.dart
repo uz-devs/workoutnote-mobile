@@ -183,7 +183,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                     width: double.maxFinite,
                     child: MaterialButton(
                       onPressed: ()   {
-                         mainScreenProvider.editWorkout(widget.workout.id??-1, createWorkoutProvider, dialogProvider.allExercises);
+                     //    mainScreenProvider.editWorkout(widget.workout.id??-1, createWorkoutProvider, dialogProvider.allExercises);
                          Navigator.pop(context);
                          },
                       child: Text("${edit[configProvider.activeLanguage()]}"),

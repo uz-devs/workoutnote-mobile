@@ -12,7 +12,7 @@ import 'package:workoutnote/services/network%20%20service.dart';
 import 'package:workoutnote/utils/utils.dart';
 
 class SearchDialogProvider extends ChangeNotifier {
-  //vars
+  //region vars
   List<Exercise> favoriteExercises = [];
   List<Exercise> allExercises = [];
   List<BodyPart> myBodyParts = [];
@@ -21,8 +21,8 @@ class SearchDialogProvider extends ChangeNotifier {
   bool requestDone = false;
   bool showFavorite = false;
   String activeBodyPart = "";
-
-  //api calls
+ //endregion
+  //region api calls
   Future<void> fetchExercises() async {
     try {
       var response = await WebServices.fetchExercises();
@@ -88,8 +88,7 @@ class SearchDialogProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> setFavoriteExercise(
-      String sessionKey, int exerciseId, Exercise exercise) async {
+  Future<void> setFavoriteExercise(String sessionKey, int exerciseId, Exercise exercise) async {
     try {
       var response =
           await WebServices.setMyFavoriteExercise(sessionKey, exerciseId);
@@ -102,8 +101,7 @@ class SearchDialogProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> unsetFavoriteExercise(
-      String sessionKey, int exerciseId, Exercise exercise) async {
+  Future<void> unsetFavoriteExercise(String sessionKey, int exerciseId, Exercise exercise) async {
     try {
       var response =
           await WebServices.unsetMyFavoriteExercise(sessionKey, exerciseId);
@@ -115,8 +113,8 @@ class SearchDialogProvider extends ChangeNotifier {
       print(e);
     }
   }
-
-  //utils
+  //endregion
+  //region  utils
   void filterExercises(List<Exercise> showExercises) {
     if (showFavorite) {
       if (activeBodyPart.isNotEmpty) {
@@ -200,4 +198,6 @@ class SearchDialogProvider extends ChangeNotifier {
     showFavorite = false;
     activeBodyPart = "";
   }
+  //endregion
+
 }
