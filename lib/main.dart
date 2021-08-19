@@ -4,6 +4,7 @@ import 'package:provider/single_child_widget.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/providers/create%20workout%20provider.dart';
+import 'package:workoutnote/providers/edit%20workout%20%20provider.dart';
 import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
 import 'package:workoutnote/providers/home%20%20%20screen%20provider.dart';
 import 'package:workoutnote/ui/auth%20screen%20.dart';
@@ -26,6 +27,9 @@ void main() async {
     ),
     ChangeNotifierProvider(
       create: (_) => CreateWorkoutProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => EditWorkoutProvider(),
     ),
   ];
   runApp(MultiProvider(

@@ -25,8 +25,6 @@ class CreateWorkoutProvider extends ChangeNotifier {
   bool ticksRefreshed = false;
   bool timeRefreshed = false;
   //endregion
-
-
   //region api calls
   Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, List<WorkOut> workOuts, List<WorkOut> calendarWorkouts) async {
     bool canCreateSession = false;
@@ -309,5 +307,4 @@ class CreateWorkoutProvider extends ChangeNotifier {
     stopTimer();
   }
   //endregion
-
 }

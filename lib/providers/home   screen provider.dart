@@ -181,7 +181,7 @@ class MainScreenProvider extends ChangeNotifier {
               calendarWorkouts[i].lifts![j].liftMas!.toInt(),
               calendarWorkouts[i].lifts![j].repetitions ?? 0,
               calendarWorkouts[i].lifts![j].oneRepMax ?? 0.0,
-              true));
+              true, -1));
         }
       }
     }
@@ -200,11 +200,9 @@ class MainScreenProvider extends ChangeNotifier {
 
           print(workOuts[i].isFavorite);
           if (workOuts[i].isFavorite) {
-            print("efuhqeiruguerguey");
             favoriteWorkOuts.add(workOuts[i]);
           } else
-            favoriteWorkOuts.removeWhere(
-                (element) => element.timestamp == workOuts[i].timestamp);
+            favoriteWorkOuts.removeWhere((element) => element.timestamp == workOuts[i].timestamp);
           break;
         }
       }
@@ -216,13 +214,10 @@ class MainScreenProvider extends ChangeNotifier {
           if (calendarWorkouts[i].isFavorite) {
             favoriteWorkOuts.add(calendarWorkouts[i]);
           } else
-            favoriteWorkOuts.removeWhere((element) =>
-                element.timestamp == calendarWorkouts[i].timestamp);
+            favoriteWorkOuts.removeWhere((element) => element.timestamp == calendarWorkouts[i].timestamp);
           for (int j = 0; j < workOuts.length; j++) {
             if (workOuts[j].id == id) {
-              workOuts.where((element) => element.id == id).first.isFavorite =
-                  calendarWorkouts[i].isFavorite;
-
+              workOuts.where((element) => element.id == id).first.isFavorite = calendarWorkouts[i].isFavorite;
               break;
             }
           }
