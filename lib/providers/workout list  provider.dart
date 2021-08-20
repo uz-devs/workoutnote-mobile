@@ -85,8 +85,12 @@ class MainScreenProvider extends ChangeNotifier {
       var response = await WebServices.fetchFavoriteWorkoutSessions(sessionKey);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
-        var workoutsResponse = WorkOutsResponse.fromJson(
-            jsonDecode(utf8.decode(response.bodyBytes)));
+        var workoutsResponse = WorkOutsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+
+
+        for(int i = 0; i<workoutsResponse.workouts.length; i++){
+          print("hey ${workoutsResponse.workouts[i].id}");
+        }
         favoriteWorkOuts.addAll(workoutsResponse.workouts);
         for (int i = 0; i < favoriteWorkOuts.length; i++) {
           favoriteWorkOuts[i].isFavorite = true;
@@ -108,8 +112,7 @@ class MainScreenProvider extends ChangeNotifier {
           await WebServices.setFavoriteWorkOut(sessionKey, workoutId);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
-        print("fhrfru");
-        _updateWorkoutFavoriteStatus(workoutId, mode);
+       _updateWorkoutFavoriteStatus(workoutId, mode);
       }
     } catch (e) {
       print(e);
@@ -122,8 +125,6 @@ class MainScreenProvider extends ChangeNotifier {
           await WebServices.unsetFavoriteWorkOut(sessionKey, workoutId);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
-        print("fhrfrurfer");
-
         _updateWorkoutFavoriteStatus(workoutId, mode);
       }
     } catch (e) {
@@ -193,13 +194,11 @@ class MainScreenProvider extends ChangeNotifier {
         if (workOuts[i].id == id) {
           workOuts[i].isFavorite = !workOuts[i].isFavorite;
           if (calendarWorkouts.isNotEmpty)
-            calendarWorkouts
-                .where((element) => element.id == id)
-                .first
-                .isFavorite = workOuts[i].isFavorite;
+            calendarWorkouts.where((element) => element.id == id).first.isFavorite = workOuts[i].isFavorite;
 
 
           if (workOuts[i].isFavorite && requestDone2) {
+            print("adding");
             favoriteWorkOuts.add(workOuts[i]);
           } else {
             print("hey1");
@@ -215,6 +214,7 @@ class MainScreenProvider extends ChangeNotifier {
           calendarWorkouts[i].isFavorite = !calendarWorkouts[i].isFavorite;
 
           if (calendarWorkouts[i].isFavorite && requestDone2) {
+            print("adding");
             favoriteWorkOuts.add(calendarWorkouts[i]);
           } else {
             print("hey2");
