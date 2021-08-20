@@ -198,11 +198,14 @@ class MainScreenProvider extends ChangeNotifier {
                 .first
                 .isFavorite = workOuts[i].isFavorite;
 
-          print(workOuts[i].isFavorite);
-          if (workOuts[i].isFavorite) {
+
+          if (workOuts[i].isFavorite && requestDone2) {
             favoriteWorkOuts.add(workOuts[i]);
-          } else
-            favoriteWorkOuts.removeWhere((element) => element.timestamp == workOuts[i].timestamp);
+          } else {
+            print("hey1");
+            favoriteWorkOuts.removeWhere((element) =>
+            element.timestamp == workOuts[i].timestamp);
+          }
           break;
         }
       }
@@ -211,10 +214,13 @@ class MainScreenProvider extends ChangeNotifier {
         if (calendarWorkouts[i].id == id) {
           calendarWorkouts[i].isFavorite = !calendarWorkouts[i].isFavorite;
 
-          if (calendarWorkouts[i].isFavorite) {
+          if (calendarWorkouts[i].isFavorite && requestDone2) {
             favoriteWorkOuts.add(calendarWorkouts[i]);
-          } else
-            favoriteWorkOuts.removeWhere((element) => element.timestamp == calendarWorkouts[i].timestamp);
+          } else {
+            print("hey2");
+            favoriteWorkOuts.removeWhere((element) =>
+            element.timestamp == calendarWorkouts[i].timestamp);
+          }
           for (int j = 0; j < workOuts.length; j++) {
             if (workOuts[j].id == id) {
               workOuts.where((element) => element.id == id).first.isFavorite = calendarWorkouts[i].isFavorite;

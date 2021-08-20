@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/home%20%20%20screen%20provider.dart';
+import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
 
 import 'package:workoutnote/ui/widgets/work%20out%20%20note%20card.dart';
 import 'package:workoutnote/ui/widgets/workout%20%20create%20card.dart';

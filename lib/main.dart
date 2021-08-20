@@ -6,7 +6,7 @@ import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/providers/create%20workout%20provider.dart';
 import 'package:workoutnote/providers/edit%20workout%20%20provider.dart';
 import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
-import 'package:workoutnote/providers/home%20%20%20screen%20provider.dart';
+import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
 import 'package:workoutnote/ui/auth%20screen%20.dart';
 import 'package:workoutnote/ui/nav%20controller.dart';
 import 'package:workoutnote/utils/utils.dart';

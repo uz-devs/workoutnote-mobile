@@ -8,7 +8,7 @@ import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/providers/create%20workout%20provider.dart';
-import 'package:workoutnote/providers/home%20%20%20screen%20provider.dart';
+import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
