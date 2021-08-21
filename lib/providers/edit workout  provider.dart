@@ -13,6 +13,7 @@ class EditWorkoutProvider extends ChangeNotifier {
   //region vars
   List<EditableLift> existingLifts = [];
   List<EditableLift> liftsToStore = [];
+  List<EditableLift> updatedList = [];
   TextEditingController titleController = TextEditingController();
   Exercise? _unselectedExercise;
   bool done = false;
@@ -41,6 +42,7 @@ class EditWorkoutProvider extends ChangeNotifier {
     }
 
     if (canCreateSession) {
+      updatedList.addAll(existingLifts);
       try {
         //update workout
         var updateWorkoutResponse = await WebServices.updateMyWorkout(sessionKey, workOut.id ?? -1, titleController.text, workOut.duration ?? 0);
@@ -50,14 +52,14 @@ class EditWorkoutProvider extends ChangeNotifier {
             if (existingLifts[i].liftId == -1 && existingLifts[i].isSelected) {
               var addResponse = await WebServices.insertLift(sessionKey, DateTime.now().millisecondsSinceEpoch, existingLifts[i].mass, existingLifts[i].exerciseId ?? -1, workOut.id ?? -1, existingLifts[i].rep, existingLifts[i].rm);
               if (addResponse.statusCode == 200) {
-                print("added  done");
+
               }
             }
             //remove lift
             else if (existingLifts[i].liftId != -1 && !existingLifts[i].isSelected) {
               var removeResponse = await WebServices.removeMyLift(sessionKey, workOut.id ?? -1, existingLifts[i].liftId ?? -1);
               if (removeResponse.statusCode == 200) {
-                print("removed done");
+               updatedList.removeWhere((element) => element.liftId == existingLifts[i].liftId);
               }
             }
             //update lift
@@ -67,7 +69,6 @@ class EditWorkoutProvider extends ChangeNotifier {
                   if (existingLifts[i].exerciseName != liftsToStore[j].exerciseName || existingLifts[i].mass != liftsToStore[j].mass || existingLifts[i].rep != liftsToStore[j].rep) {
                     var updateResponse = await WebServices.updateMyLift(sessionKey, workOut.id ?? -1, existingLifts[i].liftId ?? -1, existingLifts[i].exerciseId ?? -1, existingLifts[i].mass, existingLifts[i].rep);
                     if (updateResponse.statusCode == 200) {
-                      print("updated done");
                     }
                   }
                 }
@@ -90,8 +91,8 @@ class EditWorkoutProvider extends ChangeNotifier {
         if (mainScreenProvider.workOuts[k].id == workOut.id) {
           mainScreenProvider.workOuts[k].lifts!.clear();
           mainScreenProvider.workOuts[k].title = titleController.text;
-          for (int i = 0; i < existingLifts.length; i++) {
-            mainScreenProvider.workOuts[k].lifts!.add(Lift.create(existingLifts[i].liftId, 0, existingLifts[i].rm, existingLifts[i].exerciseId, existingLifts[i].exerciseName, existingLifts[i].mass.toDouble(), existingLifts[i].rep));
+          for (int i = 0; i < updatedList.length; i++) {
+            mainScreenProvider.workOuts[k].lifts!.add(Lift.create(updatedList[i].liftId, 0, updatedList[i].rm, updatedList[i].exerciseId, updatedList[i].exerciseName, updatedList[i].mass.toDouble(), updatedList[i].rep));
           }
         }
       }
@@ -99,8 +100,8 @@ class EditWorkoutProvider extends ChangeNotifier {
       if (mainScreenProvider.calendarWorkouts.isNotEmpty) {
         mainScreenProvider.calendarWorkouts.where((element) => element.id == workOut.id).single.lifts!.clear();
         mainScreenProvider.calendarWorkouts.where((element) => element.id == workOut.id).single.title = titleController.text;
-        for (int i = 0; i < existingLifts.length; i++) {
-          mainScreenProvider.calendarWorkouts.where((element) => element.id == workOut.id).single.lifts!.add(Lift.create(existingLifts[i].liftId, 0, existingLifts[i].rm, existingLifts[i].exerciseId, existingLifts[i].exerciseName, existingLifts[i].mass.toDouble(), existingLifts[i].rep));
+        for (int i = 0; i < updatedList.length; i++) {
+          mainScreenProvider.calendarWorkouts.where((element) => element.id == workOut.id).single.lifts!.add(Lift.create(updatedList[i].liftId, 0, updatedList[i].rm, updatedList[i].exerciseId, updatedList[i].exerciseName, updatedList[i].mass.toDouble(), updatedList[i].rep));
         }
       }
 
