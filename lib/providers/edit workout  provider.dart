@@ -43,6 +43,7 @@ class EditWorkoutProvider extends ChangeNotifier {
 
     if (canCreateSession) {
       updatedList.addAll(existingLifts);
+      print("size1: ${updatedList.length}");
       try {
         //update workout
         var updateWorkoutResponse = await WebServices.updateMyWorkout(sessionKey, workOut.id ?? -1, titleController.text, workOut.duration ?? 0);
@@ -58,7 +59,9 @@ class EditWorkoutProvider extends ChangeNotifier {
             //remove lift
             else if (existingLifts[i].liftId != -1 && !existingLifts[i].isSelected) {
               var removeResponse = await WebServices.removeMyLift(sessionKey, workOut.id ?? -1, existingLifts[i].liftId ?? -1);
+              print(removeResponse.body);
               if (removeResponse.statusCode == 200) {
+                print("ehe3e3ur3r");
                updatedList.removeWhere((element) => element.liftId == existingLifts[i].liftId);
               }
             }
@@ -74,6 +77,9 @@ class EditWorkoutProvider extends ChangeNotifier {
                 }
               }
             }
+            else {
+              updatedList.removeWhere((element) => element.liftId == existingLifts[i].liftId);
+            }
           }
         }
       } catch (e) {
@@ -84,8 +90,8 @@ class EditWorkoutProvider extends ChangeNotifier {
     }
   }
 
-  void updateAllWorkOutLists(WorkOut workOut, MainScreenProvider mainScreenProvider, BuildContext context
-      ) {
+    void updateAllWorkOutLists(WorkOut workOut, MainScreenProvider mainScreenProvider, BuildContext context) {
+     print("Size:  ${updatedList.length}");
     editWorkout(workOut).then((value) {
       for (int k = 0; k < mainScreenProvider.workOuts.length; k++) {
         if (mainScreenProvider.workOuts[k].id == workOut.id) {
@@ -105,6 +111,7 @@ class EditWorkoutProvider extends ChangeNotifier {
         }
       }
 
+      reset();
       mainScreenProvider.update();
       Navigator.pop(context);
     });
@@ -169,8 +176,9 @@ class EditWorkoutProvider extends ChangeNotifier {
 //region
 
   void reset() {
-    existingLifts = [];
-    liftsToStore = [];
+    existingLifts.clear();
+    liftsToStore.clear();
+    updatedList.clear();
     titleController = TextEditingController();
     _unselectedExercise = null;
     done = false;
