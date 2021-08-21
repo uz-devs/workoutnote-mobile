@@ -19,24 +19,17 @@ class MainScreenProvider extends ChangeNotifier {
   bool requestDone3 = false;
   List<String> workOutDates = [];
   DateTime? selectedDate = DateTime.now();
+
   //endregion
   //region api calls
   Future<bool> fetchTodayWorkouts() async {
     try {
       var sessionKey = userPreferences!.getString("sessionKey") ?? "";
-      var fromTimeStamp = DateTime(
-              DateTime.now().year, DateTime.now().month, DateTime.now().day)
-          .millisecondsSinceEpoch;
-      var tillTimeStamp = DateTime(DateTime.now().year, DateTime.now().month,
-                  DateTime.now().day + 1)
-              .millisecondsSinceEpoch -
-          1;
-      var response = await WebServices.fetchWorkOuts(
-          sessionKey, fromTimeStamp, tillTimeStamp);
+      var fromTimeStamp = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).millisecondsSinceEpoch;
+      var tillTimeStamp = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1).millisecondsSinceEpoch - 1;
+      var response = await WebServices.fetchWorkOuts(sessionKey, fromTimeStamp, tillTimeStamp);
       if (response.statusCode == 200) {
-
-        var workoutsResponse = WorkOutsResponse.fromJson(
-            jsonDecode(utf8.decode(response.bodyBytes)));
+        var workoutsResponse = WorkOutsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 
         print("today's lalala:");
         print(jsonDecode(utf8.decode(response.bodyBytes)));
@@ -62,16 +55,11 @@ class MainScreenProvider extends ChangeNotifier {
     try {
       var sessionKey = userPreferences!.getString("sessionKey") ?? "";
       var fromTimestamp = 0;
-      var tillTimestamp = DateTime(DateTime.now().year, DateTime.now().month,
-                  DateTime.now().day + 1)
-              .millisecondsSinceEpoch -
-          1;
-      var response = await WebServices.fetchWorkOuts(
-          sessionKey, fromTimestamp, tillTimestamp);
+      var tillTimestamp = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1).millisecondsSinceEpoch - 1;
+      var response = await WebServices.fetchWorkOuts(sessionKey, fromTimestamp, tillTimestamp);
 
       if (response.statusCode == 200) {
-        var workoutsResponse = WorkOutsResponse.fromJson(
-            jsonDecode(utf8.decode(response.bodyBytes)));
+        var workoutsResponse = WorkOutsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
         if (workoutsResponse.success) {
           calendarWorkouts.addAll(workoutsResponse.workouts);
           updateWorkoutDates(calendarWorkouts);
@@ -91,8 +79,7 @@ class MainScreenProvider extends ChangeNotifier {
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         var workoutsResponse = WorkOutsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 
-
-        for(int i = 0; i<workoutsResponse.workouts.length; i++){
+        for (int i = 0; i < workoutsResponse.workouts.length; i++) {
           print("hey ${workoutsResponse.workouts[i].id}");
         }
         favoriteWorkOuts.addAll(workoutsResponse.workouts);
@@ -112,11 +99,10 @@ class MainScreenProvider extends ChangeNotifier {
 
   Future<void> setFavoriteWorkOut(String sessionKey, int workoutId, int mode) async {
     try {
-      var response =
-          await WebServices.setFavoriteWorkOut(sessionKey, workoutId);
+      var response = await WebServices.setFavoriteWorkOut(sessionKey, workoutId);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
-       _updateWorkoutFavoriteStatus(workoutId, mode);
+        _updateWorkoutFavoriteStatus(workoutId, mode);
       }
     } catch (e) {
       print(e);
@@ -125,8 +111,7 @@ class MainScreenProvider extends ChangeNotifier {
 
   Future<void> unsetFavoriteWorkOut(String sessionKey, int workoutId, int mode) async {
     try {
-      var response =
-          await WebServices.unsetFavoriteWorkOut(sessionKey, workoutId);
+      var response = await WebServices.unsetFavoriteWorkOut(sessionKey, workoutId);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         _updateWorkoutFavoriteStatus(workoutId, mode);
@@ -141,20 +126,19 @@ class MainScreenProvider extends ChangeNotifier {
       var response = await WebServices.removeWorkout(sessionKey, id);
 
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
-        int timestamp = calendarWorkouts
-                .where((element) => element.id == id)
-                .single
-                .timestamp ??
-            0;
-        bool isFavorite = calendarWorkouts
-            .where((element) => element.id == id)
-            .single
-            .isFavorite;
+        int timestamp = 0;
+        bool isFavorite = false;
+        if (requestDone3) {
+          timestamp = calendarWorkouts.where((element) => element.id == id).single.timestamp ?? 0;
+          isFavorite = calendarWorkouts.where((element) => element.id == id).single.isFavorite;
+        } else {
+          timestamp = workOuts.where((element) => element.id == id).single.timestamp ?? 0;
+          isFavorite = workOuts.where((element) => element.id == id).single.isFavorite;
+        }
         workOuts.removeWhere((element) => element.id == id);
-        if (isFavorite)
-          favoriteWorkOuts
-              .removeWhere((element) => element.timestamp == timestamp);
+        if (isFavorite) favoriteWorkOuts.removeWhere((element) => element.timestamp == timestamp);
         calendarWorkouts.removeWhere((element) => element.id == id);
+
         notifyListeners();
         return true;
       }
@@ -164,6 +148,7 @@ class MainScreenProvider extends ChangeNotifier {
       return false;
     }
   }
+
   //endregion
   //region utils
   void repeatWorkoutSession(int id, CreateWorkoutProvider createWorkoutProvider, List<Exercise> exercises) {
@@ -173,41 +158,26 @@ class MainScreenProvider extends ChangeNotifier {
       if (calendarWorkouts[i].id == id) {
         for (int j = 0; j < calendarWorkouts[i].lifts!.length; j++) {
           title = calendarWorkouts[i].title ?? "[]";
-          lifts.add(EditableLift.create(
-              calendarWorkouts[i].lifts![j].exerciseName,
-              calendarWorkouts[i].lifts![j].exerciseId,
-              exercises.isNotEmpty
-                  ? exercises
-                      .where((element) =>
-                          element.id == calendarWorkouts[i].lifts![j].exerciseId)
-                      .first
-                      .bodyPart
-                  : "",
-              calendarWorkouts[i].lifts![j].liftMas!.toInt(),
-              calendarWorkouts[i].lifts![j].repetitions ?? 0,
-              calendarWorkouts[i].lifts![j].oneRepMax ?? 0.0,
-              true, -1));
+          lifts.add(EditableLift.create(calendarWorkouts[i].lifts![j].exerciseName, calendarWorkouts[i].lifts![j].exerciseId, exercises.isNotEmpty ? exercises.where((element) => element.id == calendarWorkouts[i].lifts![j].exerciseId).first.bodyPart : "", calendarWorkouts[i].lifts![j].liftMas!.toInt(), calendarWorkouts[i].lifts![j].repetitions ?? 0, calendarWorkouts[i].lifts![j].oneRepMax ?? 0.0, true, -1));
         }
       }
     }
     createWorkoutProvider.repeatWorkoutSession(lifts, title ?? "[]");
   }
+
   void _updateWorkoutFavoriteStatus(int id, int mode) {
     if (mode == 1)
       for (int i = 0; i < workOuts.length; i++) {
         if (workOuts[i].id == id) {
           workOuts[i].isFavorite = !workOuts[i].isFavorite;
-          if (calendarWorkouts.isNotEmpty)
-            calendarWorkouts.where((element) => element.id == id).first.isFavorite = workOuts[i].isFavorite;
-
+          if (calendarWorkouts.isNotEmpty) calendarWorkouts.where((element) => element.id == id).first.isFavorite = workOuts[i].isFavorite;
 
           if (workOuts[i].isFavorite && requestDone2) {
             print("adding");
             favoriteWorkOuts.add(workOuts[i]);
           } else {
             print("hey1");
-            favoriteWorkOuts.removeWhere((element) =>
-            element.timestamp == workOuts[i].timestamp);
+            favoriteWorkOuts.removeWhere((element) => element.timestamp == workOuts[i].timestamp);
           }
           break;
         }
@@ -222,8 +192,7 @@ class MainScreenProvider extends ChangeNotifier {
             favoriteWorkOuts.add(calendarWorkouts[i]);
           } else {
             print("hey2");
-            favoriteWorkOuts.removeWhere((element) =>
-            element.timestamp == calendarWorkouts[i].timestamp);
+            favoriteWorkOuts.removeWhere((element) => element.timestamp == calendarWorkouts[i].timestamp);
           }
           for (int j = 0; j < workOuts.length; j++) {
             if (workOuts[j].id == id) {
@@ -257,5 +226,5 @@ class MainScreenProvider extends ChangeNotifier {
   void update() {
     notifyListeners();
   }
-  //endregion
+//endregion
 }
