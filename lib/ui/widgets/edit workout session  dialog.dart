@@ -7,6 +7,7 @@ import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/providers/create%20workout%20provider.dart';
 import 'package:workoutnote/providers/edit%20workout%20%20provider.dart';
+import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
@@ -24,24 +25,24 @@ class EditWorkoutSessionDialog extends StatefulWidget {
 
 class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
   var configProvider = ConfigProvider();
-  var exProvider = CreateWorkoutProvider();
-  var rovider = EditWorkoutProvider();
+  var workoutSessionListProvider = MainScreenProvider();
+  var editWorkouSessionProvider = EditWorkoutProvider();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
-    rovider = Provider.of<EditWorkoutProvider>(context, listen: true);
-    exProvider = Provider.of<CreateWorkoutProvider>(context, listen: true);
+    editWorkouSessionProvider = Provider.of<EditWorkoutProvider>(context, listen: true);
+    workoutSessionListProvider = Provider.of<MainScreenProvider>(context, listen: true);
 
-    if (!rovider.done) {
-      rovider.getLiftsFromWorkoutSession(widget.workout);
+    if (!editWorkouSessionProvider.done) {
+      editWorkouSessionProvider.getLiftsFromWorkoutSession(widget.workout);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    int count = rovider.existingLifts.length + 6;
+    int count = editWorkouSessionProvider.existingLifts.length + 6;
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       insetPadding: EdgeInsets.all(20),
@@ -79,7 +80,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                       child: IconButton(
                         onPressed: () {
                           Navigator.pop(context);
-                          rovider.reset();
+                          editWorkouSessionProvider.reset();
                         },
                         icon: Icon(
                           Icons.clear,
@@ -95,7 +96,6 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                 margin: EdgeInsets.only(left: 20.0, right: 10.0, top: 10),
                 child: TextFormField(
                   onChanged: (c) async {
-                    // await exProvider.saveTitleToSharedPreference(c);
                   },
                   decoration: InputDecoration(
                     isDense: true,
@@ -105,7 +105,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                       borderSide: BorderSide(color: Color.fromRGBO(102, 51, 204, 1)),
                     ),
                   ),
-                  controller: rovider.titleController,
+                  controller: editWorkouSessionProvider.titleController,
                 ),
               );
             else if (index == 2)
@@ -127,7 +127,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                         color: Color.fromRGBO(230, 230, 250, 1),
                       ),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: _buildExerciseListItem("No.", "${exercisesName[configProvider.activeLanguage()]}", "KG", "REP", "RM", Color.fromRGBO(102, 51, 204, 1), 1, rovider, index, context, configProvider));
+                  child: _buildExerciseListItem("No.", "${exercisesName[configProvider.activeLanguage()]}", "KG", "REP", "RM", Color.fromRGBO(102, 51, 204, 1), 1, editWorkouSessionProvider, index, context, configProvider));
             else if (index >= 4 && index < count - 2) {
               index = index - 4;
               return InkWell(
@@ -136,7 +136,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                     margin: EdgeInsets.only(
                       bottom: 10,
                     ),
-                    child: _buildExerciseListItem((index + 1).toString(), "${rovider.existingLifts[index].exerciseName}", "0.0", "0.0", rovider.existingLifts[index].rm.toString(), Colors.black, 2, rovider, index, context, configProvider)),
+                    child: _buildExerciseListItem((index + 1).toString(), "${editWorkouSessionProvider.existingLifts[index].exerciseName}", "0.0", "0.0", editWorkouSessionProvider.existingLifts[index].rm.toString(), Colors.black, 2, editWorkouSessionProvider, index, context, configProvider)),
               );
             } else if (index == count - 2) {
               return Container(
@@ -144,7 +144,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                   margin: EdgeInsets.only(
                     bottom: 10,
                   ),
-                  child: _buildExerciseListItem("1", "${rovider.unselectedExercise == null ? "운동 이름" : rovider.unselectedExercise!.name}(${(rovider.unselectedExercise == null ? "" : rovider.unselectedExercise!.bodyPart)})", "KG", "REP", "RM", Colors.grey, 3, rovider, index, context, configProvider));
+                  child: _buildExerciseListItem("1", "${editWorkouSessionProvider.unselectedExercise == null ? "운동 이름" : editWorkouSessionProvider.unselectedExercise!.name}(${(editWorkouSessionProvider.unselectedExercise == null ? "" : editWorkouSessionProvider.unselectedExercise!.bodyPart)})", "KG", "REP", "RM", Colors.grey, 3, editWorkouSessionProvider, index, context, configProvider));
             } else
               return Container(
                 margin: EdgeInsets.only(bottom: 10.0),
@@ -161,7 +161,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                         color: Color.fromRGBO(102, 51, 204, 1),
                         onPressed: () {
                           Navigator.pop(context);
-                          rovider.reset();
+                          editWorkouSessionProvider.reset();
                         },
                         textColor: Colors.white,
                         child: Text("${cancelUpdate[configProvider.activeLanguage()]}"),
@@ -176,14 +176,9 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                         ),
                         color: Color.fromRGBO(102, 51, 204, 1),
                         onPressed: ()  {
-                          rovider.editWorkout(widget.workout).then((value)  {
-                                print("helo elfvjfpvhfpvhfohbi");
-                          });
-
-
-
-
-                        },
+                          editWorkouSessionProvider.updateAllWorkOutLists(widget.workout,  workoutSessionListProvider,  context);
+                          showToast("${workOutUpdateMessage[configProvider.activeLanguage()]}");
+                          },
                         textColor: Colors.white,
                         child: Text("${update[configProvider.activeLanguage()]}"),
                       ),

@@ -53,8 +53,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
                 _lifts[i].rm);
             var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
             print(jsonDecode(insertLift.body)["success"]);
-            if (insertLift.statusCode == 200 &&
-                jsonDecode(insertLift.body)["success"]) {
+            if (insertLift.statusCode == 200 && jsonDecode(insertLift.body)["success"]) {
               count++;
               lifts.add(Lift.create(
                   lift.liftId,
@@ -67,12 +66,9 @@ class CreateWorkoutProvider extends ChangeNotifier {
             }
           }
           if (count == _lifts.length) {
-            var workout =
-                WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
-            workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp,
-                lifts, workout.duration, false));
-            calendarWorkouts.add(WorkOut(workout.id, workout.title,
-                workout.timestamp, lifts, workout.duration, false));
+            var workout = WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
+            workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
+            calendarWorkouts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
             _lifts.removeWhere((element) => element.isSelected);
             stopTimer();
           }

@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:workoutnote/models/editible%20lift%20model.dart';
 import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
+import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
 import 'package:workoutnote/services/network%20%20service.dart';
 import 'package:workoutnote/utils/utils.dart';
 
@@ -31,36 +32,81 @@ class EditWorkoutProvider extends ChangeNotifier {
   Future<void> editWorkout(WorkOut workOut) async {
     var sessionKey = userPreferences!.getString("sessionKey") ?? "";
 
-    var updateWorkoutResponse = await WebServices.updateMyWorkout(sessionKey, workOut.id ?? -1, titleController.text, workOut.duration ?? 0);
+    bool canCreateSession = false;
+    for (int i = 0; i < existingLifts.length; i++) {
+      if (existingLifts[i].isSelected) {
+        canCreateSession = true;
+        break;
+      }
+    }
 
-    if (updateWorkoutResponse.statusCode == 200 && jsonDecode(updateWorkoutResponse.body)["success"]) {
-      for (int i = 0; i < existingLifts.length; i++) {
-        if (existingLifts[i].liftId == -1 && existingLifts[i].isSelected) {
-          var addResponse = await WebServices.insertLift(sessionKey, DateTime.now().millisecondsSinceEpoch, existingLifts[i].mass, existingLifts[i].exerciseId ?? -1, workOut.id ?? -1, existingLifts[i].rep, existingLifts[i].rm);
-          if (addResponse.statusCode == 200) {
-            print("hey");
-          }
-        } else if (existingLifts[i].liftId != -1 && !existingLifts[i].isSelected) {
-          var removeResponse = await WebServices.removeMyLift(sessionKey, workOut.id ?? -1, existingLifts[i].liftId ?? -1);
-          if (removeResponse.statusCode == 200) {
-            print("exercise removed successfully");
-          }
-        } else if (existingLifts[i].liftId != -1 && existingLifts[i].isSelected) {
-          for (int j = 0; j < liftsToStore.length; j++) {
-            if (existingLifts[i].liftId == liftsToStore[j].liftId) {
-              if (existingLifts[i].exerciseName != liftsToStore[j].exerciseName || existingLifts[i].mass != liftsToStore[j].mass || existingLifts[i].rep != liftsToStore[j].rep) {
-                var updateResponse = await WebServices.updateMyLift(sessionKey, workOut.id ?? -1, existingLifts[i].liftId ?? -1, existingLifts[i].exerciseId ?? -1, existingLifts[i].mass, existingLifts[i].rep);
-                if (updateResponse.statusCode == 200) {
-                  print("success");
-                  print(updateResponse.body);
+    if (canCreateSession) {
+      try {
+        //update workout
+        var updateWorkoutResponse = await WebServices.updateMyWorkout(sessionKey, workOut.id ?? -1, titleController.text, workOut.duration ?? 0);
+        if (updateWorkoutResponse.statusCode == 200 && jsonDecode(updateWorkoutResponse.body)["success"]) {
+          for (int i = 0; i < existingLifts.length; i++) {
+            //add  lift
+            if (existingLifts[i].liftId == -1 && existingLifts[i].isSelected) {
+              var addResponse = await WebServices.insertLift(sessionKey, DateTime.now().millisecondsSinceEpoch, existingLifts[i].mass, existingLifts[i].exerciseId ?? -1, workOut.id ?? -1, existingLifts[i].rep, existingLifts[i].rm);
+              if (addResponse.statusCode == 200) {
+                print("added  done");
+              }
+            }
+            //remove lift
+            else if (existingLifts[i].liftId != -1 && !existingLifts[i].isSelected) {
+              var removeResponse = await WebServices.removeMyLift(sessionKey, workOut.id ?? -1, existingLifts[i].liftId ?? -1);
+              if (removeResponse.statusCode == 200) {
+                print("removed done");
+              }
+            }
+            //update lift
+            else if (existingLifts[i].liftId != -1 && existingLifts[i].isSelected) {
+              for (int j = 0; j < liftsToStore.length; j++) {
+                if (existingLifts[i].liftId == liftsToStore[j].liftId) {
+                  if (existingLifts[i].exerciseName != liftsToStore[j].exerciseName || existingLifts[i].mass != liftsToStore[j].mass || existingLifts[i].rep != liftsToStore[j].rep) {
+                    var updateResponse = await WebServices.updateMyLift(sessionKey, workOut.id ?? -1, existingLifts[i].liftId ?? -1, existingLifts[i].exerciseId ?? -1, existingLifts[i].mass, existingLifts[i].rep);
+                    if (updateResponse.statusCode == 200) {
+                      print("updated done");
+                    }
+                  }
                 }
               }
             }
           }
         }
+      } catch (e) {
+        print(e);
       }
+    } else {
+      showToast("You need to add at least one exercise for one workout session!");
     }
+  }
 
+  void updateAllWorkOutLists(WorkOut workOut, MainScreenProvider mainScreenProvider, BuildContext context
+      ) {
+    editWorkout(workOut).then((value) {
+      for (int k = 0; k < mainScreenProvider.workOuts.length; k++) {
+        if (mainScreenProvider.workOuts[k].id == workOut.id) {
+          mainScreenProvider.workOuts[k].lifts!.clear();
+          mainScreenProvider.workOuts[k].title = titleController.text;
+          for (int i = 0; i < existingLifts.length; i++) {
+            mainScreenProvider.workOuts[k].lifts!.add(Lift.create(existingLifts[i].liftId, 0, existingLifts[i].rm, existingLifts[i].exerciseId, existingLifts[i].exerciseName, existingLifts[i].mass.toDouble(), existingLifts[i].rep));
+          }
+        }
+      }
+
+      if (mainScreenProvider.calendarWorkouts.isNotEmpty) {
+        mainScreenProvider.calendarWorkouts.where((element) => element.id == workOut.id).single.lifts!.clear();
+        mainScreenProvider.calendarWorkouts.where((element) => element.id == workOut.id).single.title = titleController.text;
+        for (int i = 0; i < existingLifts.length; i++) {
+          mainScreenProvider.calendarWorkouts.where((element) => element.id == workOut.id).single.lifts!.add(Lift.create(existingLifts[i].liftId, 0, existingLifts[i].rm, existingLifts[i].exerciseId, existingLifts[i].exerciseName, existingLifts[i].mass.toDouble(), existingLifts[i].rep));
+        }
+      }
+
+      mainScreenProvider.update();
+      Navigator.pop(context);
+    });
   }
 
   //region lifts: add, update,  remove

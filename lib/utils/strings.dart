@@ -57,6 +57,7 @@ Map<String, String> phoneNumberHint  = {english: "Enter your phone number",  kor
 Map<String, String> update  = {english: "Update",  korean: "수정"};
 Map<String, String> updateToastMessage  = {english: "Your profile updated successfully!",  korean: "프로필이 업데이트되었습니다!"};
 Map<String, String> languageChanged  = {english: "Language has been changed!",  korean: "언어가 업데이트되었습니다!"};
+Map<String, String> workOutUpdateMessage   = {english: "Workout session has been  updated!",  korean: "운동이 업데이트되었습니다!"};
 
 
 
