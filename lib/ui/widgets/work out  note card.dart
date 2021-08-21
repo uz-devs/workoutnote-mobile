@@ -12,6 +12,7 @@ import 'package:workoutnote/ui/widgets/edit%20workout%20session%20%20dialog.dart
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
+
 class WorkOutNote extends StatefulWidget {
   final height;
   WorkOut workout;
@@ -105,7 +106,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                         flex: 1,
                         child: InkWell(
                           onTap: () async {
-                            await _showDeleteDialog(configProvider, mainScreenProvider);
+                            await _showOptionDialog(configProvider, mainScreenProvider);
                           },
                           child: Container(
                             padding: EdgeInsets.only(top: 10, right: 10.0),
@@ -168,7 +169,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
         });
   }
 
-  Future<void> _showDeleteDialog(ConfigProvider configProvider, MainScreenProvider mainScreenProvider) {
+  Future<void> _showOptionDialog(ConfigProvider configProvider, MainScreenProvider mainScreenProvider) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -183,7 +184,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                     width: double.maxFinite,
                     child: MaterialButton(
                       onPressed: () async {
-                     await _showEditWorkoutDialog(context,  widget.workout);
+                        await _showEditWorkoutDialog(context, widget.workout);
                         Navigator.pop(context);
                       },
                       child: Text("${edit[configProvider.activeLanguage()]}"),
@@ -192,14 +193,9 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                 Container(
                     width: double.maxFinite,
                     child: MaterialButton(
-                      onPressed: () {
-                        mainScreenProvider.deleteWorkoutSession(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1).then((value) {
-                          if (value) {
-                            print("ewfhiweufgiuoer");
-                            showToast("${deleteSuccess[configProvider.activeLanguage()]}");
-                            Navigator.pop(context);
-                          }
-                        });
+                      onPressed: ()  async{
+                      await  _showDeleteConfirmDialog();
+                      Navigator.pop(context);
                       },
                       child: Text(
                         "${delete[configProvider.activeLanguage()]}",
@@ -214,10 +210,85 @@ class _WorkOutNoteState extends State<WorkOutNote> {
 
   Future<void> _showEditWorkoutDialog(BuildContext context, WorkOut workOut) async {
     await showDialog(
-      barrierDismissible: false ,
+        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return EditWorkoutSessionDialog(widget.height, workOut);
         }).then((value) {});
+  }
+
+  Future<void> _showDeleteConfirmDialog() async {
+    await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return  Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: Container(
+
+                height: 186.2,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                        flex: 8,
+                        child: Container(
+                          margin: EdgeInsets.only(left: 50.0, right: 50.0),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "삭제하면 항목별로 기록된 내용을 복구할 수 없습니다.삭제하시겠습니까?",
+                            textAlign: TextAlign.center,
+                          ),
+                        )),
+                    Divider(),
+                    Expanded(
+                        flex: 3,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex:5,
+                              child: MaterialButton(
+
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "취소",
+                                  style: TextStyle(color: Colors.blueAccent),
+                                ),
+                              ),
+                            ),
+
+
+
+                      VerticalDivider(),
+                      Expanded(
+                        flex :  5,
+                              child: MaterialButton(
+
+                                onPressed: () {
+                                  mainScreenProvider.deleteWorkoutSession(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1).then((value) {
+                                    if (value) {
+                                      showToast("${deleteSuccess[configProvider.activeLanguage()]}");
+                                      Navigator.pop(context);
+                                    }
+                                  });
+                                },
+                                child: Text(
+                                  "삭제",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ))
+                  ],
+                ),
+              ),
+
+          );
+        });
   }
 }
