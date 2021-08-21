@@ -61,19 +61,6 @@ class EditWorkoutProvider extends ChangeNotifier {
       }
     }
 
-    /*
-    addable:
-        id = -1 && isSelected = true;
-    deletable
-        id != -1 && isSelected = false;
-    update
-       id!=-1  && isSelected = true {
-
-         restoreLifts  -> id
-         ...
-       }
-
-      */
   }
 
   //region lifts: add, update,  remove
