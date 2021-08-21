@@ -69,7 +69,8 @@ class CreateWorkoutProvider extends ChangeNotifier {
             var workout = WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
             workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
             calendarWorkouts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
-            _lifts.removeWhere((element) => element.isSelected);
+            _lifts.clear();
+            titleContoller.text = "";
             stopTimer();
           }
         }
@@ -264,6 +265,10 @@ class CreateWorkoutProvider extends ChangeNotifier {
   Future<void> saveListToSharePreference() async {
     await userPreferences!
         .setString("lifts", EditableLift.encode(_lifts));
+  }
+
+  Future<void> clearPreferences() async {
+    await userPreferences!.setString("lifts", EditableLift.encode([]));
   }
 
   Future<void> saveTitleToSharedPreference(String title) async {

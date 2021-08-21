@@ -214,6 +214,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
 
   Future<void> _showEditWorkoutDialog(BuildContext context, WorkOut workOut) async {
     await showDialog(
+      barrierDismissible: false ,
         context: context,
         builder: (BuildContext context) {
           return EditWorkoutSessionDialog(widget.height, workOut);

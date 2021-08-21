@@ -257,7 +257,7 @@ class CreateWorkOutCard extends StatelessWidget {
                         exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, calendarWorkouts).then((value) {
                           mainScreenProvider.update();
                         });
-                        await exProvider.saveListToSharePreference();
+                        await exProvider.clearPreferences();
                       },
                       textColor: Colors.white,
                       child: Text("${save[configProvider.activeLanguage()]}"),
