@@ -12,10 +12,9 @@ import 'package:workoutnote/ui/widgets/edit%20workout%20session%20%20dialog.dart
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
-
 class WorkOutNote extends StatefulWidget {
   final height;
-  WorkOut workout;
+  final workout;
   final mode;
 
   WorkOutNote(this.height, this.workout, this.mode);
@@ -169,6 +168,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
         });
   }
 
+  //region  dialogs
   Future<void> _showOptionDialog(ConfigProvider configProvider, MainScreenProvider mainScreenProvider) {
     return showDialog(
         context: context,
@@ -291,4 +291,6 @@ class _WorkOutNoteState extends State<WorkOutNote> {
           );
         });
   }
+  //endregion
+
 }

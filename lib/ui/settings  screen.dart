@@ -34,9 +34,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
             return Container(
               margin: EdgeInsets.only(top: 10.0),
               padding: EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  Icon(Icons.account_circle),
+              child:
                   Container(
                     margin: EdgeInsets.only(left: 5.0),
                     child: Text(
@@ -44,8 +42,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                       style: TextStyle(fontWeight: FontWeight.bold,  color: Color.fromRGBO(102, 51, 204, 1), fontSize: 18),
                     ),
                   ),
-                ],
-              ),
+
             );
           else if (index == 1) {
             return InkWell(
@@ -73,17 +70,14 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
             return Container(
 
               padding: EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  Icon(Icons.info_outline_rounded),
+              child:
                   Container(
                     margin: EdgeInsets.only(left: 5.0),
                     child: Text(
                       "${appInfo[configProvider.activeLanguage()]}",
                       style: TextStyle(fontWeight: FontWeight.bold,  color: Color.fromRGBO(102, 51, 204, 1),  fontSize: 18),
                     ),
-                  ),
-                ],
+
               ),
             );
           else if (index == 4)
@@ -114,17 +108,14 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
             return Container(
 
               padding: EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  Icon(Icons.support_agent),
+              child:
                   Container(
                     margin: EdgeInsets.only(left: 5.0),
                     child: Text(
                       "${customerCenter[configProvider.activeLanguage()]}",
                       style: TextStyle(fontWeight: FontWeight.bold,  color:  Color.fromRGBO(102, 51, 204, 1),  fontSize: 18),
                     ),
-                  ),
-                ],
+
               ),
             );
           else if (index == 8)
