@@ -34,8 +34,12 @@ class MainScreenProvider extends ChangeNotifier {
       var response = await WebServices.fetchWorkOuts(
           sessionKey, fromTimeStamp, tillTimeStamp);
       if (response.statusCode == 200) {
+
         var workoutsResponse = WorkOutsResponse.fromJson(
             jsonDecode(utf8.decode(response.bodyBytes)));
+
+        print("today's lalala:");
+        print(jsonDecode(utf8.decode(response.bodyBytes)));
         if (workoutsResponse.success) {
           workOuts.addAll(workoutsResponse.workouts);
           requestDone1 = true;

@@ -15,7 +15,6 @@ const String login = "api/login/";
 const String fetch_workouts = "api/fetch_workouts/";
 const String fetch_exercises = "api/fetch_exercises/";
 const String insert_workout = "/api/insert_workout";
-const String insert_lift = "/api/insert_lift";
 const String fetch_settings = "/api/fetch_settings";
 const String update_settings = "/api/update_settings";
 const String sendVerificationCode = "/api/send_verification_code";
@@ -31,6 +30,9 @@ const String passwordReset = "/api/request_password_reset";
 const String updateWorkout = "/api/update_workout";
 const String removeWorkOut = "/api/remove_workout";
 const String updateLift = "api/update_lift";
+const String insert_lift = "/api/insert_lift";
+const String deleteLift = "/api/remove_lift";
+
 //network  state codes
 const int LOADING = 0;
 const int TIMEOUT_EXCEPTION = 1;
