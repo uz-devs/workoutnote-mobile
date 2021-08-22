@@ -31,14 +31,11 @@ class MainScreenProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         var workoutsResponse = WorkOutsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 
-        print("today's lalala:");
-        print(jsonDecode(utf8.decode(response.bodyBytes)));
+
         if (workoutsResponse.success) {
           workOuts.addAll(workoutsResponse.workouts);
           requestDone1 = true;
-          for (int i = 0; i < workOuts.length; i++) {
-            print(workOuts[i].duration);
-          }
+
           notifyListeners();
           return true;
         }
@@ -75,12 +72,12 @@ class MainScreenProvider extends ChangeNotifier {
   Future<bool> fetchFavoriteWorkoutSessions(String sessionKey) async {
     try {
       var response = await WebServices.fetchFavoriteWorkoutSessions(sessionKey);
-      print(response.body);
+
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         var workoutsResponse = WorkOutsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 
         for (int i = 0; i < workoutsResponse.workouts.length; i++) {
-          print("hey ${workoutsResponse.workouts[i].id}");
+
         }
         favoriteWorkOuts.addAll(workoutsResponse.workouts);
         for (int i = 0; i < favoriteWorkOuts.length; i++) {
@@ -100,7 +97,7 @@ class MainScreenProvider extends ChangeNotifier {
   Future<void> setFavoriteWorkOut(String sessionKey, int workoutId, int mode) async {
     try {
       var response = await WebServices.setFavoriteWorkOut(sessionKey, workoutId);
-      print(response.body);
+
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         _updateWorkoutFavoriteStatus(workoutId, mode);
       }
@@ -112,7 +109,7 @@ class MainScreenProvider extends ChangeNotifier {
   Future<void> unsetFavoriteWorkOut(String sessionKey, int workoutId, int mode) async {
     try {
       var response = await WebServices.unsetFavoriteWorkOut(sessionKey, workoutId);
-      print(response.body);
+
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         _updateWorkoutFavoriteStatus(workoutId, mode);
       }
@@ -173,10 +170,10 @@ class MainScreenProvider extends ChangeNotifier {
           if (calendarWorkouts.isNotEmpty) calendarWorkouts.where((element) => element.id == id).first.isFavorite = workOuts[i].isFavorite;
 
           if (workOuts[i].isFavorite && requestDone2) {
-            print("adding");
+
             favoriteWorkOuts.add(workOuts[i]);
           } else {
-            print("hey1");
+
             favoriteWorkOuts.removeWhere((element) => element.timestamp == workOuts[i].timestamp);
           }
           break;
@@ -188,10 +185,10 @@ class MainScreenProvider extends ChangeNotifier {
           calendarWorkouts[i].isFavorite = !calendarWorkouts[i].isFavorite;
 
           if (calendarWorkouts[i].isFavorite && requestDone2) {
-            print("adding");
+
             favoriteWorkOuts.add(calendarWorkouts[i]);
           } else {
-            print("hey2");
+
             favoriteWorkOuts.removeWhere((element) => element.timestamp == calendarWorkouts[i].timestamp);
           }
           for (int j = 0; j < workOuts.length; j++) {
@@ -207,7 +204,7 @@ class MainScreenProvider extends ChangeNotifier {
   }
 
   void reset() {
-    print("home screen");
+
     workOuts.clear();
     calendarWorkouts.clear();
     requestDone1 = false;

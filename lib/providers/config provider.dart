@@ -13,6 +13,16 @@ class ConfigProvider extends ChangeNotifier {
   String? mName, mPassword, mEmail;
   int measureMode = KG;
 
+  //user info
+  late String g = userPreferences!.getString("gender") ?? "MALE";
+  late String myname;
+  late String myemail;
+  bool isShared = false;
+  late String selectedYear;
+  late String selectedMonth;
+  late String selectedDay;
+  int val = -1;
+
   //api  calls
   Future<bool> sendVerificationCode(String email, name, String password) async {
     mName = name;
@@ -33,8 +43,7 @@ class ConfigProvider extends ChangeNotifier {
 
   Future<bool> verifyUser(String verificationCode) async {
     try {
-      var response = await WebServices.verifyRegister(
-          mName!, mEmail!, verificationCode, mPassword!);
+      var response = await WebServices.verifyRegister(mName!, mEmail!, verificationCode, mPassword!);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         if (await login(mEmail!, mPassword!)) {
@@ -55,20 +64,21 @@ class ConfigProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         var user = User.fromJson(jsonDecode(response.body));
         if (user.authSuccess) {
-          Response settingsResponse =
-              await WebServices.fetchSettings(user.sessionKey ?? "");
+          Response settingsResponse = await WebServices.fetchSettings(user.sessionKey ?? "");
           if (settingsResponse.statusCode == 200) {
+            print(settingsResponse.body);
             var settings = Settings.fromJson(jsonDecode(settingsResponse.body));
-            await userPreferences!.setString("email", email);
-            await userPreferences!
-                .setString("name", settings.name ?? "unknown");
-            await userPreferences!
-                .setString("birthDate", settings.dateOfBirth ?? "unknown");
-            await userPreferences!
-                .setString("gender", settings.gender ?? "unknown");
-            await userPreferences!.setBool("isShared", settings.iProfileShared);
-            await userPreferences!
-                .setString("sessionKey", user.sessionKey ?? "");
+            updatePreferences(email, settings.name ?? "", settings.dateOfBirth ?? "00-00-00", settings.gender ?? "MALE", settings.iProfileShared).then((value) {
+              myemail = email;
+              myname = settings.name!;
+              selectedYear = settings.dateOfBirth!.split("-")[0];
+              selectedMonth = settings.dateOfBirth!.split("-")[1];
+              selectedDay = settings.dateOfBirth!.split("-")[2];
+              g = settings.gender!;
+
+              isShared = settings.iProfileShared;
+            });
+            await userPreferences!.setString("sessionKey", user.sessionKey ?? "");
             return true;
           }
         }
@@ -105,14 +115,27 @@ class ConfigProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> updateProfileSettings(String sessionKey, String name, String gender) async {
+  Future<bool> updateProfileSettings(String email, String sessionKey, String name, String gender, String birthDate, bool isProfileShared) async {
+
+    print(gender);
     try {
-      var response = await WebServices.updateSettings(sessionKey, name, gender);
+      var response = await WebServices.updateSettings(sessionKey, name, gender, birthDate, isProfileShared);
+
+      print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
-        userPreferences!.setString("name", name);
-        userPreferences!.setString("gender", gender);
-        notifyListeners();
-        return true;
+        updatePreferences(email, name, birthDate, gender, isProfileShared).then((value) {
+          myemail = email;
+          myname = name;
+          selectedYear = birthDate.split("-")[0];
+          selectedMonth = birthDate.split("-")[1];
+          selectedDay = birthDate.split("-")[2];
+          //g = gender;
+
+          isShared = isProfileShared;
+
+          notifyListeners();
+          return true;
+        });
       }
       return false;
     } catch (e) {
@@ -122,6 +145,28 @@ class ConfigProvider extends ChangeNotifier {
   }
 
   //utils
+
+  void setUserInfo() {
+    String date = userPreferences!.getString("birthDate") ?? "00-00-00";
+    myname = userPreferences!.getString("name") ?? "";
+    myemail = userPreferences!.getString("name") ?? "";
+    isShared = userPreferences!.getBool("isShared") ?? false;
+    // g = userPreferences!.getString("gender")??"MALE";
+    // print("sex :$g}");
+    // val = g=="MALE"?0:1;
+    selectedYear = date.split("-")[0];
+    selectedMonth = date.split("-")[1];
+    selectedDay = date.split("-")[2];
+  }
+
+  Future<void> updatePreferences(String email, String name, String birthDate, String gender, bool isShared) async {
+    await userPreferences!.setString("email", email);
+    await userPreferences!.setString("name", name);
+    await userPreferences!.setString("birthDate", birthDate);
+    await userPreferences!.setString("gender", gender);
+    await userPreferences!.setBool("isShared", isShared);
+  }
+
   Future<void> changeLanguage(int val) async {
     switch (val) {
       case 1:

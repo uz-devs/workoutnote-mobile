@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:introduction_screen/introduction_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/ui/intro%20screen.dart';
-import 'package:workoutnote/ui/nav%20controller.dart';
 import 'package:workoutnote/utils/strings.dart';
-import 'package:workoutnote/utils/utils.dart';
 
 class LanguageSetScreen extends StatefulWidget {
   const LanguageSetScreen();

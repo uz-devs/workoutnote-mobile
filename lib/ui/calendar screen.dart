@@ -32,10 +32,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     borderRadius: BorderRadius.circular(50.0),
   );
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   void didChangeDependencies() {
@@ -80,7 +76,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     todayTextStyle: TextStyle(color: Colors.black)),
                 firstDay: DateTime.utc(2015, 08, 07),
                 lastDay: DateTime.utc(2100, 08, 07),
-                focusedDay: DateTime.now(),
+                focusedDay: calendarProvider.selectedDate??DateTime.now(),
                 calendarBuilders: CalendarBuilders(
                   prioritizedBuilder: (context, day, focusedDay) {
                     var isDaySelected = calendarProvider.selectedDate!.year == day.year && calendarProvider.selectedDate!.month == day.month && calendarProvider.selectedDate!.day == day.day;

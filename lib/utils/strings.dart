@@ -42,14 +42,14 @@ Map<String, String> languagesettingsscreenTitle = {english: "Language Settings",
 Map<String, String> deleteSuccess =  {english: "Workout session has been deleted successfully", korean: "워크아웃 세션이 성공적으로 삭제되었습니다"};
 Map<String,  String> favoriteWorkoutSesions = {english: "Favorite workout sessions", korean: "운동세트 불러오기"};
 Map<String, String> name = {english: "Name",  korean: "이름"};
-Map<String, String> nameHint = {english: "Enter your name",  korean: "이름을 압력해주세"};
+Map<String, String> nameHint = {english: "Enter your name",  korean: "직접 입력"};
 Map<String, String> gender  = {english: "Gender",  korean: "성별"};
 Map<String, String> male  = {english: "male",  korean: "남"};
 Map<String, String> female  = {english: "female",  korean: "여"};
 Map<String, String> birthDate  = {english: "Birth date",  korean: "생년월일"};
-Map<String, String> year  = {english: "year",  korean: "년"};
-Map<String, String> month  = {english: "month",  korean: "월"};
-Map<String, String> day  = {english: "day",  korean: "일"};
+Map<String, String> year  = {english: "YYYY",  korean: "년"};
+Map<String, String> month  = {english: "MM",  korean: "월"};
+Map<String, String> day  = {english: "DD",  korean: "일"};
 Map<String, String> email  = {english: "Email",  korean: "이메일"};
 Map<String, String> emailHint  = {english: "Enter your email",  korean: "이메일을 입력해주세"};
 Map<String, String> phoneNumber  = {english: "Phone Number",  korean: "전화번호"};
@@ -58,6 +58,7 @@ Map<String, String> update  = {english: "Update",  korean: "수정"};
 Map<String, String> updateToastMessage  = {english: "Your profile updated successfully!",  korean: "프로필이 업데이트되었습니다!"};
 Map<String, String> languageChanged  = {english: "Language has been changed!",  korean: "언어가 업데이트되었습니다!"};
 Map<String, String> workOutUpdateMessage   = {english: "Workout session has been  updated!",  korean: "운동이 업데이트되었습니다!"};
+Map<String, String> shareSettings   = {english: "Share settings",  korean: "공유 권한 설정"};
 
 
 

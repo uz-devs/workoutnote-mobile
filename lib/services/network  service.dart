@@ -14,7 +14,7 @@ class WebServices {
     return response;
   }
 
-  static Future<http.Response> fetchWorkOuts(String sessionKey, int fromTimestamp,  int tillTimesatmp) async {
+  static Future<http.Response> fetchWorkOuts(String sessionKey, int fromTimestamp, int tillTimesatmp) async {
     final url = Uri.https(baseUrl, fetch_workouts);
     final body = {'sessionKey': '$sessionKey', 'fromTimestampMs': '$fromTimestamp', 'tillTimestampMs': tillTimesatmp};
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
@@ -50,9 +50,9 @@ class WebServices {
     return response;
   }
 
-  static Future<http.Response> updateSettings(String sessionKey, String name, String gender) async {
+  static Future<http.Response> updateSettings(String sessionKey, String name, String gender, String   birthDate, bool isProfileShared) async {
     final url = Uri.https(baseUrl, update_settings);
-    final body = {'sessionKey': sessionKey, 'name': name, 'gender': gender};
+    final body = {'sessionKey': sessionKey, 'new_name': name, 'new_gender': gender, "new_date_of_birth": birthDate, "new_is_profile_shared": isProfileShared};
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }
@@ -134,30 +134,25 @@ class WebServices {
     return response;
   }
 
-
-
-
-
-  static Future<http.Response> insertLift(String sessionKey, int timestamp, int liftMass, int exerciseId, int workoutSessioId, int repetitions,  double rm) async {
+  static Future<http.Response> insertLift(String sessionKey, int timestamp, int liftMass, int exerciseId, int workoutSessioId, int repetitions, double rm) async {
     final url = Uri.https(baseUrl, insert_lift);
-    final body = {'sessionKey': sessionKey, 'timestamp': timestamp, 'lift_mass': liftMass, 'exercise_id': exerciseId, 'workout_session_id': workoutSessioId, "repetitions": repetitions, 'one_rep_max': rm };
+    final body = {'sessionKey': sessionKey, 'timestamp': timestamp, 'lift_mass': liftMass, 'exercise_id': exerciseId, 'workout_session_id': workoutSessioId, "repetitions": repetitions, 'one_rep_max': rm};
 
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }
 
-  static Future<http.Response> updateMyLift(String sessionKey, int  workoutSessionId, int liftId, int newExerciseId, int newLiftMass , int newRep ) async {
+  static Future<http.Response> updateMyLift(String sessionKey, int workoutSessionId, int liftId, int newExerciseId, int newLiftMass, int newRep) async {
     final url = Uri.https(baseUrl, updateLift);
-    final body = {'sessionKey': sessionKey, 'workout_session_id':  workoutSessionId, 'lift_id': liftId, 'new_exercise_id': newExerciseId,  'new_lift_mass': newLiftMass, 'new_repetitions': newRep};
+    final body = {'sessionKey': sessionKey, 'workout_session_id': workoutSessionId, 'lift_id': liftId, 'new_exercise_id': newExerciseId, 'new_lift_mass': newLiftMass, 'new_repetitions': newRep};
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }
 
-  static Future<http.Response> removeMyLift(String sessionKey, int  workoutSessionId, int liftId) async {
+  static Future<http.Response> removeMyLift(String sessionKey, int workoutSessionId, int liftId) async {
     final url = Uri.https(baseUrl, deleteLift);
-    final body = {'sessionKey': sessionKey, 'workout_session_id':  workoutSessionId, 'lift_id': liftId};
+    final body = {'sessionKey': sessionKey, 'workout_session_id': workoutSessionId, 'lift_id': liftId};
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }
-
 }

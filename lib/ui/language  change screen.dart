@@ -14,7 +14,6 @@ class LanguageChangeScreen extends StatefulWidget {
 }
 
 class _LanguageChangeScreenState extends State<LanguageChangeScreen> {
-  int value = 1;
   String item = english;
   List<Language> languages = [Language(english, 1), Language(korean, 2)];
 
@@ -46,6 +45,7 @@ class _LanguageChangeScreenState extends State<LanguageChangeScreen> {
         return ListView(
           children: languages.map((e)
           => RadioListTile<int?>(
+              activeColor: Color.fromRGBO(102, 51, 204, 1),
               title: Text("${e.name}"),
               value:e.index, groupValue: config.languageCode(), onChanged: (val) {
                 config.changeLanguage(val!).then((value) {
