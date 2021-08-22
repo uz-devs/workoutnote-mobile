@@ -74,7 +74,7 @@ class SearchDialogProvider extends ChangeNotifier {
         var bodyParts = BodyPartsResponse.fromJson(
             jsonDecode(utf8.decode(response.bodyBytes)));
         print(response.body);
-        myBodyParts.addAll(bodyParts.bodyParts);
+        myBodyParts.addAll(bodyParts.bodyParts??[]);
       }
     } on TimeoutException catch (e) {
       responseCode = TIMEOUT_EXCEPTION;

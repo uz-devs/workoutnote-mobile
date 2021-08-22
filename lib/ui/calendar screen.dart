@@ -113,7 +113,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   "${DateFormat("yyyy.MM.dd").format(calendarProvider.selectedDate ?? DateTime.now())}, ${DateFormat("EEEE").format(calendarProvider.selectedDate ?? DateTime.now())}",
                   style: TextStyle(fontSize: 25, color: Color.fromRGBO(102, 51, 204, 1)),
                 ));
-          } else {
+          }
+          else {
             index = index - 2;
             return WorkOutNote(widget.height, showWorkOuts[index], 2);
           }

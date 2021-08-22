@@ -1,13 +1,9 @@
 import 'dart:convert';
 class  WorkOutsResponse{
-  bool _success = false;
-  List<WorkOut> _workouts;
+  bool success = false;
+  List<WorkOut> workouts;
 
-  WorkOutsResponse(this._success, this._workouts);
-
-  List<WorkOut> get workouts => _workouts;
-
-  bool get success => _success;
+  WorkOutsResponse(this.success, this.workouts);
 
   factory WorkOutsResponse.fromJson(Map<String, dynamic> parsedJson){
 
@@ -24,32 +20,15 @@ class  WorkOutsResponse{
 }
 
 class WorkOut {
-  int? _id;
-  String? _title;
-  int? _timestamp;
-  int? _duration;
+  int? id;
+  String? title;
+  int? timestamp;
+  int? duration;
   List<Lift>? lifts;
-  bool  _isFavorite = false;
+  bool  isFavorite = false;
 
-  WorkOut(this._id,  this._title, this._timestamp, this.lifts, this._duration, this._isFavorite);
-  int? get timestamp => _timestamp;
+  WorkOut(this.id,  this.title, this.timestamp, this.lifts, this.duration, this.isFavorite);
 
-  String? get title => _title;
-
-  int? get id => _id;
-
-  int? get duration  => _duration;
-
-
-  set id(int? value) {
-    _id = value;
-  }
-
-  bool get isFavorite => _isFavorite;
-
-  set isFavorite(bool value) {
-    _isFavorite = value;
-  }
 
   factory WorkOut.fromJson(Map<String,  dynamic> parsedJson){
     List<dynamic>? list = [];
@@ -62,17 +41,7 @@ class WorkOut {
     return WorkOut(parsedJson["id"], parsedJson["title"],  parsedJson["timestamp"], lifts, parsedJson["duration"], parsedJson["isFavorite"]??false );
   }
 
-  set title(String? value) {
-    _title = value;
-  }
 
-  set timestamp(int? value) {
-    _timestamp = value;
-  }
-
-  set duration(int? value) {
-    _duration = value;
-  }
 }
 
 class Lift {

@@ -4,15 +4,9 @@ class  BodyPartsResponse{
 
 
   bool success = false;
-  List<BodyPart> _bodyParts;
+  List<BodyPart>? bodyParts;
 
-  BodyPartsResponse(this.success, this._bodyParts);
-
-  List<BodyPart> get bodyParts => _bodyParts;
-
-  set bodyParts(List<BodyPart> value) {
-    _bodyParts = value;
-  }
+  BodyPartsResponse(this.success, this.bodyParts);
 
 
   factory BodyPartsResponse.fromJson(Map<String,  dynamic> parsedJson){
@@ -27,22 +21,10 @@ class  BodyPartsResponse{
 
 class BodyPart{
 
-  int _id;
-  String _name;
+  int id;
+  String name;
 
-  BodyPart(this._id, this._name);
-
-  String get name => _name;
-
-  set name(String value) {
-    _name = value;
-  }
-
-  int get id => _id;
-
-  set id(int value) {
-    _id = value;
-  }
+  BodyPart(this.id, this.name);
 
 
 
