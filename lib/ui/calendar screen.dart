@@ -17,6 +17,20 @@ class CalendarScreen extends StatefulWidget {
 
 class _CalendarScreenState extends State<CalendarScreen> {
   var calendarProvider = MainScreenProvider();
+  var decoration1 = BoxDecoration();
+  var decoration2 = BoxDecoration(
+    border: Border.all(
+      color: Color.fromRGBO(102, 51, 204, 1),
+    ),
+    borderRadius: BorderRadius.circular(50.0),
+  );
+  var decoration3 = BoxDecoration(
+    color: Color.fromRGBO(102, 51, 204, 1),
+    border: Border.all(
+      color:Color.fromRGBO(102, 51, 204, 1),
+    ),
+    borderRadius: BorderRadius.circular(50.0),
+  );
 
   @override
   void dispose() {
@@ -33,7 +47,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     List<WorkOut> showWorkOuts = [];
@@ -44,12 +57,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
       }
     }
 
-    return Container(
-        child: _buildItemsList(showWorkOuts));
+    return Container(child: _buildItemsList(showWorkOuts));
   }
 
-  Widget _buildItemsList(List<WorkOut> showWorkOuts){
-    return   ListView.builder(
+  Widget _buildItemsList(List<WorkOut> showWorkOuts) {
+    return ListView.builder(
         itemCount: showWorkOuts.isNotEmpty ? showWorkOuts.length + 2 : 2,
         itemBuilder: (ctx, index) {
           if (index == 0)
@@ -63,37 +75,67 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 daysOfWeekStyle: DaysOfWeekStyle(weekendStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold), weekdayStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold)),
                 calendarStyle: CalendarStyle(
                     outsideDaysVisible: false,
-                    weekendTextStyle: TextStyle(color: Colors.red),
-                    // selectedDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.green, width: 2), color: Colors.white),
-                    selectedTextStyle: TextStyle(color: Colors.black),
-                    // todayDecoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Color.fromRGBO(102, 51, 204, 1), width: 2), color: Colors.white),
+
+
                     todayTextStyle: TextStyle(color: Colors.black)),
                 firstDay: DateTime.utc(2015, 08, 07),
                 lastDay: DateTime.utc(2100, 08, 07),
                 focusedDay: DateTime.now(),
                 calendarBuilders: CalendarBuilders(
                   prioritizedBuilder: (context, day, focusedDay) {
+                    var isDaySelected = calendarProvider.selectedDate!.year == day.year && calendarProvider.selectedDate!.month == day.month && calendarProvider.selectedDate!.day == day.day;
+                    var isDayToday = DateTime.now().day == day.day && DateTime.now().month == day.month && DateTime.now().year == day.year;
+
                     if (calendarProvider.workOutDates.contains("${day.year}.${day.month}.${day.day}"))
-                      return Container(
-                        child: Column(
-                          children: [
-                            Text("${day.day}"),
-                            Icon(
-                              Icons.circle,
-                              size: 10.0,
-                              color: Color.fromRGBO(102, 51, 204, 1),
-                            )
-                          ],
-                        ),
+                      return Column(
+                        children: [
+                          Container(
+                              width: 25,
+                              height: 25,
+                              decoration: isDaySelected
+                                  ? isDayToday
+                                      ? decoration3
+                                      : decoration2
+                                  : isDayToday
+                                      ? decoration3
+                                      : decoration1,
+                              child: Text(
+                                "${day.day}",
+                                style: TextStyle(fontWeight: FontWeight.bold,  color: isDayToday?Colors.white:Colors.black),
+                                textAlign: TextAlign.center,
+                              )),
+                          Icon(
+                            Icons.circle,
+                            size: 10.0,
+                            color: Color.fromRGBO(102, 51, 204, 1),
+                          )
+                        ],
                       );
-                    else
-                      return Container(
-                        child: Column(
-                          children: [
-                            Text("${day.day}"),
-                          ],
+
+                    return Column(
+                      children: [
+                        Container(
+                          width: 25,
+                          height: 25,
+                          decoration: isDaySelected
+                              ? isDayToday
+                                  ? decoration3
+                                  : decoration2
+                              : isDayToday
+                                  ? decoration3
+                                  : decoration1,
+                          child: Text(
+
+                            "${day.day}",
+                            style: TextStyle(
+                                color: isDayToday?Colors.white:Colors.black
+                            ),
+                            textAlign: TextAlign.center,
+
+                          ),
                         ),
-                      );
+                      ],
+                    );
                   },
                 ),
                 onDaySelected: (selectedDay, focusDay) async {
@@ -113,8 +155,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   "${DateFormat("yyyy.MM.dd").format(calendarProvider.selectedDate ?? DateTime.now())}, ${DateFormat("EEEE").format(calendarProvider.selectedDate ?? DateTime.now())}",
                   style: TextStyle(fontSize: 25, color: Color.fromRGBO(102, 51, 204, 1)),
                 ));
-          }
-          else {
+          } else {
             index = index - 2;
             return WorkOutNote(widget.height, showWorkOuts[index], 2);
           }
