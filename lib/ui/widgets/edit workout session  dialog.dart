@@ -28,6 +28,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
   var workoutSessionListProvider = MainScreenProvider();
   var editWorkouSessionProvider = EditWorkoutProvider();
 
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -35,13 +36,14 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
     editWorkouSessionProvider = Provider.of<EditWorkoutProvider>(context, listen: true);
     workoutSessionListProvider = Provider.of<MainScreenProvider>(context, listen: true);
 
-    if (!editWorkouSessionProvider.done) {
-      editWorkouSessionProvider.getLiftsFromWorkoutSession(widget.workout);
-    }
+
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!editWorkouSessionProvider.done) {
+      editWorkouSessionProvider.getLiftsFromWorkoutSession(widget.workout);
+    }
     int count = editWorkouSessionProvider.existingLifts.length + 6;
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -138,7 +140,9 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                     ),
                     child: _buildExerciseListItem((index + 1).toString(), "${editWorkouSessionProvider.existingLifts[index].exerciseName}", "0.0", "0.0", editWorkouSessionProvider.existingLifts[index].rm.toString(), Colors.black, 2, editWorkouSessionProvider, index, context, configProvider)),
               );
-            } else if (index == count - 2) {
+            }
+
+            else if (index == count - 2) {
               return Container(
                   padding: EdgeInsets.only(left: 10, right: 10.0),
                   margin: EdgeInsets.only(
@@ -200,7 +204,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
         editWorkoutProvider.unselectedExercise = value as Exercise;
       else {
         //TODO ..
-        editWorkoutProvider.updateLift(value as Exercise, existingLiftIndex);
+        editWorkoutProvider.updateLiftExercise(value as Exercise, existingLiftIndex);
       }
     });
   }
@@ -324,7 +328,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                   : IconButton(
                       onPressed: () async {
                         if (editWorkoutProvider.unselectedExercise != null) {
-                          print("added");
+
                           editWorkoutProvider.addExercise(EditableLift.create(editWorkoutProvider.unselectedExercise!.name, editWorkoutProvider.unselectedExercise!.id, editWorkoutProvider.unselectedExercise!.bodyPart, 1, 1, 1.0, true, -1));
                         } else
                           showToast("Please, select exercise!");

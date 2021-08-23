@@ -21,7 +21,6 @@ class EditWorkoutProvider extends ChangeNotifier {
   //endregion
 
   void getLiftsFromWorkoutSession(WorkOut workOut) {
-    //TODO ge body part from exercise id
     titleController.text = workOut.title ?? "";
     for (int i = 0; i < workOut.lifts!.length; i++) {
       existingLifts.add(EditableLift.create(workOut.lifts![i].exerciseName, workOut.lifts![i].exerciseId, "_bodyPart", workOut.lifts![i].liftMas!.toInt(), workOut.lifts![i].repetitions ?? 0, workOut.lifts![i].oneRepMax ?? 0, true, workOut.lifts![i].liftId));
@@ -32,53 +31,50 @@ class EditWorkoutProvider extends ChangeNotifier {
 
   Future<void> editWorkout(WorkOut workOut) async {
     var sessionKey = userPreferences!.getString("sessionKey") ?? "";
-
-    bool canCreateSession = false;
+    bool canEditSession = false;
     for (int i = 0; i < existingLifts.length; i++) {
       if (existingLifts[i].isSelected) {
-        canCreateSession = true;
+        canEditSession = true;
         break;
       }
     }
-
-    if (canCreateSession) {
+    if (canEditSession) {
       updatedList.addAll(existingLifts);
-      print("size1: ${updatedList.length}");
+
+      print("enter");
+      for (int i = 0; i < updatedList.length; i++) {
+        print(updatedList[i].exerciseName);
+      }
       try {
-        //update workout
         var updateWorkoutResponse = await WebServices.updateMyWorkout(sessionKey, workOut.id ?? -1, titleController.text, workOut.duration ?? 0);
         if (updateWorkoutResponse.statusCode == 200 && jsonDecode(updateWorkoutResponse.body)["success"]) {
           for (int i = 0; i < existingLifts.length; i++) {
-            //add  lift
-            if (existingLifts[i].liftId == -1 && existingLifts[i].isSelected) {
-              var addResponse = await WebServices.insertLift(sessionKey, DateTime.now().millisecondsSinceEpoch, existingLifts[i].mass, existingLifts[i].exerciseId ?? -1, workOut.id ?? -1, existingLifts[i].rep, existingLifts[i].rm);
-              if (addResponse.statusCode == 200) {
-
-              }
-            }
-            //remove lift
-            else if (existingLifts[i].liftId != -1 && !existingLifts[i].isSelected) {
+            if (!existingLifts[i].isSelected) {
               var removeResponse = await WebServices.removeMyLift(sessionKey, workOut.id ?? -1, existingLifts[i].liftId ?? -1);
               print(removeResponse.body);
-              if (removeResponse.statusCode == 200) {
-                print("ehe3e3ur3r");
-               updatedList.removeWhere((element) => element.liftId == existingLifts[i].liftId);
+
+              if (removeResponse.statusCode == 200 && jsonDecode(removeResponse.body)["success"]) {
+                updatedList.removeWhere((element) => element.liftId == existingLifts[i].liftId);
               }
-            }
-            //update lift
-            else if (existingLifts[i].liftId != -1 && existingLifts[i].isSelected) {
-              for (int j = 0; j < liftsToStore.length; j++) {
-                if (existingLifts[i].liftId == liftsToStore[j].liftId) {
-                  if (existingLifts[i].exerciseName != liftsToStore[j].exerciseName || existingLifts[i].mass != liftsToStore[j].mass || existingLifts[i].rep != liftsToStore[j].rep) {
-                    var updateResponse = await WebServices.updateMyLift(sessionKey, workOut.id ?? -1, existingLifts[i].liftId ?? -1, existingLifts[i].exerciseId ?? -1, existingLifts[i].mass, existingLifts[i].rep);
-                    if (updateResponse.statusCode == 200) {
+            } else {
+              if (existingLifts[i].liftId == -1) {
+                var addResponse = await WebServices.insertLift(sessionKey, DateTime.now().millisecondsSinceEpoch, existingLifts[i].mass, existingLifts[i].exerciseId ?? -1, workOut.id ?? -1, existingLifts[i].rep, existingLifts[i].rm);
+
+                if (addResponse.statusCode == 200 && jsonDecode(addResponse.body)["success"]) {
+
+                  print("added");
+                  print(jsonDecode(addResponse.body)["lift"]["id"]);
+                  existingLifts[i].liftId = jsonDecode(addResponse.body)["lift"]["id"];
+                }
+              } else {
+                for (int j = 0; j < liftsToStore.length; j++) {
+                  if (existingLifts[i].liftId == liftsToStore[j].liftId) {
+                    if (existingLifts[i].exerciseName != liftsToStore[j].exerciseName || existingLifts[i].mass != liftsToStore[j].mass || existingLifts[i].rep != liftsToStore[j].rep) {
+                      await WebServices.updateMyLift(sessionKey, workOut.id ?? -1, existingLifts[i].liftId ?? -1, existingLifts[i].exerciseId ?? -1, existingLifts[i].mass, existingLifts[i].rep);
                     }
                   }
                 }
               }
-            }
-            else {
-              updatedList.removeWhere((element) => element.liftId == existingLifts[i].liftId);
             }
           }
         }
@@ -90,9 +86,21 @@ class EditWorkoutProvider extends ChangeNotifier {
     }
   }
 
-    void updateAllWorkOutLists(WorkOut workOut, MainScreenProvider mainScreenProvider, BuildContext context) {
-     print("Size:  ${updatedList.length}");
+  /*
+
+  no id!!!
+
+
+
+   */
+
+  void updateAllWorkOutLists(WorkOut workOut, MainScreenProvider mainScreenProvider, BuildContext context) {
     editWorkout(workOut).then((value) {
+      print("exit");
+      for (int i = 0; i < updatedList.length; i++) {
+        print(updatedList[i].exerciseName);
+      }
+
       for (int k = 0; k < mainScreenProvider.workOuts.length; k++) {
         if (mainScreenProvider.workOuts[k].id == workOut.id) {
           mainScreenProvider.workOuts[k].lifts!.clear();
@@ -111,7 +119,6 @@ class EditWorkoutProvider extends ChangeNotifier {
         }
       }
 
-      reset();
       mainScreenProvider.update();
       Navigator.pop(context);
     });
@@ -119,14 +126,13 @@ class EditWorkoutProvider extends ChangeNotifier {
 
   //region lifts: add, update,  remove
   void updateLiftActiveStatus(int index) {
-    if (existingLifts[index].isSelected == false)
+    if (!existingLifts[index].isSelected)
       existingLifts[index].isSelected = true;
-    else
-      existingLifts[index].isSelected = false;
+    else if (existingLifts[index].isSelected) existingLifts[index].isSelected = false;
     notifyListeners();
   }
 
-  void updateLift(Exercise exercise, int index) {
+  void updateLiftExercise(Exercise exercise, int index) {
     existingLifts[index].exerciseName = exercise.name;
     existingLifts[index].exerciseId = exercise.id;
     notifyListeners();
@@ -137,8 +143,8 @@ class EditWorkoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addExercise(EditableLift exercise) {
-    existingLifts.add(exercise);
+  void addExercise(EditableLift lift) {
+    existingLifts.add(lift);
     notifyListeners();
   }
 
@@ -172,8 +178,6 @@ class EditWorkoutProvider extends ChangeNotifier {
   }
 
 //endregion
-
-//region
 
   void reset() {
     existingLifts.clear();

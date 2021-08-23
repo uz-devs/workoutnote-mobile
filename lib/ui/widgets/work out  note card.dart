@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/providers/create%20workout%20provider.dart';
+import 'package:workoutnote/providers/edit%20workout%20%20provider.dart';
 import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
 import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
 import 'package:workoutnote/ui/widgets/edit%20workout%20session%20%20dialog.dart';
@@ -193,9 +194,9 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                 Container(
                     width: double.maxFinite,
                     child: MaterialButton(
-                      onPressed: ()  async{
-                      await  _showDeleteConfirmDialog();
-                      Navigator.pop(context);
+                      onPressed: () async {
+                        await _showDeleteConfirmDialog();
+                        Navigator.pop(context);
                       },
                       child: Text(
                         "${delete[configProvider.activeLanguage()]}",
@@ -214,7 +215,9 @@ class _WorkOutNoteState extends State<WorkOutNote> {
         context: context,
         builder: (BuildContext context) {
           return EditWorkoutSessionDialog(widget.height, workOut);
-        }).then((value) {});
+        }).then((value) {
+      Provider.of<EditWorkoutProvider>(context, listen: false).reset();
+    });
   }
 
   Future<void> _showDeleteConfirmDialog() async {
@@ -222,75 +225,68 @@ class _WorkOutNoteState extends State<WorkOutNote> {
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
-          return  Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              child: Container(
-
-                height: 186.2,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                        flex: 8,
-                        child: Container(
-                          margin: EdgeInsets.only(left: 50.0, right: 50.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "삭제하면 항목별로 기록된 내용을 복구할 수 없습니다.삭제하시겠습니까?",
-                            textAlign: TextAlign.center,
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            child: Container(
+              height: 186.2,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                      flex: 8,
+                      child: Container(
+                        margin: EdgeInsets.only(left: 50.0, right: 50.0),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "삭제하면 항목별로 기록된 내용을 복구할 수 없습니다.삭제하시겠습니까?",
+                          textAlign: TextAlign.center,
+                        ),
+                      )),
+                  Divider(),
+                  Expanded(
+                      flex: 3,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: MaterialButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "취소",
+                                style: TextStyle(color: Colors.blueAccent),
+                              ),
+                            ),
                           ),
-                        )),
-                    Divider(),
-                    Expanded(
-                        flex: 3,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex:5,
-                              child: MaterialButton(
-
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  "취소",
-                                  style: TextStyle(color: Colors.blueAccent),
-                                ),
+                          VerticalDivider(),
+                          Expanded(
+                            flex: 5,
+                            child: MaterialButton(
+                              onPressed: () {
+                                mainScreenProvider.deleteWorkoutSession(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1).then((value) {
+                                  if (value) {
+                                    showToast("${deleteSuccess[configProvider.activeLanguage()]}");
+                                    Navigator.pop(context);
+                                  }
+                                });
+                              },
+                              child: Text(
+                                "삭제",
+                                style: TextStyle(color: Colors.red),
                               ),
                             ),
-
-
-
-                      VerticalDivider(),
-                      Expanded(
-                        flex :  5,
-                              child: MaterialButton(
-
-                                onPressed: () {
-                                  mainScreenProvider.deleteWorkoutSession(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1).then((value) {
-                                    if (value) {
-                                      showToast("${deleteSuccess[configProvider.activeLanguage()]}");
-                                      Navigator.pop(context);
-                                    }
-                                  });
-                                },
-                                child: Text(
-                                  "삭제",
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ))
-                  ],
-                ),
+                          ),
+                        ],
+                      ))
+                ],
               ),
-
+            ),
           );
         });
   }
-  //endregion
+//endregion
 
 }

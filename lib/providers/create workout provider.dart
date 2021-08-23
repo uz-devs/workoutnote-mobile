@@ -38,34 +38,27 @@ class CreateWorkoutProvider extends ChangeNotifier {
       try {
         List<Lift> lifts = [];
         int count = 0;
-        var response = await WebServices.insertWorkOut(
-            sessionKey, title, timestamp, duration);
-        if (response.statusCode == 200 &&
-            jsonDecode(response.body)["success"]) {
+        var response = await WebServices.insertWorkOut(sessionKey, title, timestamp, duration);
+        if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
           for (int i = 0; i < _lifts.length; i++) {
-            var insertLift = await WebServices.insertLift(
-                sessionKey,
-                timestamp,
-                _lifts[i].mass,
-                _lifts[i].exerciseId ?? -1,
-                jsonDecode(response.body)["workout_session"]["id"],
-                _lifts[i].rep,
-                _lifts[i].rm);
-            var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
-            print(jsonDecode(insertLift.body)["success"]);
-            if (insertLift.statusCode == 200 && jsonDecode(insertLift.body)["success"]) {
-              count++;
-              lifts.add(Lift.create(
-                  lift.liftId,
-                  lift.timestamp,
-                  lift.oneRepMax,
-                  lift.exerciseId,
-                  lift.exerciseName,
-                  lift.liftMas,
-                  lift.repetitions));
+            if(_lifts[i].isSelected) {
+              var insertLift = await WebServices.insertLift(sessionKey, timestamp, _lifts[i].mass, _lifts[i].exerciseId ?? -1, jsonDecode(response.body)["workout_session"]["id"], _lifts[i].rep, _lifts[i].rm);
+              var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
+              if (insertLift.statusCode == 200 && jsonDecode(insertLift.body)["success"]) {
+                print("heyyyyyyyy");
+                count++;
+                lifts.add(Lift.create(
+                    lift.liftId,
+                    lift.timestamp,
+                    lift.oneRepMax,
+                    lift.exerciseId,
+                    lift.exerciseName,
+                    lift.liftMas,
+                    lift.repetitions));
+              }
             }
           }
-          if (count == _lifts.length) {
+          if (count == _lifts.where((element) => element.isSelected ==true).length) {
             var workout = WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
             workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
             calendarWorkouts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
