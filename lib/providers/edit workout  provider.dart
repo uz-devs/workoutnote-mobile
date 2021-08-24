@@ -17,6 +17,7 @@ class EditWorkoutProvider extends ChangeNotifier {
   TextEditingController titleController = TextEditingController();
   Exercise? _unselectedExercise;
   bool done = false;
+  String message = "success";
 
   //endregion
 
@@ -41,7 +42,6 @@ class EditWorkoutProvider extends ChangeNotifier {
     if (canEditSession) {
       updatedList.addAll(existingLifts);
 
-      print("enter");
       for (int i = 0; i < updatedList.length; i++) {
         print(updatedList[i].exerciseName);
       }
@@ -51,12 +51,12 @@ class EditWorkoutProvider extends ChangeNotifier {
           for (int i = 0; i < existingLifts.length; i++) {
             if (!existingLifts[i].isSelected) {
               var removeResponse = await WebServices.removeMyLift(sessionKey, workOut.id ?? -1, existingLifts[i].liftId ?? -1);
-              print(removeResponse.body);
 
               if (removeResponse.statusCode == 200 && jsonDecode(removeResponse.body)["success"]) {
                 updatedList.removeWhere((element) => element.liftId == existingLifts[i].liftId);
               }
-            } else {
+            }
+            else {
               if (existingLifts[i].liftId == -1) {
                 var addResponse = await WebServices.insertLift(sessionKey, DateTime.now().millisecondsSinceEpoch, existingLifts[i].mass, existingLifts[i].exerciseId ?? -1, workOut.id ?? -1, existingLifts[i].rep, existingLifts[i].rm);
 
@@ -66,7 +66,8 @@ class EditWorkoutProvider extends ChangeNotifier {
                   print(jsonDecode(addResponse.body)["lift"]["id"]);
                   existingLifts[i].liftId = jsonDecode(addResponse.body)["lift"]["id"];
                 }
-              } else {
+              }
+              else {
                 for (int j = 0; j < liftsToStore.length; j++) {
                   if (existingLifts[i].liftId == liftsToStore[j].liftId) {
                     if (existingLifts[i].exerciseName != liftsToStore[j].exerciseName || existingLifts[i].mass != liftsToStore[j].mass || existingLifts[i].rep != liftsToStore[j].rep) {
@@ -80,47 +81,70 @@ class EditWorkoutProvider extends ChangeNotifier {
         }
       } catch (e) {
         print(e);
+        message = "fail";
       }
     } else {
       showToast("You need to add at least one exercise for one workout session!");
+      message = "fail";
+
     }
   }
 
-  /*
-
-  no id!!!
 
 
-
-   */
-
-  void updateAllWorkOutLists(WorkOut workOut, MainScreenProvider mainScreenProvider, BuildContext context) {
+  void updateAllWorkOutLists(WorkOut workOut, MainScreenProvider mainScreenProvider, BuildContext context,  String successMessage) {
     editWorkout(workOut).then((value) {
-      print("exit");
-      for (int i = 0; i < updatedList.length; i++) {
-        print(updatedList[i].exerciseName);
-      }
 
-      for (int k = 0; k < mainScreenProvider.workOuts.length; k++) {
-        if (mainScreenProvider.workOuts[k].id == workOut.id) {
-          mainScreenProvider.workOuts[k].lifts!.clear();
-          mainScreenProvider.workOuts[k].title = titleController.text;
-          for (int i = 0; i < updatedList.length; i++) {
-            mainScreenProvider.workOuts[k].lifts!.add(Lift.create(updatedList[i].liftId, 0, updatedList[i].rm, updatedList[i].exerciseId, updatedList[i].exerciseName, updatedList[i].mass.toDouble(), updatedList[i].rep));
+
+      if(message  != "fail") {
+        for (int k = 0; k < mainScreenProvider.workOuts.length; k++) {
+          if (mainScreenProvider.workOuts[k].id == workOut.id) {
+            mainScreenProvider.workOuts[k].lifts!.clear();
+            mainScreenProvider.workOuts[k].title = titleController.text;
+            for (int i = 0; i < updatedList.length; i++) {
+              mainScreenProvider.workOuts[k].lifts!.add(Lift.create(
+                  updatedList[i].liftId,
+                  0,
+                  updatedList[i].rm,
+                  updatedList[i].exerciseId,
+                  updatedList[i].exerciseName,
+                  updatedList[i].mass.toDouble(),
+                  updatedList[i].rep));
+            }
           }
         }
-      }
 
-      if (mainScreenProvider.calendarWorkouts.isNotEmpty) {
-        mainScreenProvider.calendarWorkouts.where((element) => element.id == workOut.id).single.lifts!.clear();
-        mainScreenProvider.calendarWorkouts.where((element) => element.id == workOut.id).single.title = titleController.text;
-        for (int i = 0; i < updatedList.length; i++) {
-          mainScreenProvider.calendarWorkouts.where((element) => element.id == workOut.id).single.lifts!.add(Lift.create(updatedList[i].liftId, 0, updatedList[i].rm, updatedList[i].exerciseId, updatedList[i].exerciseName, updatedList[i].mass.toDouble(), updatedList[i].rep));
+        if (mainScreenProvider.calendarWorkouts.isNotEmpty) {
+          mainScreenProvider.calendarWorkouts
+              .where((element) => element.id == workOut.id)
+              .single
+              .lifts!
+              .clear();
+          mainScreenProvider.calendarWorkouts
+              .where((element) => element.id == workOut.id)
+              .single
+              .title = titleController.text;
+          for (int i = 0; i < updatedList.length; i++) {
+            mainScreenProvider.calendarWorkouts
+                .where((element) => element.id == workOut.id)
+                .single
+                .lifts!
+                .add(Lift.create(
+                updatedList[i].liftId,
+                0,
+                updatedList[i].rm,
+                updatedList[i].exerciseId,
+                updatedList[i].exerciseName,
+                updatedList[i].mass.toDouble(),
+                updatedList[i].rep));
+          }
         }
-      }
 
-      mainScreenProvider.update();
-      Navigator.pop(context);
+        mainScreenProvider.update();
+        showToast(successMessage);
+
+        Navigator.pop(context);
+      }
     });
   }
 

@@ -180,8 +180,8 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                         ),
                         color: Color.fromRGBO(102, 51, 204, 1),
                         onPressed: ()  {
-                          editWorkouSessionProvider.updateAllWorkOutLists(widget.workout,  workoutSessionListProvider,  context);
-                          showToast("${workOutUpdateMessage[configProvider.activeLanguage()]}");
+                          editWorkouSessionProvider.updateAllWorkOutLists(widget.workout,  workoutSessionListProvider,  context,  "${workOutUpdateMessage[configProvider.activeLanguage()]}");
+
                           },
                         textColor: Colors.white,
                         child: Text("${update[configProvider.activeLanguage()]}"),
