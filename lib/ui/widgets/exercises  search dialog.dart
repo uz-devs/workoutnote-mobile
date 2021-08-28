@@ -158,7 +158,8 @@ class _SearchDialogState extends State<SearchDialog> {
                     }
                   })),
             );
-          } else {
+          }
+          else {
             index = index - 3;
             return InkWell(
               onTap: () {
@@ -182,7 +183,8 @@ class _SearchDialogState extends State<SearchDialog> {
                           onPressed: () async {
                             if (!showExercises[index].isFavorite) {
                               await dialogProvider.setFavoriteExercise(userPreferences!.getString("sessionKey") ?? "", showExercises[index].id ?? -1, showExercises[index]);
-                            } else {
+                            }
+                            else {
                               await dialogProvider.unsetFavoriteExercise(userPreferences!.getString("sessionKey") ?? "", showExercises[index].id ?? -1, showExercises[index]);
                             }
                           },

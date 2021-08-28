@@ -138,14 +138,11 @@ class SearchDialogProvider extends ChangeNotifier {
   }
 
   void searchExercises(String searchWord, List<Exercise> showExercises) {
-    print(searchWord);
     List<Exercise> temps = [];
     if (searchWord.isNotEmpty) {
       for (int i = 0; i < showExercises.length; i++) {
-        if (showExercises[i].name!.contains(searchWord)) {
+        if (showExercises[i].name!.contains(searchWord) ||  "${showExercises[i].namedTranslations!.english}".contains(searchWord)) {
           temps.add(showExercises[i]);
-          print("hey");
-          print(showExercises[i].name);
         }
       }
 
