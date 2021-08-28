@@ -47,6 +47,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
       child: Card(
           elevation: 10,
           shape: RoundedRectangleBorder(
+            side:BorderSide( width: 1.5, color:  widget.mode == 3?Color.fromRGBO(102, 51, 204, 1):Colors.transparent),
             borderRadius: BorderRadius.circular(15.0),
           ),
           child: _buildListViewWidget(count)),
@@ -67,104 +68,104 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                     Expanded(
                       flex: 4,
                       child: Container(
-                        margin: EdgeInsets.only(left: 15),
+                        margin: EdgeInsets.only(left: 20, top: 10.0),
                         padding: EdgeInsets.only(top: 10.0),
                         child: RichText(
                           overflow: TextOverflow.ellipsis,
-                          strutStyle: StrutStyle(fontSize: 20.0),
-                          text: TextSpan(style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontSize: 20), text: widget.workout.title!.isNotEmpty ? '${widget.workout.title}' : ''),
+                          strutStyle: StrutStyle(fontSize: 22.0),
+                          text: TextSpan(style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontSize: 22), text: widget.workout.title!.isNotEmpty ? '${widget.workout.title}' : ''),
                         ),
                       ),
                     ),
-                    Expanded(flex: 4, child: Container()),
                     Expanded(
-                      flex: widget.mode == 3 ? 2 : 1,
+                      flex: 2,
                       child: Container(
-                          padding: EdgeInsets.only(top: 10.0, right: 10.0),
+                        height: 30,
+                          width: 30,
+                          margin:EdgeInsets.only(top:10.0),
+                          padding: EdgeInsets.only(top: 10.0, right: 10.0,  left: 10.0),
                           child: InkWell(
-                            onTap: () {
-                              if (widget.mode != 3) {
-                                if (!widget.workout.isFavorite)
-                                  mainScreenProvider.setFavoriteWorkOut(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1, widget.mode).then((value) {
-                                    setState(() {});
-                                  });
-                                else
-                                  mainScreenProvider.unsetFavoriteWorkOut(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1, widget.mode).then((value) {
-                                    setState(() {});
-                                  });
-                              }
-                            },
-                            child: Icon(
-                              !widget.workout.isFavorite ? Icons.favorite_border : Icons.favorite,
-                              size: 30,
-                              color: Colors.red,
-                            ),
-                          )),
+                              onTap: () {
+                                if (widget.mode != 3) {
+                                  if (!widget.workout.isFavorite)
+                                    mainScreenProvider.setFavoriteWorkOut(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1, widget.mode).then((value) {
+                                      setState(() {});
+                                    });
+                                  else
+                                    mainScreenProvider.unsetFavoriteWorkOut(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1, widget.mode).then((value) {
+                                      setState(() {});
+                                    });
+                                }
+                              },
+                              child: widget.workout.isFavorite ? SvgPicture.asset("assets/icons/liked.svg", height: 15, width: 15,) : SvgPicture.asset("assets/icons/unliked.svg", height:15 , width: 15,))),
                     ),
-                    if (widget.mode != 3)
-                      Expanded(
-                        flex: 1,
-                        child: InkWell(
-                          onTap: () async {
-                            await _showOptionDialog(configProvider, mainScreenProvider);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.only(top: 10, right: 10.0),
-                            alignment: Alignment.center,
-                            child: SvgPicture.asset(
-                              "assets/icons/menu.svg",
-                              height: 15,
-                              width: 50,
-                              color: Colors.black,
-                            ),
+                    Expanded(
+                      flex: 2,
+                      child: Container(),),
+                    Expanded(
+                      flex: 2,
+                      child: InkWell(
+                        onTap: () async {
+                          await _showOptionDialog(configProvider, mainScreenProvider);
+                        },
+                        child: Container(
+                          margin:EdgeInsets.only(top:10.0),
+
+
+
+                          padding: EdgeInsets.only(top: 10.0),
+                          child: SvgPicture.asset(
+                            "assets/icons/menu.svg",
+                            height: 6.0,
+                            width: 6.0,
+
                           ),
                         ),
                       ),
+                    ),
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
+                  margin: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
                   child: Divider(
                     color: Colors.black54,
                   ),
                 )
               ],
             );
-          } else if (index == count - 2) {
+          }
+          else if (index == count - 2) {
             return Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 15.0, bottom: widget.mode == 1 ? 0.0 : 15.0),
+              margin: EdgeInsets.only(top: 15.0, bottom:  15.0),
               child: Text(
                 "${calculateDuration(widget.workout.duration ?? 0).item1}:${calculateDuration(widget.workout.duration ?? 0).item2}:${calculateDuration(widget.workout.duration ?? 0).item3}",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Color.fromRGBO(102, 51, 204, 1)),
               ),
             );
           } else if (index == count - 1) {
-            if (widget.mode == 1)
-              return Container(
-                width: double.infinity,
-                margin: EdgeInsets.only(bottom: 10, left: 20, right: 20),
-                child: MaterialButton(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                  color: Color.fromRGBO(102, 51, 204, 1),
-                  textColor: Colors.white,
-                  child: Text("${repeat[configProvider.activeLanguage()]}"),
-                  onPressed: () {
-                    mainScreenProvider.repeatWorkoutSession(widget.workout.id ?? -1, createWorkoutProvider, dialogProvider.allExercises);
-                  },
-                ),
-              );
-            return SizedBox(
-              height: 0.0,
-              width: 0.0,
+            return Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(bottom: 20, left: 20, right: 20),
+              child: MaterialButton(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                color: Color.fromRGBO(102, 51, 204, 1),
+                textColor: Colors.white,
+                child: Text("${repeat[configProvider.activeLanguage()]}"),
+                onPressed: () {
+                  mainScreenProvider.repeatWorkoutSession(widget.workout.id ?? -1, createWorkoutProvider, dialogProvider.allExercises);
+                },
+              ),
             );
-          } else {
+
+          }
+          else {
             index = index - 1;
 
             String mass = "${configProvider.getConvertedMass(widget.workout.lifts![index].liftMas ?? 0)}";
             String rm = "${configProvider.getConvertedRM(widget.workout.lifts![index].oneRepMax ?? 0)}";
             String identifier = configProvider.measureMode == KG ? "KG" : "LBS";
-            return Container(margin: EdgeInsets.only(left: 15.0), padding: EdgeInsets.only(bottom: 10.0), child: Text("${index + 1}. ${widget.workout.lifts![index].exerciseName}, ${mass} ${identifier}, ${widget.workout.lifts![index].repetitions} REP, ${rm} RM"));
+            return Container(margin: EdgeInsets.only(left: 20.0), padding: EdgeInsets.only(bottom: 10.0), child: Text("${index + 1}. ${widget.workout.lifts![index].exerciseName}, ${mass} ${identifier}, ${widget.workout.lifts![index].repetitions} REP, ${rm} RM"));
           }
         });
   }

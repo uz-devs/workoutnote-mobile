@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
@@ -31,8 +32,9 @@ class _SearchDialogState extends State<SearchDialog> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         insetPadding: EdgeInsets.all(20),
         child: Container(
+          padding: EdgeInsets.all(5.0),
           height: 0.9 * widget.height,
-          child: Scrollbar(thickness: 3, child: _buildExercisesList(dialogProvider, showExercises)),
+          child: _buildExercisesList(dialogProvider, showExercises),
         ),
       );
     });
@@ -72,6 +74,7 @@ class _SearchDialogState extends State<SearchDialog> {
               height: 40,
               margin: EdgeInsets.only(left: 10, right: 10.0),
               child: TextFormField(
+
                 onFieldSubmitted: (word) {
                   setState(() {
                     dialogProvider.searchExercises(word, showExercises);
@@ -101,6 +104,12 @@ class _SearchDialogState extends State<SearchDialog> {
                     color: Color.fromRGBO(102, 51, 204, 1),
                   ),
                   focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(
+                      color: Color.fromRGBO(102, 51, 204, 1),
+                    ),
+                  ),
                   isDense: true,
                   contentPadding: EdgeInsets.all(5),
                   // Added this
@@ -174,19 +183,21 @@ class _SearchDialogState extends State<SearchDialog> {
                               )),
                     Expanded(
                         flex: 2,
-                        child: IconButton(
-                          onPressed: () async {
-                            if (!showExercises[index].isFavorite) {
-                              await dialogProvider.setFavoriteExercise(userPreferences!.getString("sessionKey") ?? "", showExercises[index].id ?? -1, showExercises[index]);
-                            }
-                            else {
-                              await dialogProvider.unsetFavoriteExercise(userPreferences!.getString("sessionKey") ?? "", showExercises[index].id ?? -1, showExercises[index]);
-                            }
-                          },
-                          icon: Icon(
-                            showExercises[index].isFavorite ? Icons.favorite : Icons.favorite_border,
-                            color: Colors.red,
-                            size: 30,
+                        child: Container(
+                          margin: EdgeInsets.only(top: 5.0,  bottom: 5.0),
+                          height: 20,
+                          width: 20,
+                          child: InkWell(
+                            onTap: () async {
+                              if (!showExercises[index].isFavorite) {
+                                await dialogProvider.setFavoriteExercise(userPreferences!.getString("sessionKey") ?? "", showExercises[index].id ?? -1, showExercises[index]);
+                              }
+                              else {
+                                await dialogProvider.unsetFavoriteExercise(userPreferences!.getString("sessionKey") ?? "", showExercises[index].id ?? -1, showExercises[index]);
+                              }
+                            },
+                            child :  showExercises[index].isFavorite? SvgPicture.asset("assets/icons/liked.svg", width: 15.0, height: 15.0,
+                            ):SvgPicture.asset("assets/icons/unliked.svg", width: 15.0, height: 15.0,)
                           ),
                         ))
                   ],

@@ -31,7 +31,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     ),
     borderRadius: BorderRadius.circular(50.0),
   );
-
+  double? width;
 
   @override
   void didChangeDependencies() {
@@ -45,6 +45,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
     List<WorkOut> showWorkOuts = [];
     calendarProvider.updateWorkoutDates(calendarProvider.calendarWorkouts);
     for (int i = 0; i < calendarProvider.calendarWorkouts.length; i++) {
@@ -62,17 +63,25 @@ class _CalendarScreenState extends State<CalendarScreen> {
         itemBuilder: (ctx, index) {
           if (index == 0)
             return Container(
+              padding: EdgeInsets.all(15.0),
               color: Colors.white,
               child: TableCalendar(
+
                 headerStyle: HeaderStyle(
-                  titleCentered: true,
+
+                  titleCentered: false ,
+                  titleTextFormatter: (date, locale)  => DateFormat.MMMM(locale).format(date),
+                    rightChevronMargin: EdgeInsets.only(right: 0.5*width!),
                   formatButtonVisible: false,
+                  leftChevronVisible: false,
+
+
+                  rightChevronIcon: Icon(Icons.expand_more_outlined,  color: Color.fromRGBO(101, 54,204, 1), size: 30,)
                 ),
                 daysOfWeekStyle: DaysOfWeekStyle(weekendStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold), weekdayStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold)),
                 calendarStyle: CalendarStyle(
+
                     outsideDaysVisible: false,
-
-
                     todayTextStyle: TextStyle(color: Colors.black)),
                 firstDay: DateTime.utc(2015, 08, 07),
                 lastDay: DateTime.utc(2100, 08, 07),
@@ -148,7 +157,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             return Container(
                 margin: EdgeInsets.only(left: 20.0, top: 10.0),
                 child: Text(
-                  "${DateFormat("yyyy.MM.dd").format(calendarProvider.selectedDate ?? DateTime.now())}, ${DateFormat("EEEE").format(calendarProvider.selectedDate ?? DateTime.now())}",
+                  "${DateFormat("yyyy.MM.dd").format(calendarProvider.selectedDate ?? DateTime.now())}, ${DateFormat("EEEE").format(calendarProvider.selectedDate ?? DateTime.now()).substring(0,3).toUpperCase()}",
                   style: TextStyle(fontSize: 25, color: Color.fromRGBO(102, 51, 204, 1)),
                 ));
           } else {

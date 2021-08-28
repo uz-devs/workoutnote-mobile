@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
@@ -33,14 +34,23 @@ class _AllWorkoutsDialogState extends State<AllWorkoutsDialog> {
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     return Container(
+
       width: MediaQuery.of(context).size.width,
       child: Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        backgroundColor:  Color.fromRGBO(231, 223, 247, 1),
+
+        shape: RoundedRectangleBorder(
+
+
+            borderRadius: BorderRadius.circular(10)),
         insetPadding: EdgeInsets.all(20),
         child: Container(
+          padding: EdgeInsets.all(5.0),
           height: 0.9 * height,
+
           child: Scrollbar(
-            thickness: 3,
+            radius: Radius.circular(10.0),
+            thickness: 5,
             child: _buildWorkoutSessionsList(),
           ),
         ),

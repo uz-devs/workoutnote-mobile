@@ -95,7 +95,7 @@ class CreateWorkOutCard extends StatelessWidget {
                 margin: EdgeInsets.only(left: 20),
                 padding: EdgeInsets.only(top: 10),
                 child: Text(
-                  "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now())}",
+                  "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now()).substring(0, 3).toUpperCase()}",
                   style: TextStyle(fontSize: 15, color: Colors.grey),
                 ));
           else if (index == 1)
