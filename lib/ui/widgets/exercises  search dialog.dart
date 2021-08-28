@@ -23,13 +23,8 @@ class _SearchDialogState extends State<SearchDialog> {
   @override
   Widget build(BuildContext context) {
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
-    return Consumer<SearchDialogProvider>(builder: (context, dialogProvider, child) {
+    return Consumer<ExercisesDialogProvider>(builder: (context, dialogProvider, child) {
       List<Exercise> showExercises = [];
-      if (!dialogProvider.requestDone) {
-        dialogProvider.requestDone = true;
-        dialogProvider.fetchBodyParts().then((value) {});
-        dialogProvider.fetchExercises().then((value) {});
-      }
       dialogProvider.filterExercises(showExercises);
       dialogProvider.searchExercises(_searchWord, showExercises);
       return Dialog(
@@ -43,7 +38,7 @@ class _SearchDialogState extends State<SearchDialog> {
     });
   }
 
-  Widget _buildExercisesList(SearchDialogProvider dialogProvider, List<Exercise> showExercises) {
+  Widget _buildExercisesList(ExercisesDialogProvider dialogProvider, List<Exercise> showExercises) {
     return ListView.separated(
         itemBuilder: (context, index) {
           if (index == 0)
@@ -146,7 +141,7 @@ class _SearchDialogState extends State<SearchDialog> {
                           margin: EdgeInsets.only(right: 10.0),
                           child: FilterChip(
                             onSelected: (bool val) {
-                              dialogProvider.onBodyPartBressed(dialogProvider.myBodyParts[index].name);
+                              dialogProvider.onBodyPartpressed(dialogProvider.myBodyParts[index].name);
                             },
                             shape: StadiumBorder(side: BorderSide(color: Color.fromRGBO(102, 51, 204, 1))),
                             label: Text(

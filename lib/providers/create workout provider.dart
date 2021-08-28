@@ -9,6 +9,8 @@ import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/services/network%20%20service.dart';
 import 'package:workoutnote/utils/utils.dart';
 
+import 'exercises dialog provider .dart';
+
 class CreateWorkoutProvider extends ChangeNotifier {
   //region vars
   TextEditingController titleContoller = TextEditingController();
@@ -18,12 +20,12 @@ class CreateWorkoutProvider extends ChangeNotifier {
   StreamSubscription? timerSubscription;
 
   List<EditableLift> _lifts = [];
-  EditableLift? _unselectedLift = EditableLift();
   Exercise? _unselectedExercise;
   int duration = 0;
   bool appRefreshed = false;
   bool ticksRefreshed = false;
   bool timeRefreshed = false;
+
   //endregion
   //region api calls
   Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, List<WorkOut> workOuts, List<WorkOut> calendarWorkouts) async {
@@ -41,24 +43,16 @@ class CreateWorkoutProvider extends ChangeNotifier {
         var response = await WebServices.insertWorkOut(sessionKey, title, timestamp, duration);
         if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
           for (int i = 0; i < _lifts.length; i++) {
-            if(_lifts[i].isSelected) {
+            if (_lifts[i].isSelected) {
               var insertLift = await WebServices.insertLift(sessionKey, timestamp, _lifts[i].mass, _lifts[i].exerciseId ?? -1, jsonDecode(response.body)["workout_session"]["id"], _lifts[i].rep, _lifts[i].rm);
               var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
               if (insertLift.statusCode == 200 && jsonDecode(insertLift.body)["success"]) {
-                print("heyyyyyyyy");
                 count++;
-                lifts.add(Lift.create(
-                    lift.liftId,
-                    lift.timestamp,
-                    lift.oneRepMax,
-                    lift.exerciseId,
-                    lift.exerciseName,
-                    lift.liftMas,
-                    lift.repetitions));
+                lifts.add(Lift.create(lift.liftId, lift.timestamp, lift.oneRepMax, lift.exerciseId, lift.exerciseName, lift.liftMas, lift.repetitions));
               }
             }
           }
-          if (count == _lifts.where((element) => element.isSelected ==true).length) {
+          if (count == _lifts.where((element) => element.isSelected == true).length) {
             var workout = WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
             workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
             calendarWorkouts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
@@ -72,61 +66,54 @@ class CreateWorkoutProvider extends ChangeNotifier {
         print(e);
       }
     } else {
-      showToast(
-          "You need to add at least one exercise for one workout session!");
+      showToast("You need to add at least one exercise for one workout session!");
     }
   }
+
   //endregion
   //region restore title, lifts, duration  from  shared prefrences
-  void restoreAllLifts() {
+
+
+
+  void restoreAllLifts(ExercisesDialogProvider exercisesDialogProvider) {
     if (!appRefreshed) {
       appRefreshed = true;
-      if (userPreferences!.getString("title") != null)
-        titleContoller.text = userPreferences!.getString("title") ?? "";
-      print(titleContoller.text);
+      if (userPreferences!.getString("title") != null) titleContoller.text = userPreferences!.getString("title") ?? "";
       if (userPreferences!.getString("lifts") != null) {
-        List<EditableLift> lifts =
-            EditableLift.decode(userPreferences!.getString("lifts") ?? "");
+        List<EditableLift> lifts = EditableLift.decode(userPreferences!.getString("lifts") ?? "");
         for (int i = 0; i < lifts.length; i++) {
           _lifts.add(lifts[i]);
-          print(selectedLifts[i].exerciseName);
         }
+      }
+      if (userPreferences!.getInt("unselected_ex_id") != null) {
+
+        int? id = userPreferences!.getInt("unselected_ex_id");
+
+        unselectedExercise = exercisesDialogProvider.allExercises.where((element) => element.id == id).single;
       }
     }
   }
+
   void restoreTimer() {
     if (!timeRefreshed && userPreferences!.getInt("time") != null) {
       timeRefreshed = true;
-      hrs = ((userPreferences!.getInt("time")! / (60 * 60)) % 60)
-          .floor()
-          .toString()
-          .padLeft(2, '0');
-      mins = ((userPreferences!.getInt("time")! / 60) % 60)
-          .floor()
-          .toString()
-          .padLeft(2, '0');
-      secs = (userPreferences!.getInt("time")! % 60)
-          .floor()
-          .toString()
-          .padLeft(2, '0');
+      hrs = ((userPreferences!.getInt("time")! / (60 * 60)) % 60).floor().toString().padLeft(2, '0');
+      mins = ((userPreferences!.getInt("time")! / 60) % 60).floor().toString().padLeft(2, '0');
+      secs = (userPreferences!.getInt("time")! % 60).floor().toString().padLeft(2, '0');
     }
   }
+
   //endregion
   //region getters/setters
   set unselectedExercise(Exercise? value) {
     _unselectedExercise = value;
     notifyListeners();
   }
+
   List<EditableLift> get selectedLifts => _lifts;
 
   Exercise? get unselectedExercise => _unselectedExercise;
 
-  EditableLift? get unselectedLift => _unselectedLift;
-
-  set unselectedLift(EditableLift? value) {
-    _unselectedLift = value;
-    notifyListeners();
-  }
   //endregion
   //region lifts: add, update,  remove
   void updateLift(int index) {
@@ -137,14 +124,17 @@ class CreateWorkoutProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
   void removeLifts() {
     _lifts.removeWhere((element) => element.isSelected);
     notifyListeners();
   }
+
   void addExercise(EditableLift exercise) {
     _lifts.add(exercise);
     notifyListeners();
   }
+
   //endregion
   //region stopwatch
   void startTimer() {
@@ -217,7 +207,6 @@ class CreateWorkoutProvider extends ChangeNotifier {
         notifyListeners();
       });
     else {
-      print("eferfqef");
       timerSubscription = null;
       hrs = "00";
       mins = "00";
@@ -236,6 +225,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
     timerSubscription!.resume();
     notifyListeners();
   }
+
   //endregion
   //region  update mass, rep, rm
   void updateMass(int index, int val) {
@@ -253,11 +243,11 @@ class CreateWorkoutProvider extends ChangeNotifier {
   void updateRM(int mass, int rep, index) {
     _lifts[index].rm = roundDouble((mass + mass * rep * 0.025), 2);
   }
+
   //endregion
   //region caching:  Lifts, Title, Duration
   Future<void> saveListToSharePreference() async {
-    await userPreferences!
-        .setString("lifts", EditableLift.encode(_lifts));
+    await userPreferences!.setString("lifts", EditableLift.encode(_lifts));
   }
 
   Future<void> clearPreferences() async {
@@ -271,10 +261,15 @@ class CreateWorkoutProvider extends ChangeNotifier {
   Future<void> saveTimeToSharedPreference(int time) async {
     await userPreferences!.setInt("time", time);
   }
+
+  Future<void> saveUnselectedExerciseToPreferences() async {
+    await userPreferences!.setInt("unselected_ex_id", unselectedExercise!.id ?? -1);
+  }
+
   //endregion
   //region utils
   void reset() {
-    print("creaet");
+
     titleContoller.clear();
     secs = "00";
     mins = "00";
@@ -283,13 +278,13 @@ class CreateWorkoutProvider extends ChangeNotifier {
     timerSubscription = null;
     _lifts.clear();
     timerSubscription = null;
-    unselectedLift = EditableLift();
     _unselectedExercise = null;
     duration = 0;
     appRefreshed = false;
     ticksRefreshed = false;
     timeRefreshed = false;
   }
+
   void repeatWorkoutSession(List<EditableLift> lifts, String title) async {
     _lifts.clear();
     _lifts.addAll(lifts);
@@ -300,5 +295,5 @@ class CreateWorkoutProvider extends ChangeNotifier {
 
     stopTimer();
   }
-  //endregion
+//endregion
 }

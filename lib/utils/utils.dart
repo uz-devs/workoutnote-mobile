@@ -70,6 +70,24 @@ void showToast(String message) {
       fontSize: 16.0);
 }
 
+showLoaderDialog(BuildContext context){
+  AlertDialog alert=
+
+  AlertDialog(
+    content: new Row(
+      children: [
+        //CircularProgressIndicator(),
+        Container(margin: EdgeInsets.only(left: 7),child:Text("Loading..." )),
+      ],),
+  );
+  showDialog(barrierDismissible: false,
+    context:context,
+    builder:(BuildContext context){
+      return alert;
+    },
+  );
+}
+
 Tuple3<String, String, String> calculateDuration(int duration) {
   String hrs, mins, secs;
   if (duration < 60) {

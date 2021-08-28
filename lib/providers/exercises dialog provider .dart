@@ -11,14 +11,13 @@ import 'package:workoutnote/services/network%20%20service.dart';
 
 import 'package:workoutnote/utils/utils.dart';
 
-class SearchDialogProvider extends ChangeNotifier {
+class ExercisesDialogProvider extends ChangeNotifier {
   //region vars
   List<Exercise> favoriteExercises = [];
   List<Exercise> allExercises = [];
   List<BodyPart> myBodyParts = [];
   List<Exercise> exercisesByBodyParts = [];
   int responseCode = LOADING;
-  bool requestDone = false;
   bool showFavorite = false;
   String activeBodyPart = "";
  //endregion
@@ -27,7 +26,6 @@ class SearchDialogProvider extends ChangeNotifier {
     try {
       var response = await WebServices.fetchExercises();
 
-      print(jsonDecode(utf8.decode(response.bodyBytes)));
       if (response.statusCode == 200) {
         var workoutsResponse = ExercisesResponse.fromJson(
             jsonDecode(utf8.decode(response.bodyBytes)));
@@ -73,7 +71,6 @@ class SearchDialogProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         var bodyParts = BodyPartsResponse.fromJson(
             jsonDecode(utf8.decode(response.bodyBytes)));
-        print(response.body);
         myBodyParts.addAll(bodyParts.bodyParts??[]);
       }
     } on TimeoutException catch (e) {
@@ -164,7 +161,8 @@ class SearchDialogProvider extends ChangeNotifier {
         }
         favoriteExercises
             .addAll(allExercises.where((element) => element.id == id));
-      } else {
+      }
+      else {
         for (int i = 0; i < allExercises.length; i++) {
           if (allExercises[i].id == id) allExercises[i].isFavorite = false;
         }
@@ -174,7 +172,7 @@ class SearchDialogProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onBodyPartBressed(String bodyPart) {
+  void onBodyPartpressed(String bodyPart) {
     if (activeBodyPart.isEmpty || activeBodyPart != bodyPart) {
       activeBodyPart = bodyPart;
     } else if (activeBodyPart == bodyPart) {
@@ -184,14 +182,12 @@ class SearchDialogProvider extends ChangeNotifier {
   }
 
   void reset() {
-    print("settings");
 
     favoriteExercises.clear();
     allExercises.clear();
     myBodyParts.clear();
     exercisesByBodyParts.clear();
     responseCode = LOADING;
-    requestDone = false;
     showFavorite = false;
     activeBodyPart = "";
   }

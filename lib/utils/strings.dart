@@ -59,6 +59,8 @@ Map<String, String> updateToastMessage  = {english: "Your profile updated succes
 Map<String, String> languageChanged  = {english: "Language has been changed!",  korean: "언어가 업데이트되었습니다!"};
 Map<String, String> workOutUpdateMessage   = {english: "Workout session has been  updated!",  korean: "운동이 업데이트되었습니다!"};
 Map<String, String> shareSettings   = {english: "Share settings",  korean: "공유 권한 설정"};
+Map<String, String> exerciseName    = {english: "Exercise name",  korean: "운동 이름"};
+Map<String, String> bodyPart    = {english: "Body part",  korean: "신체 부위"};
 
 
 

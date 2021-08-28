@@ -1,7 +1,3 @@
-
-
-
-
 class ExercisesResponse{
   bool  success = false;
   List<Exercise>? exercises;

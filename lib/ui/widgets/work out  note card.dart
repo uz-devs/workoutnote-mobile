@@ -28,7 +28,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
   ConfigProvider configProvider = ConfigProvider();
   MainScreenProvider mainScreenProvider = MainScreenProvider();
   CreateWorkoutProvider createWorkoutProvider = CreateWorkoutProvider();
-  SearchDialogProvider dialogProvider = SearchDialogProvider();
+  ExercisesDialogProvider dialogProvider = ExercisesDialogProvider();
 
   @override
   void didChangeDependencies() {
@@ -36,7 +36,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
     mainScreenProvider = Provider.of<MainScreenProvider>(context, listen: true);
     createWorkoutProvider = Provider.of<CreateWorkoutProvider>(context, listen: false);
-    dialogProvider = Provider.of<SearchDialogProvider>(context, listen: false);
+    dialogProvider = Provider.of<ExercisesDialogProvider>(context, listen: false);
   }
 
   @override
@@ -72,7 +72,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                         child: RichText(
                           overflow: TextOverflow.ellipsis,
                           strutStyle: StrutStyle(fontSize: 20.0),
-                          text: TextSpan(style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontSize: 20), text: widget.workout.title!.isNotEmpty ? '${widget.workout.title}' : '[....]'),
+                          text: TextSpan(style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontSize: 20), text: widget.workout.title!.isNotEmpty ? '${widget.workout.title}' : ''),
                         ),
                       ),
                     ),

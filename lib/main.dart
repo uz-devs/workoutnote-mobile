@@ -23,7 +23,7 @@ void main() async {
       create: (_) => ConfigProvider(),
     ),
     ChangeNotifierProvider(
-      create: (_) => SearchDialogProvider(),
+      create: (_) => ExercisesDialogProvider(),
     ),
     ChangeNotifierProvider(
       create: (_) => CreateWorkoutProvider(),

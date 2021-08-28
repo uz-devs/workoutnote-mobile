@@ -25,7 +25,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
 
     var configProvider = Provider.of<ConfigProvider>(context, listen: true );
     var homeProvider = Provider.of<MainScreenProvider>(context, listen: false );
-    var dialogProvider = Provider.of<SearchDialogProvider>(context, listen: false );
+    var dialogProvider = Provider.of<ExercisesDialogProvider>(context, listen: false );
     var createWorkOutProvider = Provider.of<CreateWorkoutProvider>(context, listen: false );
     configProvider.setUserInfo();
     return ListView.separated(
