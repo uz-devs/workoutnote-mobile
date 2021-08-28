@@ -86,21 +86,12 @@ class EditWorkoutProvider extends ChangeNotifier {
     }
   }
 
-  /*
 
-  no id!!!
-
-
-
-   */
 
   void updateAllWorkOutLists(WorkOut workOut, MainScreenProvider mainScreenProvider, BuildContext context) {
     editWorkout(workOut).then((value) {
-      print("exit");
-      for (int i = 0; i < updatedList.length; i++) {
-        print(updatedList[i].exerciseName);
-      }
 
+      //update  today's  workouts locally
       for (int k = 0; k < mainScreenProvider.workOuts.length; k++) {
         if (mainScreenProvider.workOuts[k].id == workOut.id) {
           mainScreenProvider.workOuts[k].lifts!.clear();
@@ -111,6 +102,8 @@ class EditWorkoutProvider extends ChangeNotifier {
         }
       }
 
+
+      //update  calendar workouts locally
       if (mainScreenProvider.calendarWorkouts.isNotEmpty) {
         mainScreenProvider.calendarWorkouts.where((element) => element.id == workOut.id).single.lifts!.clear();
         mainScreenProvider.calendarWorkouts.where((element) => element.id == workOut.id).single.title = titleController.text;
@@ -118,6 +111,19 @@ class EditWorkoutProvider extends ChangeNotifier {
           mainScreenProvider.calendarWorkouts.where((element) => element.id == workOut.id).single.lifts!.add(Lift.create(updatedList[i].liftId, 0, updatedList[i].rm, updatedList[i].exerciseId, updatedList[i].exerciseName, updatedList[i].mass.toDouble(), updatedList[i].rep));
         }
       }
+
+      //update  favorite workouts locally
+      for (int k = 0; k < mainScreenProvider.favoriteWorkOuts.length; k++) {
+        if (mainScreenProvider.favoriteWorkOuts[k].id == workOut.id) {
+          mainScreenProvider.favoriteWorkOuts[k].lifts!.clear();
+          mainScreenProvider.favoriteWorkOuts[k].title = titleController.text;
+          for (int i = 0; i < updatedList.length; i++) {
+            mainScreenProvider.favoriteWorkOuts[k].lifts!.add(Lift.create(updatedList[i].liftId, 0, updatedList[i].rm, updatedList[i].exerciseId, updatedList[i].exerciseName, updatedList[i].mass.toDouble(), updatedList[i].rep));
+          }
+        }
+      }
+
+
 
       mainScreenProvider.update();
       Navigator.pop(context);

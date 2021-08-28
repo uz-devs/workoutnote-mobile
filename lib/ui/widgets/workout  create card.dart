@@ -150,7 +150,6 @@ class CreateWorkOutCard extends StatelessWidget {
                         ? IconButton(
                             onPressed: () {
                               if (exProvider.timerSubscription == null) {
-
                                 exProvider.startTimer();
                               } else if (exProvider.timerSubscription!.isPaused) {
                                 exProvider.resumeTimer();
@@ -249,10 +248,14 @@ class CreateWorkOutCard extends StatelessWidget {
                       ),
                       color: Color.fromRGBO(102, 51, 204, 1),
                       onPressed: () async {
-                        exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, calendarWorkouts).then((value) {
-                          mainScreenProvider.update();
-                        });
-                        await exProvider.clearPreferences();
+                        if (exProvider.titleContoller.text.isEmpty) {
+                          showToast("${emptyWorkoutTitle[configProvider.activeLanguage()]}");
+                        } else {
+                          exProvider.createWorkOutSession(userPreferences!.getString("sessionKey") ?? "", exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, calendarWorkouts).then((value) {
+                            mainScreenProvider.update();
+                          });
+                          await exProvider.clearPreferences();
+                        }
                       },
                       textColor: Colors.white,
                       child: Text("${save[configProvider.activeLanguage()]}"),
@@ -308,7 +311,6 @@ class CreateWorkOutCard extends StatelessWidget {
                   onChanged: (newValue) async {
                     mainScreenProvider.updateMass(index, newValue!);
                     await mainScreenProvider.saveListToSharePreference();
-
                   },
                   items: mainScreenProvider.selectedLifts[index].kgs.map((int value) {
                     return DropdownMenuItem<int>(
@@ -340,7 +342,7 @@ class CreateWorkOutCard extends StatelessWidget {
                   underline: SizedBox(),
                   iconSize: 0.0,
                   value: mainScreenProvider.selectedLifts[index].rep,
-                  onChanged: (newValue) async{
+                  onChanged: (newValue) async {
                     mainScreenProvider.updateRep(index, newValue!);
                     await mainScreenProvider.saveListToSharePreference();
                   },

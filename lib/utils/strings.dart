@@ -61,6 +61,7 @@ Map<String, String> workOutUpdateMessage   = {english: "Workout session has been
 Map<String, String> shareSettings   = {english: "Share settings",  korean: "공유 권한 설정"};
 Map<String, String> exerciseName    = {english: "Exercise name",  korean: "운동 이름"};
 Map<String, String> bodyPart    = {english: "Body part",  korean: "신체 부위"};
+Map<String, String> emptyWorkoutTitle    = {english: "Workout session title cannot be empty!",  korean: "운동 세션 제목은 비워 둘 수 없습니다!"};
 
 
 
