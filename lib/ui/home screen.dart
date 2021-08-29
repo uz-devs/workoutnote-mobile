@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 margin: EdgeInsets.only(left: 20.0),
                 child: Text(
                   "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now()).substring(0,3).toUpperCase()}",
-                  style: TextStyle(fontSize: 25, color: Color.fromRGBO(102, 51, 204, 1)),
+                  style: TextStyle(fontSize: 24, color: Color.fromRGBO(102, 51, 204, 1)),
                 ));
           } else {
             index = index - 3;

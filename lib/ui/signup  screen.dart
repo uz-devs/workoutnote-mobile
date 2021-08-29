@@ -109,7 +109,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25), borderSide: BorderSide(width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
+                              borderRadius: BorderRadius.circular(25),
+                              borderSide: BorderSide(width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25),
                           ),

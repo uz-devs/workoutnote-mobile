@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -63,7 +64,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
         itemBuilder: (ctx, index) {
           if (index == 0)
             return Container(
-              padding: EdgeInsets.all(15.0),
               color: Colors.white,
               child: TableCalendar(
 
@@ -76,14 +76,22 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   leftChevronVisible: false,
 
 
-                  rightChevronIcon: Icon(Icons.expand_more_outlined,  color: Color.fromRGBO(101, 54,204, 1), size: 30,)
+                  rightChevronIcon: SvgPicture.asset("assets/icons/expand.svg")
                 ),
-                daysOfWeekStyle: DaysOfWeekStyle(weekendStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold), weekdayStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold)),
-                calendarStyle: CalendarStyle(
+                daysOfWeekStyle: DaysOfWeekStyle(
 
-                    outsideDaysVisible: false,
-                    todayTextStyle: TextStyle(color: Colors.black)),
-                firstDay: DateTime.utc(2015, 08, 07),
+
+                    decoration: BoxDecoration(
+
+                      color: Color.fromRGBO(245, 245, 245, 1),
+
+                    ),
+                    weekendStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold), weekdayStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold)),
+                calendarStyle: CalendarStyle(outsideDaysVisible: false, todayTextStyle: TextStyle(color: Colors.black),
+
+
+                ),
+                firstDay: DateTime.utc(2021, 01, 01),
                 lastDay: DateTime.utc(2100, 08, 07),
                 focusedDay: calendarProvider.selectedDate??DateTime.now(),
                 calendarBuilders: CalendarBuilders(
@@ -92,54 +100,67 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     var isDayToday = DateTime.now().day == day.day && DateTime.now().month == day.month && DateTime.now().year == day.year;
 
                     if (calendarProvider.workOutDates.contains("${day.year}.${day.month}.${day.day}"))
-                      return Column(
+                      return Container(
+                        padding: EdgeInsets.only(top:10.0),
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.circle,
+                              size: 10.0,
+                              color: Color.fromRGBO(102, 51, 204, 1),
+                            ),
+                            Container(
+                                width: 25,
+                                height: 25,
+                                decoration: isDaySelected
+                                    ? isDayToday
+                                        ? decoration3
+                                        : decoration2
+                                    : isDayToday
+                                        ? decoration3
+                                        : decoration1,
+                                child: Text(
+                                  "${day.day}",
+                                  style: TextStyle(fontWeight: FontWeight.bold,  color: isDayToday?Colors.white:Colors.black),
+                                  textAlign: TextAlign.center,
+                                )),
+
+                          ],
+                        ),
+                      );
+
+                    return Container(
+                      padding: EdgeInsets.only(top:10.0),
+
+                      child: Column(
                         children: [
-                          Container(
-                              width: 25,
-                              height: 25,
-                              decoration: isDaySelected
-                                  ? isDayToday
-                                      ? decoration3
-                                      : decoration2
-                                  : isDayToday
-                                      ? decoration3
-                                      : decoration1,
-                              child: Text(
-                                "${day.day}",
-                                style: TextStyle(fontWeight: FontWeight.bold,  color: isDayToday?Colors.white:Colors.black),
-                                textAlign: TextAlign.center,
-                              )),
                           Icon(
                             Icons.circle,
                             size: 10.0,
-                            color: Color.fromRGBO(102, 51, 204, 1),
-                          )
-                        ],
-                      );
-
-                    return Column(
-                      children: [
-                        Container(
-                          width: 25,
-                          height: 25,
-                          decoration: isDaySelected
-                              ? isDayToday
-                                  ? decoration3
-                                  : decoration2
-                              : isDayToday
-                                  ? decoration3
-                                  : decoration1,
-                          child: Text(
-
-                            "${day.day}",
-                            style: TextStyle(
-                                color: isDayToday?Colors.white:Colors.black
-                            ),
-                            textAlign: TextAlign.center,
-
+                            color: Colors.transparent,
                           ),
-                        ),
-                      ],
+                          Container(
+                            width: 25,
+                            height: 25,
+                            decoration: isDaySelected
+                                ? isDayToday
+                                    ? decoration3
+                                    : decoration2
+                                : isDayToday
+                                    ? decoration3
+                                    : decoration1,
+                            child: Text(
+
+                              "${day.day}",
+                              style: TextStyle(
+                                  color: isDayToday?Colors.white:Colors.black
+                              ),
+                              textAlign: TextAlign.center,
+
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),

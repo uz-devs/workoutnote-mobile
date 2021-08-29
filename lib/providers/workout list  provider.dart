@@ -31,7 +31,6 @@ class MainScreenProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         var workoutsResponse = WorkOutsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 
-
         if (workoutsResponse.success) {
           workOuts.addAll(workoutsResponse.workouts);
           requestDone1 = true;
@@ -76,9 +75,7 @@ class MainScreenProvider extends ChangeNotifier {
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         var workoutsResponse = WorkOutsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 
-        for (int i = 0; i < workoutsResponse.workouts.length; i++) {
-
-        }
+        for (int i = 0; i < workoutsResponse.workouts.length; i++) {}
         favoriteWorkOuts.addAll(workoutsResponse.workouts);
         for (int i = 0; i < favoriteWorkOuts.length; i++) {
           favoriteWorkOuts[i].isFavorite = true;
@@ -148,18 +145,38 @@ class MainScreenProvider extends ChangeNotifier {
 
   //endregion
   //region utils
-  void repeatWorkoutSession(int id, CreateWorkoutProvider createWorkoutProvider, List<Exercise> exercises) {
+  Future<void> repeatWorkoutSession(int id, CreateWorkoutProvider createWorkoutProvider, List<Exercise> exercises, int mode)  async{
     List<EditableLift> lifts = [];
     String? title;
-    for (int i = 0; i < calendarWorkouts.length; i++) {
-      if (calendarWorkouts[i].id == id) {
-        for (int j = 0; j < calendarWorkouts[i].lifts!.length; j++) {
-          title = calendarWorkouts[i].title ?? "[]";
-          lifts.add(EditableLift.create(calendarWorkouts[i].lifts![j].exerciseName, calendarWorkouts[i].lifts![j].exerciseId, exercises.isNotEmpty ? exercises.where((element) => element.id == calendarWorkouts[i].lifts![j].exerciseId).first.bodyPart : "", calendarWorkouts[i].lifts![j].liftMas!.toInt(), calendarWorkouts[i].lifts![j].repetitions ?? 0, calendarWorkouts[i].lifts![j].oneRepMax ?? 0.0, true, -1));
+
+    if (calendarWorkouts.isNotEmpty) {
+      for (int i = 0; i < calendarWorkouts.length; i++) {
+        if (calendarWorkouts[i].id == id) {
+          for (int j = 0; j < calendarWorkouts[i].lifts!.length; j++) {
+            title = calendarWorkouts[i].title ?? "";
+            lifts.add(EditableLift.create(calendarWorkouts[i].lifts![j].exerciseName, calendarWorkouts[i].lifts![j].exerciseId, exercises.isNotEmpty ? exercises.where((element) => element.id == calendarWorkouts[i].lifts![j].exerciseId).first.bodyPart : "", calendarWorkouts[i].lifts![j].liftMas!.toInt(), calendarWorkouts[i].lifts![j].repetitions ?? 0, calendarWorkouts[i].lifts![j].oneRepMax ?? 0.0, true, -1));
+          }
         }
       }
+    } else if (mode == 1) {
+      print(workOuts.length);
+      var workout = workOuts.where((element) => element.id == id).single;
+
+
+      print(workout.title);
+      for (int j = 0; j < workout.lifts!.length; j++) {
+        title = workout.title ?? "";
+        lifts.add(EditableLift.create(workout.lifts![j].exerciseName, workout.lifts![j].exerciseId, exercises.isNotEmpty ? exercises.where((element) => element.id == workout.lifts![j].exerciseId).first.bodyPart : "", workout.lifts![j].liftMas!.toInt(), workout.lifts![j].repetitions ?? 0, workout.lifts![j].oneRepMax ?? 0.0, true, -1));
+      }
+    } else if (mode == 3) {
+      var workout = favoriteWorkOuts.where((element) => element.id == id).single;
+      for (int j = 0; j < workout.lifts!.length; j++) {
+        title = workout.title ?? "";
+        lifts.add(EditableLift.create(workout.lifts![j].exerciseName, workout.lifts![j].exerciseId, exercises.isNotEmpty ? exercises.where((element) => element.id == workout.lifts![j].exerciseId).first.bodyPart : "", workout.lifts![j].liftMas!.toInt(), workout.lifts![j].repetitions ?? 0, workout.lifts![j].oneRepMax ?? 0.0, true, -1));
+      }
     }
-    createWorkoutProvider.repeatWorkoutSession(lifts, title ?? "[]");
+
+  await   createWorkoutProvider.repeatWorkoutSession(lifts, title ?? "[]");
   }
 
   void _updateWorkoutFavoriteStatus(int id, int mode) {
@@ -170,10 +187,8 @@ class MainScreenProvider extends ChangeNotifier {
           if (calendarWorkouts.isNotEmpty) calendarWorkouts.where((element) => element.id == id).first.isFavorite = workOuts[i].isFavorite;
 
           if (workOuts[i].isFavorite && requestDone2) {
-
             favoriteWorkOuts.add(workOuts[i]);
           } else {
-
             favoriteWorkOuts.removeWhere((element) => element.timestamp == workOuts[i].timestamp);
           }
           break;
@@ -185,10 +200,8 @@ class MainScreenProvider extends ChangeNotifier {
           calendarWorkouts[i].isFavorite = !calendarWorkouts[i].isFavorite;
 
           if (calendarWorkouts[i].isFavorite && requestDone2) {
-
             favoriteWorkOuts.add(calendarWorkouts[i]);
           } else {
-
             favoriteWorkOuts.removeWhere((element) => element.timestamp == calendarWorkouts[i].timestamp);
           }
           for (int j = 0; j < workOuts.length; j++) {
@@ -204,7 +217,6 @@ class MainScreenProvider extends ChangeNotifier {
   }
 
   void reset() {
-
     workOuts.clear();
     calendarWorkouts.clear();
     requestDone1 = false;

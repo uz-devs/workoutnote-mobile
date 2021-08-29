@@ -285,7 +285,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
     timeRefreshed = false;
   }
 
-  void repeatWorkoutSession(List<EditableLift> lifts, String title) async {
+  Future<void> repeatWorkoutSession(List<EditableLift> lifts, String title) async {
     _lifts.clear();
     _lifts.addAll(lifts);
     titleContoller.text = title;

@@ -31,20 +31,12 @@ class CreateWorkOutCard extends StatelessWidget {
     mainScreenProvider = Provider.of<MainScreenProvider>(context, listen: false);
 
     return Container(
-      margin: EdgeInsets.only(bottom: 50.0),
+      margin: EdgeInsets.only(bottom: 35.0),
       child: Consumer<CreateWorkoutProvider>(builder: (context, createWorkoutProvider, child) {
         int count = createWorkoutProvider.selectedLifts.length + 7;
         createWorkoutProvider.restoreTimer();
         return Container(
-          margin: EdgeInsets.all(10),
-          child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              elevation: 10,
-              margin: EdgeInsets.zero,
-              clipBehavior: Clip.antiAlias,
-              child: Container(margin: EdgeInsets.only(top: 10), child: _buildListView(count, createWorkoutProvider))),
+          child: Card(elevation: 10, margin: EdgeInsets.zero, clipBehavior: Clip.antiAlias, child: Container(margin: EdgeInsets.only(top: 10), child: _buildListView(count, createWorkoutProvider))),
         );
       }),
     );
@@ -100,18 +92,41 @@ class CreateWorkOutCard extends StatelessWidget {
                 ));
           else if (index == 1)
             return Container(
+
+              decoration: BoxDecoration(
+
+                border: Border(
+                  bottom: BorderSide(width: 2.0, color: Color.fromRGBO(102, 51, 204, 1)),
+                ),
+              ),
               margin: EdgeInsets.only(left: 20.0, right: 10.0, top: 10),
               child: TextFormField(
+                keyboardType: TextInputType.visiblePassword,
+                cursorColor: Color.fromRGBO(102, 51, 204, 1),
                 onChanged: (c) async {
                   await exProvider.saveTitleToSharedPreference(c);
                 },
                 decoration: InputDecoration(
-                  isDense: true,
-                  contentPadding: EdgeInsets.only(top: 5.0),
-                  hintText: "${title[configProvider.activeLanguage()]}",
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromRGBO(102, 51, 204, 1)),
+                  suffixIconConstraints: BoxConstraints(
+
+                    minHeight: 10,
+                    minWidth: 10
                   ),
+                  suffixIcon: Padding(
+                    padding: EdgeInsets.all(5.0),
+                      child: InkWell(
+
+                          onTap: (){
+                            exProvider.titleContoller.clear();
+                          },
+                          child: Icon(Icons.clear,  color: Color.fromRGBO(102, 51, 204, 1), size: 25.0,))),
+
+
+                  isDense: true,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  contentPadding: EdgeInsets.only(top: 5.0,),
+                  hintText: "${title[configProvider.activeLanguage()]}",
                 ),
                 controller: exProvider.titleContoller,
               ),
@@ -122,12 +137,12 @@ class CreateWorkOutCard extends StatelessWidget {
               child: Row(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 10.0, left: 15.0),
+                    margin: EdgeInsets.only(top: 10.0, left: 37.0),
                     padding: EdgeInsets.all(10),
                     child: Text(
                       "${exProvider.hrs}:${exProvider.mins}:${exProvider.secs}",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 36, color: Color.fromRGBO(102, 51, 204, 1)),
+                      style: TextStyle(fontSize: 35, color: Color.fromRGBO(102, 51, 204, 1)),
                     ),
                   ),
                   Spacer(),
@@ -187,7 +202,10 @@ class CreateWorkOutCard extends StatelessWidget {
                     await _showFavoriteWorkoutsDialog(context, configProvider, exProvider);
                   },
                   textColor: Colors.white,
-                  child: Text("${seeFavWorkouts[configProvider.activeLanguage()]}"),
+                  child: Text(
+                    "${seeFavWorkouts[configProvider.activeLanguage()]}",
+                    style: TextStyle(fontSize: 15.0),
+                  ),
                 ),
               ),
             );
@@ -208,7 +226,7 @@ class CreateWorkOutCard extends StatelessWidget {
                 margin: EdgeInsets.only(
                   bottom: 10,
                 ),
-                child: _buildExerciseListItem("", "${exProvider.unselectedExercise == null ? "${exerciseName[configProvider.activeLanguage()]}" : exProvider.unselectedExercise!.name}(${(exProvider.unselectedExercise == null ? "${bodyPart[configProvider.activeLanguage()]}" : exProvider.unselectedExercise!.bodyPart)})", "KG", "REP", "RM", Colors.grey, 3, exProvider, index, context, configProvider));
+                child: _buildExerciseListItem("1", "${exProvider.unselectedExercise == null ? "${exerciseName[configProvider.activeLanguage()]}" : exProvider.unselectedExercise!.name}(${(exProvider.unselectedExercise == null ? "${bodyPart[configProvider.activeLanguage()]}" : exProvider.unselectedExercise!.bodyPart)})", "KG", "REP", "RM", Colors.grey, 3, exProvider, index, context, configProvider));
           } else if (index > 4 && index < count - 2 && index < count - 1) {
             index = index - 5;
             return Container(
@@ -285,6 +303,7 @@ class CreateWorkOutCard extends StatelessWidget {
           child: InkWell(
             onTap: () async {
               if (mode == 1) {
+                //do nothing
               } else if (mode == 2) {
                 mainScreenProvider.unselectedExercise = Exercise(mainScreenProvider.selectedLifts[index].exerciseId, mainScreenProvider.selectedLifts[index].exerciseName, mainScreenProvider.selectedLifts[index].bodyPart, "", false, NameTranslation(""));
               } else {
@@ -381,10 +400,12 @@ class CreateWorkOutCard extends StatelessWidget {
                           ? Icon(
                               Icons.check_circle,
                               color: Color.fromRGBO(102, 51, 204, 1),
+                              size: 24,
                             )
                           : Icon(
                               Icons.check,
                               color: Colors.grey,
+                              size: 24,
                             ))
                   : IconButton(
                       onPressed: () async {
@@ -397,7 +418,7 @@ class CreateWorkOutCard extends StatelessWidget {
                       icon: Icon(
                         Icons.add_circle_outline,
                         color: Colors.grey,
-                        size: 30,
+                        size: 24,
                       ),
                     )),
         )

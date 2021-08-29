@@ -185,10 +185,12 @@ class _SearchDialogState extends State<SearchDialog> {
                         flex: 2,
                         child: Container(
                           margin: EdgeInsets.only(top: 5.0,  bottom: 5.0),
-                          height: 20,
-                          width: 20,
-                          child: InkWell(
-                            onTap: () async {
+
+                          child: IconButton(
+
+                            padding: EdgeInsets.zero,
+                            constraints: BoxConstraints(),
+                            onPressed: () async {
                               if (!showExercises[index].isFavorite) {
                                 await dialogProvider.setFavoriteExercise(userPreferences!.getString("sessionKey") ?? "", showExercises[index].id ?? -1, showExercises[index]);
                               }
@@ -196,8 +198,8 @@ class _SearchDialogState extends State<SearchDialog> {
                                 await dialogProvider.unsetFavoriteExercise(userPreferences!.getString("sessionKey") ?? "", showExercises[index].id ?? -1, showExercises[index]);
                               }
                             },
-                            child :  showExercises[index].isFavorite? SvgPicture.asset("assets/icons/liked.svg", width: 15.0, height: 15.0,
-                            ):SvgPicture.asset("assets/icons/unliked.svg", width: 15.0, height: 15.0,)
+                            icon :  showExercises[index].isFavorite? SvgPicture.asset("assets/icons/liked.svg", width: 25.0, height: 25.0,
+                            ):SvgPicture.asset("assets/icons/unliked.svg", width: 25.0, height: 25.0,)
                           ),
                         ))
                   ],
