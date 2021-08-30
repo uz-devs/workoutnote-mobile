@@ -35,8 +35,10 @@ class _WorkOutNoteState extends State<WorkOutNote> {
     super.didChangeDependencies();
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
     mainScreenProvider = Provider.of<MainScreenProvider>(context, listen: true);
-    createWorkoutProvider = Provider.of<CreateWorkoutProvider>(context, listen: false);
-    dialogProvider = Provider.of<ExercisesDialogProvider>(context, listen: false);
+    createWorkoutProvider =
+        Provider.of<CreateWorkoutProvider>(context, listen: false);
+    dialogProvider =
+        Provider.of<ExercisesDialogProvider>(context, listen: false);
   }
 
   @override
@@ -47,7 +49,11 @@ class _WorkOutNoteState extends State<WorkOutNote> {
       child: Card(
           elevation: 10,
           shape: RoundedRectangleBorder(
-            side: BorderSide(width: 1.5, color: widget.mode == 3 ? Color.fromRGBO(102, 51, 204, 1) : Colors.transparent),
+            side: BorderSide(
+                width: 1.5,
+                color: widget.mode == 3
+                    ? Color.fromRGBO(102, 51, 204, 1)
+                    : Colors.transparent),
             borderRadius: BorderRadius.circular(15.0),
           ),
           child: _buildListViewWidget(count)),
@@ -62,79 +68,81 @@ class _WorkOutNoteState extends State<WorkOutNote> {
         itemBuilder: (context, index) {
           if (index == 0) {
             return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    Expanded(
-                      flex: 4,
-                      child: Container(
-                        margin: EdgeInsets.only(left: 20, top: 5.0),
-                        padding: EdgeInsets.only(top: 10.0),
-                        child: RichText(
-                          overflow: TextOverflow.ellipsis,
-                          text: TextSpan(style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontSize: 22), text: widget.workout.title!.isNotEmpty ? '${widget.workout.title}' : ''),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                          margin: EdgeInsets.only(top: 5.0),
-                          padding: EdgeInsets.only(top: 10.0),
-                          child: IconButton(
-                              padding: EdgeInsets.zero,
-                              constraints: BoxConstraints(),
-                              onPressed: () {
-                                if (widget.mode != 3) {
-                                  if (!widget.workout.isFavorite)
-                                    mainScreenProvider.setFavoriteWorkOut(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1, widget.mode).then((value) {
-                                      setState(() {});
-                                    });
-                                  else
-                                    mainScreenProvider.unsetFavoriteWorkOut(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1, widget.mode).then((value) {
-                                      setState(() {});
-                                    });
-                                }
-                              },
-                              icon: widget.workout.isFavorite
-                                  ? SvgPicture.asset(
-                                      "assets/icons/liked.svg",
-                                      height: 25,
-                                      width: 25,
-                                    )
-                                  : SvgPicture.asset(
-                                      "assets/icons/unliked.svg",
-                                      height: 25,
-                                      width: 25,
-                                    ))),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Container(),
-                    ),
-                    Expanded(
-                      flex: 2,
+                    Container(
+                        margin: EdgeInsets.only(left: 20, top: 10.0),
+                        child: Text(
+                          widget.workout.title.length > 15
+                              ? "${widget.workout.title.substring(0, 14)}..."
+                              : "${widget.workout.title}",
+                        )),
+                    Container(
+                        margin: EdgeInsets.only(top: 10, left: 9.0),
+                        child: IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: BoxConstraints(),
+                            onPressed: () {
+                              if (widget.mode != 3) {
+                                if (!widget.workout.isFavorite)
+                                  mainScreenProvider
+                                      .setFavoriteWorkOut(
+                                          userPreferences!
+                                                  .getString("sessionKey") ??
+                                              "",
+                                          widget.workout.id ?? -1,
+                                          widget.mode)
+                                      .then((value) {
+                                    setState(() {});
+                                  });
+                                else
+                                  mainScreenProvider
+                                      .unsetFavoriteWorkOut(
+                                          userPreferences!
+                                                  .getString("sessionKey") ??
+                                              "",
+                                          widget.workout.id ?? -1,
+                                          widget.mode)
+                                      .then((value) {
+                                    setState(() {});
+                                  });
+                              }
+                            },
+                            icon: widget.workout.isFavorite
+                                ? SvgPicture.asset(
+                                    "assets/icons/liked.svg",
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : SvgPicture.asset(
+                                    "assets/icons/unliked.svg",
+                                    height: 17,
+                                    width: 17,
+                                  ))),
+                    Spacer(),
+                    Container(
+                      margin: EdgeInsets.only(right: 15.0, top: 10.0),
                       child: IconButton(
                         padding: EdgeInsets.zero,
                         constraints: BoxConstraints(),
                         onPressed: () async {
-                          await _showOptionDialog(configProvider, mainScreenProvider);
+                          await _showOptionDialog(
+                              configProvider, mainScreenProvider);
                         },
-                        icon: Container(
-                          margin: EdgeInsets.only(top: 5.0),
-                          padding: EdgeInsets.only(top: 10.0),
-                          child: SvgPicture.asset(
-                            "assets/icons/menu.svg",
-                            height: 6.0,
-                            width: 6.0,
-                          ),
+                        icon: SvgPicture.asset(
+                          "assets/icons/menu.svg",
+                          height: 17.0,
+                          width: 17.0,
                         ),
                       ),
-                    ),
+                    )
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
+                  margin:
+                      EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
                   child: Divider(
                     color: Colors.black54,
                   ),
@@ -147,7 +155,10 @@ class _WorkOutNoteState extends State<WorkOutNote> {
               margin: EdgeInsets.only(top: 15.0, bottom: 15.0),
               child: Text(
                 "${calculateDuration(widget.workout.duration ?? 0).item1}:${calculateDuration(widget.workout.duration ?? 0).item2}:${calculateDuration(widget.workout.duration ?? 0).item3}",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Color.fromRGBO(102, 51, 204, 1)),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Color.fromRGBO(102, 51, 204, 1)),
               ),
             );
           } else if (index == count - 1) {
@@ -155,17 +166,22 @@ class _WorkOutNoteState extends State<WorkOutNote> {
               width: double.infinity,
               margin: EdgeInsets.only(bottom: 20, left: 20, right: 20),
               child: MaterialButton(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
                 color: Color.fromRGBO(102, 51, 204, 1),
                 textColor: Colors.white,
                 child: Text("${repeat[configProvider.activeLanguage()]}"),
                 onPressed: () {
-                  mainScreenProvider.repeatWorkoutSession(widget.workout.id ?? -1, createWorkoutProvider, dialogProvider.allExercises, widget.mode).then((value) {
+                  mainScreenProvider
+                      .repeatWorkoutSession(
+                          widget.workout.id ?? -1,
+                          createWorkoutProvider,
+                          dialogProvider.allExercises,
+                          widget.mode)
+                      .then((value) {
                     if (widget.mode == 3) {
                       Navigator.pop(context);
-                    } else if (widget.mode == 2) {
-
-                    }
+                    } else if (widget.mode == 2) {}
                   });
                 },
               ),
@@ -173,16 +189,23 @@ class _WorkOutNoteState extends State<WorkOutNote> {
           } else {
             index = index - 1;
 
-            String mass = "${configProvider.getConvertedMass(widget.workout.lifts![index].liftMas ?? 0)}";
-            String rm = "${configProvider.getConvertedRM(widget.workout.lifts![index].oneRepMax ?? 0)}";
+            String mass =
+                "${configProvider.getConvertedMass(widget.workout.lifts![index].liftMas ?? 0)}";
+            String rm =
+                "${configProvider.getConvertedRM(widget.workout.lifts![index].oneRepMax ?? 0)}";
             String identifier = configProvider.measureMode == KG ? "KG" : "LBS";
-            return Container(margin: EdgeInsets.only(left: 20.0), padding: EdgeInsets.only(bottom: 10.0), child: Text("${index + 1}. ${widget.workout.lifts![index].exerciseName}, ${mass} ${identifier}, ${widget.workout.lifts![index].repetitions} REP, ${rm} RM"));
+            return Container(
+                margin: EdgeInsets.only(left: 20.0),
+                padding: EdgeInsets.only(bottom: 10.0),
+                child: Text(
+                    "${index + 1}. ${widget.workout.lifts![index].exerciseName}, ${mass} ${identifier}, ${widget.workout.lifts![index].repetitions} REP, ${rm} RM"));
           }
         });
   }
 
   //region  dialogs
-  Future<void> _showOptionDialog(ConfigProvider configProvider, MainScreenProvider mainScreenProvider) {
+  Future<void> _showOptionDialog(
+      ConfigProvider configProvider, MainScreenProvider mainScreenProvider) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -200,28 +223,32 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                         await _showEditWorkoutDialog(context, widget.workout);
                         Navigator.pop(context);
                       },
-                      child: Text("${edit[configProvider.activeLanguage()]}"),
+                      child: Text("${edit[configProvider.activeLanguage()]}",
+                          style: TextStyle(fontSize: 16.0)),
                     )),
                 Divider(),
                 Container(
                     width: double.maxFinite,
                     child: MaterialButton(
-                      onPressed: () async {
-                        await _showDeleteConfirmDialog();
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        "${delete[configProvider.activeLanguage()]}",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    )),
+                        onPressed: () async {
+                          await _showDeleteConfirmDialog();
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "${delete[configProvider.activeLanguage()]}",
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 16.0,
+                          ),
+                        ))),
               ],
             ),
           );
         });
   }
 
-  Future<void> _showEditWorkoutDialog(BuildContext context, WorkOut workOut) async {
+  Future<void> _showEditWorkoutDialog(
+      BuildContext context, WorkOut workOut) async {
     await showDialog(
         barrierDismissible: false,
         context: context,
@@ -252,8 +279,9 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                         margin: EdgeInsets.only(left: 50.0, right: 50.0),
                         alignment: Alignment.center,
                         child: Text(
-                          "삭제하면 항목별로 기록된 내용을 복구할 수 없습니다.삭제하시겠습니까?",
+                          "${deleteMessage[configProvider.activeLanguage()]}",
                           textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 13),
                         ),
                       )),
                   Divider(),
@@ -268,8 +296,9 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                                 Navigator.pop(context);
                               },
                               child: Text(
-                                "취소",
-                                style: TextStyle(color: Colors.blueAccent),
+                                "${deleteCancel[configProvider.activeLanguage()]}",
+                                style: TextStyle(
+                                    color: Colors.blueAccent, fontSize: 18),
                               ),
                             ),
                           ),
@@ -278,17 +307,24 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                             flex: 5,
                             child: MaterialButton(
                               onPressed: () {
-                                mainScreenProvider.deleteWorkoutSession(userPreferences!.getString("sessionKey") ?? "", widget.workout.id ?? -1).then((value) {
+                                mainScreenProvider
+                                    .deleteWorkoutSession(
+                                        userPreferences!
+                                                .getString("sessionKey") ??
+                                            "",
+                                        widget.workout.id ?? -1)
+                                    .then((value) {
                                   if (value) {
-                                    showToast("${deleteSuccess[configProvider.activeLanguage()]}");
+                                    showToast(
+                                        "${deleteSuccess[configProvider.activeLanguage()]}");
                                     Navigator.pop(context);
                                   }
                                 });
                               },
                               child: Text(
-                                "삭제",
-                                style: TextStyle(color: Colors.red),
-                              ),
+                                  "${deleteYes[configProvider.activeLanguage()]}",
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 18)),
                             ),
                           ),
                         ],

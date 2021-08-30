@@ -24,7 +24,8 @@ class _SearchDialogState extends State<SearchDialog> {
   @override
   Widget build(BuildContext context) {
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
-    return Consumer<ExercisesDialogProvider>(builder: (context, dialogProvider, child) {
+    return Consumer<ExercisesDialogProvider>(
+        builder: (context, dialogProvider, child) {
       List<Exercise> showExercises = [];
       dialogProvider.filterExercises(showExercises);
       dialogProvider.searchExercises(_searchWord, showExercises);
@@ -40,7 +41,8 @@ class _SearchDialogState extends State<SearchDialog> {
     });
   }
 
-  Widget _buildExercisesList(ExercisesDialogProvider dialogProvider, List<Exercise> showExercises) {
+  Widget _buildExercisesList(
+      ExercisesDialogProvider dialogProvider, List<Exercise> showExercises) {
     return ListView.separated(
         itemBuilder: (context, index) {
           if (index == 0)
@@ -52,7 +54,8 @@ class _SearchDialogState extends State<SearchDialog> {
                     alignment: Alignment.center,
                     child: Text(
                       "${exercises[configProvider.activeLanguage()]}",
-                      style: TextStyle(fontSize: 18, color: Color.fromRGBO(102, 51, 204, 1)),
+                      style: TextStyle(
+                          fontSize: 18, color: Color.fromRGBO(102, 51, 204, 1)),
                     ),
                   ),
                   Align(
@@ -60,7 +63,8 @@ class _SearchDialogState extends State<SearchDialog> {
                     child: Container(
                       margin: EdgeInsets.only(right: 10.0),
                       child: IconButton(
-                          icon: Icon(Icons.clear, color: Color.fromRGBO(102, 51, 204, 1)),
+                          icon: Icon(Icons.clear,
+                              color: Color.fromRGBO(102, 51, 204, 1)),
                           onPressed: () {
                             Navigator.pop(context);
                           }),
@@ -74,7 +78,6 @@ class _SearchDialogState extends State<SearchDialog> {
               height: 40,
               margin: EdgeInsets.only(left: 10, right: 10.0),
               child: TextFormField(
-
                 onFieldSubmitted: (word) {
                   setState(() {
                     dialogProvider.searchExercises(word, showExercises);
@@ -87,11 +90,12 @@ class _SearchDialogState extends State<SearchDialog> {
                   });
                 },
                 decoration: InputDecoration(
-                  hintText: "Exercise name",
+                  hintText: "${exerciseHint[configProvider.activeLanguage()]}",
                   hintStyle: TextStyle(color: Colors.grey),
                   prefixIcon: IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.search, color: Color.fromRGBO(102, 51, 204, 1)),
+                    icon: Icon(Icons.search,
+                        color: Color.fromRGBO(102, 51, 204, 1)),
                   ),
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -103,7 +107,10 @@ class _SearchDialogState extends State<SearchDialog> {
                     icon: Icon(Icons.close),
                     color: Color.fromRGBO(102, 51, 204, 1),
                   ),
-                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(
+                          width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(25.0),
                     borderSide: BorderSide(
@@ -124,7 +131,8 @@ class _SearchDialogState extends State<SearchDialog> {
               height: widget.height * 0.1,
               child: ListView(
                   scrollDirection: Axis.horizontal,
-                  children: List.generate(dialogProvider.myBodyParts.length, (index) {
+                  children:
+                      List.generate(dialogProvider.myBodyParts.length, (index) {
                     if (index == 0) {
                       return Container(
                         margin: EdgeInsets.only(left: 10.0, right: 10.0),
@@ -133,15 +141,23 @@ class _SearchDialogState extends State<SearchDialog> {
                             child: FilterChip(
                               onSelected: (bool val) {
                                 setState(() {
-                                  dialogProvider.showFavorite = !dialogProvider.showFavorite;
+                                  dialogProvider.showFavorite =
+                                      !dialogProvider.showFavorite;
                                 });
                               },
-                              shape: StadiumBorder(side: BorderSide(color: Color.fromRGBO(102, 51, 204, 1))),
+                              shape: StadiumBorder(
+                                  side: BorderSide(
+                                      color: Color.fromRGBO(102, 51, 204, 1))),
                               label: Text(
-                                "Favorites",
-                                style: TextStyle(color: dialogProvider.showFavorite ? Colors.white : Color.fromRGBO(102, 51, 204, 1)),
+                                "${favorites[configProvider.activeLanguage()]}",
+                                style: TextStyle(
+                                    color: dialogProvider.showFavorite
+                                        ? Colors.white
+                                        : Color.fromRGBO(102, 51, 204, 1)),
                               ),
-                              backgroundColor: dialogProvider.showFavorite ? Color.fromRGBO(102, 51, 204, 1) : Colors.transparent,
+                              backgroundColor: dialogProvider.showFavorite
+                                  ? Color.fromRGBO(102, 51, 204, 1)
+                                  : Colors.transparent,
                             )),
                       );
                     } else {
@@ -150,20 +166,29 @@ class _SearchDialogState extends State<SearchDialog> {
                           margin: EdgeInsets.only(right: 10.0),
                           child: FilterChip(
                             onSelected: (bool val) {
-                              dialogProvider.onBodyPartpressed(dialogProvider.myBodyParts[index].name);
+                              dialogProvider.onBodyPartpressed(
+                                  dialogProvider.myBodyParts[index].name);
                             },
-                            shape: StadiumBorder(side: BorderSide(color: Color.fromRGBO(102, 51, 204, 1))),
+                            shape: StadiumBorder(
+                                side: BorderSide(
+                                    color: Color.fromRGBO(102, 51, 204, 1))),
                             label: Text(
                               dialogProvider.myBodyParts[index].name,
-                              style: TextStyle(color: dialogProvider.activeBodyPart == dialogProvider.myBodyParts[index].name ? Colors.white : Color.fromRGBO(102, 51, 204, 1)),
+                              style: TextStyle(
+                                  color: dialogProvider.activeBodyPart ==
+                                          dialogProvider.myBodyParts[index].name
+                                      ? Colors.white
+                                      : Color.fromRGBO(102, 51, 204, 1)),
                             ),
-                            backgroundColor: dialogProvider.activeBodyPart == dialogProvider.myBodyParts[index].name ? Color.fromRGBO(102, 51, 204, 1) : Colors.transparent,
+                            backgroundColor: dialogProvider.activeBodyPart ==
+                                    dialogProvider.myBodyParts[index].name
+                                ? Color.fromRGBO(102, 51, 204, 1)
+                                : Colors.transparent,
                           ));
                     }
                   })),
             );
-          }
-          else {
+          } else {
             index = index - 3;
             return InkWell(
               onTap: () {
@@ -175,32 +200,56 @@ class _SearchDialogState extends State<SearchDialog> {
                   children: [
                     Expanded(
                         flex: 8,
-                        child: showExercises[index].namedTranslations!.english == null
-                            ? Text("${showExercises[index].name}(${showExercises[index].bodyPart})")
+                        child: showExercises[index]
+                                    .namedTranslations!
+                                    .english ==
+                                null
+                            ? Text(
+                                "${showExercises[index].name}(${showExercises[index].bodyPart})")
                             : Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [Text("${showExercises[index].namedTranslations!.english}"), Text("${showExercises[index].name}(${showExercises[index].bodyPart})")],
+                                children: [
+                                  Text(
+                                      "${showExercises[index].namedTranslations!.english}"),
+                                  Text(
+                                      "${showExercises[index].name}(${showExercises[index].bodyPart})")
+                                ],
                               )),
                     Expanded(
                         flex: 2,
                         child: Container(
-                          margin: EdgeInsets.only(top: 5.0,  bottom: 5.0),
-
+                          margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
                           child: IconButton(
-
-                            padding: EdgeInsets.zero,
-                            constraints: BoxConstraints(),
-                            onPressed: () async {
-                              if (!showExercises[index].isFavorite) {
-                                await dialogProvider.setFavoriteExercise(userPreferences!.getString("sessionKey") ?? "", showExercises[index].id ?? -1, showExercises[index]);
-                              }
-                              else {
-                                await dialogProvider.unsetFavoriteExercise(userPreferences!.getString("sessionKey") ?? "", showExercises[index].id ?? -1, showExercises[index]);
-                              }
-                            },
-                            icon :  showExercises[index].isFavorite? SvgPicture.asset("assets/icons/liked.svg", width: 25.0, height: 25.0,
-                            ):SvgPicture.asset("assets/icons/unliked.svg", width: 25.0, height: 25.0,)
-                          ),
+                              padding: EdgeInsets.zero,
+                              constraints: BoxConstraints(),
+                              onPressed: () async {
+                                if (!showExercises[index].isFavorite) {
+                                  await dialogProvider.setFavoriteExercise(
+                                      userPreferences!
+                                              .getString("sessionKey") ??
+                                          "",
+                                      showExercises[index].id ?? -1,
+                                      showExercises[index]);
+                                } else {
+                                  await dialogProvider.unsetFavoriteExercise(
+                                      userPreferences!
+                                              .getString("sessionKey") ??
+                                          "",
+                                      showExercises[index].id ?? -1,
+                                      showExercises[index]);
+                                }
+                              },
+                              icon: showExercises[index].isFavorite
+                                  ? SvgPicture.asset(
+                                      "assets/icons/liked.svg",
+                                      width: 17.0,
+                                      height: 17.0,
+                                    )
+                                  : SvgPicture.asset(
+                                      "assets/icons/unliked.svg",
+                                      width: 17.0,
+                                      height: 17.0,
+                                    )),
                         ))
                   ],
                 ),

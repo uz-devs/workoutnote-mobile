@@ -28,7 +28,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   var decoration3 = BoxDecoration(
     color: Color.fromRGBO(102, 51, 204, 1),
     border: Border.all(
-      color:Color.fromRGBO(102, 51, 204, 1),
+      color: Color.fromRGBO(102, 51, 204, 1),
     ),
     borderRadius: BorderRadius.circular(50.0),
   );
@@ -50,7 +50,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     List<WorkOut> showWorkOuts = [];
     calendarProvider.updateWorkoutDates(calendarProvider.calendarWorkouts);
     for (int i = 0; i < calendarProvider.calendarWorkouts.length; i++) {
-      if (calendarProvider.workOutDates[i] == "${calendarProvider.selectedDate!.year}.${calendarProvider.selectedDate!.month}.${calendarProvider.selectedDate!.day}") {
+      if (calendarProvider.workOutDates[i] ==
+          "${calendarProvider.selectedDate!.year}.${calendarProvider.selectedDate!.month}.${calendarProvider.selectedDate!.day}") {
         showWorkOuts.add(calendarProvider.calendarWorkouts[i]);
       }
     }
@@ -64,44 +65,47 @@ class _CalendarScreenState extends State<CalendarScreen> {
         itemBuilder: (ctx, index) {
           if (index == 0)
             return Container(
+              padding: EdgeInsets.all(10.0),
               color: Colors.white,
               child: TableCalendar(
-
                 headerStyle: HeaderStyle(
-
-                  titleCentered: false ,
-                  titleTextFormatter: (date, locale)  => DateFormat.MMMM(locale).format(date),
-                    rightChevronMargin: EdgeInsets.only(right: 0.5*width!),
-                  formatButtonVisible: false,
-                  leftChevronVisible: false,
-
-
-                  rightChevronIcon: SvgPicture.asset("assets/icons/expand.svg")
-                ),
+                    headerPadding: EdgeInsets.all(15.0),
+                    titleCentered: false,
+                    titleTextFormatter: (date, locale) =>
+                        DateFormat.MMMM(locale).format(date),
+                    rightChevronMargin: EdgeInsets.only(right: 0.5 * width!),
+                    formatButtonVisible: false,
+                    leftChevronVisible: false,
+                    rightChevronIcon:
+                        SvgPicture.asset("assets/icons/expand.svg")),
                 daysOfWeekStyle: DaysOfWeekStyle(
-
-
-                    decoration: BoxDecoration(
-
-                      color: Color.fromRGBO(245, 245, 245, 1),
-
-                    ),
-                    weekendStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold), weekdayStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold)),
-                calendarStyle: CalendarStyle(outsideDaysVisible: false, todayTextStyle: TextStyle(color: Colors.black),
-
-
+                    weekendStyle: TextStyle(
+                        color: Color.fromRGBO(102, 51, 204, 1),
+                        fontWeight: FontWeight.bold),
+                    weekdayStyle: TextStyle(
+                        color: Color.fromRGBO(102, 51, 204, 1),
+                        fontWeight: FontWeight.bold)),
+                calendarStyle: CalendarStyle(
+                  outsideDaysVisible: false,
+                  todayTextStyle: TextStyle(color: Colors.black),
                 ),
                 firstDay: DateTime.utc(2021, 01, 01),
                 lastDay: DateTime.utc(2100, 08, 07),
-                focusedDay: calendarProvider.selectedDate??DateTime.now(),
+                focusedDay: calendarProvider.selectedDate ?? DateTime.now(),
                 calendarBuilders: CalendarBuilders(
                   prioritizedBuilder: (context, day, focusedDay) {
-                    var isDaySelected = calendarProvider.selectedDate!.year == day.year && calendarProvider.selectedDate!.month == day.month && calendarProvider.selectedDate!.day == day.day;
-                    var isDayToday = DateTime.now().day == day.day && DateTime.now().month == day.month && DateTime.now().year == day.year;
+                    var isDaySelected =
+                        calendarProvider.selectedDate!.year == day.year &&
+                            calendarProvider.selectedDate!.month == day.month &&
+                            calendarProvider.selectedDate!.day == day.day;
+                    var isDayToday = DateTime.now().day == day.day &&
+                        DateTime.now().month == day.month &&
+                        DateTime.now().year == day.year;
 
-                    if (calendarProvider.workOutDates.contains("${day.year}.${day.month}.${day.day}"))
+                    if (calendarProvider.workOutDates
+                        .contains("${day.year}.${day.month}.${day.day}"))
                       return Container(
-                        padding: EdgeInsets.only(top:10.0),
+                        padding: EdgeInsets.only(top: 10.0),
                         child: Column(
                           children: [
                             Icon(
@@ -121,17 +125,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         : decoration1,
                                 child: Text(
                                   "${day.day}",
-                                  style: TextStyle(fontWeight: FontWeight.bold,  color: isDayToday?Colors.white:Colors.black),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: isDayToday
+                                          ? Colors.white
+                                          : Colors.black),
                                   textAlign: TextAlign.center,
                                 )),
-
                           ],
                         ),
                       );
 
                     return Container(
-                      padding: EdgeInsets.only(top:10.0),
-
+                      padding: EdgeInsets.only(top: 10.0),
                       child: Column(
                         children: [
                           Icon(
@@ -150,13 +156,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     ? decoration3
                                     : decoration1,
                             child: Text(
-
                               "${day.day}",
                               style: TextStyle(
-                                  color: isDayToday?Colors.white:Colors.black
-                              ),
+                                  color:
+                                      isDayToday ? Colors.white : Colors.black),
                               textAlign: TextAlign.center,
-
                             ),
                           ),
                         ],
@@ -178,8 +182,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
             return Container(
                 margin: EdgeInsets.only(left: 20.0, top: 10.0),
                 child: Text(
-                  "${DateFormat("yyyy.MM.dd").format(calendarProvider.selectedDate ?? DateTime.now())}, ${DateFormat("EEEE").format(calendarProvider.selectedDate ?? DateTime.now()).substring(0,3).toUpperCase()}",
-                  style: TextStyle(fontSize: 25, color: Color.fromRGBO(102, 51, 204, 1)),
+                  "${DateFormat("yyyy.MM.dd").format(calendarProvider.selectedDate ?? DateTime.now())}, ${DateFormat("EEEE").format(calendarProvider.selectedDate ?? DateTime.now()).substring(0, 3).toUpperCase()}",
+                  style: TextStyle(
+                      fontSize: 25, color: Color.fromRGBO(102, 51, 204, 1)),
                 ));
           } else {
             index = index - 2;

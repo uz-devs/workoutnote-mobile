@@ -45,7 +45,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          textSelectionColor: Colors.white ,
           fontFamily: 'NotoSansKR',
           focusColor: Color.fromRGBO(102, 51, 204, 1),
         ),

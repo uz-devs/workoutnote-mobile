@@ -32,11 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.didChangeDependencies();
 
     navProvider = Provider.of<MainScreenProvider>(context, listen: true);
-    exerciseDialogProvider = Provider.of<ExercisesDialogProvider>(context, listen: true);
+    exerciseDialogProvider =
+        Provider.of<ExercisesDialogProvider>(context, listen: true);
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
-    createWorkoutProvider = Provider.of<CreateWorkoutProvider>(context, listen: true);
-
+    createWorkoutProvider =
+        Provider.of<CreateWorkoutProvider>(context, listen: true);
 
     //showLoaderDialog(context);
     if (!navProvider.requestDone1) {
@@ -60,22 +61,28 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           if (index == 0)
             return Container(
-              margin: EdgeInsets.only(left: 20, top: 30, bottom: 20),
-              child: Text(
-                "${welcomeMessage[configProvider.activeLanguage()]}, ${userPreferences!.getString("name") ?? ""}",
-                style: TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-            );
+                margin: EdgeInsets.only(left: 20, top: 30, bottom: 20),
+                child: RichText(
+                    text: TextSpan(children: [
+                  TextSpan(
+                      text:
+                          "${welcomeMessage[configProvider.activeLanguage()]}, ",
+                      style: TextStyle(fontSize: 30, color: Colors.black)),
+                  TextSpan(
+                      text: "${userPreferences!.getString("name") ?? ""}",
+                      style: TextStyle(
+                          color: Color.fromRGBO(102, 51, 204, 1), fontSize: 30))
+                ])));
           else if (index == 1) {
-            return CreateWorkOutCard(widget.width, widget.height, navProvider.workOuts, navProvider.calendarWorkouts);
+            return CreateWorkOutCard(widget.width, widget.height,
+                navProvider.workOuts, navProvider.calendarWorkouts);
           } else if (index == 2) {
             return Container(
                 margin: EdgeInsets.only(left: 20.0),
                 child: Text(
-                  "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now()).substring(0,3).toUpperCase()}",
-                  style: TextStyle(fontSize: 24, color: Color.fromRGBO(102, 51, 204, 1)),
+                  "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now()).substring(0, 3).toUpperCase()}",
+                  style: TextStyle(
+                      fontSize: 16.0, color: Color.fromRGBO(102, 51, 204, 1)),
                 ));
           } else {
             index = index - 3;

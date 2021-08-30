@@ -5,7 +5,6 @@ import 'package:workoutnote/models/editible%20lift%20model.dart';
 import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/create%20workout%20provider.dart';
 import 'package:workoutnote/providers/edit%20workout%20%20provider.dart';
 import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
 import 'package:workoutnote/utils/strings.dart';
@@ -20,7 +19,8 @@ class EditWorkoutSessionDialog extends StatefulWidget {
   EditWorkoutSessionDialog(this.height, this.workout);
 
   @override
-  _EditWorkoutSessionDialogState createState() => _EditWorkoutSessionDialogState();
+  _EditWorkoutSessionDialogState createState() =>
+      _EditWorkoutSessionDialogState();
 }
 
 class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
@@ -28,15 +28,14 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
   var workoutSessionListProvider = MainScreenProvider();
   var editWorkouSessionProvider = EditWorkoutProvider();
 
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
-    editWorkouSessionProvider = Provider.of<EditWorkoutProvider>(context, listen: true);
-    workoutSessionListProvider = Provider.of<MainScreenProvider>(context, listen: true);
-
-
+    editWorkouSessionProvider =
+        Provider.of<EditWorkoutProvider>(context, listen: true);
+    workoutSessionListProvider =
+        Provider.of<MainScreenProvider>(context, listen: true);
   }
 
   @override
@@ -48,7 +47,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       insetPadding: EdgeInsets.all(20),
-      child: Container(height: 0.6 * widget.height, child: _buildEditWorkoutList(count)),
+      child: Container(height: 384, child: _buildEditWorkoutList(count)),
     );
   }
 
@@ -75,8 +74,8 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                         margin: EdgeInsets.only(left: 20),
                         padding: EdgeInsets.only(top: 10),
                         child: Text(
-                          "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now())}",
-                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                          "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now()).substring(0, 3).toUpperCase()}",
+                          style: TextStyle(fontSize: 11, color: Colors.grey),
                         )),
                     Container(
                       child: IconButton(
@@ -86,6 +85,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                         },
                         icon: Icon(
                           Icons.clear,
+                          size: 17,
                           color: Color.fromRGBO(102, 51, 204, 1),
                         ),
                       ),
@@ -95,16 +95,19 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
               );
             else if (index == 1)
               return Container(
-                margin: EdgeInsets.only(left: 20.0, right: 10.0, top: 10),
+                margin: EdgeInsets.only(
+                  left: 20.0,
+                  right: 10.0,
+                ),
                 child: TextFormField(
-                  onChanged: (c) async {
-                  },
+                  onChanged: (c) async {},
                   decoration: InputDecoration(
                     isDense: true,
                     contentPadding: EdgeInsets.only(top: 5.0),
                     hintText: "${title[configProvider.activeLanguage()]}",
                     focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color.fromRGBO(102, 51, 204, 1)),
+                      borderSide:
+                          BorderSide(color: Color.fromRGBO(102, 51, 204, 1)),
                     ),
                   ),
                   controller: editWorkouSessionProvider.titleController,
@@ -116,7 +119,8 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                 child: Text(
                   "${calculateDuration(widget.workout.duration ?? 0).item1}:${calculateDuration(widget.workout.duration ?? 0).item2}:${calculateDuration(widget.workout.duration ?? 0).item3}",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 36, color: Color.fromRGBO(102, 51, 204, 1)),
+                  style: TextStyle(
+                      fontSize: 36, color: Color.fromRGBO(102, 51, 204, 1)),
                 ),
               );
             else if (index == 3)
@@ -129,7 +133,18 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                         color: Color.fromRGBO(230, 230, 250, 1),
                       ),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: _buildExerciseListItem("No.", "${exercisesName[configProvider.activeLanguage()]}", "KG", "REP", "RM", Color.fromRGBO(102, 51, 204, 1), 1, editWorkouSessionProvider, index, context, configProvider));
+                  child: _buildExerciseListItem(
+                      "No.",
+                      "${exercisesName[configProvider.activeLanguage()]}",
+                      "KG",
+                      "REP",
+                      "RM",
+                      Color.fromRGBO(102, 51, 204, 1),
+                      1,
+                      editWorkouSessionProvider,
+                      index,
+                      context,
+                      configProvider));
             else if (index >= 4 && index < count - 2) {
               index = index - 4;
               return InkWell(
@@ -138,17 +153,38 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                     margin: EdgeInsets.only(
                       bottom: 10,
                     ),
-                    child: _buildExerciseListItem((index + 1).toString(), "${editWorkouSessionProvider.existingLifts[index].exerciseName}", "0.0", "0.0", editWorkouSessionProvider.existingLifts[index].rm.toString(), Colors.black, 2, editWorkouSessionProvider, index, context, configProvider)),
+                    child: _buildExerciseListItem(
+                        (index + 1).toString(),
+                        "${editWorkouSessionProvider.existingLifts[index].exerciseName}",
+                        "0.0",
+                        "0.0",
+                        editWorkouSessionProvider.existingLifts[index].rm
+                            .toString(),
+                        Colors.black,
+                        2,
+                        editWorkouSessionProvider,
+                        index,
+                        context,
+                        configProvider)),
               );
-            }
-
-            else if (index == count - 2) {
+            } else if (index == count - 2) {
               return Container(
                   padding: EdgeInsets.only(left: 10, right: 10.0),
                   margin: EdgeInsets.only(
                     bottom: 10,
                   ),
-                  child: _buildExerciseListItem("1", "${editWorkouSessionProvider.unselectedExercise == null ? "운동 이름" : editWorkouSessionProvider.unselectedExercise!.name}(${(editWorkouSessionProvider.unselectedExercise == null ? "" : editWorkouSessionProvider.unselectedExercise!.bodyPart)})", "KG", "REP", "RM", Colors.grey, 3, editWorkouSessionProvider, index, context, configProvider));
+                  child: _buildExerciseListItem(
+                      "1",
+                      "${editWorkouSessionProvider.unselectedExercise == null ? "운동 이름" : editWorkouSessionProvider.unselectedExercise!.name}(${(editWorkouSessionProvider.unselectedExercise == null ? "" : editWorkouSessionProvider.unselectedExercise!.bodyPart)})",
+                      "KG",
+                      "REP",
+                      "RM",
+                      Colors.grey,
+                      3,
+                      editWorkouSessionProvider,
+                      index,
+                      context,
+                      configProvider));
             } else
               return Container(
                 margin: EdgeInsets.only(bottom: 10.0),
@@ -168,7 +204,8 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                           editWorkouSessionProvider.reset();
                         },
                         textColor: Colors.white,
-                        child: Text("${cancelUpdate[configProvider.activeLanguage()]}"),
+                        child: Text(
+                            "${cancelUpdate[configProvider.activeLanguage()]}"),
                       ),
                     ),
                     Container(
@@ -179,12 +216,17 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                           borderRadius: BorderRadius.circular(32.0),
                         ),
                         color: Color.fromRGBO(102, 51, 204, 1),
-                        onPressed: ()  {
-                          editWorkouSessionProvider.updateAllWorkOutLists(widget.workout,  workoutSessionListProvider,  context);
-                          showToast("${workOutUpdateMessage[configProvider.activeLanguage()]}");
-                          },
+                        onPressed: () {
+                          editWorkouSessionProvider.updateAllWorkOutLists(
+                              widget.workout,
+                              workoutSessionListProvider,
+                              context);
+                          showToast(
+                              "${workOutUpdateMessage[configProvider.activeLanguage()]}");
+                        },
                         textColor: Colors.white,
-                        child: Text("${update[configProvider.activeLanguage()]}"),
+                        child:
+                            Text("${update[configProvider.activeLanguage()]}"),
                       ),
                     ),
                   ],
@@ -194,7 +236,12 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
     );
   }
 
-  Future<void> _showExercisesDialog(BuildContext context, ConfigProvider configProvider, EditWorkoutProvider editWorkoutProvider, mode, existingLiftIndex) async {
+  Future<void> _showExercisesDialog(
+      BuildContext context,
+      ConfigProvider configProvider,
+      EditWorkoutProvider editWorkoutProvider,
+      mode,
+      existingLiftIndex) async {
     await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -204,12 +251,24 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
         editWorkoutProvider.unselectedExercise = value as Exercise;
       else {
         //TODO ..
-        editWorkoutProvider.updateLiftExercise(value as Exercise, existingLiftIndex);
+        editWorkoutProvider.updateLiftExercise(
+            value as Exercise, existingLiftIndex);
       }
     });
   }
 
-  Widget _buildExerciseListItem(String exerciseNumber, String exerciseName, String kg, String rep, String rm, Color color, int mode, EditWorkoutProvider editWorkoutProvider, int index, BuildContext context, ConfigProvider configProvider) {
+  Widget _buildExerciseListItem(
+      String exerciseNumber,
+      String exerciseName,
+      String kg,
+      String rep,
+      String rm,
+      Color color,
+      int mode,
+      EditWorkoutProvider editWorkoutProvider,
+      int index,
+      BuildContext context,
+      ConfigProvider configProvider) {
     return Row(
       children: [
         Expanded(
@@ -228,9 +287,11 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
             onTap: () async {
               if (mode == 1) {
               } else if (mode == 2) {
-                await _showExercisesDialog(context, configProvider, editWorkoutProvider, 1, index);
+                await _showExercisesDialog(
+                    context, configProvider, editWorkoutProvider, 1, index);
               } else {
-                await _showExercisesDialog(context, configProvider, editWorkoutProvider, 2, -1);
+                await _showExercisesDialog(
+                    context, configProvider, editWorkoutProvider, 2, -1);
               }
             },
             child: Container(
@@ -253,10 +314,14 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                   onChanged: (newValue) {
                     editWorkoutProvider.updateMass(index, newValue!);
                   },
-                  items: editWorkoutProvider.existingLifts[index].kgs.map((int value) {
+                  items: editWorkoutProvider.existingLifts[index].kgs
+                      .map((int value) {
                     return DropdownMenuItem<int>(
                       value: value,
-                      child: configProvider.measureMode == KG ? Text("$value") : Text("${configProvider.getConvertedMass(value.toDouble())}"),
+                      child: configProvider.measureMode == KG
+                          ? Text("$value")
+                          : Text(
+                              "${configProvider.getConvertedMass(value.toDouble())}"),
                     );
                   }).toList(),
                 )
@@ -267,7 +332,8 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                       },
                       child: Text(
                         configProvider.measureMode == KG ? "KG" : "LBS",
-                        style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
+                        style:
+                            TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
                       ),
                     )
                   : Text(
@@ -286,7 +352,8 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                   onChanged: (newValue) {
                     editWorkoutProvider.updateRep(index, newValue!);
                   },
-                  items: editWorkoutProvider.existingLifts[index].reps.map((int value) {
+                  items: editWorkoutProvider.existingLifts[index].reps
+                      .map((int value) {
                     return DropdownMenuItem<int>(
                       value: value,
                       child: Text("$value"),
@@ -295,14 +362,19 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                 )
               : Text(
                   "REP",
-                  style: TextStyle(color: mode == 1 ? Color.fromRGBO(102, 51, 204, 1) : Colors.grey),
+                  style: TextStyle(
+                      color: mode == 1
+                          ? Color.fromRGBO(102, 51, 204, 1)
+                          : Colors.grey),
                 ),
         ),
         Expanded(
           flex: 2,
           child: Container(
             child: Text(
-              mode != 2 ? rm.toString() : configProvider.getConvertedRM(double.parse(rm)).toString(),
+              mode != 2
+                  ? rm.toString()
+                  : configProvider.getConvertedRM(double.parse(rm)).toString(),
               style: TextStyle(color: color),
             ),
           ),
@@ -328,8 +400,15 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                   : IconButton(
                       onPressed: () async {
                         if (editWorkoutProvider.unselectedExercise != null) {
-
-                          editWorkoutProvider.addExercise(EditableLift.create(editWorkoutProvider.unselectedExercise!.name, editWorkoutProvider.unselectedExercise!.id, editWorkoutProvider.unselectedExercise!.bodyPart, 1, 1, 1.0, true, -1));
+                          editWorkoutProvider.addExercise(EditableLift.create(
+                              editWorkoutProvider.unselectedExercise!.name,
+                              editWorkoutProvider.unselectedExercise!.id,
+                              editWorkoutProvider.unselectedExercise!.bodyPart,
+                              1,
+                              1,
+                              1.0,
+                              true,
+                              -1));
                         } else
                           showToast("Please, select exercise!");
                       },

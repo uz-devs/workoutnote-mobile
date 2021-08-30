@@ -10,10 +10,11 @@ class CalculationBottomSheet extends StatefulWidget {
   final mode;
   final text1;
   final text2;
-  final  text3;
+  final text3;
   final text4;
 
-  CalculationBottomSheet(this.height, this.title, this.subtitle,  this.mode,  this.text1, this.text2,  this.text3, this.text4);
+  CalculationBottomSheet(this.height, this.title, this.subtitle, this.mode,
+      this.text1, this.text2, this.text3, this.text4);
 
   @override
   _CalculationBottomSheetState createState() => _CalculationBottomSheetState();
@@ -29,81 +30,90 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:  Container(
-        height: widget.height,
-            child:
-            SafeArea(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: 6,
-                  itemBuilder: (context, index) {
-                    if (index == 0)
-                      return Container(
+      body: Container(
+          height: widget.height,
+          child: SafeArea(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 6,
+                itemBuilder: (context, index) {
+                  if (index == 0)
+                    return Container(
                         margin: EdgeInsets.only(top: 20.0),
-                          alignment: Alignment.bottomLeft,
-                          child: IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              color: Color.fromRGBO(102, 51, 204, 1),
-                            ),
-                          ));
-                    else if (index == 1)
-                      return Container(
-                          padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                          margin: EdgeInsets.only(left: 20.0),
-                          child: Text(
-                            "${widget.title}",
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                          ));
-                    else if (index == 2)
-                      return Container(
-                          margin: EdgeInsets.only(left: 20.0),
-                          padding: EdgeInsets.only(bottom: 10.0),
-                          child: Text(
-                            "${widget.subtitle}",
-                            style: TextStyle(fontSize: 15),
-                          ));
-                    else if (index == 3)
-                      return _buildCalculationWidget();
-                    else if (index == 4) {
-                      return Container(
-                        padding: EdgeInsets.only(top: 10.0),
+                        alignment: Alignment.bottomLeft,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: Color.fromRGBO(102, 51, 204, 1),
+                          ),
+                        ));
+                  else if (index == 1)
+                    return Container(
+                        padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                         margin: EdgeInsets.only(left: 20.0),
                         child: Text(
-                          "${widget.text3}",
-                          style: TextStyle(fontSize: 24.0),
-                        ),
-                      );
-                    }
-                    else {
-                      return Container(
-                        padding: EdgeInsets.all(15.0),
-                        alignment: Alignment.center,
-                        child: RichText(
-                          text: TextSpan(style: TextStyle(fontSize: 14.0, color: Colors.black), children: [
-                            TextSpan(text: "$currentRM", style: TextStyle(fontSize: 42.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1))),
-                            TextSpan(text: "  "),
-                            TextSpan(text: "kg", style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.black26)),
-                            TextSpan(text: "  "),
-                            TextSpan(
-                                text: "${widget.text4}",
-                                style: TextStyle(
-                                  fontSize: 26.0,
-                                  fontWeight: FontWeight.bold,
-                                ))
-                          ]),
-                        ),
-                      );
-                    }
-                  }),
-            )),
-     
+                          "${widget.title}",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24),
+                        ));
+                  else if (index == 2)
+                    return Container(
+                        margin: EdgeInsets.only(left: 20.0),
+                        padding: EdgeInsets.only(bottom: 10.0),
+                        child: Text(
+                          "${widget.subtitle}",
+                          style: TextStyle(fontSize: 15),
+                        ));
+                  else if (index == 3)
+                    return _buildCalculationWidget();
+                  else if (index == 4) {
+                    return Container(
+                      padding: EdgeInsets.only(top: 10.0),
+                      margin: EdgeInsets.only(left: 20.0),
+                      child: Text(
+                        "${widget.text3}",
+                        style: TextStyle(fontSize: 24.0),
+                      ),
+                    );
+                  } else {
+                    return Container(
+                      padding: EdgeInsets.all(15.0),
+                      alignment: Alignment.center,
+                      child: RichText(
+                        text: TextSpan(
+                            style:
+                                TextStyle(fontSize: 14.0, color: Colors.black),
+                            children: [
+                              TextSpan(
+                                  text: "$currentRM",
+                                  style: TextStyle(
+                                      fontSize: 42.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromRGBO(102, 51, 204, 1))),
+                              TextSpan(text: "  "),
+                              TextSpan(
+                                  text: "kg",
+                                  style: TextStyle(
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black26)),
+                              TextSpan(text: "  "),
+                              TextSpan(
+                                  text: "${widget.text4}",
+                                  style: TextStyle(
+                                    fontSize: 26.0,
+                                    fontWeight: FontWeight.bold,
+                                  ))
+                            ]),
+                      ),
+                    );
+                  }
+                }),
+          )),
     );
-
-
   }
 
   Widget _buildCalculationWidget() {
@@ -124,7 +134,10 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                 padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: Text(
                   "${widget.text1}",
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 20.0),
                 )),
             Container(
               margin: EdgeInsets.only(left: 20.0, right: 20.0),
@@ -133,7 +146,6 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                 keyboardType: TextInputType.number,
                 onChanged: (c) async {},
                 controller: textController2,
-
                 decoration: InputDecoration(
                   isDense: true,
                   contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
@@ -145,7 +157,9 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                       color: Colors.white,
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0), borderSide: BorderSide(width: 1.5, color: Colors.white)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: BorderSide(width: 1.5, color: Colors.white)),
                 ),
               ),
             ),
@@ -174,7 +188,9 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                       color: Colors.white,
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0), borderSide: BorderSide(width: 1.5, color: Colors.white)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      borderSide: BorderSide(width: 1.5, color: Colors.white)),
                 ),
               ),
             ),
@@ -186,12 +202,15 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                   borderRadius: const BorderRadius.all(Radius.circular(120)),
                   child: Text(
                     "계산하기",
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(102, 51, 204, 1)),
                   ),
                   onPressed: () {
                     FocusScope.of(context).unfocus();
 
-                    _calculateRM();}),
+                    _calculateRM();
+                  }),
             ),
           ],
         ),
@@ -206,5 +225,6 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
       currentRM = kg + kg * rep * 0.025;
     });
   }
-  void _calculateBarbell(){}
+
+  void _calculateBarbell() {}
 }
