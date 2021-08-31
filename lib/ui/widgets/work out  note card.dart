@@ -78,6 +78,9 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                           widget.workout.title.length > 15
                               ? "${widget.workout.title.substring(0, 14)}..."
                               : "${widget.workout.title}",
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              color: Color.fromRGBO(102, 51, 204, 1)),
                         )),
                     Container(
                         margin: EdgeInsets.only(top: 10, left: 9.0),
@@ -154,7 +157,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
               alignment: Alignment.center,
               margin: EdgeInsets.only(top: 15.0, bottom: 15.0),
               child: Text(
-                "${calculateDuration(widget.workout.duration ?? 0).item1}:${calculateDuration(widget.workout.duration ?? 0).item2}:${calculateDuration(widget.workout.duration ?? 0).item3}",
+                "${calculateDuration(widget.workout.duration ?? 0).item1} : ${calculateDuration(widget.workout.duration ?? 0).item2} : ${calculateDuration(widget.workout.duration ?? 0).item3}",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,

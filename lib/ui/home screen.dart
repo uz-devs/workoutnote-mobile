@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -82,7 +83,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now()).substring(0, 3).toUpperCase()}",
                   style: TextStyle(
-                      fontSize: 16.0, color: Color.fromRGBO(102, 51, 204, 1)),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                      color: Color.fromRGBO(102, 51, 204, 1)),
                 ));
           } else {
             index = index - 3;

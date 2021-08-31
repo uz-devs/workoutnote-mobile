@@ -19,6 +19,10 @@ class _NavControllerState extends State<NavController> {
 
   @override
   Widget build(BuildContext context) {
+
+
+      print("device pixel  ratio");
+    print(MediaQuery.of(context).devicePixelRatio);
     Color backGroundColor;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;

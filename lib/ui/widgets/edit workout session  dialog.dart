@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/models/editible%20lift%20model.dart';
@@ -27,6 +28,12 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
   var configProvider = ConfigProvider();
   var workoutSessionListProvider = MainScreenProvider();
   var editWorkouSessionProvider = EditWorkoutProvider();
+  bool dataRetrieved = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -36,13 +43,15 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
         Provider.of<EditWorkoutProvider>(context, listen: true);
     workoutSessionListProvider =
         Provider.of<MainScreenProvider>(context, listen: true);
+
+    if (!dataRetrieved) {
+      dataRetrieved = true;
+      editWorkouSessionProvider.getLiftsFromWorkoutSession(widget.workout);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!editWorkouSessionProvider.done) {
-      editWorkouSessionProvider.getLiftsFromWorkoutSession(widget.workout);
-    }
     int count = editWorkouSessionProvider.existingLifts.length + 6;
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -55,11 +64,18 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
     return Scrollbar(
       thickness: 3,
       child: ListView.separated(
+          padding: EdgeInsets.zero,
           separatorBuilder: (BuildContext context, int index) {
-            if (index > 2)
-              return Divider();
+            if (index > 3)
+              return Container(
+                  margin: EdgeInsets.only(left: 30, right: 30),
+                  child: Divider(
+                    height: 1,
+                    color: Color.fromRGBO(170, 170, 170, 1),
+                  ));
             else
               return Divider(
+                height: 0.0,
                 color: Colors.white,
               );
           },
@@ -74,8 +90,8 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                         margin: EdgeInsets.only(left: 20),
                         padding: EdgeInsets.only(top: 10),
                         child: Text(
-                          "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now()).substring(0, 3).toUpperCase()}",
-                          style: TextStyle(fontSize: 11, color: Colors.grey),
+                          "${DateFormat("yyyy.MM.dd").format(DateTime.now())}. ${DateFormat("EEEE").format(DateTime.now()).substring(0, 3).toUpperCase()}",
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
                         )),
                     Container(
                       child: IconButton(
@@ -85,7 +101,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                         },
                         icon: Icon(
                           Icons.clear,
-                          size: 17,
+                          size: 20,
                           color: Color.fromRGBO(102, 51, 204, 1),
                         ),
                       ),
@@ -95,32 +111,58 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
               );
             else if (index == 1)
               return Container(
-                margin: EdgeInsets.only(
-                  left: 20.0,
-                  right: 10.0,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                        width: 1.0, color: Color.fromRGBO(102, 51, 204, 1)),
+                  ),
                 ),
+                margin: EdgeInsets.only(
+                    bottom: 10.0, left: 20.0, right: 10.0, top: 10),
                 child: TextFormField(
+                  style: TextStyle(fontSize: 16),
+                  keyboardType: TextInputType.visiblePassword,
+                  cursorColor: Color.fromRGBO(102, 51, 204, 1),
                   onChanged: (c) async {},
                   decoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.only(top: 5.0),
-                    hintText: "${title[configProvider.activeLanguage()]}",
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Color.fromRGBO(102, 51, 204, 1)),
-                    ),
-                  ),
+                      suffixIconConstraints:
+                          BoxConstraints(minHeight: 10, minWidth: 10),
+                      // suffixIcon: Padding(
+                      //     padding: EdgeInsets.only(top: 8.0),
+                      //     child: IconButton(
+                      //         padding: EdgeInsets.zero,
+                      //         constraints: BoxConstraints(),
+                      //         onPressed: () {
+                      //           editWorkouSessionProvider.titleController
+                      //               .clear();
+                      //           FocusScope.of(context).unfocus();
+                      //         },
+                      //         icon: Icon(
+                      //           Icons.clear,
+                      //           color: Color.fromRGBO(102, 51, 204, 1),
+                      //           size: 20.0,
+                      //         ))),
+                      isDense: true,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      contentPadding: EdgeInsets.only(
+                        top: 5.0,
+                      ),
+                      hintText: "${title[configProvider.activeLanguage()]}",
+                      hintStyle: TextStyle(fontSize: 16)),
                   controller: editWorkouSessionProvider.titleController,
                 ),
               );
             else if (index == 2)
               return Container(
-                margin: EdgeInsets.only(left: 20),
+                margin: EdgeInsets.only(left: 20, bottom: 10.0),
                 child: Text(
-                  "${calculateDuration(widget.workout.duration ?? 0).item1}:${calculateDuration(widget.workout.duration ?? 0).item2}:${calculateDuration(widget.workout.duration ?? 0).item3}",
+                  "${calculateDuration(widget.workout.duration ?? 0).item1} : ${calculateDuration(widget.workout.duration ?? 0).item2} : ${calculateDuration(widget.workout.duration ?? 0).item3}",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: 36, color: Color.fromRGBO(102, 51, 204, 1)),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      color: Color.fromRGBO(102, 51, 204, 1)),
                 ),
               );
             else if (index == 3)
@@ -175,7 +217,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                   ),
                   child: _buildExerciseListItem(
                       "1",
-                      "${editWorkouSessionProvider.unselectedExercise == null ? "운동 이름" : editWorkouSessionProvider.unselectedExercise!.name}(${(editWorkouSessionProvider.unselectedExercise == null ? "" : editWorkouSessionProvider.unselectedExercise!.bodyPart)})",
+                      "${editWorkouSessionProvider.unselectedExercise == null ? "${exerciseName[configProvider.activeLanguage()]}" : editWorkouSessionProvider.unselectedExercise!.name}(${(editWorkouSessionProvider.unselectedExercise == null ? "${bodyPart[configProvider.activeLanguage()]}" : editWorkouSessionProvider.unselectedExercise!.bodyPart)})",
                       "KG",
                       "REP",
                       "RM",
@@ -187,30 +229,31 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                       configProvider));
             } else
               return Container(
-                margin: EdgeInsets.only(bottom: 10.0),
+                margin: EdgeInsets.only(top: 10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(left: 10.0),
+                      margin: EdgeInsets.only(left: 20.0),
                       width: 100,
                       child: MaterialButton(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(32.0),
                         ),
-                        color: Color.fromRGBO(102, 51, 204, 1),
+                        color: Color.fromRGBO(170, 170, 170, 1),
                         onPressed: () {
                           Navigator.pop(context);
                           editWorkouSessionProvider.reset();
                         },
                         textColor: Colors.white,
                         child: Text(
-                            "${cancelUpdate[configProvider.activeLanguage()]}"),
+                            "${cancelUpdate[configProvider.activeLanguage()]}",
+                            style: TextStyle(fontSize: 16.0)),
                       ),
                     ),
                     Container(
                       width: 100,
-                      margin: EdgeInsets.only(right: 10.0),
+                      margin: EdgeInsets.only(right: 20.0),
                       child: MaterialButton(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(32.0),
@@ -220,7 +263,9 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                           editWorkouSessionProvider.updateAllWorkOutLists(
                               widget.workout,
                               workoutSessionListProvider,
+                              configProvider,
                               context);
+
                           showToast(
                               "${workOutUpdateMessage[configProvider.activeLanguage()]}");
                         },
@@ -274,37 +319,39 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
         Expanded(
           flex: 2,
           child: Container(
-            margin: EdgeInsets.only(left: 5.0),
+            margin: EdgeInsets.only(left: 23.0),
             child: Text(
               exerciseNumber,
-              style: TextStyle(color: color),
+              style: TextStyle(fontSize: 13, color: color),
             ),
           ),
         ),
         Expanded(
-          flex: 3,
-          child: InkWell(
-            onTap: () async {
-              if (mode == 1) {
-              } else if (mode == 2) {
-                await _showExercisesDialog(
-                    context, configProvider, editWorkoutProvider, 1, index);
-              } else {
-                await _showExercisesDialog(
-                    context, configProvider, editWorkoutProvider, 2, -1);
-              }
-            },
-            child: Container(
+          //exercise & lift name
+          flex: 4,
+          child: Container(
+            margin: EdgeInsets.only(left: 21),
+            child: InkWell(
+              onTap: () async {
+                if (mode == 1) {
+                } else if (mode == 2) {
+                  await _showExercisesDialog(
+                      context, configProvider, editWorkoutProvider, 1, index);
+                } else {
+                  await _showExercisesDialog(
+                      context, configProvider, editWorkoutProvider, 2, -1);
+                }
+              },
               child: Text(
                 exerciseName,
-                style: TextStyle(color: color),
+                style: TextStyle(color: color, fontSize: 13),
               ),
             ),
           ),
         ),
         Expanded(flex: 1, child: Container()),
         Expanded(
-          flex: 2,
+          flex: 4,
           child: mode == 2
               ? DropdownButton<int>(
                   isExpanded: true,
@@ -319,9 +366,14 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                     return DropdownMenuItem<int>(
                       value: value,
                       child: configProvider.measureMode == KG
-                          ? Text("$value")
+                          ? Text(
+                              "${value}KG",
+                              style: TextStyle(fontSize: 13),
+                            )
                           : Text(
-                              "${configProvider.getConvertedMass(value.toDouble())}"),
+                              "${configProvider.getConvertedMass(value.toDouble())}LBS",
+                              style: TextStyle(fontSize: 13),
+                            ),
                     );
                   }).toList(),
                 )
@@ -332,13 +384,14 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                       },
                       child: Text(
                         configProvider.measureMode == KG ? "KG" : "LBS",
-                        style:
-                            TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
+                        style: TextStyle(
+                            fontSize: 13,
+                            color: Color.fromRGBO(102, 51, 204, 1)),
                       ),
                     )
                   : Text(
-                      "KG",
-                      style: TextStyle(color: Colors.grey),
+                      configProvider.measureMode == KG ? "KG" : "LBS",
+                      style: TextStyle(fontSize: 13, color: Colors.grey),
                     ),
         ),
         Expanded(
@@ -356,28 +409,24 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                       .map((int value) {
                     return DropdownMenuItem<int>(
                       value: value,
-                      child: Text("$value"),
+                      child: Container(
+                        child: Text(
+                          "$value",
+                          style: TextStyle(fontSize: 13),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     );
                   }).toList(),
                 )
               : Text(
                   "REP",
                   style: TextStyle(
+                      fontSize: 13,
                       color: mode == 1
                           ? Color.fromRGBO(102, 51, 204, 1)
                           : Colors.grey),
                 ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Container(
-            child: Text(
-              mode != 2
-                  ? rm.toString()
-                  : configProvider.getConvertedRM(double.parse(rm)).toString(),
-              style: TextStyle(color: color),
-            ),
-          ),
         ),
         Expanded(
           flex: 2,
@@ -386,16 +435,19 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
               : (mode == 2
                   ? IconButton(
                       onPressed: () async {
-                        editWorkoutProvider.updateLiftActiveStatus(index);
+                        editWorkouSessionProvider.updateLiftActiveStatus(index);
                       },
-                      icon: editWorkoutProvider.existingLifts[index].isSelected
+                      icon: editWorkouSessionProvider
+                              .existingLifts[index].isSelected
                           ? Icon(
                               Icons.check_circle,
                               color: Color.fromRGBO(102, 51, 204, 1),
+                              size: 30,
                             )
-                          : Icon(
-                              Icons.check,
-                              color: Colors.grey,
+                          : SvgPicture.asset(
+                              "assets/icons/check.svg",
+                              height: 15,
+                              width: 15,
                             ))
                   : IconButton(
                       onPressed: () async {
@@ -413,9 +465,9 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                           showToast("Please, select exercise!");
                       },
                       icon: Icon(
-                        Icons.add_circle_outline,
-                        color: Colors.grey,
-                        size: 30,
+                        Icons.add_circle,
+                        color: Color.fromRGBO(170, 170, 170, 1),
+                        size: 32,
                       ),
                     )),
         )

@@ -14,13 +14,9 @@ Map<String, String> workOutSuccess = {
   korean: "워크아웃이 성공적으로 작성되었습니다."
 };
 Map<String, String> title = {english: "Title", korean: "제목"};
-Map<String, String> seeExercises = {
-  english: "See all exercises",
-  korean: "모든 연습 보기"
-};
 Map<String, String> seeFavWorkouts = {
   english: "See favorite workout sets",
-  korean: "모든 운동 세트 보기"
+  korean: "운동 세트 불러오기"
 };
 Map<String, String> exercisesName = {english: "Workout", korean: "운동"};
 Map<String, String> save = {english: "Save", korean: "저장"};
@@ -150,3 +146,7 @@ Map<String, String> deleteYes = {english: "Delete", korean: "삭제"};
 Map<String, String> deleteCancel = {english: "Cancel", korean: "취소"};
 Map<String, String> favorites = {english: "Favorites", korean: "내 운동"};
 Map<String, String> exerciseHint = {english: "Exercise name", korean: "운동 이름"};
+Map<String, String> noExerciseWarning = {
+  english: "You need to add at least one exercise for one workout session!",
+  korean: "운동을 한 번 하려면 운동을 하나 이상 추가해야 합니다!"
+};

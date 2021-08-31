@@ -6,7 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:workoutnote/models/editible%20lift%20model.dart';
 import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
+import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/services/network%20%20service.dart';
+import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
 import 'exercises dialog provider .dart';
@@ -28,7 +30,13 @@ class CreateWorkoutProvider extends ChangeNotifier {
 
   //endregion
   //region api calls
-  Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, List<WorkOut> workOuts, List<WorkOut> calendarWorkouts) async {
+  Future<void> createWorkOutSession(
+      String sessionKey,
+      String title,
+      int timestamp,
+      List<WorkOut> workOuts,
+      List<WorkOut> calendarWorkouts,
+      ConfigProvider configProvider) async {
     bool canCreateSession = false;
     for (int i = 0; i < _lifts.length; i++) {
       if (_lifts[i].isSelected) {
@@ -40,22 +48,43 @@ class CreateWorkoutProvider extends ChangeNotifier {
       try {
         List<Lift> lifts = [];
         int count = 0;
-        var response = await WebServices.insertWorkOut(sessionKey, title, timestamp, duration);
-        if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+        var response = await WebServices.insertWorkOut(
+            sessionKey, title, timestamp, duration);
+        if (response.statusCode == 200 &&
+            jsonDecode(response.body)["success"]) {
           for (int i = 0; i < _lifts.length; i++) {
             if (_lifts[i].isSelected) {
-              var insertLift = await WebServices.insertLift(sessionKey, timestamp, _lifts[i].mass, _lifts[i].exerciseId ?? -1, jsonDecode(response.body)["workout_session"]["id"], _lifts[i].rep, _lifts[i].rm);
+              var insertLift = await WebServices.insertLift(
+                  sessionKey,
+                  timestamp,
+                  _lifts[i].mass,
+                  _lifts[i].exerciseId ?? -1,
+                  jsonDecode(response.body)["workout_session"]["id"],
+                  _lifts[i].rep,
+                  _lifts[i].rm);
               var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
-              if (insertLift.statusCode == 200 && jsonDecode(insertLift.body)["success"]) {
+              if (insertLift.statusCode == 200 &&
+                  jsonDecode(insertLift.body)["success"]) {
                 count++;
-                lifts.add(Lift.create(lift.liftId, lift.timestamp, lift.oneRepMax, lift.exerciseId, lift.exerciseName, lift.liftMas, lift.repetitions));
+                lifts.add(Lift.create(
+                    lift.liftId,
+                    lift.timestamp,
+                    lift.oneRepMax,
+                    lift.exerciseId,
+                    lift.exerciseName,
+                    lift.liftMas,
+                    lift.repetitions));
               }
             }
           }
-          if (count == _lifts.where((element) => element.isSelected == true).length) {
-            var workout = WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
-            workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
-            calendarWorkouts.add(WorkOut(workout.id, workout.title, workout.timestamp, lifts, workout.duration, false));
+          if (count ==
+              _lifts.where((element) => element.isSelected == true).length) {
+            var workout =
+                WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
+            workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp,
+                lifts, workout.duration, false));
+            calendarWorkouts.add(WorkOut(workout.id, workout.title,
+                workout.timestamp, lifts, workout.duration, false));
             _lifts.clear();
             titleContoller.text = "";
             stopTimer();
@@ -66,30 +95,31 @@ class CreateWorkoutProvider extends ChangeNotifier {
         print(e);
       }
     } else {
-      showToast("You need to add at least one exercise for one workout session!");
+      showToast("${noExerciseWarning[configProvider.activeLanguage()]}");
     }
   }
 
   //endregion
   //region restore title, lifts, duration  from  shared prefrences
 
-
-
   void restoreAllLifts(ExercisesDialogProvider exercisesDialogProvider) {
     if (!appRefreshed) {
       appRefreshed = true;
-      if (userPreferences!.getString("title") != null) titleContoller.text = userPreferences!.getString("title") ?? "";
+      if (userPreferences!.getString("title") != null)
+        titleContoller.text = userPreferences!.getString("title") ?? "";
       if (userPreferences!.getString("lifts") != null) {
-        List<EditableLift> lifts = EditableLift.decode(userPreferences!.getString("lifts") ?? "");
+        List<EditableLift> lifts =
+            EditableLift.decode(userPreferences!.getString("lifts") ?? "");
         for (int i = 0; i < lifts.length; i++) {
           _lifts.add(lifts[i]);
         }
       }
       if (userPreferences!.getInt("unselected_ex_id") != null) {
-
         int? id = userPreferences!.getInt("unselected_ex_id");
 
-        unselectedExercise = exercisesDialogProvider.allExercises.where((element) => element.id == id).single;
+        unselectedExercise = exercisesDialogProvider.allExercises
+            .where((element) => element.id == id)
+            .single;
       }
     }
   }
@@ -97,9 +127,18 @@ class CreateWorkoutProvider extends ChangeNotifier {
   void restoreTimer() {
     if (!timeRefreshed && userPreferences!.getInt("time") != null) {
       timeRefreshed = true;
-      hrs = ((userPreferences!.getInt("time")! / (60 * 60)) % 60).floor().toString().padLeft(2, '0');
-      mins = ((userPreferences!.getInt("time")! / 60) % 60).floor().toString().padLeft(2, '0');
-      secs = (userPreferences!.getInt("time")! % 60).floor().toString().padLeft(2, '0');
+      hrs = ((userPreferences!.getInt("time")! / (60 * 60)) % 60)
+          .floor()
+          .toString()
+          .padLeft(2, '0');
+      mins = ((userPreferences!.getInt("time")! / 60) % 60)
+          .floor()
+          .toString()
+          .padLeft(2, '0');
+      secs = (userPreferences!.getInt("time")! % 60)
+          .floor()
+          .toString()
+          .padLeft(2, '0');
     }
   }
 
@@ -263,13 +302,13 @@ class CreateWorkoutProvider extends ChangeNotifier {
   }
 
   Future<void> saveUnselectedExerciseToPreferences() async {
-    await userPreferences!.setInt("unselected_ex_id", unselectedExercise!.id ?? -1);
+    await userPreferences!
+        .setInt("unselected_ex_id", unselectedExercise!.id ?? -1);
   }
 
   //endregion
   //region utils
   void reset() {
-
     titleContoller.clear();
     secs = "00";
     mins = "00";
@@ -285,7 +324,8 @@ class CreateWorkoutProvider extends ChangeNotifier {
     timeRefreshed = false;
   }
 
-  Future<void> repeatWorkoutSession(List<EditableLift> lifts, String title) async {
+  Future<void> repeatWorkoutSession(
+      List<EditableLift> lifts, String title) async {
     _lifts.clear();
     _lifts.addAll(lifts);
     titleContoller.text = title;

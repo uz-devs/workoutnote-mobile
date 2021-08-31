@@ -41,6 +41,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+  
+
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
@@ -49,7 +51,9 @@ class MyApp extends StatelessWidget {
           focusColor: Color.fromRGBO(102, 51, 204, 1),
         ),
         home: SplashScreenView(
-          navigateRoute: userPreferences!.getString("sessionKey") == null ? AuthScreen() : NavController(),
+          navigateRoute: userPreferences!.getString("sessionKey") == null
+              ? AuthScreen()
+              : NavController(),
           duration: 3000,
           imageSize: 100,
           imageSrc: "assets/images/splash_screen.png",
