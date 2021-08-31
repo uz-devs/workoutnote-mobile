@@ -14,9 +14,31 @@ class CalculateScreen extends StatefulWidget {
 class _CalculateScreenState extends State<CalculateScreen> {
   late double height;
 
+
+   PersistentBottomSheetController? bottomSheetController;
+
   var configProvider = ConfigProvider();
-  List<String> koreanNames = [oneRepMaxTitle[korean]??"", plateBarbellTitle[korean]??"", powerLiftingTitle[korean]??"", wilksTitle[korean]??""];
-  List<String> englishNames = [oneRepMaxTitle[english]??"", plateBarbellTitle[english]??"", powerLiftingTitle[english]??"", wilksTitle[english]??""];
+  List<String> koreanNames = [
+    oneRepMax1[korean] ?? "",
+    plateBarbell1[korean] ?? "",
+    powerLiftingTitle[korean] ?? "",
+    wilksTitle[korean] ?? ""
+  ];
+  List<String> englishNames = [
+    oneRepMax1[english] ?? "",
+    plateBarbell1[english] ?? "",
+    powerLiftingTitle[english] ?? "",
+    wilksTitle[english] ?? ""
+  ];
+
+  @override
+  void dispose() {
+    super.dispose();
+   if(bottomSheetController != null){
+     bottomSheetController!.close();
+   }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +50,10 @@ class _CalculateScreenState extends State<CalculateScreen> {
       child: ListView.builder(
           itemCount: 4,
           itemBuilder: (context, index) {
-
-            if(configProvider.activeLanguage() == english)
-            return _buildCustomButton(englishNames[index], index);
-            else return _buildCustomButton(koreanNames[index], index);
-
+            if (configProvider.activeLanguage() == english)
+              return _buildCustomButton(englishNames[index], index);
+            else
+              return _buildCustomButton(koreanNames[index], index);
           }),
     );
   }
@@ -41,8 +62,17 @@ class _CalculateScreenState extends State<CalculateScreen> {
     return InkWell(
       onTap: () async {
         if (index == 0)
-          await showModal(index + 1, "One Rep Max 계신하기", "모든 리프트에 대한 1회당 최대 반복 수를 계산합니다", "Lift", "KG", "당신은 1RM은", "입니다");
-        else if (index == 1) await showModal(index + 1, "Plate Barbell 계신하기", "바벨 리프트에 필요한 플레이트 무게를계산합니다", "Total Lift (kg)", "Bar Weight (kg)",   "당신은 Bar무게와 Plate무게를 더한 총", "를 들 수 있습니다");
+          await showModal(index + 1, "${oneRepMax1[configProvider.activeLanguage()]}",
+              "${oneRepMax4[configProvider.activeLanguage()]}", "Lift", "KG", "${oneRepMax5[configProvider.activeLanguage()]}", "${oneRepMax6[configProvider.activeLanguage()]}");
+        else if (index == 1)
+          await showModal(
+              index + 1,
+              "${plateBarbell1[configProvider.activeLanguage()]}",
+              "${plateBarbell2[configProvider.activeLanguage()]}",
+              "Total Lift (kg)",
+              "Bar Weight (kg)",
+              "${plateBarbell3[configProvider.activeLanguage()]}",
+              "${plateBarbell4[configProvider.activeLanguage()]}");
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 10.0, left: 20.0, right: 20.0),
@@ -56,17 +86,18 @@ class _CalculateScreenState extends State<CalculateScreen> {
               padding: EdgeInsets.all(15.0),
               child: Text(
                 text,
-                style: TextStyle(fontSize: 20.0, color: Colors.white),
+                style: TextStyle(fontSize: 18.0, color: Colors.white),
               )),
         ),
       ),
     );
   }
 
-  Future<void> showModal(int mode, String title, String subtitle, String text1, String text2, String text3, String text4) async {
-    await showBottomSheet(
-
-        context: context, builder: (context) =>
-        CalculationBottomSheet(height, title, subtitle, mode,  text1,  text2, text3, text4));
+  Future<void> showModal(int mode, String title, String subtitle, String text1,
+      String text2, String text3, String text4) async {
+    bottomSheetController =  await showBottomSheet(
+        context: context,
+        builder: (context) => CalculationBottomSheet(
+            height, title, subtitle, mode, text1, text2, text3, text4));
   }
 }

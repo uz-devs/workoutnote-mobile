@@ -66,7 +66,25 @@ Map<String, String> favorites = {english: "Favorites", korean: "내 운동"};
 Map<String, String> exerciseHint = {english: "Exercise name", korean: "운동 이름"};
 Map<String, String> noExerciseWarning = {english: "You need to add at least one exercise for one workout session!", korean: "운동을 한 번 하려면 운동을 하나 이상 추가해야 합니다!"};
 Map<String, String> note = {english: "NOTE", korean: "노트"};
-Map<String, String> oneRepMaxTitle = {english: "One Rep Max Calculator", korean: "One Rep Max 계산기"};
-Map<String, String> plateBarbellTitle = {english: "Plate Barbell Calculator", korean: "플레이트 바벨 계산기"};
 Map<String, String> powerLiftingTitle = {english: "Powerlifting Strength Calculator", korean: "파워리프팅 강도 계산기"};
 Map<String, String> wilksTitle = {english: "Wilks Calculator", korean: "Wilks 계산기"};
+Map<String, String> calculate = {english: "Calculate", korean:"계산하기"};
+Map<String,  String> enterNumber = {english:  "Enter", korean: "작접  입력"};
+//on rep max
+Map<String, String> oneRepMax1 = {english: "One Rep Max Calculator", korean: "One Rep Max 계산기"};
+Map<String, String> oneRepMax2 = {english: "1RM Lift weight percentage", korean: "1RM 리프트 중량 백분율"};
+Map<String, String> oneRepMax3 = {english: "1RM number of reps", korean: "1RM 반복횟수"};
+Map<String,  String> oneRepMax4 = {english: "Calculate the maximum number of iterations per time for all lifts", korean: "모든 리프트 대한 1회당 최대 반복 수를 계산합니다 "};
+Map<String, String> oneRepMax5 = {english:  "Your 1RM is", korean:  "당신은 1RM은"};
+Map<String, String> oneRepMax6 = {english:  "", korean: "입니다"};
+
+//barbell
+Map<String, String> plateBarbell1 = {english: "Plate Barbell Calculator", korean: "플레이트 바벨 계산기"};
+Map<String, String> plateBarbell2 = {english: "Calculate the weight of the plate required for the barbell lift", korean: "바벨 리프트에 필요한 플레이트 무게를 계산합니다"};
+Map<String, String> plateBarbell3 = {english: "You're the gun with the weight of the bar plus the weight of the plate", korean: "당신은 Bar무게와 Plate무게를 더한 총"};
+Map<String, String> plateBarbell4 = {english: "Can be lifted", korean: "를 들수 있습니다"};
+Map<String, String> plateBarbell5 = {english: "Plate weight", korean: "프레이트 무게"};
+Map<String, String> plateBarbell6 = {english: "Number(respectively)", korean: "수량(각각)"};
+
+
+
