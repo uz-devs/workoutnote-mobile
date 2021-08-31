@@ -319,7 +319,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
         Expanded(
           flex: 2,
           child: Container(
-            margin: EdgeInsets.only(left: 23.0),
+            margin: EdgeInsets.only(left: 15.0),
             child: Text(
               exerciseNumber,
               style: TextStyle(fontSize: 13, color: color),
@@ -328,7 +328,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
         ),
         Expanded(
           //exercise & lift name
-          flex: 4,
+          flex: 5,
           child: Container(
             margin: EdgeInsets.only(left: 21),
             child: InkWell(
