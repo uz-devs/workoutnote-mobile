@@ -25,7 +25,6 @@ Map<String, String> sendEmailForReset = {english: "We have sent an email to you,
 Map<String, String> emptyEmail = {english: "Email cannot be empty!", korean: "메일이 비워 둘 수 없습니다!"};
 Map<String, String> delete = {english: "Delete workout", korean: "삭제하기"};
 Map<String, String> edit = {english: "Edit workout", korean: "수정하기"};
-
 Map<String, String> profileInfo = {english: "Profile Info", korean: "프로필 정보"};
 Map<String, String> profileEdit = {english: "Edit profile", korean: "프로필 수정"};
 Map<String, String> languageChange = {english: "Change language", korean: "언어 수정"};
@@ -60,7 +59,6 @@ Map<String, String> shareSettings = {english: "Share settings", korean: "공유 
 Map<String, String> exerciseName = {english: "Exercise name", korean: "운동 이름"};
 Map<String, String> bodyPart = {english: "Body part", korean: "신체 부위"};
 Map<String, String> emptyWorkoutTitle = {english: "Workout session title cannot be empty!", korean: "운동 세션 제목은 비워 둘 수 없습니다!"};
-
 Map<String, String> deleteMessage = {english: "You can't restore deleted session.Are you sure you want to delete this session?", korean: "삭제하면 복구할 수 없습니다.삭제하시겠습니까?"};
 Map<String, String> deleteYes = {english: "Delete", korean: "삭제"};
 Map<String, String> deleteCancel = {english: "Cancel", korean: "취소"};
@@ -68,3 +66,7 @@ Map<String, String> favorites = {english: "Favorites", korean: "내 운동"};
 Map<String, String> exerciseHint = {english: "Exercise name", korean: "운동 이름"};
 Map<String, String> noExerciseWarning = {english: "You need to add at least one exercise for one workout session!", korean: "운동을 한 번 하려면 운동을 하나 이상 추가해야 합니다!"};
 Map<String, String> note = {english: "NOTE", korean: "노트"};
+Map<String, String> oneRepMaxTitle = {english: "One Rep Max Calculator", korean: "One Rep Max 계산기"};
+Map<String, String> plateBarbellTitle = {english: "Plate Barbell Calculator", korean: "플레이트 바벨 계산기"};
+Map<String, String> powerLiftingTitle = {english: "Powerlifting Strength Calculator", korean: "파워리프팅 강도 계산기"};
+Map<String, String> wilksTitle = {english: "Wilks Calculator", korean: "Wilks 계산기"};

@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 
 class CalculationBottomSheet extends StatefulWidget {
   final height;
@@ -31,15 +33,15 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        margin: EdgeInsets.only(top: 20),
           height: widget.height,
-          child: SafeArea(
-            child: ListView.builder(
+          child:
+             ListView.builder(
                 shrinkWrap: true,
                 itemCount: 6,
                 itemBuilder: (context, index) {
                   if (index == 0)
                     return Container(
-                        margin: EdgeInsets.only(top: 20.0),
                         alignment: Alignment.bottomLeft,
                         child: IconButton(
                           onPressed: () {
@@ -57,7 +59,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                         child: Text(
                           "${widget.title}",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24),
+                              fontWeight: FontWeight.bold, fontSize: 22),
                         ));
                   else if (index == 2)
                     return Container(
@@ -65,20 +67,20 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                         padding: EdgeInsets.only(bottom: 10.0),
                         child: Text(
                           "${widget.subtitle}",
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 14),
                         ));
                   else if (index == 3)
                     return _buildCalculationWidget();
                   else if (index == 4) {
                     return Container(
-                      padding: EdgeInsets.only(top: 10.0),
                       margin: EdgeInsets.only(left: 20.0),
                       child: Text(
                         "${widget.text3}",
-                        style: TextStyle(fontSize: 24.0),
+                        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                       ),
                     );
-                  } else {
+                  }
+                  else {
                     return Container(
                       padding: EdgeInsets.all(15.0),
                       alignment: Alignment.center,
@@ -90,21 +92,21 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                               TextSpan(
                                   text: "$currentRM",
                                   style: TextStyle(
-                                      fontSize: 42.0,
+                                      fontSize: 30.0,
                                       fontWeight: FontWeight.bold,
                                       color: Color.fromRGBO(102, 51, 204, 1))),
                               TextSpan(text: "  "),
                               TextSpan(
                                   text: "kg",
                                   style: TextStyle(
-                                      fontSize: 26,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black26)),
                               TextSpan(text: "  "),
                               TextSpan(
                                   text: "${widget.text4}",
                                   style: TextStyle(
-                                    fontSize: 26.0,
+                                    fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
                                   ))
                             ]),
@@ -112,13 +114,14 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                     );
                   }
                 }),
-          )),
+          ),
     );
   }
 
   Widget _buildCalculationWidget() {
     return Container(
-      height: 280,
+      padding: EdgeInsets.all(5.0),
+      height: 305,
       margin: EdgeInsets.all(10.0),
       child: Card(
         color: Color.fromRGBO(102, 51, 204, 1),
@@ -130,8 +133,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                margin: EdgeInsets.only(left: 20.0, top: 10.0),
-                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                margin: EdgeInsets.only(left: 31.0, top: 28.0, bottom: 10.0),
                 child: Text(
                   "${widget.text1}",
                   style: TextStyle(
@@ -140,9 +142,13 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                       fontSize: 20.0),
                 )),
             Container(
-              margin: EdgeInsets.only(left: 20.0, right: 20.0),
+              decoration: BoxDecoration(  border: Border(
+                bottom: BorderSide(width: 2.0, color: Colors.white),
+              ),),
+
+              margin: EdgeInsets.only(left: 31.0, right: 31.0),
               child: TextFormField(
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 14),
                 keyboardType: TextInputType.number,
                 onChanged: (c) async {},
                 controller: textController2,
@@ -150,59 +156,49 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                   isDense: true,
                   contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
                   hintText: "직접 입력",
-                  hintStyle: TextStyle(color: Colors.white),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(width: 1.5, color: Colors.white)),
+                  hintStyle: TextStyle(color: Colors.white, fontSize:  14.0),
+                  enabledBorder: InputBorder.none,
+                  focusedBorder:  InputBorder.none,
                 ),
               ),
             ),
             Container(
-                margin: EdgeInsets.only(left: 20.0),
-                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                margin: EdgeInsets.only(left: 31.0, top: 20.0, bottom: 10.0),
                 child: Text(
                   "${widget.text2}",
-                  style: TextStyle(color: Colors.white, fontSize: 20.0),
+                  style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold),
                 )),
             Container(
-              margin: EdgeInsets.only(left: 20.0, right: 20.0),
+              decoration: BoxDecoration(  border: Border(
+                bottom: BorderSide(width: 2.0, color: Colors.white),
+              ),),
+
+              margin: EdgeInsets.only(left: 31.0, right: 31.0),
               child: TextFormField(
                 controller: textController1,
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 14),
                 keyboardType: TextInputType.number,
                 onChanged: (c) async {},
                 decoration: InputDecoration(
                   isDense: true,
                   contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
                   hintText: "직접 입력",
-                  hintStyle: TextStyle(color: Colors.white),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(
-                      color: Colors.white,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      borderSide: BorderSide(width: 1.5, color: Colors.white)),
+                  hintStyle: TextStyle(color: Colors.white, fontSize: 14),
+                  enabledBorder:  InputBorder.none,
+                  focusedBorder: InputBorder.none,
                 ),
               ),
             ),
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 30.0),
+              margin: EdgeInsets.only(bottom: 30.0, top: 30),
               child: CupertinoButton(
                   color: Colors.white,
                   borderRadius: const BorderRadius.all(Radius.circular(120)),
                   child: Text(
                     "계산하기",
                     style: TextStyle(
+                      fontSize: 20.0,
                         fontWeight: FontWeight.bold,
                         color: Color.fromRGBO(102, 51, 204, 1)),
                   ),

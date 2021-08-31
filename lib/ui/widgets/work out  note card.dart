@@ -51,7 +51,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
           shape: RoundedRectangleBorder(
             side: BorderSide(
                 width: 1.5,
-                color: widget.mode == 3 || widget.mode == 2
+                color: widget.mode == 3
                     ? Color.fromRGBO(102, 51, 204, 1)
                     : Colors.transparent),
             borderRadius: BorderRadius.circular(15.0),

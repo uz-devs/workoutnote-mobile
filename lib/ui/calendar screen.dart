@@ -64,10 +64,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   Widget _buildItemsList(List<WorkOut> showWorkOuts) {
     return ListView.builder(
-        itemCount: showWorkOuts.isNotEmpty ? showWorkOuts.length + 5 : 5,
+        itemCount: showWorkOuts.isNotEmpty ? showWorkOuts.length + 3 : 3,
         itemBuilder: (ctx, index) {
           if (index == 0)
             return Container(
+              color: Colors.white,
               padding: EdgeInsets.all(10.0),
               child: TableCalendar(
                 headerStyle: HeaderStyle(headerPadding: EdgeInsets.all(15.0), titleCentered: false, titleTextFormatter: (date, locale) => DateFormat.MMMM(locale).format(date), rightChevronMargin: EdgeInsets.only(right: 0.44 * width!), formatButtonVisible: false, leftChevronVisible: false, rightChevronIcon: SvgPicture.asset("assets/icons/expand.svg")),
@@ -154,45 +155,57 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
             );
           else if (index == 1) {
-            return Container(
-                margin: EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
-                child: Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: Color.fromRGBO(170, 170, 170, 1),
-                ));
-          } else if (index == 2) {
-            return Container(
-                margin: EdgeInsets.only(left: 20.0, top: 10.0),
-                child: Text(
-                  "${note[configProvider.activeLanguage()]}",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
-                ));
-          } else if (index == 3) {
-            return Container(
-                height: 64,
-                margin: EdgeInsets.only(left: 20.0, right: 20, top: 10.0),
-                decoration: BoxDecoration(
-                  color: Color.fromRGBO(240, 240, 240, 1),
-                  border: Border.all(
-                    color: Color.fromRGBO(240, 240, 240, 1),
-                  ),
-                ),
-                child: TextFormField(
+            return  Container(
+              color: Colors.white ,
+              child:Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
 
-                  cursorColor: Color.fromRGBO(102, 51, 204, 1),
-                  maxLines: 3,
-                  keyboardType: TextInputType.visiblePassword,
-                  decoration: InputDecoration(
-                      hintText: "${title[configProvider.activeLanguage()]}",
-                      hintStyle: TextStyle(fontSize: 16),
-                    contentPadding: EdgeInsets.only(left: 10.0),
-                    isDense: true,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
+                  children: [
+                  Container(
+                  color: Colors.white,
+                  margin: EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
+                  child: Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: Color.fromRGBO(170, 170, 170, 1),
                   ),
-                ));
-          } else if (index == 4) {
+                  ),
+
+                Container(
+                    margin: EdgeInsets.only(left: 20.0, top: 10.0),
+                    child: Text(
+                      "${note[configProvider.activeLanguage()]}",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
+                    )),
+                Container(
+                    height: 70,
+                    margin: EdgeInsets.only(left: 20.0, right: 20, top: 10.0, bottom: 20),
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(240, 240, 240, 1),
+                      border: Border.all(
+                        color: Color.fromRGBO(240, 240, 240, 1),
+                      ),
+
+                    ),
+                    child: TextFormField(
+                      cursorColor: Color.fromRGBO(102, 51, 204, 1),
+                      maxLines: 3,
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: InputDecoration(
+                        hintText: "${title[configProvider.activeLanguage()]}",
+                        hintStyle: TextStyle(fontSize: 16),
+                        contentPadding: EdgeInsets.only(left: 10.0),
+                        isDense: true,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                      ),
+                    ))
+              ])
+            );
+          }
+
+
+          else if (index == 2) {
             return Container(
                 margin: EdgeInsets.only(left: 20.0, top: 10.0),
                 child: Text(
@@ -200,7 +213,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                 ));
           } else {
-            index = index - 5;
+            index = index - 3;
             return WorkOutNote(widget.height, showWorkOuts[index], 2);
           }
         });

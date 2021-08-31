@@ -8,7 +8,7 @@ import 'package:workoutnote/ui/signup%20%20screen.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
-class AuthScreen extends StatelessWidget {
+class LoginScreen extends StatelessWidget {
   static String route = "auth";
   var _emailController = TextEditingController();
   var _passwordController = TextEditingController();
@@ -35,15 +35,15 @@ class AuthScreen extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(top: height * 0.1),
                         child: Text(
-                          "${loginText[configProvider.activeLanguage()]}",
-                          style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
+                          "${loginText[english]}",
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: height * 0.1),
                         child: Text(
                           "로그인합니다",
-                          style: TextStyle(fontSize: 18.0),
+                          style: TextStyle(fontSize: 16.0),
                         ),
                       ),
                       Container(
@@ -53,7 +53,7 @@ class AuthScreen extends StatelessWidget {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(25), borderSide: BorderSide(width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
                             hintText: "E-MAIL/PHONE NUMBER",
-                            hintStyle: TextStyle(color: Colors.grey, fontSize: 13.0),
+                            hintStyle: TextStyle(color: Colors.grey, fontSize: 14.0),
                             suffixIcon: IconButton(
                               onPressed: () {
                                 _emailController.clear();
@@ -94,7 +94,7 @@ class AuthScreen extends StatelessWidget {
                             ),
                             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(25), borderSide: BorderSide(width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
                             hintText: "PASSWORD",
-                            hintStyle: TextStyle(color: Colors.grey, fontSize: 13.0),
+                            hintStyle: TextStyle(color: Colors.grey, fontSize: 14.0),
                             contentPadding: EdgeInsets.only(left: 20.0),
                             border: OutlineInputBorder(
                               borderSide: BorderSide(color: Color.fromRGBO(102, 51, 204, 1), width: 2.0),
@@ -109,7 +109,7 @@ class AuthScreen extends StatelessWidget {
                         child: CupertinoButton(
                             color: Color.fromRGBO(102, 51, 204, 1),
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
-                            child: Text("${loginText['한국어']}"),
+                            child: Text("${loginText['한국어']}",  style:  TextStyle(fontSize: 16)),
                             onPressed: () {
                               if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
                                 user.login(_emailController.text, _passwordController.text).then((value) {
@@ -145,7 +145,7 @@ class AuthScreen extends StatelessWidget {
                                   }
                                 },
                                 child: Text(
-                                  "비밀번호 찾기",
+                                  "비밀번호 찾기 | 이이디 찾기",
                                   style: TextStyle(color: Colors.grey, fontSize: 12.0),
                                 ),
                               ),
@@ -155,11 +155,11 @@ class AuthScreen extends StatelessWidget {
                           )),
                       Container(
                         width: double.infinity,
-                        margin: EdgeInsets.only(left: 15, right: 15.0, top: 15.0),
+                        margin: EdgeInsets.only(left: 15.0, right: 15.0, top: 15.0),
                         child: CupertinoButton(
                             color: Color.fromRGBO(102, 51, 204, 1),
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
-                            child: Text("${signUpText['한국어']}"),
+                            child: Text("${signUpText['한국어']}", style:  TextStyle(fontSize: 16)),
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
                             }),

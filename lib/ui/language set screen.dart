@@ -47,14 +47,14 @@ class _LanguageSetScreenState extends State<LanguageSetScreen> {
                         margin: EdgeInsets.only(top: height * 0.1),
                         child: Text(
                           "LANGUAGE",
-                          style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: height * 0.1),
                         child: Text(
                           "사용할 언어를 선택해주세요",
-                          style: TextStyle(fontSize: 18.0),
+                          style: TextStyle(fontSize: 16.0),
                         ),
                       ),
                       Container(
@@ -100,7 +100,7 @@ class _LanguageSetScreenState extends State<LanguageSetScreen> {
                         child: CupertinoButton(
                             color: Color.fromRGBO(102, 51, 204, 1),
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
-                            child: Text("${languageConfirm[configProvider.activeLanguage()]}"),
+                            child: Text("${languageConfirm[configProvider.activeLanguage()]}", style: TextStyle(fontSize: 16)),
                             onPressed: () {
                               configProvider.changeLanguage(languageCode).then((value) {Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyIntroductionScreen()));});
                             }),

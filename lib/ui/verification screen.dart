@@ -47,14 +47,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         margin: EdgeInsets.only(top: height * 0.1),
                         child: Text(
                           "VERIFICATION",
-                          style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: height*0.1),
                         child: Text(
                           "입력한 번호로 인증을 해주세요",
-                          style: TextStyle(fontSize: 18.0),
+                          style: TextStyle(fontSize: 16.0),
                         ),
                       ),
 
@@ -65,7 +65,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           controller: _codeController,
                           decoration: InputDecoration(
                             hintText: "인증번호를 입력해주세요",
-                            hintStyle: TextStyle(color: Colors.grey, fontSize: 13.0),
+                            hintStyle: TextStyle(color: Colors.grey, fontSize: 14.0),
                             suffixIcon: IconButton(
                               onPressed: () {
                                 _codeController.clear();
@@ -94,7 +94,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         child: CupertinoButton(
                             color: Color.fromRGBO(102, 51, 204, 1),
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
-                            child: Text("${verificationText["한국어"]}"),
+                            child: Text("완료", style:  TextStyle(fontSize: 16)),
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
                               user.verifyUser(_codeController.text).then((value) {

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/ui/widgets/calculation%20bottom%20%20sheet.dart';
+import 'package:workoutnote/utils/strings.dart';
 
 class CalculateScreen extends StatefulWidget {
   const CalculateScreen();
@@ -10,17 +13,26 @@ class CalculateScreen extends StatefulWidget {
 
 class _CalculateScreenState extends State<CalculateScreen> {
   late double height;
-  List<String> names = ["One Rep Max 계산기", "플레이트 바벨 계산기", "파워리프팅 강도 계산기", "Wilks 계산기"];
+
+  var configProvider = ConfigProvider();
+  List<String> koreanNames = [oneRepMaxTitle[korean]??"", plateBarbellTitle[korean]??"", powerLiftingTitle[korean]??"", wilksTitle[korean]??""];
+  List<String> englishNames = [oneRepMaxTitle[english]??"", plateBarbellTitle[english]??"", powerLiftingTitle[english]??"", wilksTitle[english]??""];
 
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
+    var configProvider = Provider.of<ConfigProvider>(context, listen: true);
+
     return Container(
       margin: EdgeInsets.only(top: 15.0),
       child: ListView.builder(
           itemCount: 4,
           itemBuilder: (context, index) {
-            return _buildCustomButton(names[index], index);
+
+            if(configProvider.activeLanguage() == english)
+            return _buildCustomButton(englishNames[index], index);
+            else return _buildCustomButton(koreanNames[index], index);
+
           }),
     );
   }
@@ -52,7 +64,9 @@ class _CalculateScreenState extends State<CalculateScreen> {
   }
 
   Future<void> showModal(int mode, String title, String subtitle, String text1, String text2, String text3, String text4) async {
-    await showModalBottomSheet(isScrollControlled: true, context: context, builder: (context) =>
+    await showBottomSheet(
+
+        context: context, builder: (context) =>
         CalculationBottomSheet(height, title, subtitle, mode,  text1,  text2, text3, text4));
   }
 }

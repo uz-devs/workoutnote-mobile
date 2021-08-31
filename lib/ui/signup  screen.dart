@@ -47,14 +47,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Container(
                       margin: EdgeInsets.only(top: height * 0.1),
                       child: Text(
-                        "${signUpText[configProvider.activeLanguage()]}",
-                        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
+                        "${signUpText[english]}",
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                       ),
                     ),
                     Container(
                       child: Text(
                         "이메일 주소로 회원가입합니다",
-                        style: TextStyle(fontSize: 18.0),
+                        style: TextStyle(fontSize: 16.0),
                       ),
                     ),
                     SizedBox(height: height * 0.1),
@@ -65,7 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         controller: _nameController,
                         decoration: InputDecoration(
                           hintText: "NAME",
-                          hintStyle: TextStyle(color: Colors.grey, fontSize: 13.0),
+                          hintStyle: TextStyle(color: Colors.grey, fontSize: 14.0),
                           contentPadding: EdgeInsets.only(left: 20.0),
                           suffixIcon: IconButton(
                             onPressed: () {
@@ -88,7 +88,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 15, right: 15, bottom: 10),
+                      margin: EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 14.0),
                       child: TextFormField(
                         controller: _emailController,
                         decoration: InputDecoration(
@@ -100,7 +100,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             color: Color.fromRGBO(102, 51, 204, 1),
                           ),
                           hintText: "E-MAIL/PHONE NUMBER",
-                          hintStyle: TextStyle(color: Colors.grey, fontSize: 13.0),
+                          hintStyle: TextStyle(color: Colors.grey, fontSize: 14.0),
                           contentPadding: EdgeInsets.only(left: 20.0),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0),
@@ -130,7 +130,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             icon: Icon(Icons.close),
                             color: Color.fromRGBO(102, 51, 204, 1),
                           ),
-                          hintStyle: TextStyle(color: Colors.grey, fontSize: 13.0),
+                          hintStyle: TextStyle(color: Colors.grey, fontSize: 14.0),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0),
                             borderSide: BorderSide(
@@ -152,7 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: CupertinoButton(
                           color: Color.fromRGBO(102, 51, 204, 1),
                           borderRadius: const BorderRadius.all(Radius.circular(120)),
-                          child: Text("${signUpText['한국어']}"),
+                          child: Text("${signUpText['한국어']}",  style:  TextStyle(fontSize: 16)),
                           onPressed: () {
                             if (_emailController.text.isNotEmpty && _nameController.text.isNotEmpty && _passwordController.text.isNotEmpty)
                               user.sendVerificationCode(_emailController.text, _nameController.text, _passwordController.text).then((value) {
@@ -176,7 +176,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: CupertinoButton(
                           color: Color.fromRGBO(102, 51, 204, 1),
                           borderRadius: const BorderRadius.all(Radius.circular(120)),
-                          child: Text("${loginText["한국어"]}"),
+                          child: Text("${loginText["한국어"]}", style:  TextStyle(fontSize: 16),),
                           onPressed: () {
                             Navigator.pop(context);
                           }),

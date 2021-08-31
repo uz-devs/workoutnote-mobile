@@ -213,20 +213,19 @@ class MainScreenProvider extends ChangeNotifier {
       }
     else if (mode == 3) {
       print("dferqerig");
-      for(int  i = 0; i< favoriteWorkOuts.length; i++){
+      for (int i = 0; i < favoriteWorkOuts.length; i++) {
         print(favoriteWorkOuts[i].id);
       }
 
       favoriteWorkOuts.removeWhere((element) => element.id == id);
       if (requestDone1) {
-        for (int i = 0; i<workOuts.length; i++){
-            if(workOuts[i].id == id){
-              workOuts[i].isFavorite = false;
-            }
+        for (int i = 0; i < workOuts.length; i++) {
+          if (workOuts[i].id == id) {
+            workOuts[i].isFavorite = false;
+          }
         }
       }
-      if (requestDone3 ) calendarWorkouts.singleWhere((element) => element.id == id).isFavorite = false;
-
+      if (requestDone3) calendarWorkouts.singleWhere((element) => element.id == id).isFavorite = false;
     }
 
     notifyListeners();

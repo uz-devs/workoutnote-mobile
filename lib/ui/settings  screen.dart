@@ -5,10 +5,11 @@ import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/providers/create%20workout%20provider.dart';
 import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
 import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
-import 'package:workoutnote/ui/auth%20screen%20.dart';
 import 'package:workoutnote/ui/language%20%20change%20screen.dart';
 import 'package:workoutnote/ui/profile%20update%20screen.dart';
 import 'package:workoutnote/utils/strings.dart';
+
+import 'login screen.dart';
 
 class SeetingsScreen extends StatefulWidget {
   final height;
@@ -142,7 +143,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                 homeProvider.reset();
                 dialogProvider.reset();
                 createWorkOutProvider.reset();
-                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => AuthScreen()), (Route<dynamic> route) => false);
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginScreen()), (Route<dynamic> route) => false);
 
               },
               child: ListTile(
