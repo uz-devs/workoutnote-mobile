@@ -51,7 +51,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
           shape: RoundedRectangleBorder(
             side: BorderSide(
                 width: 1.5,
-                color: widget.mode == 3
+                color: widget.mode == 3 || widget.mode == 2
                     ? Color.fromRGBO(102, 51, 204, 1)
                     : Colors.transparent),
             borderRadius: BorderRadius.circular(15.0),
@@ -88,7 +88,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                             padding: EdgeInsets.zero,
                             constraints: BoxConstraints(),
                             onPressed: () {
-                              if (widget.mode != 3) {
+
                                 if (!widget.workout.isFavorite)
                                   mainScreenProvider
                                       .setFavoriteWorkOut(
@@ -111,7 +111,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                                       .then((value) {
                                     setState(() {});
                                   });
-                              }
+
                             },
                             icon: widget.workout.isFavorite
                                 ? SvgPicture.asset(

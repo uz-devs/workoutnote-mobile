@@ -71,7 +71,10 @@ class _AllWorkoutsDialogState extends State<AllWorkoutsDialog> {
                     alignment: Alignment.center,
                     child: Text(
                       "${favoriteWorkoutSesions[configProvider.activeLanguage()]}",
-                      style: TextStyle(fontSize: 18, color: Color.fromRGBO(102, 51, 204, 1)),
+                      style: TextStyle(
+
+                        fontWeight: FontWeight.bold,
+                          fontSize: 16, color: Color.fromRGBO(102, 51, 204, 1)),
                     ),
                   ),
                   Align(

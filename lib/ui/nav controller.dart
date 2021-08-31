@@ -33,7 +33,7 @@ class _NavControllerState extends State<NavController> {
       _buildSettingsScreen(height),
     ];
 
-    if (_selectedIndex == 0 || _selectedIndex == 2 || _selectedIndex == 1)
+    if (_selectedIndex == 0)
       backGroundColor = Color.fromRGBO(231, 223, 247, 1);
     else
       backGroundColor = Color.fromRGBO(255, 255, 255, 1);

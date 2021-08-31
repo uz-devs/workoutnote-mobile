@@ -45,8 +45,8 @@ class _SearchDialogState extends State<SearchDialog> {
       ExercisesDialogProvider dialogProvider, List<Exercise> showExercises) {
     return ListView.separated(
         itemBuilder: (context, index) {
-          if (index == 0)
-            return Container(
+          if (index == 0) return Container(
+
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -55,7 +55,8 @@ class _SearchDialogState extends State<SearchDialog> {
                     child: Text(
                       "${exercises[configProvider.activeLanguage()]}",
                       style: TextStyle(
-                          fontSize: 18, color: Color.fromRGBO(102, 51, 204, 1)),
+                        fontWeight: FontWeight.bold,
+                          fontSize: 15, color: Color.fromRGBO(102, 51, 204, 1)),
                     ),
                   ),
                   Align(
@@ -73,10 +74,9 @@ class _SearchDialogState extends State<SearchDialog> {
                 ],
               ),
             );
-          else if (index == 1)
-            return Container(
+          else if (index == 1) return Container(
               height: 40,
-              margin: EdgeInsets.only(left: 10, right: 10.0),
+              margin: EdgeInsets.only(left: 14, right: 14),
               child: TextFormField(
                 onFieldSubmitted: (word) {
                   setState(() {
@@ -91,11 +91,11 @@ class _SearchDialogState extends State<SearchDialog> {
                 },
                 decoration: InputDecoration(
                   hintText: "${exerciseHint[configProvider.activeLanguage()]}",
-                  hintStyle: TextStyle(color: Colors.grey),
+                  hintStyle: TextStyle(color: Colors.grey, fontSize : 15.0),
                   prefixIcon: IconButton(
                     onPressed: () {},
                     icon: Icon(Icons.search,
-                        color: Color.fromRGBO(102, 51, 204, 1)),
+                        color: Colors.grey,  size:20.0),
                   ),
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -110,10 +110,11 @@ class _SearchDialogState extends State<SearchDialog> {
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide(
-                          width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
+                          width: 2.0, color: Color.fromRGBO(102, 51, 204, 1))),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(25.0),
                     borderSide: BorderSide(
+                      width: 2.0,
                       color: Color.fromRGBO(102, 51, 204, 1),
                     ),
                   ),
@@ -130,6 +131,7 @@ class _SearchDialogState extends State<SearchDialog> {
             return Container(
               height: widget.height * 0.1,
               child: ListView(
+                  padding: EdgeInsets.zero,
                   scrollDirection: Axis.horizontal,
                   children:
                       List.generate(dialogProvider.myBodyParts.length, (index) {
@@ -147,10 +149,12 @@ class _SearchDialogState extends State<SearchDialog> {
                               },
                               shape: StadiumBorder(
                                   side: BorderSide(
+                                    width: 2.0,
                                       color: Color.fromRGBO(102, 51, 204, 1))),
                               label: Text(
                                 "${favorites[configProvider.activeLanguage()]}",
                                 style: TextStyle(
+                                  fontSize: 13.0,
                                     color: dialogProvider.showFavorite
                                         ? Colors.white
                                         : Color.fromRGBO(102, 51, 204, 1)),
@@ -171,10 +175,12 @@ class _SearchDialogState extends State<SearchDialog> {
                             },
                             shape: StadiumBorder(
                                 side: BorderSide(
+                                  width: 2.0,
                                     color: Color.fromRGBO(102, 51, 204, 1))),
                             label: Text(
                               dialogProvider.myBodyParts[index].name,
                               style: TextStyle(
+                                fontSize: 13.0,
                                   color: dialogProvider.activeBodyPart ==
                                           dialogProvider.myBodyParts[index].name
                                       ? Colors.white
@@ -188,7 +194,8 @@ class _SearchDialogState extends State<SearchDialog> {
                     }
                   })),
             );
-          } else {
+          }
+          else {
             index = index - 3;
             return InkWell(
               onTap: () {

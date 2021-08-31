@@ -145,7 +145,7 @@ class MainScreenProvider extends ChangeNotifier {
 
   //endregion
   //region utils
-  Future<void> repeatWorkoutSession(int id, CreateWorkoutProvider createWorkoutProvider, List<Exercise> exercises, int mode)  async{
+  Future<void> repeatWorkoutSession(int id, CreateWorkoutProvider createWorkoutProvider, List<Exercise> exercises, int mode) async {
     List<EditableLift> lifts = [];
     String? title;
 
@@ -162,7 +162,6 @@ class MainScreenProvider extends ChangeNotifier {
       print(workOuts.length);
       var workout = workOuts.where((element) => element.id == id).single;
 
-
       print(workout.title);
       for (int j = 0; j < workout.lifts!.length; j++) {
         title = workout.title ?? "";
@@ -176,7 +175,7 @@ class MainScreenProvider extends ChangeNotifier {
       }
     }
 
-  await   createWorkoutProvider.repeatWorkoutSession(lifts, title ?? "[]");
+    await createWorkoutProvider.repeatWorkoutSession(lifts, title ?? "[]");
   }
 
   void _updateWorkoutFavoriteStatus(int id, int mode) {
@@ -212,6 +211,23 @@ class MainScreenProvider extends ChangeNotifier {
           }
         }
       }
+    else if (mode == 3) {
+      print("dferqerig");
+      for(int  i = 0; i< favoriteWorkOuts.length; i++){
+        print(favoriteWorkOuts[i].id);
+      }
+
+      favoriteWorkOuts.removeWhere((element) => element.id == id);
+      if (requestDone1) {
+        for (int i = 0; i<workOuts.length; i++){
+            if(workOuts[i].id == id){
+              workOuts[i].isFavorite = false;
+            }
+        }
+      }
+      if (requestDone3 ) calendarWorkouts.singleWhere((element) => element.id == id).isFavorite = false;
+
+    }
 
     notifyListeners();
   }
