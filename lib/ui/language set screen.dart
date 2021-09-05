@@ -13,7 +13,7 @@ class LanguageSetScreen extends StatefulWidget {
 }
 
 class _LanguageSetScreenState extends State<LanguageSetScreen> {
-  List<String> languages = [english, korean];
+  List<String> languages = [korean,  english,  french,  russian,  chinese1,  chinese2, japanese];
   String selectedVal = korean;
   int languageCode = 2;
 

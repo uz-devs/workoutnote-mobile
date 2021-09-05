@@ -11,6 +11,8 @@ import 'package:workoutnote/ui/widgets/work%20out%20%20note%20card.dart';
 import 'package:workoutnote/ui/widgets/workout%20%20create%20card.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 
 class HomeScreen extends StatefulWidget {
   final height;
@@ -33,12 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
     super.didChangeDependencies();
 
     navProvider = Provider.of<MainScreenProvider>(context, listen: true);
-    exerciseDialogProvider =
-        Provider.of<ExercisesDialogProvider>(context, listen: true);
+    exerciseDialogProvider = Provider.of<ExercisesDialogProvider>(context, listen: true);
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
-    createWorkoutProvider =
-        Provider.of<CreateWorkoutProvider>(context, listen: true);
+    createWorkoutProvider = Provider.of<CreateWorkoutProvider>(context, listen: true);
 
     //showLoaderDialog(context);
     if (!navProvider.requestDone1) {
@@ -54,43 +54,48 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return _buildItemsList();
+
   }
 
   Widget _buildItemsList() {
-    return ListView.builder(
-        itemCount: navProvider.workOuts.length + 3,
-        itemBuilder: (context, index) {
-          if (index == 0)
-            return Container(
-                margin: EdgeInsets.only(left: 20, top: 30, bottom: 20),
-                child: RichText(
-                    text: TextSpan(children: [
-                  TextSpan(
-                      text:
-                          "${welcomeMessage[configProvider.activeLanguage()]}, ",
-                      style: TextStyle(fontSize: 30, color: Colors.black)),
-                  TextSpan(
-                      text: "${userPreferences!.getString("name") ?? ""}",
-                      style: TextStyle(
-                          color: Color.fromRGBO(102, 51, 204, 1), fontSize: 30))
-                ])));
-          else if (index == 1) {
-            return CreateWorkOutCard(widget.width, widget.height,
-                navProvider.workOuts, navProvider.calendarWorkouts);
-          } else if (index == 2) {
-            return Container(
-                margin: EdgeInsets.only(left: 20.0),
-                child: Text(
-                  "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now()).substring(0, 3).toUpperCase()}",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
-                      color: Color.fromRGBO(102, 51, 204, 1)),
-                ));
-          } else {
-            index = index - 3;
-            return WorkOutNote(widget.height, navProvider.workOuts[index], 1);
-          }
-        });
+    return NotificationListener(
+      onNotification: (ScrollNotification notification){
+        if(notification is ScrollStartNotification){
+          FocusScope.of(context).unfocus();
+        }
+        return false;
+      },
+      child: ListView.builder(
+          primary: false,
+          shrinkWrap: true ,
+          itemCount: navProvider.workOuts.length + 3,
+          itemBuilder: (context, index) {
+            if (index == 0)
+              return Container(margin: EdgeInsets.only(left: 20, top: 30, bottom: 20), child: RichText(text: TextSpan(children: [TextSpan(text: "${welcomeMessage[configProvider.activeLanguage()]}, ", style: TextStyle(fontSize: 30, color: Colors.black)), TextSpan(text: "${userPreferences!.getString("name") ?? ""}", style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontSize: 30))])));
+            else if (index == 1) {
+              return CreateWorkOutCard(widget.width, widget.height, navProvider.workOuts, navProvider.calendarWorkouts);
+            } else if (index == 2) {
+              return Container(
+                  margin: EdgeInsets.only(left: 20.0),
+                  child: Text(
+                    "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now()).substring(0, 3).toUpperCase()}",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0, color: Color.fromRGBO(102, 51, 204, 1)),
+                  ));
+            } else {
+              index = index - 3;
+              return WorkOutNote(widget.height, navProvider.workOuts[index], 1);
+            }
+          }),
+    );
+  }
+
+
+  void _onRefresh(){
+
+
+  }
+
+  void  _oneLoading(){
+
   }
 }

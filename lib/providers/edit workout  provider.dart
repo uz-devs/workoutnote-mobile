@@ -46,8 +46,7 @@ class EditWorkoutProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> editWorkout(
-      WorkOut workOut, ConfigProvider configProvider) async {
+  Future<void> editWorkout(WorkOut workOut, ConfigProvider configProvider) async {
     var sessionKey = userPreferences!.getString("sessionKey") ?? "";
     bool canEditSession = false;
     for (int i = 0; i < existingLifts.length; i++) {
@@ -122,14 +121,9 @@ class EditWorkoutProvider extends ChangeNotifier {
     }
   }
 
-  void updateAllWorkOutLists(
-      WorkOut workOut,
-      MainScreenProvider mainScreenProvider,
-      ConfigProvider configProvider,
-      BuildContext context) {
+  void updateAllWorkOutLists(WorkOut workOut, MainScreenProvider mainScreenProvider, ConfigProvider configProvider, BuildContext context) {
     editWorkout(workOut, configProvider).then((value) {
       //update  today's  workouts locally
-
       for (int k = 0; k < mainScreenProvider.workOuts.length; k++) {
         if (mainScreenProvider.workOuts[k].id == workOut.id) {
           mainScreenProvider.workOuts[k].lifts!.clear();

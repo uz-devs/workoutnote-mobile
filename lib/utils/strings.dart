@@ -1,5 +1,10 @@
-const String english = "English";
 const String korean = "한국어";
+const String english = "English";
+const String french = "Francais";
+const String russian = "Русский";
+const String chinese1 = "汉语";
+const String chinese2 = "漢語";
+const String japanese = "日本語";
 
 Map<String, String> welcomeMessage = {english: "Hello", korean: "안녕하세요"};
 Map<String, String> repeat = {english: "Repeat", korean: "반복하기"};
@@ -68,23 +73,39 @@ Map<String, String> noExerciseWarning = {english: "You need to add at least one 
 Map<String, String> note = {english: "NOTE", korean: "노트"};
 Map<String, String> powerLiftingTitle = {english: "Powerlifting Strength Calculator", korean: "파워리프팅 강도 계산기"};
 Map<String, String> wilksTitle = {english: "Wilks Calculator", korean: "Wilks 계산기"};
-Map<String, String> calculate = {english: "Calculate", korean:"계산하기"};
-Map<String,  String> enterNumber = {english:  "Enter", korean: "작접  입력"};
-//on rep max
+Map<String, String> calculate = {english: "Calculate", korean: "계산하기"};
+Map<String, String> enterNumber = {english: "Enter", korean: "작접  입력"};
+Map<String, String> emptyTextField = {english: "Input cannot be empty!", korean: "입력은 비워 둘 수 없습니다!"};
+Map<String, String> agree = {english: "Agree: Your data will be released and used to calculate the standard.", korean: "동의: 귀하의 데이터가 공개되어 표준을 계산하는대 사용됩니다."};
+Map<String, String> disagree = {english: "Disagree: Your data is not used to calculate pojun.", korean: "비동의: 포준을 계산하는대 귀하의 데이터를 사용되지 않습니다."};
+
+//One Rep Max
 Map<String, String> oneRepMax1 = {english: "One Rep Max Calculator", korean: "One Rep Max 계산기"};
 Map<String, String> oneRepMax2 = {english: "1RM Lift weight percentage", korean: "1RM 리프트 중량 백분율"};
 Map<String, String> oneRepMax3 = {english: "1RM number of reps", korean: "1RM 반복횟수"};
-Map<String,  String> oneRepMax4 = {english: "Calculate the maximum number of iterations per time for all lifts", korean: "모든 리프트 대한 1회당 최대 반복 수를 계산합니다 "};
-Map<String, String> oneRepMax5 = {english:  "Your 1RM is", korean:  "당신은 1RM은"};
-Map<String, String> oneRepMax6 = {english:  "", korean: "입니다"};
+Map<String, String> oneRepMax4 = {english: "Calculate the maximum number of iterations per time for all lifts", korean: "모든 리프트 대한 1회당 최대 반복 수를 계산합니다 "};
+Map<String, String> oneRepMax5 = {english: "Your 1RM is", korean: "당신은 1RM은"};
+Map<String, String> oneRepMax6 = {english: "", korean: "입니다"};
+Map<String, String> oneRepMax7 = {english: "1RM weight percentage", korean: "1RM 리프트 중량 백분율"};
+Map<String, String> oneRepMax8 = {english: "Repetitions", korean: "1RM 반복횟수"};
 
-//barbell
+//Barbell
 Map<String, String> plateBarbell1 = {english: "Plate Barbell Calculator", korean: "플레이트 바벨 계산기"};
 Map<String, String> plateBarbell2 = {english: "Calculate the weight of the plate required for the barbell lift", korean: "바벨 리프트에 필요한 플레이트 무게를 계산합니다"};
-Map<String, String> plateBarbell3 = {english: "You're the gun with the weight of the bar plus the weight of the plate", korean: "당신은 Bar무게와 Plate무게를 더한 총"};
-Map<String, String> plateBarbell4 = {english: "Can be lifted", korean: "를 들수 있습니다"};
+Map<String, String> plateBarbell3 = {english: "You can lift following amount altogether [plate+bar]:", korean: "당신은 Bar무게와 Plate무게를 더한 총"};
+Map<String, String> plateBarbell4 = {english: "", korean: "를 들수 있습니다"};
 Map<String, String> plateBarbell5 = {english: "Plate weight", korean: "프레이트 무게"};
 Map<String, String> plateBarbell6 = {english: "Number(respectively)", korean: "수량(각각)"};
+Map<String, String> plateBarbell7 = {english: "Plate weight", korean: "프레이트 무게"};
+Map<String, String> plateBarbell8 = {english: "Quantity(each side)", korean: "수량(각각)"};
 
-
-
+//Wilks
+Map<String, String> wilks1 = {english: "Wilks Calculator", korean: "Wilks 계산기"};
+Map<String, String> wilks2 = {english: "Calculate Wilks Coefficient according to your gender and maximum weight lifted", korean: "성별 및 최대 체중을 기준으로 Wilks 계수 계산합니다"};
+Map<String, String> wilks3 = {english: "Your Wilks  Coefficient is ", korean: "당신은 Wilks 계수: "};
+Map<String, String> wilks4 = {english: "", korean: "입니다"};
+List<Map<String, String>> wilksGender = [
+  {english: "None", korean: "None"},
+  {english: "Male", korean: "남"},
+  {english: "Female", korean: "여"}
+];

@@ -60,29 +60,22 @@ String toDate(int timestamp) {
 }
 
 void showToast(String message) {
-  Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.black54,
-      textColor: Colors.white,
-      fontSize: 16.0);
+  Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIosWeb: 1, backgroundColor: Colors.black54, textColor: Colors.white, fontSize: 16.0);
 }
 
-showLoaderDialog(BuildContext context){
-  AlertDialog alert=
-
-  AlertDialog(
+showLoaderDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
     content: new Row(
       children: [
         //CircularProgressIndicator(),
-        Container(margin: EdgeInsets.only(left: 7),child:Text("Loading..." )),
-      ],),
+        Container(margin: EdgeInsets.only(left: 7), child: Text("Loading...")),
+      ],
+    ),
   );
-  showDialog(barrierDismissible: false,
-    context:context,
-    builder:(BuildContext context){
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
       return alert;
     },
   );
@@ -116,3 +109,4 @@ double roundDouble(double value, int places) {
   num mod = pow(10.0, places);
   return ((value * mod).round().toDouble() / mod);
 }
+

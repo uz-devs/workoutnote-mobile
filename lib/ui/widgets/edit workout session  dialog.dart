@@ -234,7 +234,8 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(left: 20.0),
+
+                      margin: EdgeInsets.only(left: 20.0, top: 10.0, bottom:  10.0),
                       width: 100,
                       child: MaterialButton(
                         shape: RoundedRectangleBorder(

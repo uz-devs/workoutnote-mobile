@@ -13,6 +13,8 @@ import 'package:workoutnote/ui/widgets/edit%20workout%20session%20%20dialog.dart
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
+import '../nav controller.dart';
+
 class WorkOutNote extends StatefulWidget {
   final height;
   final workout;
@@ -183,8 +185,17 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                           widget.mode)
                       .then((value) {
                     if (widget.mode == 3) {
+
                       Navigator.pop(context);
-                    } else if (widget.mode == 2) {}
+                    } else if (widget.mode == 2) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => NavController(),
+                        ),
+                            (route) => false,
+                      );
+                    }
                   });
                 },
               ),

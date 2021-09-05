@@ -34,6 +34,8 @@ dependencies:
   tuple: ^2.0.0
   splash_screen_view: ^3.0.0
   introduction_screen: ^2.1.0
+  flutter_switch: ^0.3.2
+  pull_to_refresh: ^2.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

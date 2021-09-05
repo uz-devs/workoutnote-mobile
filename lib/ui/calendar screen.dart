@@ -42,7 +42,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     super.didChangeDependencies();
     calendarProvider = Provider.of<MainScreenProvider>(context, listen: true);
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
-
     if (!calendarProvider.requestDone3) {
       calendarProvider.fetchCalendarWorkoutSessions().then((value) {});
     }
@@ -179,6 +178,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     )),
                 Container(
                     height: 70,
+                    width: double.infinity,
                     margin: EdgeInsets.only(left: 20.0, right: 20, top: 10.0, bottom: 20),
                     decoration: BoxDecoration(
                       color: Color.fromRGBO(240, 240, 240, 1),
@@ -187,19 +187,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ),
 
                     ),
-                    child: TextFormField(
-                      cursorColor: Color.fromRGBO(102, 51, 204, 1),
-                      maxLines: 3,
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: InputDecoration(
-                        hintText: "${title[configProvider.activeLanguage()]}",
-                        hintStyle: TextStyle(fontSize: 16),
-                        contentPadding: EdgeInsets.only(left: 10.0),
-                        isDense: true,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                      ),
-                    ))
+                    child: Text("dummy note"))
               ])
             );
           }

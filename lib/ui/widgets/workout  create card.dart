@@ -122,7 +122,7 @@ class CreateWorkOutCard extends StatelessWidget {
                             constraints: BoxConstraints(),
                             onPressed: () {
                               exProvider.titleContoller.clear();
-                              FocusScope.of(context).unfocus();
+
                             },
                             icon: Icon(
                               Icons.clear,
@@ -355,13 +355,7 @@ class CreateWorkOutCard extends StatelessWidget {
                   items: mainScreenProvider.selectedLifts[index].kgs.map((int value) {
                     return DropdownMenuItem<int>(
                       value: value,
-                      child: configProvider.measureMode == KG
-                          ? Text("${value}KG", textAlign: TextAlign.left, style: TextStyle(fontSize: 13.0))
-                          : Text(
-                              "${configProvider.getConvertedMass(value.toDouble())}LBS",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(fontSize: 13.0),
-                            ),
+                      child: configProvider.measureMode == KG ? Text("${value}KG", textAlign: TextAlign.left, style: TextStyle(fontSize: 13.0)):Text("${configProvider.getConvertedMass(value.toDouble())}LBS", textAlign: TextAlign.left, style: TextStyle(fontSize: 13.0),),
                     );
                   }).toList(),
                 )
