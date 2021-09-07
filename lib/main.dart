@@ -1,39 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
+import 'package:splash_screen_view/SplashScreenView.dart';
+import 'package:workoutnote/providers/config%20provider.dart';
+import 'package:workoutnote/providers/create%20workout%20provider.dart';
+import 'package:workoutnote/providers/edit%20workout%20%20provider.dart';
+import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
+import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
+import 'package:workoutnote/ui/login%20screen.dart';
+import 'package:workoutnote/ui/nav%20controller.dart';
+import 'package:workoutnote/utils/utils.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initPreferences();
+
+  final List<SingleChildWidget> providers = [
+    ChangeNotifierProvider(
+      create: (_) => MainScreenProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => ConfigProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => ExercisesDialogProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => CreateWorkoutProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => EditWorkoutProvider(),
+    ),
+  ];
+  runApp(MultiProvider(
+    providers: providers,
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+  
+
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage();
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-
-        title: Text("Workoutnote"),
-      ),
-      body: Center(),
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          fontFamily: 'NotoSansKR',
+          focusColor: Color.fromRGBO(102, 51, 204, 1),
+        ),
+        home: SplashScreenView(
+          navigateRoute: userPreferences!.getString("sessionKey") == null
+              ? LoginScreen()
+              : NavController(),
+          duration: 3000,
+          imageSize: 100,
+          imageSrc: "assets/images/splash_screen.png",
+          backgroundColor: Color.fromRGBO(102, 51, 204, 1),
+        ));
   }
 }
