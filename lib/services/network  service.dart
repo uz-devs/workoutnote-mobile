@@ -155,4 +155,19 @@ class WebServices {
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }
+
+  static Future<http.Response> saveCalendarNote(String sessionKey, int timestamp, String note) async {
+    final url = Uri.https(baseUrl, setNote);
+    final body = {'sessionKey': sessionKey, 'timestamp': timestamp, 'note': note};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
+
+  static Future<http.Response> fetchCalendarNote(String sessionKey, int timestamp) async {
+    final url = Uri.https(baseUrl, fetchNote);
+    final body = {'sessionKey': sessionKey, 'timestamp': timestamp,};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
+
 }

@@ -14,11 +14,13 @@ class MainScreenProvider extends ChangeNotifier {
   List<WorkOut> workOuts = [];
   List<WorkOut> calendarWorkouts = [];
   List<WorkOut> favoriteWorkOuts = [];
+  List<Map<String , String>> notes = [];
   bool requestDone1 = false;
   bool requestDone2 = false;
   bool requestDone3 = false;
   List<String> workOutDates = [];
   DateTime? selectedDate = DateTime.now();
+  var noteController = TextEditingController();
 
   //endregion
   //region api calls
@@ -139,6 +141,56 @@ class MainScreenProvider extends ChangeNotifier {
         if (isFavorite) favoriteWorkOuts.removeWhere((element) => element.timestamp == timestamp);
         calendarWorkouts.removeWhere((element) => element.id == id);
 
+        notifyListeners();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<String> fetchSingleNote( int timestamp) async {
+
+
+    print("fetching single note");
+    print("timestamp: ${timestamp}");
+
+
+    var sessionKey = userPreferences!.getString("sessionKey") ?? "";
+
+    try {
+
+      var response = await WebServices.fetchCalendarNote(sessionKey, timestamp);
+
+      print(response.statusCode);
+      if(response.statusCode == 200){
+
+        print(response.body);
+        String currentNote = jsonDecode(utf8.decode(response.bodyBytes))["note"];
+        notes.add({toDate(timestamp): jsonDecode(utf8.decode(response.bodyBytes))["note"]});
+
+        return  currentNote;
+      }
+      return  "";
+    }
+    catch(e){
+      print(e);
+      return  "";
+
+    }
+  }
+
+  Future<bool> saveNote( int timestamp, String note) async {
+
+    print("timestamp: ${timestamp}");
+    var sessionKey = userPreferences!.getString("sessionKey") ?? "";
+
+    try {
+      var response = await WebServices.saveCalendarNote(sessionKey, timestamp, note);
+      print(response.body);
+      if (response.statusCode == 200) {
         notifyListeners();
         return true;
       }
