@@ -79,6 +79,7 @@ Map<String, String> emptyTextField = {english: "Input cannot be empty!", korean:
 Map<String, String> agree = {english: "Agree: Your data will be released and used to calculate the standard.", korean: "동의: 귀하의 데이터가 공개되어 표준을 계산하는대 사용됩니다."};
 Map<String, String> disagree = {english: "Disagree: Your data is not used to calculate pojun.", korean: "비동의: 포준을 계산하는대 귀하의 데이터를 사용되지 않습니다."};
 Map<String, String> emptyWorkouts = {english: "No workouts to show!", korean: "운동 세션이  없습니다!"};
+Map<String, String> accept = {english: "accept", korean: "동의"};
 
 
 //One Rep Max

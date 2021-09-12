@@ -73,8 +73,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
       count = 6;
     }
     print(count);
-    return Scaffold(
-      body: Container(
+    return Container(
         margin: EdgeInsets.only(top: 20),
         height: widget.height,
         child: ListView.builder(
@@ -228,8 +227,8 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                   return Container();
               }
             }),
-      ),
-    );
+      );
+
   }
 
   //Widgets

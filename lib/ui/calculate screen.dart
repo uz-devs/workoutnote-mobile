@@ -23,6 +23,7 @@ class _CalculateScreenState extends State<CalculateScreen> {
   void dispose() {
     super.dispose();
     if (bottomSheetController != null) {
+
       bottomSheetController!.close();
     }
   }
@@ -73,7 +74,9 @@ class _CalculateScreenState extends State<CalculateScreen> {
   }
 
   Future<void> showModal(int mode, String title, String subtitle, String text1, String text2, String text3, String text4) async {
-    bottomSheetController = await showBottomSheet(context: context,
+    bottomSheetController = await showModalBottomSheet(
+        isScrollControlled:true,
+        context: context,
         builder: (context) =>
             CalculationBottomSheet(
                 height,

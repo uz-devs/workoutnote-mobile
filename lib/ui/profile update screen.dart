@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 
@@ -319,10 +320,17 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                               "${shareSettings[configProvider.activeLanguage()]}",
                               style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
                             ),
-                            CupertinoSwitch(
+                            FlutterSwitch(
+                              valueFontSize: 10,
+                                showOnOff: true,
+                              activeText: "${accept[configProvider.activeLanguage()]}"
+                                ,
+
+                                inactiveText: "",
+                                activeTextColor: Colors.white,
                                 activeColor: Color.fromRGBO(102, 51, 204, 1),
                                 value: configProvider.isShared,
-                                onChanged: (val) {
+                                onToggle: (val) {
                                   configProvider.isShared = val;
                                   setState(() {});
                                 })

@@ -44,7 +44,7 @@ class _NavControllerState extends State<NavController> {
 
     return Scaffold(
       backgroundColor: backGroundColor,
-      resizeToAvoidBottomInset: false,
+     // resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SmartRefresher(
           onRefresh: _onRefresh,
