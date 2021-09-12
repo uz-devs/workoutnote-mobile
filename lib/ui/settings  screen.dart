@@ -142,7 +142,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                     trailing: icon,
                   ),
                 );
-              else if (index == 10)
+              else if (index  == 10)
                 return InkWell(
                   onTap: () {
                     configProvider.logout();
@@ -157,15 +157,9 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                     trailing: icon,
                   ),
                 );
-              else {
-                return InkWell(
-                  child: ListTile(
-                    dense: true,
-                    leading: Text("${deleteAccount[configProvider.activeLanguage()]}"),
-                    trailing: icon,
-                  ),
-                );
-              }
+
+              else  return Container();
+
             },
             separatorBuilder: (context, index) {
               if (index == 2 || index == 6 || index == 9) return Divider(height: 1.0, thickness: 4, color: Colors.deepPurpleAccent.withOpacity(0.1));

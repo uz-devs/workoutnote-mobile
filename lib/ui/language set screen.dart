@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/ui/intro%20screen.dart';
 import 'package:workoutnote/utils/strings.dart';
+import 'package:workoutnote/utils/utils.dart';
 
 class LanguageSetScreen extends StatefulWidget {
   const LanguageSetScreen();
@@ -13,7 +14,7 @@ class LanguageSetScreen extends StatefulWidget {
 }
 
 class _LanguageSetScreenState extends State<LanguageSetScreen> {
-  List<String> languages = [korean,  english,  french,  russian,  chinese1,  chinese2, japanese];
+  List<String> languages = [korean, english, french, russian, chinese1, chinese2, japanese];
   String selectedVal = korean;
   int languageCode = 2;
 
@@ -32,22 +33,23 @@ class _LanguageSetScreenState extends State<LanguageSetScreen> {
                   height: height,
                   child: Column(
                     children: [
-                      // Container(
-                      //     padding: EdgeInsets.all(10.0),
-                      //     alignment: Alignment.centerLeft,
-                      //     child: IconButton(
-                      //         onPressed: () {
-                      //           Navigator.pop(context);
-                      //         },
-                      //         icon: Icon(
-                      //           Icons.arrow_back_ios,
-                      //           color: Color.fromRGBO(102, 51, 204, 1),
-                      //         ))),
+                      Container(
+                          padding: EdgeInsets.all(10.0),
+                          margin: EdgeInsets.only(left: 10.0),
+                          alignment: Alignment.centerLeft,
+                          child: GestureDetector(
+                              onTap: () {
+                                if (Navigator.canPop(context)) Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                color: Navigator.canPop(context) ? Color.fromRGBO(102, 51, 204, 1) : Colors.transparent,
+                              ))),
                       Container(
                         margin: EdgeInsets.only(top: height * 0.1),
                         child: Text(
                           "LANGUAGE",
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                         ),
                       ),
                       Container(
@@ -102,7 +104,10 @@ class _LanguageSetScreenState extends State<LanguageSetScreen> {
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
                             child: Text("${languageConfirm[configProvider.activeLanguage()]}", style: TextStyle(fontSize: 16)),
                             onPressed: () {
-                              configProvider.changeLanguage(languageCode).then((value) {Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyIntroductionScreen()));});
+                              configProvider.changeLanguage(languageCode).then((value) async {
+                                await userPreferences!.setBool("langSetDone", true);
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyIntroductionScreen()));
+                              });
                             }),
                       ),
                     ],

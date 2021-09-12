@@ -11,7 +11,6 @@ import 'package:workoutnote/ui/widgets/work%20out%20%20note%20card.dart';
 import 'package:workoutnote/ui/widgets/workout%20%20create%20card.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -75,6 +74,13 @@ class _HomeScreenState extends State<HomeScreen> {
             else if (index == 1) {
               return CreateWorkOutCard(widget.width, widget.height, navProvider.workOuts, navProvider.calendarWorkouts);
             } else if (index == 2) {
+              if(navProvider.workOuts.isEmpty)
+                return  Center(child: Container(
+
+                    margin:  EdgeInsets.all(10.0),
+
+                    child: Text("${emptyWorkouts[configProvider.activeLanguage()]}",  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0, color: Color.fromRGBO(102, 51, 204, 1)) )));
+              else
               return Container(
                   margin: EdgeInsets.only(left: 20.0),
                   child: Text(
@@ -90,12 +96,5 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
-  void _onRefresh(){
 
-
-  }
-
-  void  _oneLoading(){
-
-  }
 }

@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/ui/language%20%20change%20screen.dart';
-import 'package:workoutnote/ui/nav%20controller.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
@@ -18,7 +16,6 @@ class VerificationScreen extends StatefulWidget {
 
 class _VerificationScreenState extends State<VerificationScreen> {
   var _codeController = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +33,15 @@ class _VerificationScreenState extends State<VerificationScreen> {
                  height: height,
                   child: Column(
                     children: [
-                      // Container(
-                      //     padding: EdgeInsets.all(10.0),
-                      //     alignment: Alignment.centerLeft,
-                      //     child: IconButton(onPressed: (){
-                      //       Navigator.pop(context);
-                      //
-                      //     }, icon: Icon(Icons.arrow_back_ios,  color: Color.fromRGBO(102, 51, 204, 1),))),
+                      Container(
+                          padding: EdgeInsets.all(10.0),
+                          margin:EdgeInsets.only(left: 10.0),
+                          alignment: Alignment.centerLeft,
+                          child: GestureDetector(onTap: (){
+                            if(Navigator.canPop(context))
+                            Navigator.pop(context);
+
+                          }, child : Icon(Icons.arrow_back_ios,  color: Navigator.canPop(context)? Color.fromRGBO(102, 51, 204, 1):Colors.transparent,))),
                       Container(
                         margin: EdgeInsets.only(top: height * 0.1),
                         child: Text(

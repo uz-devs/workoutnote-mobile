@@ -11,7 +11,6 @@ import 'package:workoutnote/utils/strings.dart';
 
 class CalendarScreen extends StatefulWidget {
   final height;
-
   CalendarScreen(this.height);
 
   @override
@@ -69,7 +68,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
             return Container(
               color: Colors.white,
               padding: EdgeInsets.all(10.0),
-              child: TableCalendar(
+              child:
+
+
+
+              TableCalendar(
+                availableGestures: AvailableGestures.horizontalSwipe,
+
                 headerStyle: HeaderStyle(headerPadding: EdgeInsets.all(15.0), titleCentered: false, titleTextFormatter: (date, locale) => DateFormat.MMMM(locale).format(date), rightChevronMargin: EdgeInsets.only(right: 0.44 * width!), formatButtonVisible: false, leftChevronVisible: false, rightChevronIcon: SvgPicture.asset("assets/icons/expand.svg")),
                 daysOfWeekStyle: DaysOfWeekStyle(weekendStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold), weekdayStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold)),
                 calendarStyle: CalendarStyle(
@@ -176,18 +181,31 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       "${note[configProvider.activeLanguage()]}",
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                     )),
-                Container(
-                    height: 70,
-                    width: double.infinity,
-                    margin: EdgeInsets.only(left: 20.0, right: 20, top: 10.0, bottom: 20),
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(240, 240, 240, 1),
-                      border: Border.all(
-                        color: Color.fromRGBO(240, 240, 240, 1),
-                      ),
+                GestureDetector(
+                  onTap: (){
 
-                    ),
-                    child: Text("dummy note"))
+                  },
+                  child: Container(
+                      height: 70,
+                      width: double.infinity,
+                      padding: EdgeInsets.only(right:  5.0, left: 5.0),
+                      margin: EdgeInsets.only(left: 20.0, right: 20, top: 10.0, bottom: 20),
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(240, 240, 240, 1),
+                        border: Border.all(
+                          color: Color.fromRGBO(240, 240, 240, 1),
+                        ),
+
+                      ),
+                      child: Scrollbar(
+                        radius: Radius.circular(10.0),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Text("dummy noteThe Wii was the first Nintendo console to directly support Internet connectivity, supporting both online games and for digital distribution of games and media ..."
+                              ""),
+                        ),
+                      )),
+                )
               ])
             );
           }

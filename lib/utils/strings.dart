@@ -9,7 +9,7 @@ const String japanese = "日本語";
 Map<String, String> welcomeMessage = {english: "Hello", korean: "안녕하세요"};
 Map<String, String> repeat = {english: "Repeat", korean: "반복하기"};
 Map<String, String> loginText = {english: "LOG IN", korean: "로그인"};
-Map<String, String> signUpText = {english: "SIGN UP", korean: "화원 가입"};
+Map<String, String> signUpText = {english: "SIGN UP", korean: "회원 가입"};
 Map<String, String> verificationText = {english: "Verification", korean: "화원 가입"};
 Map<String, String> workOutSuccess = {english: "Workout has been created  successfully", korean: "워크아웃이 성공적으로 작성되었습니다."};
 Map<String, String> title = {english: "Title", korean: "제목"};
@@ -78,6 +78,8 @@ Map<String, String> enterNumber = {english: "Enter", korean: "작접  입력"};
 Map<String, String> emptyTextField = {english: "Input cannot be empty!", korean: "입력은 비워 둘 수 없습니다!"};
 Map<String, String> agree = {english: "Agree: Your data will be released and used to calculate the standard.", korean: "동의: 귀하의 데이터가 공개되어 표준을 계산하는대 사용됩니다."};
 Map<String, String> disagree = {english: "Disagree: Your data is not used to calculate pojun.", korean: "비동의: 포준을 계산하는대 귀하의 데이터를 사용되지 않습니다."};
+Map<String, String> emptyWorkouts = {english: "No workouts to show!", korean: "운동 세션이  없습니다!"};
+
 
 //One Rep Max
 Map<String, String> oneRepMax1 = {english: "One Rep Max Calculator", korean: "One Rep Max 계산기"};

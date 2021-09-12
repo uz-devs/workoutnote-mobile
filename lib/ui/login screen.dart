@@ -16,7 +16,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    var configProvider = Provider.of<ConfigProvider>(context, listen: true);
+    var configProvider = Provider.of<ConfigProvider>(context);
 
     return Scaffold(
       body: SafeArea(
@@ -30,8 +30,14 @@ class LoginScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        padding: EdgeInsets.all(10.0),
-                      ),
+                          padding: EdgeInsets.all(10.0),
+                          alignment: Alignment.centerLeft,
+                          child: GestureDetector (
+
+                              child : Icon(
+                                Icons.arrow_back_ios,
+                                color: Colors.transparent,
+                              ))),
                       Container(
                         margin: EdgeInsets.only(top: height * 0.1),
                         child: Text(
@@ -50,7 +56,9 @@ class LoginScreen extends StatelessWidget {
                         margin: EdgeInsets.only(left: 15, right: 15, bottom: 10),
                         child: TextFormField(
                           controller: _emailController,
+                          cursorColor: Color.fromRGBO(102, 51, 204, 1),
                           decoration: InputDecoration(
+
                             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(25), borderSide: BorderSide(width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
                             hintText: "E-MAIL/PHONE NUMBER",
                             hintStyle: TextStyle(color: Colors.grey, fontSize: 14.0),
@@ -77,6 +85,8 @@ class LoginScreen extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(left: 15, right: 15, bottom: 10),
                         child: TextFormField(
+                          cursorColor: Color.fromRGBO(102, 51, 204, 1),
+
                           obscureText: true,
                           controller: _passwordController,
                           decoration: InputDecoration(
@@ -145,7 +155,7 @@ class LoginScreen extends StatelessWidget {
                                   }
                                 },
                                 child: Text(
-                                  "비밀번호 찾기 | 이이디 찾기",
+                                  "비밀번호 찾기",
                                   style: TextStyle(color: Colors.grey, fontSize: 12.0),
                                 ),
                               ),

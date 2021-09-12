@@ -32,7 +32,8 @@ const String removeWorkOut = "/api/remove_workout";
 const String updateLift = "api/update_lift";
 const String insert_lift = "/api/insert_lift";
 const String deleteLift = "/api/remove_lift";
-
+const String setNote  = "/api/set_note";
+const String fetchNote  = "/api/fetch_note";
 //network  state codes
 const int LOADING = 0;
 const int TIMEOUT_EXCEPTION = 1;

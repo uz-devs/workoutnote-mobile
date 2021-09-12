@@ -323,9 +323,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                               onPressed: () {
                                 mainScreenProvider
                                     .deleteWorkoutSession(
-                                        userPreferences!
-                                                .getString("sessionKey") ??
-                                            "",
+                                        userPreferences!.getString("sessionKey") ?? "",
                                         widget.workout.id ?? -1)
                                     .then((value) {
                                   if (value) {

@@ -32,18 +32,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Container(
                 height: height,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
+
                   children: [
-                    // Container(
-                    //     padding: EdgeInsets.all(10.0),
-                    //     alignment: Alignment.centerLeft,
-                    //     child: IconButton(
-                    //         onPressed: () {
-                    //           Navigator.pop(context);
-                    //         },
-                    //         icon: Icon(
-                    //           Icons.arrow_back_ios,
-                    //           color: Color.fromRGBO(102, 51, 204, 1),
-                    //         ))),
+                    Container(
+                        padding: EdgeInsets.all(10.0),
+                        margin: EdgeInsets.only(left: 10.0),
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector (
+                            onTap: () {
+                              if(Navigator.canPop(context))
+                              Navigator.pop(context);
+                            },
+                            child : Icon(
+                              Icons.arrow_back_ios,
+                              color: Navigator.canPop(context) ?Color.fromRGBO(102, 51, 204, 1):Colors.transparent,
+                            ))),
                     Container(
                       margin: EdgeInsets.only(top: height * 0.1),
                       child: Text(
@@ -153,10 +157,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           color: Color.fromRGBO(102, 51, 204, 1),
                           borderRadius: const BorderRadius.all(Radius.circular(120)),
                           child: Text("${signUpText['한국어']}",  style:  TextStyle(fontSize: 16)),
-                          onPressed: () {
+                          onPressed: ()  {
                             if (_emailController.text.isNotEmpty && _nameController.text.isNotEmpty && _passwordController.text.isNotEmpty)
-                              user.sendVerificationCode(_emailController.text, _nameController.text, _passwordController.text).then((value) {
+                              user.sendVerificationCode(_emailController.text, _nameController.text, _passwordController.text).then((value) async {
                                 if (value) {
+                                 await  userPreferences!.setBool("signUpDone",  true);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen()));
                                 } else {
                                   showToast("${signUpError[configProvider.activeLanguage()]}");

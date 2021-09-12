@@ -37,6 +37,9 @@ class CreateWorkoutProvider extends ChangeNotifier {
       List<WorkOut> workOuts,
       List<WorkOut> calendarWorkouts,
       ConfigProvider configProvider) async {
+
+
+    print("create started!");
     bool canCreateSession = false;
     for (int i = 0; i < _lifts.length; i++) {
       if (_lifts[i].isSelected) {
@@ -79,6 +82,9 @@ class CreateWorkoutProvider extends ChangeNotifier {
           }
           if (count ==
               _lifts.where((element) => element.isSelected == true).length) {
+
+
+
             var workout =
                 WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
             workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp,

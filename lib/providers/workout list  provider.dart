@@ -116,16 +116,22 @@ class MainScreenProvider extends ChangeNotifier {
   }
 
   Future<bool> deleteWorkoutSession(String sessionKey, int id) async {
+    print("start");
     try {
       var response = await WebServices.removeWorkout(sessionKey, id);
 
       if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
         int timestamp = 0;
         bool isFavorite = false;
+        print("1");
         if (requestDone3) {
+          print("2");
+
           timestamp = calendarWorkouts.where((element) => element.id == id).single.timestamp ?? 0;
           isFavorite = calendarWorkouts.where((element) => element.id == id).single.isFavorite;
         } else {
+          print("3");
+
           timestamp = workOuts.where((element) => element.id == id).single.timestamp ?? 0;
           isFavorite = workOuts.where((element) => element.id == id).single.isFavorite;
         }

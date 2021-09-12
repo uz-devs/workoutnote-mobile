@@ -1,15 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
-import 'package:splash_screen_view/SplashScreenView.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/create%20workout%20provider.dart';
-import 'package:workoutnote/providers/edit%20workout%20%20provider.dart';
 import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
 import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
-import 'package:workoutnote/ui/login%20screen.dart';
+import 'package:workoutnote/providers/edit%20workout%20%20provider.dart';
+import 'package:workoutnote/providers/create%20workout%20provider.dart';
+import 'package:workoutnote/providers/config%20provider.dart';
+import 'package:splash_screen_view/SplashScreenView.dart';
+import 'package:workoutnote/ui/language%20set%20screen.dart';
 import 'package:workoutnote/ui/nav%20controller.dart';
+import 'package:workoutnote/ui/login%20screen.dart';
+import 'package:provider/single_child_widget.dart';
+import 'package:workoutnote/ui/verification%20screen.dart';
 import 'package:workoutnote/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +43,30 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-  
+
+
+
+
+    Widget screen;
+
+    if(userPreferences!.getString("sessionKey") == null){
+      if(userPreferences!.getBool("signUpDone")??false){
+        screen  = VerificationScreen();
+      }
+      else
+        screen = LoginScreen();
+    }
+    else {
+      if(userPreferences!.getBool("langSetDone")??false){
+        print("3");
+        screen = NavController();
+      }
+      else {
+        print("4");
+
+        screen = LanguageSetScreen();
+      }
+    }
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -51,9 +76,7 @@ class MyApp extends StatelessWidget {
           focusColor: Color.fromRGBO(102, 51, 204, 1),
         ),
         home: SplashScreenView(
-          navigateRoute: userPreferences!.getString("sessionKey") == null
-              ? LoginScreen()
-              : NavController(),
+          navigateRoute:screen,
           duration: 3000,
           imageSize: 100,
           imageSrc: "assets/images/splash_screen.png",
