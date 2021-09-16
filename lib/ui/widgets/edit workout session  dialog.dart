@@ -90,7 +90,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                         margin: EdgeInsets.only(left: 20),
                         padding: EdgeInsets.only(top: 10),
                         child: Text(
-                          "${DateFormat("yyyy.MM.dd").format(DateTime.now())}. ${DateFormat("EEEE").format(DateTime.now()).substring(0, 3).toUpperCase()}",
+                          "${DateFormat("yyyy.MM.dd",  configProvider.activeLanguage() == english?"en_EN":"ko_KR",).format(DateTime.now())}. ${DateFormat("EEEE", configProvider.activeLanguage() == english?"en_EN":"ko_KR",).format(DateTime.now()).substring(0, 3).toUpperCase()}",
                           style: TextStyle(fontSize: 12, color: Colors.grey),
                         )),
                     Container(
@@ -296,7 +296,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
       if (mode == 2)
         editWorkoutProvider.unselectedExercise = value as Exercise;
       else {
-        //TODO ..
+
         editWorkoutProvider.updateLiftExercise(
             value as Exercise, existingLiftIndex);
       }

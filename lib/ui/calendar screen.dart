@@ -65,6 +65,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget _buildItemsList(List<WorkOut> showWorkOuts) {
+
     return SingleChildScrollView(
       reverse: true,
       child: ListView.builder(
@@ -77,6 +78,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 color: Colors.white,
                 padding: EdgeInsets.all(10.0),
                 child: TableCalendar(
+                  locale:  configProvider.activeLanguage() == english?"en_EN":"ko_KR",
                   availableGestures: AvailableGestures.horizontalSwipe,
                   headerStyle: HeaderStyle(headerPadding: EdgeInsets.all(15.0), titleCentered: false, titleTextFormatter: (date, locale) => DateFormat.MMMM(locale).format(date), rightChevronMargin: EdgeInsets.only(right: 0.44 * width!), formatButtonVisible: false, leftChevronVisible: false, rightChevronIcon: SvgPicture.asset("assets/icons/expand.svg")),
                   daysOfWeekStyle: DaysOfWeekStyle(weekendStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold), weekdayStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold)),
@@ -193,7 +195,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             Container(
                               margin: EdgeInsets.only(right: 20.0),
                               child: InkWell(
-                                child: Icon(Icons.save, color: Color.fromRGBO(102, 51, 204, 1)),
+
+                                child: Icon(Icons.save,  color: Color.fromRGBO(102, 51, 204, 1)),
                                 onTap: ()  {
                                   calendarProvider.saveNote( calendarProvider.selectedDate!.millisecondsSinceEpoch, calendarProvider.noteController.text).then((value) {
                                     if(value){
@@ -241,7 +244,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               return Container(
                   margin: EdgeInsets.only(left: 20.0, top: 10.0),
                   child: Text(
-                    "${DateFormat("yyyy.MM.dd").format(calendarProvider.selectedDate ?? DateTime.now())}, ${DateFormat("EEEE").format(calendarProvider.selectedDate ?? DateTime.now()).substring(0, 3).toUpperCase()}",
+                    "${DateFormat("yyyy.MM.dd",  configProvider.activeLanguage() == english?"en_EN":"ko_KR",).format(calendarProvider.selectedDate ?? DateTime.now())}, ${DateFormat("EEEE", configProvider.activeLanguage() == english?"en_EN":"ko_KR",).format(calendarProvider.selectedDate ?? DateTime.now()).substring(0, 3).toUpperCase()}",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                   ));
             } else {

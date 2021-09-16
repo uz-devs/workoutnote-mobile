@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return Container(
                   margin: EdgeInsets.only(left: 20.0),
                   child: Text(
-                    "${DateFormat("yyyy.MM.dd").format(DateTime.now())}, ${DateFormat("EEEE").format(DateTime.now()).substring(0, 3).toUpperCase()}",
+                    "${DateFormat("yyyy.MM.dd", configProvider.activeLanguage() == english?"en_EN":"ko_KR",).format(DateTime.now(),)}, ${DateFormat("EEEE",  configProvider.activeLanguage() == english?"en_EN":"ko_KR",).format(DateTime.now()).substring(0, 3).toUpperCase()}",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0, color: Color.fromRGBO(102, 51, 204, 1)),
                   ));
             } else {

@@ -1,3 +1,5 @@
+
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
 import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
 import 'package:workoutnote/providers/edit%20workout%20%20provider.dart';
@@ -16,6 +18,7 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initPreferences();
+  await initializeDateFormatting("ko_KR", null);
 
   final List<SingleChildWidget> providers = [
     ChangeNotifierProvider(
@@ -43,12 +46,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-
-
-
     Widget screen;
-
     if(userPreferences!.getString("sessionKey") == null){
       if(userPreferences!.getBool("signUpDone")??false){
         screen  = VerificationScreen();
@@ -58,7 +56,7 @@ class MyApp extends StatelessWidget {
     }
     else {
       if(userPreferences!.getBool("langSetDone")??false){
-        print("3");
+
         screen = NavController();
       }
       else {
