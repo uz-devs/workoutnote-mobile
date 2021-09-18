@@ -20,6 +20,7 @@ class MainScreenProvider extends ChangeNotifier {
   bool requestDone3 = false;
   List<String> workOutDates = [];
   DateTime? selectedDate = DateTime.now();
+  var currentMonthIndex = DateTime.now().month - 1;
   var noteController = TextEditingController();
 
   //endregion
@@ -303,6 +304,13 @@ class MainScreenProvider extends ChangeNotifier {
     for (int i = 0; i < calendarWorkouts.length; i++) {
       workOutDates.add(toDate(calendarWorkouts[i].timestamp ?? 0));
     }
+  }
+
+
+  void onCalendarPageRefereshed(DateTime  dateTime){
+    selectedDate = dateTime;
+     currentMonthIndex =  dateTime.month - 1;;
+     update();
   }
 
   void update() {

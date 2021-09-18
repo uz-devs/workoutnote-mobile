@@ -108,14 +108,15 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                 return Container(
                     margin: EdgeInsets.only(left: 20.0),
                     padding: EdgeInsets.only(bottom: 10.0),
-                    child: Text(
-                      "${widget.subtitle}",
-                      style: TextStyle(fontSize: 14),
+                    child: Center(
+                      child: Text(
+                        "${widget.subtitle}",
+                        style: TextStyle(fontSize: 14),
+                      ),
                     ));
               else if (index == 3)
                 return _buildCalculationWidget();
               else if (index == 4) {
-                print("Laaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                 return Container(
                   margin: EdgeInsets.only(left: 20.0),
                   child: Text(

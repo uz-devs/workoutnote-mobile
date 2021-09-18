@@ -21,13 +21,11 @@ class CalendarScreen extends StatefulWidget {
 
 class _CalendarScreenState extends State<CalendarScreen> {
   List<String>? years = ["January", "February", "March", "April",  "May", "June", "July", "August", "September", "October", "November", "December"];
+
   var calendarProvider = MainScreenProvider();
   var configProvider = ConfigProvider();
   var decoration1 = BoxDecoration();
-  var decoration2 = BoxDecoration(
-    border: Border.all(
-      color: Color.fromRGBO(102, 51, 204, 1),
-    ),
+  var decoration2 = BoxDecoration(border: Border.all(color: Color.fromRGBO(102, 51, 204, 1),),
     borderRadius: BorderRadius.circular(50.0),
   );
   var decoration3 = BoxDecoration(
@@ -56,13 +54,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     List<WorkOut> showWorkOuts = [];
+
     calendarProvider.updateWorkoutDates(calendarProvider.calendarWorkouts);
+
     for (int i = 0; i < calendarProvider.calendarWorkouts.length; i++) {
       if (calendarProvider.workOutDates[i] == "${calendarProvider.selectedDate!.year}.${calendarProvider.selectedDate!.month}.${calendarProvider.selectedDate!.day}") {
         showWorkOuts.add(calendarProvider.calendarWorkouts[i]);
       }
     }
-
     return Container(child: _buildItemsList(showWorkOuts));
   }
 
@@ -79,6 +78,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 color: Colors.white,
                 padding: EdgeInsets.all(10.0),
                 child: TableCalendar(
+                  onPageChanged: (v){
+                      calendarProvider.onCalendarPageRefereshed(v);
+                    },
+                  pageAnimationEnabled: true ,
                   locale: configProvider.activeLanguage() == english ? "en_EN" : "ko_KR",
                   availableGestures: AvailableGestures.horizontalSwipe,
                   headerStyle: HeaderStyle(
@@ -91,11 +94,37 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     leftChevronIcon: DropdownButton(
                       icon: Container(margin: EdgeInsets.only(left: 15.0), child: SvgPicture.asset("assets/icons/expand.svg")),
                       underline: SizedBox(),
-                      value: years![6],
+                      value: years![calendarProvider.currentMonthIndex],
                       hint: Text("${years![8]}"),
                       onChanged: (item) {
+
+
+
+                        print("item: ${years!.indexOf(item.toString())}");
                         setState(() {
-                          // configProvider.selectedYear = item.toString();
+
+
+                          if(years!.indexOf(item.toString()) <  calendarProvider.currentMonthIndex) {
+                            calendarProvider.selectedDate = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch - (years!.indexOf(item.toString()) + 1) * 2629800000);
+
+                            print("hey");
+                            print(DateTime.now().millisecondsSinceEpoch - (years!.indexOf(item.toString()) + 1) * 2.628e+9);
+
+                          }
+
+                          else
+                            {
+                              calendarProvider.selectedDate = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch +
+                                (years!.indexOf(item.toString())+1) *2629800000);
+
+
+                              print("hey");
+
+                              print(DateTime.now().millisecondsSinceEpoch - (years!.indexOf(item.toString()) + 1) * 2.628e+9);
+
+
+                            }
+                          calendarProvider.currentMonthIndex = years!.indexOf(item.toString());
                         });
                       },
                       items: years!.map((String year) {
