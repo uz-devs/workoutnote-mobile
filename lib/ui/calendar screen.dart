@@ -20,6 +20,7 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
+  List<String>? years = ["January", "February", "March", "April",  "May", "June", "July", "August", "September", "October", "November", "December"];
   var calendarProvider = MainScreenProvider();
   var configProvider = ConfigProvider();
   var decoration1 = BoxDecoration();
@@ -36,6 +37,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
     ),
     borderRadius: BorderRadius.circular(50.0),
   );
+  var decoration4 = BoxDecoration(
+
+      color: Color.fromRGBO(245, 245, 245, 1));
   double? width;
 
   @override
@@ -50,8 +54,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("build is being  called!!!");
-
     width = MediaQuery.of(context).size.width;
     List<WorkOut> showWorkOuts = [];
     calendarProvider.updateWorkoutDates(calendarProvider.calendarWorkouts);
@@ -65,11 +67,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget _buildItemsList(List<WorkOut> showWorkOuts) {
-
     return SingleChildScrollView(
       reverse: true,
       child: ListView.builder(
-        shrinkWrap: true,
+          shrinkWrap: true,
           physics: ScrollPhysics(),
           itemCount: showWorkOuts.isNotEmpty ? showWorkOuts.length + 3 : 3,
           itemBuilder: (ctx, index) {
@@ -78,10 +79,37 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 color: Colors.white,
                 padding: EdgeInsets.all(10.0),
                 child: TableCalendar(
-                  locale:  configProvider.activeLanguage() == english?"en_EN":"ko_KR",
+                  locale: configProvider.activeLanguage() == english ? "en_EN" : "ko_KR",
                   availableGestures: AvailableGestures.horizontalSwipe,
-                  headerStyle: HeaderStyle(headerPadding: EdgeInsets.all(15.0), titleCentered: false, titleTextFormatter: (date, locale) => DateFormat.MMMM(locale).format(date), rightChevronMargin: EdgeInsets.only(right: 0.44 * width!), formatButtonVisible: false, leftChevronVisible: false, rightChevronIcon: SvgPicture.asset("assets/icons/expand.svg")),
-                  daysOfWeekStyle: DaysOfWeekStyle(weekendStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold), weekdayStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontWeight: FontWeight.bold)),
+                  headerStyle: HeaderStyle(
+                    titleCentered: false,
+                    titleTextStyle: TextStyle(color: Colors.white),
+                    titleTextFormatter: (date, locale) => DateFormat.MMMM(locale).format(date),
+                    formatButtonVisible: false,
+                    rightChevronVisible: false,
+                    leftChevronVisible: true,
+                    leftChevronIcon: DropdownButton(
+                      icon: Container(margin: EdgeInsets.only(left: 15.0), child: SvgPicture.asset("assets/icons/expand.svg")),
+                      underline: SizedBox(),
+                      value: years![6],
+                      hint: Text("${years![8]}"),
+                      onChanged: (item) {
+                        setState(() {
+                          // configProvider.selectedYear = item.toString();
+                        });
+                      },
+                      items: years!.map((String year) {
+                        return DropdownMenuItem<String>(value: year, child: Text("$year"));
+                      }).toList(),
+                    ),
+                  ),
+                  daysOfWeekStyle: DaysOfWeekStyle(
+
+
+
+                   //  decoration: decoration4,
+                      weekendStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontSize: 13, fontWeight: FontWeight.bold),
+                      weekdayStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontSize: 12, fontWeight: FontWeight.bold)),
                   calendarStyle: CalendarStyle(
                     outsideDaysVisible: false,
                     todayTextStyle: TextStyle(color: Colors.black),
@@ -154,7 +182,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     },
                   ),
                   onDaySelected: (selectedDay, focusDay) async {
-                    print("eeeeee");
                     calendarProvider.fetchSingleNote(selectedDay.millisecondsSinceEpoch).then((value) {
                       setState(() {
                         calendarProvider.noteController.text = value;
@@ -195,11 +222,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             Container(
                               margin: EdgeInsets.only(right: 20.0),
                               child: InkWell(
-
-                                child: Icon(Icons.save,  color: Color.fromRGBO(102, 51, 204, 1)),
-                                onTap: ()  {
-                                  calendarProvider.saveNote( calendarProvider.selectedDate!.millisecondsSinceEpoch, calendarProvider.noteController.text).then((value) {
-                                    if(value){
+                                child: Icon(Icons.save, color: Color.fromRGBO(102, 51, 204, 1)),
+                                onTap: () {
+                                  calendarProvider.saveNote(calendarProvider.selectedDate!.millisecondsSinceEpoch, calendarProvider.noteController.text).then((value) {
+                                    if (value) {
                                       showToast("Save  was successfull");
                                     }
                                   });
@@ -244,7 +270,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
               return Container(
                   margin: EdgeInsets.only(left: 20.0, top: 10.0),
                   child: Text(
-                    "${DateFormat("yyyy.MM.dd",  configProvider.activeLanguage() == english?"en_EN":"ko_KR",).format(calendarProvider.selectedDate ?? DateTime.now())}, ${DateFormat("EEEE", configProvider.activeLanguage() == english?"en_EN":"ko_KR",).format(calendarProvider.selectedDate ?? DateTime.now()).substring(0, 3).toUpperCase()}",
+                    "${DateFormat(
+                      "yyyy.MM.dd",
+                      configProvider.activeLanguage() == english ? "en_EN" : "ko_KR",
+                    ).format(calendarProvider.selectedDate ?? DateTime.now())}, ${DateFormat(
+                      "EEEE",
+                      configProvider.activeLanguage() == english ? "en_EN" : "ko_KR",
+                    ).format(calendarProvider.selectedDate ?? DateTime.now()).substring(0, 3).toUpperCase()}",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                   ));
             } else {

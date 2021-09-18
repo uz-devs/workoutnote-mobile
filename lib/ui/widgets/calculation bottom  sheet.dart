@@ -67,12 +67,16 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
 
     var count;
 
-    if (widget.mode == 1 || widget.mode == 2) {
+    if (widget.mode == 1) {
+      count = 13;
+    }
+    else if  (widget.mode == 2){
       count = 12 + currentPlateBarbellKG.length;
-    } else {
+
+    }
+    else {
       count = 6;
     }
-    print(count);
     return Container(
         margin: EdgeInsets.only(top: 20),
         height: widget.height,
@@ -111,7 +115,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
               else if (index == 3)
                 return _buildCalculationWidget();
               else if (index == 4) {
-                print(index);
+                print("Laaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                 return Container(
                   margin: EdgeInsets.only(left: 20.0),
                   child: Text(
@@ -119,7 +123,10 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                     style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
                 );
-              } else if ((index > 4 && index < count - 7) || (index == 5 && widget.mode == 4)) {
+              } else if ((index > 4 && index < count - 7) || (index == 5 && widget.mode == 4) || (index == 5 && widget.mode == 1)) {
+
+                print("current mode is ${widget.mode}");
+
                 if (widget.mode == 1)
                   return Container(
                     padding: EdgeInsets.all(15.0),
@@ -180,6 +187,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                 else
                   return Container();
               } else if (index == count - 7) {
+                print("heeeee");
                 if (widget.mode == 1)
                   return Container(
                     margin: EdgeInsets.all(15),
@@ -218,10 +226,16 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                   return Container();
               }
               else {
-                index = index - (6 + currentPlateBarbellKG.length);
-                if (widget.mode == 1)
+
+
+
+                if (widget.mode == 1) {
+                  index = index  - 7;
+                  print("index  ${index}");
                   return _buildCustomRow(list[index].keys.single, list[index].values.single, int.parse(textController2.text.isNotEmpty ? textController2.text : "0"), index);
+                }
                 else if (widget.mode == 2) {
+                  index = index - (6 + currentPlateBarbellKG.length);
                   return _buildCustomRow(list[index].keys.single, list[index].values.single, -1, index);
                 } else
                   return Container();

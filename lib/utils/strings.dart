@@ -1,10 +1,5 @@
 const String korean = "한국어";
 const String english = "English";
-const String french = "Francais";
-const String russian = "Русский";
-const String chinese1 = "汉语";
-const String chinese2 = "漢語";
-const String japanese = "日本語";
 
 Map<String, String> welcomeMessage = {english: "Hello", korean: "안녕하세요"};
 Map<String, String> repeat = {english: "Repeat", korean: "반복하기"};

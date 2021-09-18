@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:workoutnote/models/language%20model.dart';
 import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:workoutnote/utils/strings.dart';
-import 'package:workoutnote/utils/utils.dart';
 
 class LanguageChangeScreen extends StatefulWidget {
   const LanguageChangeScreen();
@@ -14,7 +13,7 @@ class LanguageChangeScreen extends StatefulWidget {
 
 class _LanguageChangeScreenState extends State<LanguageChangeScreen> {
   String item = english;
-  List<Language> languages = [Language(english, 1), Language(korean, 2), Language(french, 3), Language(russian, 4), Language(chinese1, 5), Language(chinese2, 6), Language(japanese, 7)];
+  List<Language> languages = [Language(english, 1), Language(korean, 2)];
 
   @override
   Widget build(BuildContext context) {
