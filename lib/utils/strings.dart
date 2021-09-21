@@ -75,7 +75,7 @@ Map<String, String> agree = {english: "Agree: Your data will be released and use
 Map<String, String> disagree = {english: "Disagree: Your data is not used to calculate pojun.", korean: "비동의: 포준을 계산하는대 귀하의 데이터를 사용되지 않습니다."};
 Map<String, String> emptyWorkouts = {english: "No workouts to show!", korean: "운동 세션이  없습니다!"};
 Map<String, String> accept = {english: "accept", korean: "동의"};
-
+Map<String , String> noteSaveSuccess = {english: "Note has been saved!",  korean : "노트가 저장되었습니다!"};
 
 //One Rep Max
 Map<String, String> oneRepMax1 = {english: "One Rep Max Calculator", korean: "One Rep Max 계산기"};
@@ -112,21 +112,5 @@ List<Map<String, String>> wilksGender = [
 
 
 
-/*
-List<Map<String, String>> months = [
-  {english: "January", korean: "1 월"},
-  {english: "February", korean: " 월"},
-  {english: "March", korean: "3 월"},
-  {english: "April", korean: "4 월"},
-  {english: "May", korean: "5 월"},
-  {english: "June", korean: "6 월"},
-  {english: "July", korean: "7 월"},
-  {english: "August", korean: "8 월"},
-  {english: "September", korean: "9 월"},
-  {english: "October", korean: "10 월"},
-  {english: "November", korean: "11 월"},
-  {english: "December", korean: "12 월"},
-];
 
 
- */

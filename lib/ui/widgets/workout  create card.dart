@@ -14,6 +14,7 @@ import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
+import '../test.dart';
 import 'exercises  search dialog.dart';
 import 'favorite workouts dialog.dart';
 
@@ -219,7 +220,13 @@ class CreateWorkOutCard extends StatelessWidget {
                   ),
                   color: Color.fromRGBO(102, 51, 204, 1),
                   onPressed: () async {
-                    await _showFavoriteWorkoutsDialog(context, configProvider, exProvider);
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Test()),
+                    );
+
+                    // await _showFavoriteWorkoutsDialog(context, configProvider, exProvider);
                   },
                   textColor: Colors.white,
                   child: Text(
@@ -265,6 +272,7 @@ class CreateWorkOutCard extends StatelessWidget {
                     margin: EdgeInsets.only(left: 15.0),
                     width: 100,
                     child: MaterialButton(
+
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(32.0),
                       ),

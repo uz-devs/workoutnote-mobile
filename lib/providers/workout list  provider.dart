@@ -7,14 +7,17 @@ import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/providers/create%20workout%20provider.dart';
 import 'package:workoutnote/services/network%20%20service.dart';
+import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
+
+import 'config provider.dart';
 
 class MainScreenProvider extends ChangeNotifier {
   //region vars
   List<WorkOut> workOuts = [];
   List<WorkOut> calendarWorkouts = [];
   List<WorkOut> favoriteWorkOuts = [];
-  List<Map<String , String>> notes = [];
+  List<Map<String, String>> notes = [];
   bool requestDone1 = false;
   bool requestDone2 = false;
   bool requestDone3 = false;
@@ -152,39 +155,25 @@ class MainScreenProvider extends ChangeNotifier {
     }
   }
 
-  Future<String> fetchSingleNote( int timestamp) async {
-
-
-    print("fetching single note");
-    print("timestamp: ${timestamp}");
-
-
-    var sessionKey = userPreferences!.getString("sessionKey") ?? "";
-
+  Future<void> fetchSingleNote(int timestamp) async {
+    var sessionKey = userPreferences!.getString('sessionKey') ?? '';
     try {
-
       var response = await WebServices.fetchCalendarNote(sessionKey, timestamp);
 
-      print(response.statusCode);
-      if(response.statusCode == 200){
-
-        print(response.body);
+      if (response.statusCode == 200) {
         String currentNote = jsonDecode(utf8.decode(response.bodyBytes))["note"];
-        notes.add({toDate(timestamp): jsonDecode(utf8.decode(response.bodyBytes))["note"]});
+        noteController.text = currentNote;
 
-        return  currentNote;
-      }
-      return  "";
-    }
-    catch(e){
+
+        print("Noooooteee: ${noteController.text}");
+        notifyListeners();
+        }
+    } catch (e) {
       print(e);
-      return  "";
-
     }
   }
 
-  Future<bool> saveNote( int timestamp, String note) async {
-
+  Future<bool> saveNote(int timestamp, String note) async {
     print("timestamp: ${timestamp}");
     var sessionKey = userPreferences!.getString("sessionKey") ?? "";
 
@@ -299,6 +288,9 @@ class MainScreenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+
+
+
   void updateWorkoutDates(List<WorkOut> workouts) {
     workOutDates.clear();
     for (int i = 0; i < calendarWorkouts.length; i++) {
@@ -306,11 +298,26 @@ class MainScreenProvider extends ChangeNotifier {
     }
   }
 
+  void onCalendarDropDownButtonValueChanged(String item, List<String>? years_en, List<String>? years_kr, ConfigProvider configProvider) {
+    var currentYear = DateTime.now().year;
+    String selectedMonthTime = '';
+    if (configProvider.activeLanguage() == english) {
+      var month = years_en!.indexOf(item.toString()) + 1 >= 10 ? '${years_en.indexOf(item.toString()) + 1}' : '0${years_en.indexOf(item.toString()) + 1}';
+      selectedMonthTime = '${currentYear}-${month}-01 00:00:00.000';
+    } else {
+      var month = years_kr!.indexOf(item.toString()) + 1 >= 10 ? '${years_kr.indexOf(item.toString()) + 1}' : '0${years_kr.indexOf(item.toString()) + 1}';
+      selectedMonthTime = '${currentYear}-${month}-01 00:00:00.000';
+    }
+    selectedDate = DateTime.parse(selectedMonthTime);
+    currentMonthIndex = configProvider.activeLanguage() == english ? years_en!.indexOf(item.toString()) : years_kr!.indexOf(item.toString());
+    notifyListeners();
+  }
 
-  void onCalendarPageRefereshed(DateTime  dateTime){
+  void onCalendarPageRefereshed(DateTime dateTime) {
     selectedDate = dateTime;
-     currentMonthIndex =  dateTime.month - 1;;
-     update();
+    currentMonthIndex = dateTime.month - 1;
+    ;
+    update();
   }
 
   void update() {
