@@ -95,7 +95,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
                             child: Text("완료", style:  TextStyle(fontSize: 16)),
                             onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
+                             // Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
                               user.verifyUser(_codeController.text).then((value) {
                                 if (value) {
                                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));

@@ -143,8 +143,8 @@ class ConfigProvider extends ChangeNotifier {
 
   //utils
   void setUserInfo() {
-    String date = userPreferences!.getString("birthDate") ?? "00-00-00";
-    myname = userPreferences!.getString("name") ?? "";
+    String date = userPreferences!.getString('birthDate') ?? '00-00-00';
+    myname = userPreferences!.getString('name') ?? '';
     myemail = userPreferences!.getString("name") ?? "";
     isShared = userPreferences!.getBool("isShared") ?? false;
     g = userPreferences!.getString("gender")??"MALE";

@@ -20,12 +20,16 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  List<String>? years = ["January", "February", "March", "April",  "May", "June", "July", "August", "September", "October", "November", "December"];
+  List<String>? years_en = ["January", "February", "March", 'April', "May", "June", "July", 'August', 'September', "October", "November", "December"];
+  List<String>? years_kr = ["1 월", "2 월", "3 월", "4 월", "5 월", "6 월", "7 월", "8 월", "9 월", "10 월", "11 월" , "12 월"];
 
   var calendarProvider = MainScreenProvider();
   var configProvider = ConfigProvider();
   var decoration1 = BoxDecoration();
-  var decoration2 = BoxDecoration(border: Border.all(color: Color.fromRGBO(102, 51, 204, 1),),
+  var decoration2 = BoxDecoration(
+    border: Border.all(
+      color: Color.fromRGBO(102, 51, 204, 1),
+    ),
     borderRadius: BorderRadius.circular(50.0),
   );
   var decoration3 = BoxDecoration(
@@ -35,9 +39,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     ),
     borderRadius: BorderRadius.circular(50.0),
   );
-  var decoration4 = BoxDecoration(
-
-      color: Color.fromRGBO(245, 245, 245, 1));
+  var decoration4 = BoxDecoration(color: Color.fromRGBO(245, 245, 245, 1));
   double? width;
 
   @override
@@ -78,10 +80,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 color: Colors.white,
                 padding: EdgeInsets.all(10.0),
                 child: TableCalendar(
-                  onPageChanged: (v){
-                      calendarProvider.onCalendarPageRefereshed(v);
-                    },
-                  pageAnimationEnabled: true ,
+                  onPageChanged: (v) {
+                    calendarProvider.onCalendarPageRefereshed(v);
+                  },
+                  pageAnimationEnabled: true,
                   locale: configProvider.activeLanguage() == english ? "en_EN" : "ko_KR",
                   availableGestures: AvailableGestures.horizontalSwipe,
                   headerStyle: HeaderStyle(
@@ -94,49 +96,44 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     leftChevronIcon: DropdownButton(
                       icon: Container(margin: EdgeInsets.only(left: 15.0), child: SvgPicture.asset("assets/icons/expand.svg")),
                       underline: SizedBox(),
-                      value: years![calendarProvider.currentMonthIndex],
-                      hint: Text("${years![8]}"),
+                      value: configProvider.activeLanguage() == english ? years_en![calendarProvider.currentMonthIndex] : years_kr![calendarProvider.currentMonthIndex],
+                      hint: configProvider.activeLanguage() == english ? Text('${years_en![8]}') : Text('${years_kr![8]}'),
                       onChanged: (item) {
-
-
-
-                        print("item: ${years!.indexOf(item.toString())}");
                         setState(() {
 
 
-                          if(years!.indexOf(item.toString()) <  calendarProvider.currentMonthIndex) {
-                            calendarProvider.selectedDate = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch - (years!.indexOf(item.toString()) + 1) * 2629800000);
+                          print("DateTime:  ${DateTime.now()}");
+                          var currentYear = DateTime.now().year;
 
-                            print("hey");
-                            print(DateTime.now().millisecondsSinceEpoch - (years!.indexOf(item.toString()) + 1) * 2.628e+9);
-
+                          String givenTime = "";
+                          if (configProvider.activeLanguage() == english) {
+                            var month  = years_en!.indexOf(item.toString())+1 >=10?'${years_en!.indexOf(item.toString())+1}':'0${years_en!.indexOf(item.toString())+1}';
+                            givenTime = '${currentYear}-${month}-01 00:00:00.000';
                           }
 
-                          else
-                            {
-                              calendarProvider.selectedDate = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch +
-                                (years!.indexOf(item.toString())+1) *2629800000);
+                          else {
+                            var month  = years_kr!.indexOf(item.toString())+1 >=10?'${years_kr!.indexOf(item.toString())+1}':'0${years_kr!.indexOf(item.toString())+1}';
+                            givenTime = '${currentYear}-${month}-01 00:00:00.000';
+                          }
+                          print("given time: ${givenTime}");
 
+                          calendarProvider.selectedDate = DateTime.parse(givenTime);
 
-                              print("hey");
-
-                              print(DateTime.now().millisecondsSinceEpoch - (years!.indexOf(item.toString()) + 1) * 2.628e+9);
-
-
-                            }
-                          calendarProvider.currentMonthIndex = years!.indexOf(item.toString());
+                          calendarProvider.currentMonthIndex = configProvider.activeLanguage() == english ? years_en!.indexOf(item.toString()) : years_kr!.indexOf(item.toString());
                         });
                       },
-                      items: years!.map((String year) {
-                        return DropdownMenuItem<String>(value: year, child: Text("$year"));
-                      }).toList(),
+                      items: configProvider.activeLanguage() == english
+                          ? years_en!.map((String year) {
+                              return DropdownMenuItem<String>(value: year, child: Text('$year'));
+                            }).toList()
+                          : years_kr!.map((String year) {
+                              return DropdownMenuItem<String>(value: year, child: Text('$year'));
+                            }).toList(),
                     ),
                   ),
                   daysOfWeekStyle: DaysOfWeekStyle(
 
-
-
-                   //  decoration: decoration4,
+                      //  decoration: decoration4,
                       weekendStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontSize: 13, fontWeight: FontWeight.bold),
                       weekdayStyle: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontSize: 12, fontWeight: FontWeight.bold)),
                   calendarStyle: CalendarStyle(

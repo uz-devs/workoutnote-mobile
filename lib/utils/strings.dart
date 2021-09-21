@@ -107,3 +107,26 @@ List<Map<String, String>> wilksGender = [
   {english: "Male", korean: "남"},
   {english: "Female", korean: "여"}
 ];
+
+
+
+
+
+/*
+List<Map<String, String>> months = [
+  {english: "January", korean: "1 월"},
+  {english: "February", korean: " 월"},
+  {english: "March", korean: "3 월"},
+  {english: "April", korean: "4 월"},
+  {english: "May", korean: "5 월"},
+  {english: "June", korean: "6 월"},
+  {english: "July", korean: "7 월"},
+  {english: "August", korean: "8 월"},
+  {english: "September", korean: "9 월"},
+  {english: "October", korean: "10 월"},
+  {english: "November", korean: "11 월"},
+  {english: "December", korean: "12 월"},
+];
+
+
+ */

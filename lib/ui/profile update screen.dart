@@ -33,8 +33,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
 
 
-    print(configProvider.val);
-    print(configProvider.g);
+
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -109,7 +108,6 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                     value: 1,
                                     groupValue: configProvider.val,
                                     onChanged: (int? value) {
-                                      print("male:  ${value}");
 
                                       setState(() {
                                         if (value == 1) {
@@ -126,9 +124,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                     value: 0,
                                     groupValue: configProvider.val,
                                     onChanged: (int? value) {
-                                      print("female:  ${value}");
                                       setState(() {
-
                                         if (value == 0) {
                                           configProvider. g = "FEMALE";
                                         }
@@ -174,14 +170,14 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                         ),
                                         underline: SizedBox(),
                                         value: configProvider.selectedYear,
-                                        hint: Text("${year[configProvider.activeLanguage()]}"),
+                                        hint: Text('${year[configProvider.activeLanguage()]}'),
                                         onChanged: (item) {
                                           setState(() {
                                             configProvider.selectedYear = item.toString();
                                           });
                                         },
                                         items: years!.map((String year) {
-                                          return DropdownMenuItem<String>(value: year, child: Text("$year"));
+                                          return DropdownMenuItem<String>(value: year, child: Text('$year'));
                                         }).toList(),
                                       ),
                                     ),
