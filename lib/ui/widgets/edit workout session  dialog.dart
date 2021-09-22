@@ -145,7 +145,6 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   child: _buildExerciseListItem('No.', '${exercisesName[configProvider.activeLanguage()]}', 'KG', 'REP', 'RM', Color.fromRGBO(102, 51, 204, 1), 1, editWorkouSessionProvider, index, context, configProvider));
             else if (index  == 4) {
-              index = index - 4;
               return _buildReorderableListView();
             }
             else if (index == 5) {
