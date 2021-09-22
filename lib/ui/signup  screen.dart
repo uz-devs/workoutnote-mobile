@@ -51,13 +51,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Container(
                       margin: EdgeInsets.only(top: height * 0.1),
                       child: Text(
-                        "${signUpText[english]}",
+                        '${signUpText[english]}',
                         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                       ),
                     ),
                     Container(
                       child: Text(
-                        "이메일 주소로 회원가입합니다",
+                        '이메일 주소로 회원가입합니다',
                         style: TextStyle(fontSize: 16.0),
                       ),
                     ),
@@ -68,7 +68,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         autofocus: true,
                         controller: _nameController,
                         decoration: InputDecoration(
-                          hintText: "NAME",
+                          hintText: 'NAME',
                           hintStyle: TextStyle(color: Colors.grey, fontSize: 14.0),
                           contentPadding: EdgeInsets.only(left: 20.0),
                           suffixIcon: IconButton(
@@ -103,7 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             icon: Icon(Icons.close),
                             color: Color.fromRGBO(102, 51, 204, 1),
                           ),
-                          hintText: "E-MAIL/PHONE NUMBER",
+                          hintText: 'E-MAIL/PHONE NUMBER',
                           hintStyle: TextStyle(color: Colors.grey, fontSize: 14.0),
                           contentPadding: EdgeInsets.only(left: 20.0),
                           enabledBorder: OutlineInputBorder(
@@ -141,7 +141,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: Color.fromRGBO(102, 51, 204, 1),
                             ),
                           ),
-                          hintText: "PASSWORD",
+                          hintText: 'PASSWORD',
                           contentPadding: EdgeInsets.only(left: 20.0),
                           focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide(width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
                           border: OutlineInputBorder(
@@ -156,21 +156,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: CupertinoButton(
                           color: Color.fromRGBO(102, 51, 204, 1),
                           borderRadius: const BorderRadius.all(Radius.circular(120)),
-                          child: Text("${signUpText['한국어']}",  style:  TextStyle(fontSize: 16)),
+                          child: Text('${signUpText['한국어']}',  style:  TextStyle(fontSize: 16)),
                           onPressed: ()  {
                             if (_emailController.text.isNotEmpty && _nameController.text.isNotEmpty && _passwordController.text.isNotEmpty)
                               user.sendVerificationCode(_emailController.text, _nameController.text, _passwordController.text).then((value) async {
                                 if (value) {
-                                 await  userPreferences!.setBool("signUpDone",  true);
+                                 await  userPreferences!.setBool('signUpDone',  true);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen()));
                                 } else {
-                                  showToast("${signUpError[configProvider.activeLanguage()]}");
+                                  showToast('${signUpError[configProvider.activeLanguage()]}');
                                 }
                               });
                             else {
                              // Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen()));
 
-                              showToast("${authEmptyFields[configProvider.activeLanguage()]}");
+                              showToast('${authEmptyFields[configProvider.activeLanguage()]}');
                             }
                             // Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen()));
                           }),
@@ -181,7 +181,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: CupertinoButton(
                           color: Color.fromRGBO(102, 51, 204, 1),
                           borderRadius: const BorderRadius.all(Radius.circular(120)),
-                          child: Text("${loginText["한국어"]}", style:  TextStyle(fontSize: 16),),
+                          child: Text('${loginText['한국어']}', style:  TextStyle(fontSize: 16),),
                           onPressed: () {
                             Navigator.pop(context);
                           }),

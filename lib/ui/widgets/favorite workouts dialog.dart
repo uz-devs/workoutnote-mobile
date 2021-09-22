@@ -26,7 +26,7 @@ class _AllWorkoutsDialogState extends State<AllWorkoutsDialog> {
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
 
     if (!mainScreenProvider.requestDone2) {
-      mainScreenProvider.fetchFavoriteWorkoutSessions(userPreferences!.getString("sessionKey") ?? "").then((value) {});
+      mainScreenProvider.fetchFavoriteWorkoutSessions(userPreferences!.getString('sessionKey') ?? '').then((value) {});
     }
   }
 
@@ -37,7 +37,7 @@ class _AllWorkoutsDialogState extends State<AllWorkoutsDialog> {
 
       width: MediaQuery.of(context).size.width,
       child: Dialog(
-        backgroundColor:  Color.fromRGBO(231, 223, 247, 1),
+        //backgroundColor:  Color.fromRGBO(231, 223, 247, 1),
 
         shape: RoundedRectangleBorder(
 
@@ -70,7 +70,7 @@ class _AllWorkoutsDialogState extends State<AllWorkoutsDialog> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      "${favoriteWorkoutSesions[configProvider.activeLanguage()]}",
+                      '${favoriteWorkoutSesions[configProvider.activeLanguage()]}',
                       style: TextStyle(
 
                         fontWeight: FontWeight.bold,

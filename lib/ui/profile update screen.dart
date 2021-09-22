@@ -18,9 +18,9 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   var nameController = TextEditingController();
   var emailController = TextEditingController();
 
-  List<String>? years = List.generate(100, (index) => "${index + 1921}");
-  List<String>? months = List.generate(12, (index) => index < 9 ? "0${index + 1}" : "${index + 1}");
-  List<String>? days = List.generate(31, (index) => index < 9 ? "0${index + 1}" : "${index + 1}");
+  List<String>? years = List.generate(100, (index) => '${index + 1921}');
+  List<String>? months = List.generate(12, (index) => index < 9 ? '0${index + 1}' : '${index + 1}');
+  List<String>? days = List.generate(31, (index) => index < 9 ? '0${index + 1}' : '${index + 1}');
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           title: Text(
-            "${profileInfo[configProvider.activeLanguage()]}",
+            '${profileInfo[configProvider.activeLanguage()]}',
             style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
           ),
         ),
@@ -61,7 +61,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${name[configProvider.activeLanguage()]}",
+                              '${name[configProvider.activeLanguage()]}',
                               style: TextStyle(
                                 color: Color.fromRGBO(102, 51, 204, 1),
                               ),
@@ -81,7 +81,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                     enabledBorder: InputBorder.none,
                                     isDense: true,
                                     contentPadding: EdgeInsets.only(top: 5.0, bottom :5.0),
-                                    hintText: "${nameHint[configProvider.activeLanguage()]}"),
+                                    hintText: '${nameHint[configProvider.activeLanguage()]}'),
                               ),
                             )
                           ],
@@ -93,7 +93,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${gender[configProvider.activeLanguage()]}",
+                              '${gender[configProvider.activeLanguage()]}',
                               style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
                             ),
                             Container(
@@ -111,13 +111,13 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
                                       setState(() {
                                         if (value == 1) {
-                                          configProvider.g = "MALE";
+                                          configProvider.g = 'MALE';
                                         }
                                         configProvider.val = value!;
                                       });
                                     },
                                   ),
-                                  Text("${male[configProvider.activeLanguage()]}"),
+                                  Text('${male[configProvider.activeLanguage()]}'),
                                   Radio(
                                     fillColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(102, 51, 204, 1)),
                                     activeColor: Color.fromRGBO(102, 51, 204, 1),
@@ -126,13 +126,13 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                     onChanged: (int? value) {
                                       setState(() {
                                         if (value == 0) {
-                                          configProvider. g = "FEMALE";
+                                          configProvider. g = 'FEMALE';
                                         }
                                         configProvider.val = value!;
                                       });
                                     },
                                   ),
-                                  Text("${female[configProvider.activeLanguage()]}"),],
+                                  Text('${female[configProvider.activeLanguage()]}'),],
                               ),
                             )
                           ],
@@ -144,7 +144,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                           Container(
                             margin: EdgeInsets.only(left: 28, top: 10,  right: 28),
                             child: Text(
-                              "${birthDate[configProvider.activeLanguage()]}",
+                              '${birthDate[configProvider.activeLanguage()]}',
                               style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
                             ),
                           ),
@@ -199,14 +199,14 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                         ),
                                         value: configProvider.selectedMonth,
                                         underline: SizedBox(),
-                                        hint: Text("${month[configProvider.activeLanguage()]}"),
+                                        hint: Text('${month[configProvider.activeLanguage()]}'),
                                         onChanged: (item) {
                                           setState(() {
                                             configProvider.selectedMonth = item.toString();
                                           });
                                         },
                                         items: months!.map((String month) {
-                                          return DropdownMenuItem<String>(value: month, child: Text("$month"));
+                                          return DropdownMenuItem<String>(value: month, child: Text('$month'));
                                         }).toList(),
                                       ),
                                     ),
@@ -228,14 +228,14 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                         ),
                                         underline: SizedBox(),
                                         value: configProvider.selectedDay,
-                                        hint: Text("${day[configProvider.activeLanguage()]}"),
+                                        hint: Text('${day[configProvider.activeLanguage()]}'),
                                         onChanged: (item) {
                                           setState(() {
                                             configProvider.selectedDay = item.toString();
                                           });
                                         },
                                         items: days!.map((String day) {
-                                          return DropdownMenuItem<String>(value: day, child: Text("$day"));
+                                          return DropdownMenuItem<String>(value: day, child: Text('$day'));
                                         }).toList(),
                                       ),
                                     ),
@@ -247,7 +247,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                           Container(
                             margin: EdgeInsets.only(left: 28, top: 28),
                             child: Text(
-                              "${email[configProvider.activeLanguage()]}",
+                              '${email[configProvider.activeLanguage()]}',
                               style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
                             ),
                           ),
@@ -261,13 +261,13 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                             child: TextFormField(
                               cursorColor: Color.fromRGBO(102, 51, 204, 1),
 
-                              controller: emailController..text = userPreferences!.getString("email") ?? "",
+                              controller: emailController..text = userPreferences!.getString('email') ?? '',
                               decoration: InputDecoration(
                                   focusedBorder: InputBorder.none,
                                   enabledBorder: InputBorder.none,
                                   isDense: true,
                                   contentPadding: EdgeInsets.only(top: 5.0, bottom: 5.0),
-                                  hintText: "${emailHint[configProvider.activeLanguage()]}"),
+                                  hintText: '${emailHint[configProvider.activeLanguage()]}'),
                             ),
                           )
                         ],
@@ -280,7 +280,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                             Container(
                               margin: EdgeInsets.only(left: 28, right: 28),
                               child: Text(
-                                "${phoneNumber[configProvider.activeLanguage()]}",
+                                '${phoneNumber[configProvider.activeLanguage()]}',
                                 style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
                               ),
                             ),
@@ -300,7 +300,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                     enabledBorder: InputBorder.none,
                                     isDense: true,
                                     contentPadding: EdgeInsets.only(top: 5.0, bottom: 5.0),
-                                    hintText: "${phoneNumberHint[configProvider.activeLanguage()]}"),
+                                    hintText: '${phoneNumberHint[configProvider.activeLanguage()]}'),
                               ),
                             )
                           ],
@@ -313,16 +313,16 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "${shareSettings[configProvider.activeLanguage()]}",
+                              '${shareSettings[configProvider.activeLanguage()]}',
                               style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
                             ),
                             FlutterSwitch(
                               valueFontSize: 10,
                                 showOnOff: true,
-                              activeText: "${accept[configProvider.activeLanguage()]}"
+                              activeText: '${accept[configProvider.activeLanguage()]}'
                                 ,
 
-                                inactiveText: "",
+                                inactiveText: '',
                                 activeTextColor: Colors.white,
                                 activeColor: Color.fromRGBO(102, 51, 204, 1),
                                 value: configProvider.isShared,
@@ -340,8 +340,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                         child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("${agree[configProvider.activeLanguage()]}",  style: TextStyle(fontSize: 12.0, color: Colors.grey)),
-                          Text("${disagree[configProvider.activeLanguage()]}",  style: TextStyle(fontSize: 12.0, color: Colors.grey)),
+                          Text('${agree[configProvider.activeLanguage()]}',  style: TextStyle(fontSize: 12.0, color: Colors.grey)),
+                          Text('${disagree[configProvider.activeLanguage()]}',  style: TextStyle(fontSize: 12.0, color: Colors.grey)),
                         ],
                       ),);
                     }
@@ -350,10 +350,10 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                         child: CupertinoButton(
                             color: Color.fromRGBO(102, 51, 204, 1),
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
-                            child: Text("${update[configProvider.activeLanguage()]}"),
+                            child: Text('${update[configProvider.activeLanguage()]}'),
                             onPressed: () {
-                              provider.updateProfileSettings(emailController.text, userPreferences!.getString("sessionKey") ?? "", nameController.text, configProvider.g, "${configProvider.selectedYear}-${configProvider.selectedMonth}-${configProvider.selectedDay}", configProvider.isShared).then((value) {
-                                showToast("${updateToastMessage[configProvider.activeLanguage()]}");
+                              provider.updateProfileSettings(emailController.text, userPreferences!.getString('sessionKey') ?? '', nameController.text, configProvider.g, '${configProvider.selectedYear}-${configProvider.selectedMonth}-${configProvider.selectedDay}', configProvider.isShared).then((value) {
+                                showToast('${updateToastMessage[configProvider.activeLanguage()]}');
                               });
                             }),
                       );

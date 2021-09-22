@@ -78,8 +78,8 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                         margin: EdgeInsets.only(left: 20, top: 10.0),
                         child: Text(
                           widget.workout.title.length > 15
-                              ? "${widget.workout.title.substring(0, 14)}..."
-                              : "${widget.workout.title}",
+                              ? '${widget.workout.title.substring(0, 14)}...'
+                              : '${widget.workout.title}',
                           style: TextStyle(
                               fontSize: 16.0,
                               color: Color.fromRGBO(102, 51, 204, 1)),
@@ -95,8 +95,8 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                                   mainScreenProvider
                                       .setFavoriteWorkOut(
                                           userPreferences!
-                                                  .getString("sessionKey") ??
-                                              "",
+                                                  .getString('sessionKey') ??
+                                              '',
                                           widget.workout.id ?? -1,
                                           widget.mode)
                                       .then((value) {
@@ -106,8 +106,8 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                                   mainScreenProvider
                                       .unsetFavoriteWorkOut(
                                           userPreferences!
-                                                  .getString("sessionKey") ??
-                                              "",
+                                                  .getString('sessionKey') ??
+                                              '',
                                           widget.workout.id ?? -1,
                                           widget.mode)
                                       .then((value) {
@@ -117,12 +117,12 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                             },
                             icon: widget.workout.isFavorite
                                 ? SvgPicture.asset(
-                                    "assets/icons/liked.svg",
+                                    'assets/icons/liked.svg',
                                     height: 17,
                                     width: 17,
                                   )
                                 : SvgPicture.asset(
-                                    "assets/icons/unliked.svg",
+                                    'assets/icons/unliked.svg',
                                     height: 17,
                                     width: 17,
                                   ))),
@@ -137,7 +137,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                               configProvider, mainScreenProvider);
                         },
                         icon: SvgPicture.asset(
-                          "assets/icons/menu.svg",
+                          'assets/icons/menu.svg',
                           height: 17.0,
                           width: 17.0,
                         ),
@@ -159,14 +159,15 @@ class _WorkOutNoteState extends State<WorkOutNote> {
               alignment: Alignment.center,
               margin: EdgeInsets.only(top: 15.0, bottom: 15.0),
               child: Text(
-                "${calculateDuration(widget.workout.duration ?? 0).item1} : ${calculateDuration(widget.workout.duration ?? 0).item2} : ${calculateDuration(widget.workout.duration ?? 0).item3}",
+                '${calculateDuration(widget.workout.duration ?? 0).item1} : ${calculateDuration(widget.workout.duration ?? 0).item2} : ${calculateDuration(widget.workout.duration ?? 0).item3}',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                     color: Color.fromRGBO(102, 51, 204, 1)),
               ),
             );
-          } else if (index == count - 1) {
+          }
+          else if (index == count - 1) {
             return Container(
               width: double.infinity,
               margin: EdgeInsets.only(bottom: 20, left: 20, right: 20),
@@ -175,7 +176,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                     borderRadius: BorderRadius.circular(20)),
                 color: Color.fromRGBO(102, 51, 204, 1),
                 textColor: Colors.white,
-                child: Text("${repeat[configProvider.activeLanguage()]}"),
+                child: Text('${repeat[configProvider.activeLanguage()]}'),
                 onPressed: () {
                   mainScreenProvider
                       .repeatWorkoutSession(
@@ -200,19 +201,20 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                 },
               ),
             );
-          } else {
+          }
+          else {
             index = index - 1;
 
             String mass =
-                "${configProvider.getConvertedMass(widget.workout.lifts![index].liftMas ?? 0)}";
+                '${configProvider.getConvertedMass(widget.workout.lifts![index].liftMas ?? 0)}';
             String rm =
-                "${configProvider.getConvertedRM(widget.workout.lifts![index].oneRepMax ?? 0)}";
-            String identifier = configProvider.measureMode == KG ? "KG" : "LBS";
+                '${configProvider.getConvertedRM(widget.workout.lifts![index].oneRepMax ?? 0)}';
+            String identifier = configProvider.measureMode == KG ? 'KG' : 'LBS';
             return Container(
-                margin: EdgeInsets.only(left: 20.0),
+                margin: EdgeInsets.only(left: 20.0, right: 10.0),
                 padding: EdgeInsets.only(bottom: 10.0),
                 child: Text(
-                    "${index + 1}. ${widget.workout.lifts![index].exerciseName}, ${mass} ${identifier}, ${widget.workout.lifts![index].repetitions} REP, ${rm} RM"));
+                    '${index + 1}. ${widget.workout.lifts![index].exerciseName}, ${mass} ${identifier}, ${widget.workout.lifts![index].repetitions} REP, ${rm} RM'));
           }
         });
   }
@@ -237,7 +239,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                         await _showEditWorkoutDialog(context, widget.workout);
                         Navigator.pop(context);
                       },
-                      child: Text("${edit[configProvider.activeLanguage()]}",
+                      child: Text('${edit[configProvider.activeLanguage()]}',
                           style: TextStyle(fontSize: 16.0)),
                     )),
                 Divider(),
@@ -249,7 +251,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                           Navigator.pop(context);
                         },
                         child: Text(
-                          "${delete[configProvider.activeLanguage()]}",
+                          '${delete[configProvider.activeLanguage()]}',
                           style: TextStyle(
                             color: Colors.red,
                             fontSize: 16.0,
@@ -293,7 +295,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                         margin: EdgeInsets.only(left: 50.0, right: 50.0),
                         alignment: Alignment.center,
                         child: Text(
-                          "${deleteMessage[configProvider.activeLanguage()]}",
+                          '${deleteMessage[configProvider.activeLanguage()]}',
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 13),
                         ),
@@ -310,7 +312,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                                 Navigator.pop(context);
                               },
                               child: Text(
-                                "${deleteCancel[configProvider.activeLanguage()]}",
+                                '${deleteCancel[configProvider.activeLanguage()]}',
                                 style: TextStyle(
                                     color: Colors.blueAccent, fontSize: 18),
                               ),
@@ -323,18 +325,18 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                               onPressed: () {
                                 mainScreenProvider
                                     .deleteWorkoutSession(
-                                        userPreferences!.getString("sessionKey") ?? "",
+                                        userPreferences!.getString('sessionKey') ?? '',
                                         widget.workout.id ?? -1)
                                     .then((value) {
                                   if (value) {
                                     showToast(
-                                        "${deleteSuccess[configProvider.activeLanguage()]}");
+                                        '${deleteSuccess[configProvider.activeLanguage()]}');
                                     Navigator.pop(context);
                                   }
                                 });
                               },
                               child: Text(
-                                  "${deleteYes[configProvider.activeLanguage()]}",
+                                  '${deleteYes[configProvider.activeLanguage()]}',
                                   style: TextStyle(
                                       color: Colors.red, fontSize: 18)),
                             ),

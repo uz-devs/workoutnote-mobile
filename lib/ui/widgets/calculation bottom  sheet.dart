@@ -29,7 +29,7 @@ class CalculationBottomSheet extends StatefulWidget {
 
 class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
   double currentRM = 0.0;
-  String wilksCoeff = "0.0";
+  String wilksCoeff = '0.0';
   List<Map<int, double>> currentPlateBarbellKG = [];
   var textController1 = TextEditingController();
   var textController2 = TextEditingController();
@@ -42,7 +42,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
   List<double> plates = [25, 20, 15, 10, 5, 2.5];
   List<double> qty = [0, 10, 10, 10, 10, 10];
   //Wilks  relates stuff
-  String currentGender = wilksGender[0][english] ?? "None";
+  String currentGender = wilksGender[0][english] ?? 'None';
   List<String?> genders = [];
 
   var mA = -216.0475144;
@@ -63,7 +63,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
     configProvider = Provider.of<ConfigProvider>(context, listen: false);
     genders = [wilksGender[0][configProvider.activeLanguage()]!, wilksGender[1][configProvider.activeLanguage()]!, wilksGender[2][configProvider.activeLanguage()]!];
 
-    var list = customList(double.parse(textController1.text.isNotEmpty ? textController1.text : "0"));
+    var list = customList(double.parse(textController1.text.isNotEmpty ? textController1.text : '0'));
 
     var count;
 
@@ -101,7 +101,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                     padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                     margin: EdgeInsets.only(left: 20.0),
                     child: Text(
-                      "${widget.title}",
+                      '${widget.title}',
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                     ));
               else if (index == 2)
@@ -110,7 +110,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                     padding: EdgeInsets.only(bottom: 10.0),
                     child: Center(
                       child: Text(
-                        "${widget.subtitle}",
+                        '${widget.subtitle}',
                         style: TextStyle(fontSize: 14),
                       ),
                     ));
@@ -120,13 +120,13 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                 return Container(
                   margin: EdgeInsets.only(left: 20.0),
                   child: Text(
-                    "${widget.text3}",
+                    '${widget.text3}',
                     style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
                 );
               } else if ((index > 4 && index < count - 7) || (index == 5 && widget.mode == 4) || (index == 5 && widget.mode == 1)) {
 
-                print("current mode is ${widget.mode}");
+                print('current mode is ${widget.mode}');
 
                 if (widget.mode == 1)
                   return Container(
@@ -134,12 +134,12 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                     alignment: Alignment.center,
                     child: RichText(
                       text: TextSpan(style: TextStyle(fontSize: 14.0, color: Colors.black), children: [
-                        TextSpan(text: "$currentRM", style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1))),
-                        TextSpan(text: "  "),
-                        TextSpan(text: "kg", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black26)),
-                        TextSpan(text: "  "),
+                        TextSpan(text: '$currentRM', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1))),
+                        TextSpan(text: '  '),
+                        TextSpan(text: 'kg', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black26)),
+                        TextSpan(text: '  '),
                         TextSpan(
-                            text: "${widget.text4}",
+                            text: '${widget.text4}',
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -154,12 +154,12 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                     alignment: Alignment.center,
                     child: RichText(
                       text: TextSpan(style: TextStyle(fontSize: 14.0, color: Colors.black), children: [
-                        TextSpan(text: "${currentPlateBarbellKG[index].values.single} x ${currentPlateBarbellKG[index].keys.single}", style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1))),
-                        TextSpan(text: "  "),
-                        TextSpan(text: "kg ", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black26)),
-                        TextSpan(text: "  "),
+                        TextSpan(text: '${currentPlateBarbellKG[index].values.single} x ${currentPlateBarbellKG[index].keys.single}', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1))),
+                        TextSpan(text: '  '),
+                        TextSpan(text: 'kg ', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black26)),
+                        TextSpan(text: '  '),
                         TextSpan(
-                            text: "${widget.text4}",
+                            text: '${widget.text4}',
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -174,10 +174,10 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                     alignment: Alignment.center,
                     child: RichText(
                       text: TextSpan(style: TextStyle(fontSize: 14.0, color: Colors.black), children: [
-                        TextSpan(text: "$wilksCoeff", style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1))),
-                        TextSpan(text: "  "),
+                        TextSpan(text: '$wilksCoeff', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1))),
+                        TextSpan(text: '  '),
                         TextSpan(
-                            text: "${widget.text4}",
+                            text: '${widget.text4}',
                             style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -188,7 +188,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                 else
                   return Container();
               } else if (index == count - 7) {
-                print("heeeee");
+                print('heeeee');
                 if (widget.mode == 1)
                   return Container(
                     margin: EdgeInsets.all(15),
@@ -196,11 +196,11 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "${oneRepMax7[configProvider.activeLanguage()]}",
+                          '${oneRepMax7[configProvider.activeLanguage()]}',
                           style: TextStyle(fontSize: 14, color: Color.fromRGBO(119, 119, 119, 1)),
                         ),
                         Text(
-                          "${oneRepMax8[configProvider.activeLanguage()]}",
+                          '${oneRepMax8[configProvider.activeLanguage()]}',
                           style: TextStyle(fontSize: 14, color: Color.fromRGBO(119, 119, 119, 1)),
                         ),
                       ],
@@ -213,11 +213,11 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "${plateBarbell7[configProvider.activeLanguage()]}",
+                          '${plateBarbell7[configProvider.activeLanguage()]}',
                           style: TextStyle(fontSize: 14, color: Color.fromRGBO(119, 119, 119, 1)),
                         ),
                         Text(
-                          "${plateBarbell8[configProvider.activeLanguage()]}",
+                          '${plateBarbell8[configProvider.activeLanguage()]}',
                           style: TextStyle(fontSize: 14, color: Color.fromRGBO(119, 119, 119, 1)),
                         ),
                       ],
@@ -232,8 +232,8 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
 
                 if (widget.mode == 1) {
                   index = index  - 7;
-                  print("index  ${index}");
-                  return _buildCustomRow(list[index].keys.single, list[index].values.single, int.parse(textController2.text.isNotEmpty ? textController2.text : "0"), index);
+                  print('index  ${index}');
+                  return _buildCustomRow(list[index].keys.single, list[index].values.single, int.parse(textController2.text.isNotEmpty ? textController2.text : '0'), index);
                 }
                 else if (widget.mode == 2) {
                   index = index - (6 + currentPlateBarbellKG.length);
@@ -257,14 +257,14 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
             children: [
               percentage == 100
                   ? Text(
-                      "${percentage}%\t\t\t\t\t\t\t\t\t\t\t${mass} kg",
+                      '${percentage}%\t\t\t\t\t\t\t\t\t\t\t${mass} kg',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )
                   : Text(
-                      "${percentage}%\t\t\t\t\t\t\t\t\t\t\t\t\t${mass} kg",
+                      '${percentage}%\t\t\t\t\t\t\t\t\t\t\t\t\t${mass} kg',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-              RichText(text: TextSpan(children: [TextSpan(text: "${repNumber}", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), TextSpan(text: "Repeti", style: TextStyle(color: Colors.transparent))]))
+              RichText(text: TextSpan(children: [TextSpan(text: '${repNumber}', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), TextSpan(text: 'Repeti', style: TextStyle(color: Colors.transparent))]))
             ],
           ),
         );
@@ -274,7 +274,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("${percentage}", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('${percentage}', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
                 Container(
                   height: 50,
                   width: 50,
@@ -291,7 +291,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                       items: plateNumberList.map((int value) {
                         return DropdownMenuItem<int>(
                           value: value,
-                          child: Text("${value}", style: TextStyle(fontWeight: FontWeight.bold)),
+                          child: Text('${value}', style: TextStyle(fontWeight: FontWeight.bold)),
                         );
                       }).toList()),
                 )
@@ -322,7 +322,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                   Container(
                       margin: EdgeInsets.only(left: 31.0, top: 28.0, bottom: 10.0),
                       child: Text(
-                        "${widget.text1}",
+                        '${widget.text1}',
                         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
                       )),
                   Container(
@@ -340,7 +340,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                       decoration: InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
-                        hintText: "${enterNumber[configProvider.activeLanguage()]}",
+                        hintText: '${enterNumber[configProvider.activeLanguage()]}',
                         hintStyle: TextStyle(color: Colors.white, fontSize: 14.0),
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
@@ -350,7 +350,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                   Container(
                       margin: EdgeInsets.only(left: 31.0, top: 20.0, bottom: 10.0),
                       child: Text(
-                        "${widget.text2}",
+                        '${widget.text2}',
                         style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold),
                       )),
                   Container(
@@ -368,7 +368,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                       decoration: InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
-                        hintText: "${enterNumber[configProvider.activeLanguage()]}",
+                        hintText: '${enterNumber[configProvider.activeLanguage()]}',
                         hintStyle: TextStyle(color: Colors.white, fontSize: 14),
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
@@ -382,7 +382,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                         color: Colors.white,
                         borderRadius: const BorderRadius.all(Radius.circular(120)),
                         child: Text(
-                          "${calculate[configProvider.activeLanguage()]}",
+                          '${calculate[configProvider.activeLanguage()]}',
                           style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                         ),
                         onPressed: () {
@@ -395,7 +395,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                                 _calculatePlateBarbell();
                               }
                             } else {
-                              showToast("${emptyTextField[configProvider.activeLanguage()]}");
+                              showToast('${emptyTextField[configProvider.activeLanguage()]}');
                             }
                           }
                         }),
@@ -408,7 +408,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                   Container(
                       margin: EdgeInsets.only(left: 31.0, top: 28.0, bottom: 10.0),
                       child: Text(
-                        "Body weight",
+                        'Body weight',
                         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
                       )),
                   Container(
@@ -426,7 +426,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                       decoration: InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
-                        hintText: "${enterNumber[configProvider.activeLanguage()]}",
+                        hintText: '${enterNumber[configProvider.activeLanguage()]}',
                         hintStyle: TextStyle(color: Colors.white, fontSize: 14.0),
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
@@ -436,7 +436,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                   Container(
                       margin: EdgeInsets.only(left: 31.0, top: 28.0, bottom: 10.0),
                       child: Text(
-                        "${widget.text1}",
+                        '${widget.text1}',
                         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
                       )),
                   Container(
@@ -454,7 +454,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                       decoration: InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
-                        hintText: "${enterNumber[configProvider.activeLanguage()]}",
+                        hintText: '${enterNumber[configProvider.activeLanguage()]}',
                         hintStyle: TextStyle(color: Colors.white, fontSize: 14.0),
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
@@ -464,7 +464,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                   Container(
                       margin: EdgeInsets.only(left: 31.0, top: 20.0, bottom: 10.0),
                       child: Text(
-                        "${widget.text2}",
+                        '${widget.text2}',
                         style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold),
                       )),
                   Container(
@@ -487,7 +487,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                                  return  Container(
                                      alignment: Alignment.centerLeft,
 
-                                     child: Text("$value", style:  TextStyle(color:  Colors.white, fontWeight: FontWeight.bold),  textAlign: TextAlign.center,));
+                                     child: Text('$value', style:  TextStyle(color:  Colors.white, fontWeight: FontWeight.bold),  textAlign: TextAlign.center,));
                               }).toList();
                             },
                             underline: SizedBox(),
@@ -500,7 +500,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                             items: genders.map((String? value) {
                               return DropdownMenuItem<String>(
                                 value: value,
-                                child: Text("${value}", style: TextStyle(fontWeight: FontWeight.bold)),
+                                child: Text('${value}', style: TextStyle(fontWeight: FontWeight.bold)),
                               );
                             }).toList()),
                       )),
@@ -511,16 +511,16 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                         color: Colors.white,
                         borderRadius: const BorderRadius.all(Radius.circular(120)),
                         child: Text(
-                          "${calculate[configProvider.activeLanguage()]}",
+                          '${calculate[configProvider.activeLanguage()]}',
                           style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                         ),
                         onPressed: () {
-                          if (bodyWeightController.text.isNotEmpty && textController2.text.isNotEmpty && currentGender != "None") {
-                            print("georugqoeur");
+                          if (bodyWeightController.text.isNotEmpty && textController2.text.isNotEmpty && currentGender != 'None') {
+                            print('georugqoeur');
                             FocusScope.of(context).unfocus();
                             _calculateWilks();
                           } else {
-                            showToast("${emptyTextField[configProvider.activeLanguage()]}");
+                            showToast('${emptyTextField[configProvider.activeLanguage()]}');
                           }
                         }),
                   ),
@@ -553,10 +553,10 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
         }
       }
       if (currentPlateBarbellKG.isEmpty) {
-        showToast("Plate Barbell cannot  be  calculated!");
+        showToast('Plate Barbell cannot  be  calculated!');
       }
     } else {
-      showToast("Total Lift cannot be less than Bar weight!");
+      showToast('Total Lift cannot be less than Bar weight!');
     }
     setState(() {});
   }

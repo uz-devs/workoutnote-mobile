@@ -16,9 +16,9 @@ import 'exercises dialog provider .dart';
 class CreateWorkoutProvider extends ChangeNotifier {
   //region vars
   TextEditingController titleContoller = TextEditingController();
-  String secs = "00";
-  String mins = "00";
-  String hrs = "00";
+  String secs = '00';
+  String mins = '00';
+  String hrs = '00';
   StreamSubscription? timerSubscription;
 
   List<EditableLift> _lifts = [];
@@ -39,7 +39,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
       ConfigProvider configProvider) async {
 
 
-    print("create started!");
+    print('create started!');
     bool canCreateSession = false;
     for (int i = 0; i < _lifts.length; i++) {
       if (_lifts[i].isSelected) {
@@ -54,7 +54,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
         var response = await WebServices.insertWorkOut(
             sessionKey, title, timestamp, duration);
         if (response.statusCode == 200 &&
-            jsonDecode(response.body)["success"]) {
+            jsonDecode(response.body)['success']) {
           for (int i = 0; i < _lifts.length; i++) {
             if (_lifts[i].isSelected) {
               var insertLift = await WebServices.insertLift(
@@ -62,12 +62,12 @@ class CreateWorkoutProvider extends ChangeNotifier {
                   timestamp,
                   _lifts[i].mass,
                   _lifts[i].exerciseId ?? -1,
-                  jsonDecode(response.body)["workout_session"]["id"],
+                  jsonDecode(response.body)['workout_session']['id'],
                   _lifts[i].rep,
                   _lifts[i].rm);
-              var lift = Lift.fromJson(jsonDecode(insertLift.body)["lift"]);
+              var lift = Lift.fromJson(jsonDecode(insertLift.body)['lift']);
               if (insertLift.statusCode == 200 &&
-                  jsonDecode(insertLift.body)["success"]) {
+                  jsonDecode(insertLift.body)['success']) {
                 count++;
                 lifts.add(Lift.create(
                     lift.liftId,
@@ -86,13 +86,13 @@ class CreateWorkoutProvider extends ChangeNotifier {
 
 
             var workout =
-                WorkOut.fromJson(jsonDecode(response.body)["workout_session"]);
+                WorkOut.fromJson(jsonDecode(response.body)['workout_session']);
             workOuts.add(WorkOut(workout.id, workout.title, workout.timestamp,
                 lifts, workout.duration, false));
             calendarWorkouts.add(WorkOut(workout.id, workout.title,
                 workout.timestamp, lifts, workout.duration, false));
             _lifts.clear();
-            titleContoller.text = "";
+            titleContoller.text = '';
             stopTimer();
           }
         }
@@ -101,7 +101,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
         print(e);
       }
     } else {
-      showToast("${noExerciseWarning[configProvider.activeLanguage()]}");
+      showToast('${noExerciseWarning[configProvider.activeLanguage()]}');
     }
   }
 
@@ -111,17 +111,17 @@ class CreateWorkoutProvider extends ChangeNotifier {
   void restoreAllLifts(ExercisesDialogProvider exercisesDialogProvider) {
     if (!appRefreshed) {
       appRefreshed = true;
-      if (userPreferences!.getString("title") != null)
-        titleContoller.text = userPreferences!.getString("title") ?? "";
-      if (userPreferences!.getString("lifts") != null) {
+      if (userPreferences!.getString('title') != null)
+        titleContoller.text = userPreferences!.getString('title') ?? '';
+      if (userPreferences!.getString('lifts') != null) {
         List<EditableLift> lifts =
-            EditableLift.decode(userPreferences!.getString("lifts") ?? "");
+            EditableLift.decode(userPreferences!.getString('lifts') ?? '');
         for (int i = 0; i < lifts.length; i++) {
           _lifts.add(lifts[i]);
         }
       }
-      if (userPreferences!.getInt("unselected_ex_id") != null) {
-        int? id = userPreferences!.getInt("unselected_ex_id");
+      if (userPreferences!.getInt('unselected_ex_id') != null) {
+        int? id = userPreferences!.getInt('unselected_ex_id');
 
         unselectedExercise = exercisesDialogProvider.allExercises
             .where((element) => element.id == id)
@@ -131,17 +131,17 @@ class CreateWorkoutProvider extends ChangeNotifier {
   }
 
   void restoreTimer() {
-    if (!timeRefreshed && userPreferences!.getInt("time") != null) {
+    if (!timeRefreshed && userPreferences!.getInt('time') != null) {
       timeRefreshed = true;
-      hrs = ((userPreferences!.getInt("time")! / (60 * 60)) % 60)
+      hrs = ((userPreferences!.getInt('time')! / (60 * 60)) % 60)
           .floor()
           .toString()
           .padLeft(2, '0');
-      mins = ((userPreferences!.getInt("time")! / 60) % 60)
+      mins = ((userPreferences!.getInt('time')! / 60) % 60)
           .floor()
           .toString()
           .padLeft(2, '0');
-      secs = (userPreferences!.getInt("time")! % 60)
+      secs = (userPreferences!.getInt('time')! % 60)
           .floor()
           .toString()
           .padLeft(2, '0');
@@ -202,8 +202,8 @@ class CreateWorkoutProvider extends ChangeNotifier {
     Duration timerInterval = Duration(seconds: 1);
 
     int counter;
-    if (userPreferences!.getInt("time") != null && !ticksRefreshed) {
-      counter = userPreferences!.getInt("time")!;
+    if (userPreferences!.getInt('time') != null && !ticksRefreshed) {
+      counter = userPreferences!.getInt('time')!;
       ticksRefreshed = true;
     } else
       counter = 0;
@@ -245,17 +245,17 @@ class CreateWorkoutProvider extends ChangeNotifier {
   void stopTimer() {
     if (timerSubscription != null)
       timerSubscription!.cancel().then((value) {
-        hrs = "00";
-        mins = "00";
-        secs = "00";
+        hrs = '00';
+        mins = '00';
+        secs = '00';
         timerSubscription = null;
         notifyListeners();
       });
     else {
       timerSubscription = null;
-      hrs = "00";
-      mins = "00";
-      secs = "00";
+      hrs = '00';
+      mins = '00';
+      secs = '00';
       saveTimeToSharedPreference(0);
       notifyListeners();
     }
@@ -292,33 +292,33 @@ class CreateWorkoutProvider extends ChangeNotifier {
   //endregion
   //region caching:  Lifts, Title, Duration
   Future<void> saveListToSharePreference() async {
-    await userPreferences!.setString("lifts", EditableLift.encode(_lifts));
+    await userPreferences!.setString('lifts', EditableLift.encode(_lifts));
   }
 
   Future<void> clearPreferences() async {
-    await userPreferences!.setString("lifts", EditableLift.encode([]));
+    await userPreferences!.setString('lifts', EditableLift.encode([]));
   }
 
   Future<void> saveTitleToSharedPreference(String title) async {
-    await userPreferences!.setString("title", title);
+    await userPreferences!.setString('title', title);
   }
 
   Future<void> saveTimeToSharedPreference(int time) async {
-    await userPreferences!.setInt("time", time);
+    await userPreferences!.setInt('time', time);
   }
 
   Future<void> saveUnselectedExerciseToPreferences() async {
     await userPreferences!
-        .setInt("unselected_ex_id", unselectedExercise!.id ?? -1);
+        .setInt('unselected_ex_id', unselectedExercise!.id ?? -1);
   }
 
   //endregion
   //region utils
   void reset() {
     titleContoller.clear();
-    secs = "00";
-    mins = "00";
-    hrs = "00";
+    secs = '00';
+    mins = '00';
+    hrs = '00';
     if (timerSubscription != null) timerSubscription!.cancel();
     timerSubscription = null;
     _lifts.clear();

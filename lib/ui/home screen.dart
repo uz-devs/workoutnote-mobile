@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
           itemCount: navProvider.workOuts.length + 3,
           itemBuilder: (context, index) {
             if (index == 0)
-              return Container(margin: EdgeInsets.only(left: 20, top: 30, bottom: 20), child: RichText(text: TextSpan(children: [TextSpan(text: "${welcomeMessage[configProvider.activeLanguage()]}, ", style: TextStyle(fontSize: 30, color: Colors.black)), TextSpan(text: "${userPreferences!.getString("name") ?? ""}", style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontSize: 30))])));
+              return Container(margin: EdgeInsets.only(left: 20, top: 30, bottom: 20), child: RichText(text: TextSpan(children: [TextSpan(text: '${welcomeMessage[configProvider.activeLanguage()]}, ', style: TextStyle(fontSize: 30, color: Colors.black)), TextSpan(text: '${userPreferences!.getString('name') ?? ''}', style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontSize: 30))])));
             else if (index == 1) {
               return CreateWorkOutCard(widget.width, widget.height, navProvider.workOuts, navProvider.calendarWorkouts);
             } else if (index == 2) {
@@ -79,12 +79,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     margin:  EdgeInsets.all(10.0),
 
-                    child: Text("${emptyWorkouts[configProvider.activeLanguage()]}",  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0, color: Color.fromRGBO(102, 51, 204, 1)) )));
+                    child: Text('${emptyWorkouts[configProvider.activeLanguage()]}',  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0, color: Color.fromRGBO(102, 51, 204, 1)) )));
               else
               return Container(
                   margin: EdgeInsets.only(left: 20.0),
                   child: Text(
-                    "${DateFormat("yyyy.MM.dd", configProvider.activeLanguage() == english?"en_EN":"ko_KR",).format(DateTime.now(),)}, ${DateFormat("EEEE",  configProvider.activeLanguage() == english?"en_EN":"ko_KR",).format(DateTime.now()).substring(0, 3).toUpperCase()}",
+                    '${DateFormat('yyyy.MM.dd', configProvider.activeLanguage() == english?'en_EN':'ko_KR',).format(DateTime.now(),)}, ${DateFormat('EEEE',  configProvider.activeLanguage() == english?'en_EN':'ko_KR',).format(DateTime.now()).substring(0, configProvider.activeLanguage() == english?3:1).toUpperCase()}',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0, color: Color.fromRGBO(102, 51, 204, 1)),
                   ));
             } else {

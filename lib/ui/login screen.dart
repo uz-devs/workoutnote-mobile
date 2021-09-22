@@ -9,7 +9,7 @@ import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
 class LoginScreen extends StatelessWidget {
-  static String route = "auth";
+  static String route = 'auth';
   var _emailController = TextEditingController();
   var _passwordController = TextEditingController();
 
@@ -41,14 +41,14 @@ class LoginScreen extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(top: height * 0.1),
                         child: Text(
-                          "${loginText[english]}",
+                          '${loginText[english]}',
                           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: height * 0.1),
                         child: Text(
-                          "로그인합니다",
+                          '로그인합니다',
                           style: TextStyle(fontSize: 16.0),
                         ),
                       ),
@@ -60,7 +60,7 @@ class LoginScreen extends StatelessWidget {
                           decoration: InputDecoration(
 
                             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(25), borderSide: BorderSide(width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
-                            hintText: "E-MAIL/PHONE NUMBER",
+                            hintText: 'E-MAIL/PHONE NUMBER',
                             hintStyle: TextStyle(color: Colors.grey, fontSize: 14.0),
                             suffixIcon: IconButton(
                               onPressed: () {
@@ -103,7 +103,7 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ),
                             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(25), borderSide: BorderSide(width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
-                            hintText: "PASSWORD",
+                            hintText: 'PASSWORD',
                             hintStyle: TextStyle(color: Colors.grey, fontSize: 14.0),
                             contentPadding: EdgeInsets.only(left: 20.0),
                             border: OutlineInputBorder(
@@ -119,18 +119,18 @@ class LoginScreen extends StatelessWidget {
                         child: CupertinoButton(
                             color: Color.fromRGBO(102, 51, 204, 1),
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
-                            child: Text("${loginText['한국어']}",  style:  TextStyle(fontSize: 16)),
+                            child: Text('${loginText['한국어']}',  style:  TextStyle(fontSize: 16)),
                             onPressed: () {
                               if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
                                 user.login(_emailController.text, _passwordController.text).then((value) {
                                   if (value) {
                                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
                                   } else {
-                                    showToast("${authErrorMesage[configProvider.activeLanguage()]}");
+                                    showToast('${authErrorMesage[configProvider.activeLanguage()]}');
                                   }
                                 });
                               } else
-                                showToast("${authEmptyFields[configProvider.activeLanguage()]}");
+                                showToast('${authEmptyFields[configProvider.activeLanguage()]}');
                             }),
                       ),
                       Container(
@@ -142,20 +142,20 @@ class LoginScreen extends StatelessWidget {
                                 onPressed: () {
                                   if (_emailController.text.isNotEmpty)
                                     user.passwordReset(_emailController.text).then((value) {
-                                      print("value $value");
+                                      print('value $value');
                                       if (value) {
-                                        showToast("${sendEmailForReset[configProvider.activeLanguage()]}");
+                                        showToast('${sendEmailForReset[configProvider.activeLanguage()]}');
                                       }
                                       else {
-                                        showToast("${authErrorMesage[configProvider.activeLanguage()]}");
+                                        showToast('${authErrorMesage[configProvider.activeLanguage()]}');
                                       }
                                     });
                                   else {
-                                    showToast("${emptyEmail[configProvider.activeLanguage()]}");
+                                    showToast('${emptyEmail[configProvider.activeLanguage()]}');
                                   }
                                 },
                                 child: Text(
-                                  "비밀번호 찾기",
+                                  '비밀번호 찾기',
                                   style: TextStyle(color: Colors.grey, fontSize: 12.0),
                                 ),
                               ),
@@ -169,7 +169,7 @@ class LoginScreen extends StatelessWidget {
                         child: CupertinoButton(
                             color: Color.fromRGBO(102, 51, 204, 1),
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
-                            child: Text("${signUpText['한국어']}", style:  TextStyle(fontSize: 16)),
+                            child: Text('${signUpText['한국어']}', style:  TextStyle(fontSize: 16)),
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
                             }),

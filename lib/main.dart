@@ -18,7 +18,7 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initPreferences();
-  await initializeDateFormatting("ko_KR", null);
+  await initializeDateFormatting('ko_KR', null);
 
   final List<SingleChildWidget> providers = [
     ChangeNotifierProvider(
@@ -47,28 +47,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget screen;
-    if(userPreferences!.getString("sessionKey") == null){
-      if(userPreferences!.getBool("signUpDone")??false){
-        screen  = VerificationScreen();
-      }
-      else
-        screen = LoginScreen();
+
+
+    if(userPreferences!.getString('sessionKey') == null){
+      if(userPreferences!.getBool('signUpDone')??false) screen  = VerificationScreen();
+      else screen = LoginScreen();
     }
     else {
-      if(userPreferences!.getBool("langSetDone")??false){
-
-        screen = NavController();
-      }
-      else {
-        print("4");
-
-        screen = LanguageSetScreen();
-      }
+      if(userPreferences!.getBool('langSetDone')??false) screen = NavController();
+      else screen = LanguageSetScreen();
     }
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Workoutnote',
         theme: ThemeData(
           fontFamily: 'NotoSansKR',
           focusColor: Color.fromRGBO(102, 51, 204, 1),
@@ -77,7 +69,7 @@ class MyApp extends StatelessWidget {
           navigateRoute:screen,
           duration: 3000,
           imageSize: 100,
-          imageSrc: "assets/images/splash_screen.png",
+          imageSrc: 'assets/images/splash_screen.png',
           backgroundColor: Color.fromRGBO(102, 51, 204, 1),
         ));
   }

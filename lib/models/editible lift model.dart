@@ -17,7 +17,7 @@ class EditableLift {
   EditableLift();
 
   factory EditableLift.fromJson(Map<String, dynamic> parsedJson) {
-    return EditableLift.create(parsedJson["exercise_name"], parsedJson["id"], parsedJson["body_part"], parsedJson["mass"], parsedJson["rep"], parsedJson["rm"], parsedJson["is_selected"], -1);
+    return EditableLift.create(parsedJson['exercise_name'], parsedJson['id'], parsedJson['body_part'], parsedJson['mass'], parsedJson['rep'], parsedJson['rm'], parsedJson['is_selected'], -1);
   }
 
   static String encode(List<EditableLift> editableLifts) {

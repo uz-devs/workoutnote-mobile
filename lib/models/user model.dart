@@ -9,8 +9,8 @@ class User{
 
 
   factory User.fromJson(Map<String, dynamic> parsedJson) {
-    print(parsedJson["sessionKey"]);
-    return User.create(parsedJson["sessionKey"],parsedJson["success"]);
+    print(parsedJson['sessionKey']);
+    return User.create(parsedJson['sessionKey'],parsedJson['success']);
   }
 
 }
@@ -27,7 +27,7 @@ class  Settings{
 
 
   factory Settings.fromJson(Map<String, dynamic> parsedJson) {
-    return Settings.fetch(parsedJson["success"], parsedJson["name"], parsedJson["date_of_birth"],  parsedJson["gender"],  parsedJson["is_profile_shared"]);
+    return Settings.fetch(parsedJson['success'], parsedJson['name'], parsedJson['date_of_birth'],  parsedJson['gender'],  parsedJson['is_profile_shared']);
   }
 
 
