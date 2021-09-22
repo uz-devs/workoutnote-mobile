@@ -20,8 +20,8 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  List<String>? years_en = ["January", "February", "March", 'April', "May", "June", "July", 'August', 'September', "October", "November", "December"];
-  List<String>? years_kr = ["1 월", "2 월", "3 월", "4 월", "5 월", "6 월", "7 월", "8 월", "9 월", "10 월", "11 월" , "12 월"];
+  List<String>? years_en = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  List<String>? years_kr = ['1 월', '2 월', '3 월', '4 월', '5 월', '6 월', '7 월', '8 월', '9 월', '10 월', '11 월', '12 월'];
 
   var calendarProvider = MainScreenProvider();
   var configProvider = ConfigProvider();
@@ -60,7 +60,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     calendarProvider.updateWorkoutDates(calendarProvider.calendarWorkouts);
 
     for (int i = 0; i < calendarProvider.calendarWorkouts.length; i++) {
-      if (calendarProvider.workOutDates[i] == "${calendarProvider.selectedDate!.year}.${calendarProvider.selectedDate!.month}.${calendarProvider.selectedDate!.day}") {
+      if (calendarProvider.workOutDates[i] == '${calendarProvider.selectedDate!.year}.${calendarProvider.selectedDate!.month}.${calendarProvider.selectedDate!.day}') {
         showWorkOuts.add(calendarProvider.calendarWorkouts[i]);
       }
     }
@@ -84,7 +84,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     calendarProvider.onCalendarPageRefereshed(v);
                   },
                   pageAnimationEnabled: true,
-                  locale: configProvider.activeLanguage() == english ? "en_EN" : "ko_KR",
+                  locale: configProvider.activeLanguage() == english ? 'en_EN' : 'ko_KR',
                   availableGestures: AvailableGestures.horizontalSwipe,
                   headerStyle: HeaderStyle(
                     titleCentered: false,
@@ -94,33 +94,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     rightChevronVisible: false,
                     leftChevronVisible: true,
                     leftChevronIcon: DropdownButton(
-                      icon: Container(margin: EdgeInsets.only(left: 15.0), child: SvgPicture.asset("assets/icons/expand.svg")),
+                      icon: Container(margin: EdgeInsets.only(left: 15.0), child: SvgPicture.asset('assets/icons/expand.svg')),
                       underline: SizedBox(),
                       value: configProvider.activeLanguage() == english ? years_en![calendarProvider.currentMonthIndex] : years_kr![calendarProvider.currentMonthIndex],
-                      hint: configProvider.activeLanguage() == english ? Text('${years_en![8]}') : Text('${years_kr![8]}'),
-                      onChanged: (item) {
-                        setState(() {
+                      hint: configProvider.activeLanguage() == english ? Text('${years_en![calendarProvider.selectedDate!.month-1]}') : Text('${years_kr![calendarProvider.selectedDate!.month-1]}'),
+                      onChanged: (item) async {
+                        calendarProvider.onCalendarDropDownButtonValueChanged(item.toString(), years_en, years_kr, configProvider);
 
+                        //TODO this  is not working
+                        await calendarProvider.fetchSingleNote(calendarProvider.selectedDate!.millisecondsSinceEpoch);
 
-                          print("DateTime:  ${DateTime.now()}");
-                          var currentYear = DateTime.now().year;
-
-                          String givenTime = "";
-                          if (configProvider.activeLanguage() == english) {
-                            var month  = years_en!.indexOf(item.toString())+1 >=10?'${years_en!.indexOf(item.toString())+1}':'0${years_en!.indexOf(item.toString())+1}';
-                            givenTime = '${currentYear}-${month}-01 00:00:00.000';
-                          }
-
-                          else {
-                            var month  = years_kr!.indexOf(item.toString())+1 >=10?'${years_kr!.indexOf(item.toString())+1}':'0${years_kr!.indexOf(item.toString())+1}';
-                            givenTime = '${currentYear}-${month}-01 00:00:00.000';
-                          }
-                          print("given time: ${givenTime}");
-
-                          calendarProvider.selectedDate = DateTime.parse(givenTime);
-
-                          calendarProvider.currentMonthIndex = configProvider.activeLanguage() == english ? years_en!.indexOf(item.toString()) : years_kr!.indexOf(item.toString());
-                        });
                       },
                       items: configProvider.activeLanguage() == english
                           ? years_en!.map((String year) {
@@ -148,7 +131,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       var isDaySelected = calendarProvider.selectedDate!.year == day.year && calendarProvider.selectedDate!.month == day.month && calendarProvider.selectedDate!.day == day.day;
                       var isDayToday = DateTime.now().day == day.day && DateTime.now().month == day.month && DateTime.now().year == day.year;
 
-                      if (calendarProvider.workOutDates.contains("${day.year}.${day.month}.${day.day}"))
+                      if (calendarProvider.workOutDates.contains('${day.year}.${day.month}.${day.day}'))
                         return Container(
                           padding: EdgeInsets.only(top: 10.0),
                           child: Column(
@@ -169,7 +152,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           ? decoration3
                                           : decoration1,
                                   child: Text(
-                                    "${day.day}",
+                                    '${day.day}',
                                     style: TextStyle(fontWeight: FontWeight.bold, color: isDayToday ? Colors.white : Colors.black),
                                     textAlign: TextAlign.center,
                                   )),
@@ -197,7 +180,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       ? decoration3
                                       : decoration1,
                               child: Text(
-                                "${day.day}",
+                                '${day.day}',
                                 style: TextStyle(color: isDayToday ? Colors.white : Colors.black),
                                 textAlign: TextAlign.center,
                               ),
@@ -208,11 +191,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     },
                   ),
                   onDaySelected: (selectedDay, focusDay) async {
-                    calendarProvider.fetchSingleNote(selectedDay.millisecondsSinceEpoch).then((value) {
-                      setState(() {
-                        calendarProvider.noteController.text = value;
-                      });
-                    });
+                    await calendarProvider.fetchSingleNote(selectedDay.millisecondsSinceEpoch);
 
                     setState(() {
                       calendarProvider.selectedDate = selectedDay;
@@ -242,7 +221,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "${note[configProvider.activeLanguage()]}",
+                              '${note[configProvider.activeLanguage()]}',
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                             ),
                             Container(
@@ -252,7 +231,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 onTap: () {
                                   calendarProvider.saveNote(calendarProvider.selectedDate!.millisecondsSinceEpoch, calendarProvider.noteController.text).then((value) {
                                     if (value) {
-                                      showToast("Save  was successfull");
+                                      showToast('${noteSaveSuccess[configProvider.activeLanguage()]}');
+                                      FocusScope.of(context).unfocus();
                                     }
                                   });
                                 },
@@ -275,12 +255,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         //scrollDirection: Axis.vertical,
                         child: TextFormField(
                           controller: calendarProvider.noteController,
-                          // initialValue: calendarProvider.notes[index].values.single,
                           keyboardType: TextInputType.visiblePassword,
-
                           cursorColor: Color.fromRGBO(102, 51, 204, 1),
                           maxLines: 5,
-
                           decoration: InputDecoration(
                               isDense: true,
                               focusedBorder: InputBorder.none,
@@ -288,7 +265,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               contentPadding: EdgeInsets.only(
                                 top: 5.0,
                               ),
-                              hintText: "${title[configProvider.activeLanguage()]}",
+                              hintText: '${title[configProvider.activeLanguage()]}',
                               hintStyle: TextStyle(fontSize: 16)),
                         )),
                   ]));
@@ -296,13 +273,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
               return Container(
                   margin: EdgeInsets.only(left: 20.0, top: 10.0),
                   child: Text(
-                    "${DateFormat(
-                      "yyyy.MM.dd",
-                      configProvider.activeLanguage() == english ? "en_EN" : "ko_KR",
+                    '${DateFormat(
+                      'yyyy.MM.dd',
+                      configProvider.activeLanguage() == english ? 'en_EN' : 'ko_KR',
                     ).format(calendarProvider.selectedDate ?? DateTime.now())}, ${DateFormat(
-                      "EEEE",
-                      configProvider.activeLanguage() == english ? "en_EN" : "ko_KR",
-                    ).format(calendarProvider.selectedDate ?? DateTime.now()).substring(0, 3).toUpperCase()}",
+                      'EEEE',
+                      configProvider.activeLanguage() == english ? 'en_EN' : 'ko_KR',
+                    ).format(calendarProvider.selectedDate ?? DateTime.now()).substring(0,configProvider.activeLanguage() == english? 3:1).toUpperCase()}',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                   ));
             } else {

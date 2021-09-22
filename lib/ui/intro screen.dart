@@ -20,8 +20,8 @@ class _MyIntroductionScreenState extends State<MyIntroductionScreen> {
   @override
   void initState() {
     super.initState();
-    appPreferences!.setBool("intro_started", true).then((value) {
-      print("heyyy are you okay?");
+    appPreferences!.setBool('intro_started', true).then((value) {
+      print('heyyy are you okay?');
     });
 
   }
@@ -42,7 +42,7 @@ class _MyIntroductionScreenState extends State<MyIntroductionScreen> {
               children: [
                 Container(
                     child: Image.asset(
-                  "assets/images/intro_screen1.png",
+                  'assets/images/intro_screen1.png',
                   fit: BoxFit.cover,
                   height: double.infinity,
                   width: double.infinity,
@@ -66,7 +66,7 @@ class _MyIntroductionScreenState extends State<MyIntroductionScreen> {
                           ),
 
                           child: Text(
-                            "${introBackButton[configProvider.activeLanguage()]}",
+                            '${introBackButton[configProvider.activeLanguage()]}',
                             style: TextStyle(color: Colors.black),
                           ),
                           onPressed: () {
@@ -109,7 +109,7 @@ class _MyIntroductionScreenState extends State<MyIntroductionScreen> {
               children: [
                 Container(
                     child: Image.asset(
-                  "assets/images/intro_screen2.png",
+                  'assets/images/intro_screen2.png',
                   fit: BoxFit.cover,
                   height: double.infinity,
                   width: double.infinity,
@@ -133,7 +133,7 @@ class _MyIntroductionScreenState extends State<MyIntroductionScreen> {
                         ),
 
                           child: Text(
-                            "${introStartButton[configProvider.activeLanguage()]}",
+                            '${introStartButton[configProvider.activeLanguage()]}',
                             style: TextStyle(color: Colors.black),
                           ),
                           onPressed: () {

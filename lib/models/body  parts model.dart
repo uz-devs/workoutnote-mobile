@@ -16,7 +16,7 @@ class  BodyPartsResponse{
     list = parsedJson['body_parts'] as List;
     List<BodyPart> bodyParts = list.map((e) => BodyPart.fromJson(e)).toList();
 
-    return BodyPartsResponse(parsedJson["success"], bodyParts);
+    return BodyPartsResponse(parsedJson['success'], bodyParts);
   }
 }
 
@@ -30,6 +30,6 @@ class BodyPart{
 
 
   factory BodyPart.fromJson(Map<String,  dynamic> parsedJson){
-    return BodyPart(parsedJson["id"], parsedJson["name"]);
+    return BodyPart(parsedJson['id'], parsedJson['name']);
   }
 }

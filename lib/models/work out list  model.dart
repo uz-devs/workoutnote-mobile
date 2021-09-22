@@ -10,10 +10,10 @@ class  WorkOutsResponse{
    var list = parsedJson['workouts'] as List;
 
     print(list.length);
-    print(parsedJson["success"]);
+    print(parsedJson['success']);
 
     List<WorkOut> workouts = list.map((e) => WorkOut.fromJson(e)).toList();
-      return  WorkOutsResponse(parsedJson["success"], workouts);
+      return  WorkOutsResponse(parsedJson['success'], workouts);
 
   }
 
@@ -38,7 +38,7 @@ class WorkOut {
     list = parsedJson['lifts'] as List;
     else  list  = [];
    List<Lift> lifts = list.map((e) => Lift.fromJson(e)).toList();
-    return WorkOut(parsedJson["id"], parsedJson["title"],  parsedJson["timestamp"], lifts, parsedJson["duration"], parsedJson["isFavorite"]??false );
+    return WorkOut(parsedJson['id'], parsedJson['title'],  parsedJson['timestamp'], lifts, parsedJson['duration'], parsedJson['isFavorite']??false );
   }
 
 
@@ -76,7 +76,7 @@ class Lift {
   }
 
   factory Lift.fromJson(Map<String,  dynamic> parsedJson){
-    return Lift.create(parsedJson["id"], parsedJson["timestamp"], parsedJson["one_rep_max"], parsedJson["exercise_id"], parsedJson["exercise_name"], parsedJson["lift_mass"], parsedJson["repetitions"]);
+    return Lift.create(parsedJson['id'], parsedJson['timestamp'], parsedJson['one_rep_max'], parsedJson['exercise_id'], parsedJson['exercise_name'], parsedJson['lift_mass'], parsedJson['repetitions']);
   }
 
 

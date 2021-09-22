@@ -52,7 +52,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                   child: Container(
                     margin: EdgeInsets.only(left: 5.0),
                     child: Text(
-                      "${profileInfo[configProvider.activeLanguage()]}",
+                      '${profileInfo[configProvider.activeLanguage()]}',
                       style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1), fontSize: 18),
                     ),
                   ),
@@ -65,7 +65,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                   },
                   child: ListTile(
                     dense: true,
-                    leading: Text("${profileInfo[configProvider.activeLanguage()]}"),
+                    leading: Text('${profileInfo[configProvider.activeLanguage()]}'),
                     trailing: icon,
                   ),
                 );
@@ -76,7 +76,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                   },
                   child: ListTile(
                     dense: true,
-                    leading: Text("${languageChange[configProvider.activeLanguage()]}"),
+                    leading: Text('${languageChange[configProvider.activeLanguage()]}'),
                     trailing: icon,
                   ),
                 );
@@ -86,7 +86,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                   child: Container(
                     margin: EdgeInsets.only(left: 5.0),
                     child: Text(
-                      "${appInfo[configProvider.activeLanguage()]}",
+                      '${appInfo[configProvider.activeLanguage()]}',
                       style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1), fontSize: 18),
                     ),
                   ),
@@ -95,7 +95,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                 return InkWell(
                   child: ListTile(
                     dense: true,
-                    leading: Text("${appUsageGuide[configProvider.activeLanguage()]}"),
+                    leading: Text('${appUsageGuide[configProvider.activeLanguage()]}'),
                     trailing: icon,
                   ),
                 );
@@ -103,7 +103,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                 return InkWell(
                   child: ListTile(
                     dense: true,
-                    leading: Text("${termsAndConditions[configProvider.activeLanguage()]}"),
+                    leading: Text('${termsAndConditions[configProvider.activeLanguage()]}'),
                     trailing: icon,
                   ),
                 );
@@ -111,7 +111,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                 return InkWell(
                   child: ListTile(
                     dense: true,
-                    leading: Text("${privacyPolicy[configProvider.activeLanguage()]}"),
+                    leading: Text('${privacyPolicy[configProvider.activeLanguage()]}'),
                     trailing: icon,
                   ),
                 );
@@ -121,7 +121,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                   child: Container(
                     margin: EdgeInsets.only(left: 5.0),
                     child: Text(
-                      "${customerCenter[configProvider.activeLanguage()]}",
+                      '${customerCenter[configProvider.activeLanguage()]}',
                       style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1), fontSize: 18),
                     ),
                   ),
@@ -130,7 +130,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                 return InkWell(
                   child: ListTile(
                     dense: true,
-                    leading: Text("${customerCenter[configProvider.activeLanguage()]}"),
+                    leading: Text('${customerCenter[configProvider.activeLanguage()]}'),
                     trailing: icon,
                   ),
                 );
@@ -138,7 +138,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                 return InkWell(
                   child: ListTile(
                     dense: true,
-                    leading: Text("Q&A"),
+                    leading: Text('Q&A'),
                     trailing: icon,
                   ),
                 );
@@ -153,7 +153,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                   },
                   child: ListTile(
                     dense: true,
-                    leading: Text("${logout[configProvider.activeLanguage()]}"),
+                    leading: Text('${logout[configProvider.activeLanguage()]}'),
                     trailing: icon,
                   ),
                 );

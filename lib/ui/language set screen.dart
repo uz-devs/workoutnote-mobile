@@ -48,14 +48,14 @@ class _LanguageSetScreenState extends State<LanguageSetScreen> {
                       Container(
                         margin: EdgeInsets.only(top: height * 0.1),
                         child: Text(
-                          "LANGUAGE",
+                          'LANGUAGE',
                           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                         ),
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: height * 0.1),
                         child: Text(
-                          "사용할 언어를 선택해주세요",
+                          '${chooseLang[configProvider.activeLanguage()]}',
                           style: TextStyle(fontSize: 16.0),
                         ),
                       ),
@@ -87,7 +87,7 @@ class _LanguageSetScreenState extends State<LanguageSetScreen> {
                                 color: Color.fromRGBO(102, 51, 204, 1),
                               ),
                               items: languages.map((e) {
-                                return DropdownMenuItem<String>(value: e, child: Text("$e"));
+                                return DropdownMenuItem<String>(value: e, child: Text('$e'));
                               }).toList(),
                             ),
                           ),
@@ -102,10 +102,10 @@ class _LanguageSetScreenState extends State<LanguageSetScreen> {
                         child: CupertinoButton(
                             color: Color.fromRGBO(102, 51, 204, 1),
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
-                            child: Text("${languageConfirm[configProvider.activeLanguage()]}", style: TextStyle(fontSize: 16)),
+                            child: Text('${languageConfirm[configProvider.activeLanguage()]}', style: TextStyle(fontSize: 16)),
                             onPressed: () {
                               configProvider.changeLanguage(languageCode).then((value) async {
-                                await userPreferences!.setBool("langSetDone", true);
+                                await userPreferences!.setBool('langSetDone', true);
                                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyIntroductionScreen()));
                               });
                             }),

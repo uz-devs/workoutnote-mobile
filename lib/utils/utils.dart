@@ -10,30 +10,30 @@ import 'package:tuple/tuple.dart';
 import 'package:workoutnote/models/language%20model.dart';
 import 'package:workoutnote/utils/strings.dart';
 
-const String baseUrl = "workoutnote.com";
-const String login = "api/login/";
-const String fetch_workouts = "api/fetch_workouts/";
-const String fetch_exercises = "api/fetch_exercises/";
-const String insert_workout = "/api/insert_workout";
-const String fetch_settings = "/api/fetch_settings";
-const String update_settings = "/api/update_settings";
-const String sendVerificationCode = "/api/send_verification_code";
-const String verify = "/api/verify_register";
-const String fetchBody = "/api/fetch_body_parts";
-const String setFavoriteWorkout = "/api/set_favorite_workout";
-const String unsetFavoriteWorkout = "/api/unset_favorite_workout";
-const String fetchFavoriteWorkouts = "/api/fetch_favorite_workouts";
-const String setFavoriteExercise = "/api/set_favorite_exercise";
-const String unsetFavoriteExercise = "/api/unset_favorite_exercise";
-const String fetchFavoriteExercise = "/api/fetch_favorite_exercises";
-const String passwordReset = "/api/request_password_reset";
-const String updateWorkout = "/api/update_workout";
-const String removeWorkOut = "/api/remove_workout";
-const String updateLift = "api/update_lift";
-const String insert_lift = "/api/insert_lift";
-const String deleteLift = "/api/remove_lift";
-const String setNote  = "/api/set_note";
-const String fetchNote  = "/api/fetch_note";
+const String baseUrl = 'workoutnote.com';
+const String login = 'api/login/';
+const String fetch_workouts = 'api/fetch_workouts/';
+const String fetch_exercises = 'api/fetch_exercises/';
+const String insert_workout = '/api/insert_workout';
+const String fetch_settings = '/api/fetch_settings';
+const String update_settings = '/api/update_settings';
+const String sendVerificationCode = '/api/send_verification_code';
+const String verify = '/api/verify_register';
+const String fetchBody = '/api/fetch_body_parts';
+const String setFavoriteWorkout = '/api/set_favorite_workout';
+const String unsetFavoriteWorkout = '/api/unset_favorite_workout';
+const String fetchFavoriteWorkouts = '/api/fetch_favorite_workouts';
+const String setFavoriteExercise = '/api/set_favorite_exercise';
+const String unsetFavoriteExercise = '/api/unset_favorite_exercise';
+const String fetchFavoriteExercise = '/api/fetch_favorite_exercises';
+const String passwordReset = '/api/request_password_reset';
+const String updateWorkout = '/api/update_workout';
+const String removeWorkOut = '/api/remove_workout';
+const String updateLift = 'api/update_lift';
+const String insert_lift = '/api/insert_lift';
+const String deleteLift = '/api/remove_lift';
+const String setNote  = '/api/set_note';
+const String fetchNote  = '/api/fetch_note';
 //network  state codes
 const int LOADING = 0;
 const int TIMEOUT_EXCEPTION = 1;
@@ -69,7 +69,7 @@ showLoaderDialog(BuildContext context) {
     content: new Row(
       children: [
         //CircularProgressIndicator(),
-        Container(margin: EdgeInsets.only(left: 7), child: Text("Loading...")),
+        Container(margin: EdgeInsets.only(left: 7), child: Text('Loading...')),
       ],
     ),
   );
@@ -86,18 +86,18 @@ Tuple3<String, String, String> calculateDuration(int duration) {
   String hrs, mins, secs;
   if (duration < 60) {
     secs = duration.toString();
-    if (duration < 10) secs = "0" + secs;
-    mins = "00";
-    hrs = "00";
+    if (duration < 10) secs = '0' + secs;
+    mins = '00';
+    hrs = '00';
   } else if (duration >= 60 && duration < 3600) {
     secs = (duration % 60).toString();
     mins = (duration ~/ 60).toString();
-    if (duration ~/ 60 < 10) mins = "0" + mins;
-    hrs = "00";
+    if (duration ~/ 60 < 10) mins = '0' + mins;
+    hrs = '00';
   } else {
     hrs = (duration ~/ 3600).toString();
 
-    if (duration ~/ 3600 < 10) hrs = "0" + hrs;
+    if (duration ~/ 3600 < 10) hrs = '0' + hrs;
     int temp = duration - 3600;
     mins = (temp ~/ 60).toString();
     secs = (temp % 60).toString();

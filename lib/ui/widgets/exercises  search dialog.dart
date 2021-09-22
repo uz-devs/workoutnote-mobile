@@ -18,7 +18,7 @@ class SearchDialog extends StatefulWidget {
 
 class _SearchDialogState extends State<SearchDialog> {
   TextEditingController searchController = TextEditingController();
-  String _searchWord = "";
+  String _searchWord = '';
   ConfigProvider configProvider = ConfigProvider();
 
   @override
@@ -53,7 +53,7 @@ class _SearchDialogState extends State<SearchDialog> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      "${exercises[configProvider.activeLanguage()]}",
+                      '${exercises[configProvider.activeLanguage()]}',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                           fontSize: 15, color: Color.fromRGBO(102, 51, 204, 1)),
@@ -90,7 +90,7 @@ class _SearchDialogState extends State<SearchDialog> {
                   });
                 },
                 decoration: InputDecoration(
-                  hintText: "${exerciseHint[configProvider.activeLanguage()]}",
+                  hintText: '${exerciseHint[configProvider.activeLanguage()]}',
                   hintStyle: TextStyle(color: Colors.grey, fontSize : 15.0),
                   prefixIcon: IconButton(
                     onPressed: () {},
@@ -101,7 +101,7 @@ class _SearchDialogState extends State<SearchDialog> {
                     onPressed: () {
                       searchController.clear();
                       setState(() {
-                        _searchWord = "";
+                        _searchWord = '';
                       });
                     },
                     icon: Icon(Icons.close),
@@ -152,7 +152,7 @@ class _SearchDialogState extends State<SearchDialog> {
                                     width: 2.0,
                                       color: Color.fromRGBO(102, 51, 204, 1))),
                               label: Text(
-                                "${favorites[configProvider.activeLanguage()]}",
+                                '${favorites[configProvider.activeLanguage()]}',
                                 style: TextStyle(
                                   fontSize: 13.0,
                                     color: dialogProvider.showFavorite
@@ -212,14 +212,14 @@ class _SearchDialogState extends State<SearchDialog> {
                                     .english ==
                                 null
                             ? Text(
-                                "${showExercises[index].name}(${showExercises[index].bodyPart})")
+                                '${showExercises[index].name}(${showExercises[index].bodyPart})')
                             : Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                      "${showExercises[index].namedTranslations!.english}"),
+                                      '${showExercises[index].namedTranslations!.english}'),
                                   Text(
-                                      "${showExercises[index].name}(${showExercises[index].bodyPart})")
+                                      '${showExercises[index].name}(${showExercises[index].bodyPart})')
                                 ],
                               )),
                     Expanded(
@@ -233,27 +233,27 @@ class _SearchDialogState extends State<SearchDialog> {
                                 if (!showExercises[index].isFavorite) {
                                   await dialogProvider.setFavoriteExercise(
                                       userPreferences!
-                                              .getString("sessionKey") ??
-                                          "",
+                                              .getString('sessionKey') ??
+                                          '',
                                       showExercises[index].id ?? -1,
                                       showExercises[index]);
                                 } else {
                                   await dialogProvider.unsetFavoriteExercise(
                                       userPreferences!
-                                              .getString("sessionKey") ??
-                                          "",
+                                              .getString('sessionKey') ??
+                                          '',
                                       showExercises[index].id ?? -1,
                                       showExercises[index]);
                                 }
                               },
                               icon: showExercises[index].isFavorite
                                   ? SvgPicture.asset(
-                                      "assets/icons/liked.svg",
+                                      'assets/icons/liked.svg',
                                       width: 17.0,
                                       height: 17.0,
                                     )
                                   : SvgPicture.asset(
-                                      "assets/icons/unliked.svg",
+                                      'assets/icons/unliked.svg',
                                       width: 17.0,
                                       height: 17.0,
                                     )),

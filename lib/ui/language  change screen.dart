@@ -31,7 +31,7 @@ class _LanguageChangeScreenState extends State<LanguageChangeScreen> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           title: Text(
-            "${languagesettingsscreenTitle[configProvider.activeLanguage()]}",
+            '${languagesettingsscreenTitle[configProvider.activeLanguage()]}',
             style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
           ),
         ),
@@ -44,7 +44,7 @@ class _LanguageChangeScreenState extends State<LanguageChangeScreen> {
                     configProvider.changeLanguage(languages[index].index ?? 1);
                   },
                   child: ListTile(
-                    leading: Text("${languages[index].name}"),
+                    leading: Text('${languages[index].name}'),
                     trailing:   Icon(Icons.check, color: configProvider.activeLanguage() == languages[index].name? Color.fromRGBO(102, 51, 204, 1): Colors.transparent),
                   ),
                 );

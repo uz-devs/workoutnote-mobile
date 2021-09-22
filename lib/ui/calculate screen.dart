@@ -16,8 +16,8 @@ class _CalculateScreenState extends State<CalculateScreen> {
   PersistentBottomSheetController? bottomSheetController;
 
   var configProvider = ConfigProvider();
-  List<String> koreanNames = [oneRepMax1[korean] ?? "", plateBarbell1[korean] ?? "", powerLiftingTitle[korean] ?? "", wilksTitle[korean] ?? ""];
-  List<String> englishNames = [oneRepMax1[english] ?? "", plateBarbell1[english] ?? "", powerLiftingTitle[english] ?? "", wilksTitle[english] ?? ""];
+  List<String> koreanNames = [oneRepMax1[korean] ?? '', plateBarbell1[korean] ?? '', powerLiftingTitle[korean] ?? '', wilksTitle[korean] ?? ''];
+  List<String> englishNames = [oneRepMax1[english] ?? '', plateBarbell1[english] ?? '', powerLiftingTitle[english] ?? '', wilksTitle[english] ?? ''];
 
   @override
   void dispose() {
@@ -49,10 +49,10 @@ class _CalculateScreenState extends State<CalculateScreen> {
     return InkWell(
       onTap: () async {
         if (index == 0)
-          await showModal(index + 1, "${oneRepMax1[configProvider.activeLanguage()]}", "${oneRepMax4[configProvider.activeLanguage()]}", "Lift", "KG", "${oneRepMax5[configProvider.activeLanguage()]}", "${oneRepMax6[configProvider.activeLanguage()]}");
+          await showModal(index + 1, '${oneRepMax1[configProvider.activeLanguage()]}', '${oneRepMax4[configProvider.activeLanguage()]}', 'Lift', 'KG', '${oneRepMax5[configProvider.activeLanguage()]}', '${oneRepMax6[configProvider.activeLanguage()]}');
         else if (index == 1)
-          await showModal(index + 1, "${plateBarbell1[configProvider.activeLanguage()]}", "${plateBarbell2[configProvider.activeLanguage()]}", "Total Lift (kg)", "Bar Weight (kg)", "${plateBarbell3[configProvider.activeLanguage()]}", "${plateBarbell4[configProvider.activeLanguage()]}");
-        else if (index == 3) await showModal(index + 1, "${wilks1[configProvider.activeLanguage()]}", "${wilks2[configProvider.activeLanguage()]}", "Maximum weight", "Gender", "${wilks3[configProvider.activeLanguage()]}", "${wilks4[configProvider.activeLanguage()]}");
+          await showModal(index + 1, '${plateBarbell1[configProvider.activeLanguage()]}', '${plateBarbell2[configProvider.activeLanguage()]}', 'Total Lift (kg)', 'Bar Weight (kg)', '${plateBarbell3[configProvider.activeLanguage()]}', '${plateBarbell4[configProvider.activeLanguage()]}');
+        else if (index == 3) await showModal(index + 1, '${wilks1[configProvider.activeLanguage()]}', '${wilks2[configProvider.activeLanguage()]}', 'Maximum weight', 'Gender', '${wilks3[configProvider.activeLanguage()]}', '${wilks4[configProvider.activeLanguage()]}');
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 10.0, left: 20.0, right: 20.0),

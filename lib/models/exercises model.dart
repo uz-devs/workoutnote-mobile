@@ -15,7 +15,7 @@ class ExercisesResponse{
 
     List<Exercise> exercises = list.map((e) => Exercise.fromJson(e)).toList();
 
-    return  ExercisesResponse(parsedJson["success"], exercises);
+    return  ExercisesResponse(parsedJson['success'], exercises);
 
   }
 }
@@ -36,7 +36,7 @@ class  Exercise{
 
 
   factory Exercise.fromJson(Map<String,  dynamic> parsedJson){
-    return Exercise(parsedJson["id"], parsedJson["name"], parsedJson["body_part_str"], parsedJson["category_str"], parsedJson["isFavorite"]??false, NameTranslation.fromJson(parsedJson["name_translations"]));
+    return Exercise(parsedJson['id'], parsedJson['name'], parsedJson['body_part_str'], parsedJson['category_str'], parsedJson['isFavorite']??false, NameTranslation.fromJson(parsedJson['name_translations']));
   }
 }
 
@@ -52,7 +52,7 @@ class NameTranslation{
 
 
   factory NameTranslation.fromJson(Map<String,  dynamic> parsedJson){
-    return NameTranslation(parsedJson["EN"]);
+    return NameTranslation(parsedJson['EN']);
   }
 }
 

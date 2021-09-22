@@ -19,7 +19,7 @@ class ExercisesDialogProvider extends ChangeNotifier {
   List<Exercise> exercisesByBodyParts = [];
   int responseCode = LOADING;
   bool showFavorite = false;
-  String activeBodyPart = "";
+  String activeBodyPart = '';
  //endregion
   //region api calls
   Future<void> fetchExercises() async {
@@ -32,7 +32,7 @@ class ExercisesDialogProvider extends ChangeNotifier {
         if (workoutsResponse.success) {
           allExercises.addAll(workoutsResponse.exercises ?? []);
           var response = await WebServices.fetchFavoriteExercises(
-              userPreferences!.getString("sessionKey") ?? "");
+              userPreferences!.getString('sessionKey') ?? '');
           var execResponse = ExercisesResponse.fromJson(
               jsonDecode(utf8.decode(response.bodyBytes)));
           if (execResponse.success) {
@@ -90,7 +90,7 @@ class ExercisesDialogProvider extends ChangeNotifier {
       var response =
           await WebServices.setMyFavoriteExercise(sessionKey, exerciseId);
       print(response.body);
-      if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+      if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
         _updateExerciseFavoriteStatus(exerciseId, 1);
       }
     } catch (e) {
@@ -103,7 +103,7 @@ class ExercisesDialogProvider extends ChangeNotifier {
       var response =
           await WebServices.unsetMyFavoriteExercise(sessionKey, exerciseId);
       print(response.body);
-      if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+      if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
         _updateExerciseFavoriteStatus(exerciseId, 0);
       }
     } catch (e) {
@@ -138,7 +138,7 @@ class ExercisesDialogProvider extends ChangeNotifier {
     List<Exercise> temps = [];
     if (searchWord.isNotEmpty) {
       for (int i = 0; i < showExercises.length; i++) {
-        if (showExercises[i].name!.contains(searchWord) ||  "${showExercises[i].namedTranslations!.english}".contains(searchWord)) {
+        if (showExercises[i].name!.contains(searchWord) ||  '${showExercises[i].namedTranslations!.english}'.contains(searchWord)) {
           temps.add(showExercises[i]);
         }
       }
@@ -176,7 +176,7 @@ class ExercisesDialogProvider extends ChangeNotifier {
     if (activeBodyPart.isEmpty || activeBodyPart != bodyPart) {
       activeBodyPart = bodyPart;
     } else if (activeBodyPart == bodyPart) {
-      activeBodyPart = "";
+      activeBodyPart = '';
     }
     notifyListeners();
   }
@@ -189,7 +189,7 @@ class ExercisesDialogProvider extends ChangeNotifier {
     exercisesByBodyParts.clear();
     responseCode = LOADING;
     showFavorite = false;
-    activeBodyPart = "";
+    activeBodyPart = '';
   }
   //endregion
 

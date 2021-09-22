@@ -7,14 +7,17 @@ import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
 import 'package:workoutnote/providers/create%20workout%20provider.dart';
 import 'package:workoutnote/services/network%20%20service.dart';
+import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
+
+import 'config provider.dart';
 
 class MainScreenProvider extends ChangeNotifier {
   //region vars
   List<WorkOut> workOuts = [];
   List<WorkOut> calendarWorkouts = [];
   List<WorkOut> favoriteWorkOuts = [];
-  List<Map<String , String>> notes = [];
+  List<Map<String, String>> notes = [];
   bool requestDone1 = false;
   bool requestDone2 = false;
   bool requestDone3 = false;
@@ -27,7 +30,7 @@ class MainScreenProvider extends ChangeNotifier {
   //region api calls
   Future<bool> fetchTodayWorkouts() async {
     try {
-      var sessionKey = userPreferences!.getString("sessionKey") ?? "";
+      var sessionKey = userPreferences!.getString('sessionKey') ?? '';
       var fromTimeStamp = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).millisecondsSinceEpoch;
       var tillTimeStamp = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1).millisecondsSinceEpoch - 1;
       var response = await WebServices.fetchWorkOuts(sessionKey, fromTimeStamp, tillTimeStamp);
@@ -52,7 +55,7 @@ class MainScreenProvider extends ChangeNotifier {
   Future<void> fetchCalendarWorkoutSessions() async {
     if (calendarWorkouts.isNotEmpty) calendarWorkouts.clear();
     try {
-      var sessionKey = userPreferences!.getString("sessionKey") ?? "";
+      var sessionKey = userPreferences!.getString('sessionKey') ?? '';
       var fromTimestamp = 0;
       var tillTimestamp = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1).millisecondsSinceEpoch - 1;
       var response = await WebServices.fetchWorkOuts(sessionKey, fromTimestamp, tillTimestamp);
@@ -75,10 +78,15 @@ class MainScreenProvider extends ChangeNotifier {
     try {
       var response = await WebServices.fetchFavoriteWorkoutSessions(sessionKey);
 
-      if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+      if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
         var workoutsResponse = WorkOutsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 
-        for (int i = 0; i < workoutsResponse.workouts.length; i++) {}
+        for (int i = 0; i < workoutsResponse.workouts.length; i++) {
+          print(workoutsResponse.workouts[i].title);
+
+
+
+        }
         favoriteWorkOuts.addAll(workoutsResponse.workouts);
         for (int i = 0; i < favoriteWorkOuts.length; i++) {
           favoriteWorkOuts[i].isFavorite = true;
@@ -98,7 +106,7 @@ class MainScreenProvider extends ChangeNotifier {
     try {
       var response = await WebServices.setFavoriteWorkOut(sessionKey, workoutId);
 
-      if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+      if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
         _updateWorkoutFavoriteStatus(workoutId, mode);
       }
     } catch (e) {
@@ -110,7 +118,7 @@ class MainScreenProvider extends ChangeNotifier {
     try {
       var response = await WebServices.unsetFavoriteWorkOut(sessionKey, workoutId);
 
-      if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+      if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
         _updateWorkoutFavoriteStatus(workoutId, mode);
       }
     } catch (e) {
@@ -119,21 +127,21 @@ class MainScreenProvider extends ChangeNotifier {
   }
 
   Future<bool> deleteWorkoutSession(String sessionKey, int id) async {
-    print("start");
+    print('start');
     try {
       var response = await WebServices.removeWorkout(sessionKey, id);
 
-      if (response.statusCode == 200 && jsonDecode(response.body)["success"]) {
+      if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
         int timestamp = 0;
         bool isFavorite = false;
-        print("1");
+        print('1');
         if (requestDone3) {
-          print("2");
+          print('2');
 
           timestamp = calendarWorkouts.where((element) => element.id == id).single.timestamp ?? 0;
           isFavorite = calendarWorkouts.where((element) => element.id == id).single.isFavorite;
         } else {
-          print("3");
+          print('3');
 
           timestamp = workOuts.where((element) => element.id == id).single.timestamp ?? 0;
           isFavorite = workOuts.where((element) => element.id == id).single.isFavorite;
@@ -152,41 +160,27 @@ class MainScreenProvider extends ChangeNotifier {
     }
   }
 
-  Future<String> fetchSingleNote( int timestamp) async {
-
-
-    print("fetching single note");
-    print("timestamp: ${timestamp}");
-
-
-    var sessionKey = userPreferences!.getString("sessionKey") ?? "";
-
+  Future<void> fetchSingleNote(int timestamp) async {
+    var sessionKey = userPreferences!.getString('sessionKey') ?? '';
     try {
-
       var response = await WebServices.fetchCalendarNote(sessionKey, timestamp);
 
-      print(response.statusCode);
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
+        String currentNote = jsonDecode(utf8.decode(response.bodyBytes))['note'];
+        noteController.text = currentNote;
 
-        print(response.body);
-        String currentNote = jsonDecode(utf8.decode(response.bodyBytes))["note"];
-        notes.add({toDate(timestamp): jsonDecode(utf8.decode(response.bodyBytes))["note"]});
 
-        return  currentNote;
-      }
-      return  "";
-    }
-    catch(e){
+        print('Noooooteee: ${noteController.text}');
+        notifyListeners();
+        }
+    } catch (e) {
       print(e);
-      return  "";
-
     }
   }
 
-  Future<bool> saveNote( int timestamp, String note) async {
-
-    print("timestamp: ${timestamp}");
-    var sessionKey = userPreferences!.getString("sessionKey") ?? "";
+  Future<bool> saveNote(int timestamp, String note) async {
+    print('timestamp: ${timestamp}');
+    var sessionKey = userPreferences!.getString('sessionKey') ?? '';
 
     try {
       var response = await WebServices.saveCalendarNote(sessionKey, timestamp, note);
@@ -212,8 +206,8 @@ class MainScreenProvider extends ChangeNotifier {
       for (int i = 0; i < calendarWorkouts.length; i++) {
         if (calendarWorkouts[i].id == id) {
           for (int j = 0; j < calendarWorkouts[i].lifts!.length; j++) {
-            title = calendarWorkouts[i].title ?? "";
-            lifts.add(EditableLift.create(calendarWorkouts[i].lifts![j].exerciseName, calendarWorkouts[i].lifts![j].exerciseId, exercises.isNotEmpty ? exercises.where((element) => element.id == calendarWorkouts[i].lifts![j].exerciseId).first.bodyPart : "", calendarWorkouts[i].lifts![j].liftMas!.toInt(), calendarWorkouts[i].lifts![j].repetitions ?? 0, calendarWorkouts[i].lifts![j].oneRepMax ?? 0.0, true, -1));
+            title = calendarWorkouts[i].title ?? '';
+            lifts.add(EditableLift.create(calendarWorkouts[i].lifts![j].exerciseName, calendarWorkouts[i].lifts![j].exerciseId, exercises.isNotEmpty ? exercises.where((element) => element.id == calendarWorkouts[i].lifts![j].exerciseId).first.bodyPart : '', calendarWorkouts[i].lifts![j].liftMas!.toInt(), calendarWorkouts[i].lifts![j].repetitions ?? 0, calendarWorkouts[i].lifts![j].oneRepMax ?? 0.0, true, -1));
           }
         }
       }
@@ -223,18 +217,18 @@ class MainScreenProvider extends ChangeNotifier {
 
       print(workout.title);
       for (int j = 0; j < workout.lifts!.length; j++) {
-        title = workout.title ?? "";
-        lifts.add(EditableLift.create(workout.lifts![j].exerciseName, workout.lifts![j].exerciseId, exercises.isNotEmpty ? exercises.where((element) => element.id == workout.lifts![j].exerciseId).first.bodyPart : "", workout.lifts![j].liftMas!.toInt(), workout.lifts![j].repetitions ?? 0, workout.lifts![j].oneRepMax ?? 0.0, true, -1));
+        title = workout.title ?? '';
+        lifts.add(EditableLift.create(workout.lifts![j].exerciseName, workout.lifts![j].exerciseId, exercises.isNotEmpty ? exercises.where((element) => element.id == workout.lifts![j].exerciseId).first.bodyPart : '', workout.lifts![j].liftMas!.toInt(), workout.lifts![j].repetitions ?? 0, workout.lifts![j].oneRepMax ?? 0.0, true, -1));
       }
     } else if (mode == 3) {
       var workout = favoriteWorkOuts.where((element) => element.id == id).single;
       for (int j = 0; j < workout.lifts!.length; j++) {
-        title = workout.title ?? "";
-        lifts.add(EditableLift.create(workout.lifts![j].exerciseName, workout.lifts![j].exerciseId, exercises.isNotEmpty ? exercises.where((element) => element.id == workout.lifts![j].exerciseId).first.bodyPart : "", workout.lifts![j].liftMas!.toInt(), workout.lifts![j].repetitions ?? 0, workout.lifts![j].oneRepMax ?? 0.0, true, -1));
+        title = workout.title ?? '';
+        lifts.add(EditableLift.create(workout.lifts![j].exerciseName, workout.lifts![j].exerciseId, exercises.isNotEmpty ? exercises.where((element) => element.id == workout.lifts![j].exerciseId).first.bodyPart : '', workout.lifts![j].liftMas!.toInt(), workout.lifts![j].repetitions ?? 0, workout.lifts![j].oneRepMax ?? 0.0, true, -1));
       }
     }
 
-    await createWorkoutProvider.repeatWorkoutSession(lifts, title ?? "[]");
+    await createWorkoutProvider.repeatWorkoutSession(lifts, title ?? '[]');
   }
 
   void _updateWorkoutFavoriteStatus(int id, int mode) {
@@ -271,7 +265,7 @@ class MainScreenProvider extends ChangeNotifier {
         }
       }
     else if (mode == 3) {
-      print("dferqerig");
+      print('dferqerig');
       for (int i = 0; i < favoriteWorkOuts.length; i++) {
         print(favoriteWorkOuts[i].id);
       }
@@ -306,11 +300,26 @@ class MainScreenProvider extends ChangeNotifier {
     }
   }
 
+  void onCalendarDropDownButtonValueChanged(String item, List<String>? years_en, List<String>? years_kr, ConfigProvider configProvider) {
+    var currentYear = DateTime.now().year;
+    String selectedMonthTime = '';
+    if (configProvider.activeLanguage() == english) {
+      var month = years_en!.indexOf(item.toString()) + 1 >= 10 ? '${years_en.indexOf(item.toString()) + 1}' : '0${years_en.indexOf(item.toString()) + 1}';
+      selectedMonthTime = '${currentYear}-${month}-01 00:00:00.000';
+    } else {
+      var month = years_kr!.indexOf(item.toString()) + 1 >= 10 ? '${years_kr.indexOf(item.toString()) + 1}' : '0${years_kr.indexOf(item.toString()) + 1}';
+      selectedMonthTime = '${currentYear}-${month}-01 00:00:00.000';
+    }
+    selectedDate = DateTime.parse(selectedMonthTime);
+    currentMonthIndex = configProvider.activeLanguage() == english ? years_en!.indexOf(item.toString()) : years_kr!.indexOf(item.toString());
+    notifyListeners();
+  }
 
-  void onCalendarPageRefereshed(DateTime  dateTime){
+  void onCalendarPageRefereshed(DateTime dateTime) {
     selectedDate = dateTime;
-     currentMonthIndex =  dateTime.month - 1;;
-     update();
+    currentMonthIndex = dateTime.month - 1;
+    ;
+    update();
   }
 
   void update() {
