@@ -312,6 +312,15 @@ class CreateWorkoutProvider extends ChangeNotifier {
         .setInt('unselected_ex_id', unselectedExercise!.id ?? -1);
   }
 
+  void reorderList(int oldIndex,  int newIndex){
+       if(newIndex > oldIndex){
+         newIndex-=1;
+       }
+       final items =_lifts.removeAt(oldIndex);
+       _lifts.insert(newIndex, items);
+       notifyListeners();
+  }
+
   //endregion
   //region utils
   void reset() {

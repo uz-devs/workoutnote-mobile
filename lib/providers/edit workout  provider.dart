@@ -246,6 +246,19 @@ class EditWorkoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+
+  void reorderList(int oldIndex,  int newIndex){
+    if(newIndex > oldIndex){
+      newIndex-=1;
+    }
+    final items =existingLifts.removeAt(oldIndex);
+    existingLifts.insert(newIndex, items);
+    notifyListeners();
+  }
+
+
+
+
 //endregion
 
   void reset() {

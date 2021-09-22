@@ -25,7 +25,7 @@ class CreateWorkOutCard extends StatelessWidget {
   List<WorkOut> calendarWorkouts;
   var configProvider = ConfigProvider();
   var mainScreenProvider = MainScreenProvider();
-
+  var _createWorkOutProvider =CreateWorkoutProvider();
   CreateWorkOutCard(this.width, this.height, this.workOuts, this.calendarWorkouts);
 
   Widget build(BuildContext context) {
@@ -35,7 +35,8 @@ class CreateWorkOutCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 35.0),
       child: Consumer<CreateWorkoutProvider>(builder: (context, createWorkoutProvider, child) {
-        int count = createWorkoutProvider.selectedLifts.length + 7;
+        _createWorkOutProvider= createWorkoutProvider;
+        int count = 8;
         createWorkoutProvider.restoreTimer();
         return Container(
           child: Card(
@@ -45,7 +46,7 @@ class CreateWorkOutCard extends StatelessWidget {
               elevation: 10,
               margin: EdgeInsets.zero,
               clipBehavior: Clip.antiAlias,
-              child: Container(margin: EdgeInsets.only(top: 10), child: _buildListView(count, createWorkoutProvider))),
+              child: Container(margin: EdgeInsets.only(top: 10), child:_buildListView(count,  createWorkoutProvider))),
         );
       }),
     );
@@ -70,31 +71,45 @@ class CreateWorkOutCard extends StatelessWidget {
         });
   }
 
+  Widget _buildReorderableListView(BuildContext context){
+    return ReorderableListView(
+        shrinkWrap: true ,
+        physics: NeverScrollableScrollPhysics(),
+        children: List.generate(_createWorkOutProvider.selectedLifts.length, (index) {
+       return  Container(
+
+           key: Key('$index'),
+
+           padding: EdgeInsets.only(left: 10, right: 10.0),
+           margin: EdgeInsets.only(
+             bottom: 10,
+           ),
+           child: Column(
+             children: [
+               _buildExerciseListItem((index + 1).toString(), '${_createWorkOutProvider.selectedLifts[index].exerciseName}(${_createWorkOutProvider.selectedLifts[index].bodyPart})', '0.0', '0.0', _createWorkOutProvider.selectedLifts[index].rm.toString(), Colors.black, 2, _createWorkOutProvider, index, context, configProvider, 'body'),
+               Container(
+                   margin: EdgeInsets.only(left: 15.0, right:  15.0),
+                   child: Divider(
+                     height: 1,
+                     color: Color.fromRGBO(170, 170, 170, 1),
+                   ))
+
+             ],
+           ));
+
+    } ), onReorder: _createWorkOutProvider.reorderList);
+  }
+
+
+
   Widget _buildListView(int count, CreateWorkoutProvider exProvider) {
 
 
 
-    //TODO  change to  reorderable listview [2021.09.14]
-    //TODO  make date/calendar multi language [2021.09.14]
-    //TODO  change Calendar  style [2021.09.14]
-    return ListView.separated(
+
+    return ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        separatorBuilder: (BuildContext context, int index) {
-          if (index > 4 && index != count - 2)
-            return Container(
-              margin: EdgeInsets.only(left: 37.0, right: 37.0),
-              child: Divider(
-                height: 1,
-                color: Colors.black54,
-              ),
-            );
-          else
-            return Divider(
-              height: 0,
-              color: Colors.white,
-            );
-        },
         itemCount: count,
         itemBuilder: (context, index) {
           if (index == 0)
@@ -129,8 +144,7 @@ class CreateWorkOutCard extends StatelessWidget {
                             constraints: BoxConstraints(),
                             onPressed: () {
                               exProvider.titleContoller.clear();
-
-                            },
+                              },
                             icon: Icon(
                               Icons.clear,
                               color: Color.fromRGBO(102, 51, 204, 1),
@@ -166,9 +180,7 @@ class CreateWorkOutCard extends StatelessWidget {
                     margin: EdgeInsets.only(top: 10.0),
                     child: (exProvider.timerSubscription == null || exProvider.timerSubscription!.isPaused)
                         ? InkWell(
-
-
-                            onTap: () {
+                        onTap: () {
                               if (exProvider.timerSubscription == null) {
                                 exProvider.startTimer();
                               } else if (exProvider.timerSubscription!.isPaused) {
@@ -222,13 +234,7 @@ class CreateWorkOutCard extends StatelessWidget {
                   ),
                   color: Color.fromRGBO(102, 51, 204, 1),
                   onPressed: () async {
-
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => Test()),
-                    // );
-
-                     await _showFavoriteWorkoutsDialog(context, configProvider, exProvider);
+                    await _showFavoriteWorkoutsDialog(context, configProvider, exProvider);
                   },
                   textColor: Colors.white,
                   child: Text(
@@ -248,22 +254,17 @@ class CreateWorkOutCard extends StatelessWidget {
                       color: Color.fromRGBO(230, 230, 250, 1),
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(20))),
-                child: _buildExerciseListItem('No.', '${exercisesName[configProvider.activeLanguage()]}', 'KG', 'REP', 'RM', Color.fromRGBO(102, 51, 204, 1), 1, exProvider, index, context, configProvider));
-          } else if (index == count - 2) {
+                child: _buildExerciseListItem('No.', '${exercisesName[configProvider.activeLanguage()]}', 'KG', 'REP', 'RM', Color.fromRGBO(102, 51, 204, 1), 1, exProvider, index, context, configProvider, 'header'));
+          } else if (index == 6) {
             return Container(
                 padding: EdgeInsets.only(left: 10, right: 10.0),
                 margin: EdgeInsets.only(
                   bottom: 10,
                 ),
-                child: _buildExerciseListItem('1', '${exProvider.unselectedExercise == null ? '${exerciseName[configProvider.activeLanguage()]}' : exProvider.unselectedExercise!.name}(${(exProvider.unselectedExercise == null ? '${bodyPart[configProvider.activeLanguage()]}' : exProvider.unselectedExercise!.bodyPart)})', 'KG', 'REP', 'RM', Colors.grey, 3, exProvider, index, context, configProvider));
-          } else if (index > 4 && index < count - 2 && index < count - 1) {
+                child: _buildExerciseListItem('1', '${exProvider.unselectedExercise == null ? '${exerciseName[configProvider.activeLanguage()]}' : exProvider.unselectedExercise!.name}(${(exProvider.unselectedExercise == null ? '${bodyPart[configProvider.activeLanguage()]}' : exProvider.unselectedExercise!.bodyPart)})', 'KG', 'REP', 'RM', Colors.grey, 3, exProvider, index, context, configProvider, 'footer'));
+          } else if (index == 5) {
             index = index - 5;
-            return Container(
-                padding: EdgeInsets.only(left: 10, right: 10.0),
-                margin: EdgeInsets.only(
-                  bottom: 10,
-                ),
-                child: _buildExerciseListItem((index + 1).toString(), '${exProvider.selectedLifts[index].exerciseName}(${exProvider.selectedLifts[index].bodyPart})', '0.0', '0.0', exProvider.selectedLifts[index].rm.toString(), Colors.black, 2, exProvider, index, context, configProvider));
+            return _buildReorderableListView(context);
           } else
             return Container(
               margin: EdgeInsets.only(bottom: 10.0),
@@ -321,7 +322,7 @@ class CreateWorkOutCard extends StatelessWidget {
         });
   }
 
-  Widget _buildExerciseListItem(String exerciseNumber, String exerciseName, String kg, String rep, String rm, Color color, int mode, CreateWorkoutProvider mainScreenProvider, int index, BuildContext context, ConfigProvider configProvider) {
+  Widget _buildExerciseListItem(String exerciseNumber, String exerciseName, String kg, String rep, String rm, Color color, int mode, CreateWorkoutProvider mainScreenProvider, int index, BuildContext context, ConfigProvider configProvider, String listMode) {
     return Row(
       children: [
         Expanded(

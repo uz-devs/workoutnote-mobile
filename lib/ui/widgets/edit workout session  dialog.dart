@@ -49,7 +49,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    int count = editWorkouSessionProvider.existingLifts.length + 6;
+    int count = 7;
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       insetPadding: EdgeInsets.all(20),
@@ -60,22 +60,8 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
   Widget _buildEditWorkoutList(int count) {
     return Scrollbar(
       thickness: 3,
-      child: ListView.separated(
+      child: ListView.builder(
           padding: EdgeInsets.zero,
-          separatorBuilder: (BuildContext context, int index) {
-            if (index > 3)
-              return Container(
-                  margin: EdgeInsets.only(left: 30, right: 30),
-                  child: Divider(
-                    height: 1,
-                    color: Color.fromRGBO(170, 170, 170, 1),
-                  ));
-            else
-              return Divider(
-                height: 0.0,
-                color: Colors.white,
-              );
-          },
           itemCount: count,
           itemBuilder: (BuildContext context, index) {
             if (index == 0)
@@ -127,21 +113,6 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                   onChanged: (c) async {},
                   decoration: InputDecoration(
                       suffixIconConstraints: BoxConstraints(minHeight: 10, minWidth: 10),
-                      // suffixIcon: Padding(
-                      //     padding: EdgeInsets.only(top: 8.0),
-                      //     child: IconButton(
-                      //         padding: EdgeInsets.zero,
-                      //         constraints: BoxConstraints(),
-                      //         onPressed: () {
-                      //           editWorkouSessionProvider.titleController
-                      //               .clear();
-                      //           FocusScope.of(context).unfocus();
-                      //         },
-                      //         icon: Icon(
-                      //           Icons.clear,
-                      //           color: Color.fromRGBO(102, 51, 204, 1),
-                      //           size: 20.0,
-                      //         ))),
                       isDense: true,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
@@ -173,17 +144,11 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                       ),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   child: _buildExerciseListItem('No.', '${exercisesName[configProvider.activeLanguage()]}', 'KG', 'REP', 'RM', Color.fromRGBO(102, 51, 204, 1), 1, editWorkouSessionProvider, index, context, configProvider));
-            else if (index >= 4 && index < count - 2) {
+            else if (index  == 4) {
               index = index - 4;
-              return InkWell(
-                child: Container(
-                    padding: EdgeInsets.only(left: 10, right: 10.0),
-                    margin: EdgeInsets.only(
-                      bottom: 10,
-                    ),
-                    child: _buildExerciseListItem((index + 1).toString(), '${editWorkouSessionProvider.existingLifts[index].exerciseName}', '0.0', '0.0', editWorkouSessionProvider.existingLifts[index].rm.toString(), Colors.black, 2, editWorkouSessionProvider, index, context, configProvider)),
-              );
-            } else if (index == count - 2) {
+              return _buildReorderableListView();
+            }
+            else if (index == 5) {
               return Container(
                   padding: EdgeInsets.only(left: 10, right: 10.0),
                   margin: EdgeInsets.only(
@@ -236,6 +201,33 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
     );
   }
 
+  Widget  _buildReorderableListView(){
+     return ReorderableListView(
+       shrinkWrap: true ,
+       physics: NeverScrollableScrollPhysics(),
+       onReorder: editWorkouSessionProvider.reorderList,
+       children:  List.generate(editWorkouSessionProvider.existingLifts.length, (index)  {
+         return     Container(
+           key: Key('${index}'),
+         padding: EdgeInsets.only(left: 10, right: 10.0),
+         margin: EdgeInsets.only(
+         bottom: 10,
+         ),
+         child: Column(
+           children: [
+             _buildExerciseListItem((index + 1).toString(), '${editWorkouSessionProvider.existingLifts[index].exerciseName}', '0.0', '0.0', editWorkouSessionProvider.existingLifts[index].rm.toString(), Colors.black, 2, editWorkouSessionProvider, index, context, configProvider),
+
+             Container(
+                 margin: EdgeInsets.only(left: 15.0, right:  15.0),
+                 child: Divider(
+                   height: 1,
+                   color: Color.fromRGBO(170, 170, 170, 1),
+                 ))
+           ],
+         ));
+       }),);
+  }
+
   Future<void> _showExercisesDialog(BuildContext context, ConfigProvider configProvider, EditWorkoutProvider editWorkoutProvider, mode, existingLiftIndex) async {
     await showDialog(
         context: context,
@@ -268,7 +260,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
           flex: 5,
           child: Container(
             margin: EdgeInsets.only(left: 21),
-            child: InkWell(
+            child: GestureDetector(
               onTap: () async {
                 if (mode == 1) {
                 } else if (mode == 2) {
