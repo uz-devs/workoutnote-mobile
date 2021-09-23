@@ -353,7 +353,10 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                             child: Text('${update[configProvider.activeLanguage()]}'),
                             onPressed: () {
                               provider.updateProfileSettings(emailController.text, userPreferences!.getString('sessionKey') ?? '', nameController.text, configProvider.g, '${configProvider.selectedYear}-${configProvider.selectedMonth}-${configProvider.selectedDay}', configProvider.isShared).then((value) {
-                                showToast('${updateToastMessage[configProvider.activeLanguage()]}');
+
+                                showSnackBar('${updateToastMessage[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
+
+                                //showToast('${updateToastMessage[configProvider.activeLanguage()]}');
                               });
                             }),
                       );

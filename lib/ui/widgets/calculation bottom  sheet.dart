@@ -553,10 +553,13 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
         }
       }
       if (currentPlateBarbellKG.isEmpty) {
-        showToast('Plate Barbell cannot  be  calculated!');
+        showSnackBar('${cantCalculateBarbell[configProvider.activeLanguage()]}',  context, Colors.red,  Colors.white);
+      //  showToast('Plate Barbell cannot  be  calculated!');
       }
     } else {
-      showToast('Total Lift cannot be less than Bar weight!');
+      showSnackBar("${liftlessthanbar[configProvider.activeLanguage()]}",  context, Colors.red,  Colors.white);
+
+      //showToast('Total Lift cannot be less than Bar weight!');
     }
     setState(() {});
   }

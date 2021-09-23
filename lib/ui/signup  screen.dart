@@ -164,13 +164,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                  await  userPreferences!.setBool('signUpDone',  true);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen()));
                                 } else {
-                                  showToast('${signUpError[configProvider.activeLanguage()]}');
+                                  showSnackBar('${signUpError[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+
+                                  //showToast('${signUpError[configProvider.activeLanguage()]}');
                                 }
                               });
                             else {
-                             // Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen()));
 
-                              showToast('${authEmptyFields[configProvider.activeLanguage()]}');
+                              showSnackBar('${authEmptyFields[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+
+                            // showToast('${authEmptyFields[configProvider.activeLanguage()]}');
                             }
                             // Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen()));
                           }),

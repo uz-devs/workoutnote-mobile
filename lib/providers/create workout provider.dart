@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:workoutnote/models/editible%20lift%20model.dart';
 import 'package:workoutnote/models/exercises%20model.dart';
 import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
@@ -36,7 +37,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
       int timestamp,
       List<WorkOut> workOuts,
       List<WorkOut> calendarWorkouts,
-      ConfigProvider configProvider) async {
+      ConfigProvider configProvider, BuildContext context) async {
 
 
     print('create started!');
@@ -101,7 +102,8 @@ class CreateWorkoutProvider extends ChangeNotifier {
         print(e);
       }
     } else {
-      showToast('${noExerciseWarning[configProvider.activeLanguage()]}');
+      showSnackBar('${noExerciseWarning[configProvider.activeLanguage()]}',  context,  Colors.red, Colors.white);
+      //showToast('${noExerciseWarning[configProvider.activeLanguage()]}');
     }
   }
 

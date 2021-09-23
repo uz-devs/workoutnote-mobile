@@ -68,12 +68,12 @@ class ConfigProvider extends ChangeNotifier {
           if (settingsResponse.statusCode == 200) {
             print(settingsResponse.body);
             var settings = Settings.fromJson(jsonDecode(settingsResponse.body));
-            updatePreferences(email, settings.name ?? '', settings.dateOfBirth ?? '00-00-00', settings.gender ?? 'MALE', settings.iProfileShared).then((value) {
+            updatePreferences(email, settings.name ?? '', settings.dateOfBirth ?? '2000-01-01', settings.gender ?? 'MALE', settings.iProfileShared).then((value) {
               myemail = email;
               myname = settings.name!;
-              selectedYear = settings.dateOfBirth!.split('-')[0];
-              selectedMonth = settings.dateOfBirth!.split('-')[1];
-              selectedDay = settings.dateOfBirth!.split('-')[2];
+              selectedYear = settings.dateOfBirth !=null?settings.dateOfBirth!.split('-')[0]:'20000';
+              selectedMonth =settings.dateOfBirth !=null? settings.dateOfBirth!.split('-')[1]:'01';
+              selectedDay = settings.dateOfBirth !=null?settings.dateOfBirth!.split('-')[2]:'01';
               g = settings.gender!;
 
               isShared = settings.iProfileShared;

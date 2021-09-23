@@ -101,7 +101,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
                                 }
                                 else{
-                                   showToast('${verificationError[configProvider.activeLanguage()]}');
+                                  showSnackBar('${verificationError[configProvider.activeLanguage()]}',  context, Colors.red, Colors.white);
+                                  // showToast('${verificationError[configProvider.activeLanguage()]}');
                                 }
                               });
 

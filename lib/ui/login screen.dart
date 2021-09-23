@@ -126,11 +126,14 @@ class LoginScreen extends StatelessWidget {
                                   if (value) {
                                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
                                   } else {
-                                    showToast('${authErrorMesage[configProvider.activeLanguage()]}');
+
+                                    showSnackBar('${authErrorMesage[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                                    //showToast('${authErrorMesage[configProvider.activeLanguage()]}');
                                   }
                                 });
                               } else
-                                showToast('${authEmptyFields[configProvider.activeLanguage()]}');
+                                showSnackBar('${authEmptyFields[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                               // showToast('${authEmptyFields[configProvider.activeLanguage()]}');
                             }),
                       ),
                       Container(
@@ -144,14 +147,18 @@ class LoginScreen extends StatelessWidget {
                                     user.passwordReset(_emailController.text).then((value) {
                                       print('value $value');
                                       if (value) {
-                                        showToast('${sendEmailForReset[configProvider.activeLanguage()]}');
+                                        showSnackBar('${sendEmailForReset[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
+                                       // showToast('${sendEmailForReset[configProvider.activeLanguage()]}');
                                       }
                                       else {
-                                        showToast('${authErrorMesage[configProvider.activeLanguage()]}');
+                                        showSnackBar('${authErrorMesage[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                                       // showToast('${authErrorMesage[configProvider.activeLanguage()]}');
                                       }
                                     });
                                   else {
-                                    showToast('${emptyEmail[configProvider.activeLanguage()]}');
+                                    showSnackBar('${emptyEmail[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+
+                                   // showToast('${emptyEmail[configProvider.activeLanguage()]}');
                                   }
                                 },
                                 child: Text(

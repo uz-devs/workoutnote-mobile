@@ -64,6 +64,14 @@ void showToast(String message) {
   Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIosWeb: 1, backgroundColor: Colors.black54, textColor: Colors.white, fontSize: 16.0);
 }
 
+void showSnackBar(String  message,  BuildContext context,  Color  backgroundColor,  Color  textColor){
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    backgroundColor: backgroundColor,
+    content: Text(message,  style: TextStyle(color: textColor),),
+    duration: Duration(milliseconds: 1000),
+  ));
+}
+
 showLoaderDialog(BuildContext context) {
   AlertDialog alert = AlertDialog(
     content: new Row(

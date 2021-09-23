@@ -301,9 +301,11 @@ class CreateWorkOutCard extends StatelessWidget {
                       color: Color.fromRGBO(102, 51, 204, 1),
                       onPressed: () async {
                         if (exProvider.titleContoller.text.isEmpty) {
-                          showToast('${emptyWorkoutTitle[configProvider.activeLanguage()]}');
+
+                          showSnackBar('${emptyWorkoutTitle[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                          // showToast('${emptyWorkoutTitle[configProvider.activeLanguage()]}');
                         } else {
-                          exProvider.createWorkOutSession(userPreferences!.getString('sessionKey') ?? '', exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, calendarWorkouts, configProvider).then((value) {
+                          exProvider.createWorkOutSession(userPreferences!.getString('sessionKey') ?? '', exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, calendarWorkouts, configProvider,  context).then((value) {
                             mainScreenProvider.update();
                           });
                           await exProvider.clearPreferences();
@@ -458,7 +460,9 @@ class CreateWorkOutCard extends StatelessWidget {
                           mainScreenProvider.addExercise(EditableLift.create(mainScreenProvider.unselectedExercise!.name, mainScreenProvider.unselectedExercise!.id, mainScreenProvider.unselectedExercise!.bodyPart, 1, 1, 1.2, true, -1));
                           await mainScreenProvider.saveListToSharePreference();
                         } else
-                          showToast('Please, select exercise!');
+                          showSnackBar('${selectExercise[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+
+                        //showToast('Please, select exercise!');
                       },
                       icon: Icon(
                         Icons.add_circle,

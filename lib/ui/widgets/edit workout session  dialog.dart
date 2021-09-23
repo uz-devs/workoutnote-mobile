@@ -187,7 +187,8 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                         onPressed: () {
                           editWorkouSessionProvider.updateAllWorkOutLists(widget.workout, workoutSessionListProvider, configProvider, context);
 
-                          showToast('${workOutUpdateMessage[configProvider.activeLanguage()]}');
+                          showSnackBar('${workOutUpdateMessage[configProvider.activeLanguage()]}',  context,  Colors.green,  Colors.white);
+                          //showToast('${workOutUpdateMessage[configProvider.activeLanguage()]}');
                         },
                         textColor: Colors.white,
                         child: Text('${update[configProvider.activeLanguage()]}'),
@@ -371,7 +372,9 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                         if (editWorkoutProvider.unselectedExercise != null) {
                           editWorkoutProvider.addExercise(EditableLift.create(editWorkoutProvider.unselectedExercise!.name, editWorkoutProvider.unselectedExercise!.id, editWorkoutProvider.unselectedExercise!.bodyPart, 1, 1, 1.0, true, -1));
                         } else
-                          showToast('Please, select exercise!');
+
+                          showSnackBar('${selectExercise[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                          //showToast('Please, select exercise!');
                       },
                       icon: Icon(
                         Icons.add_circle,

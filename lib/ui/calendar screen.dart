@@ -231,7 +231,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 onTap: () {
                                   calendarProvider.saveNote(calendarProvider.selectedDate!.millisecondsSinceEpoch, calendarProvider.noteController.text).then((value) {
                                     if (value) {
-                                      showToast('${noteSaveSuccess[configProvider.activeLanguage()]}');
+                                      showSnackBar('${noteSaveSuccess[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
+
+                                    //showToast('${noteSaveSuccess[configProvider.activeLanguage()]}');
                                       FocusScope.of(context).unfocus();
                                     }
                                   });

@@ -329,8 +329,8 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                                         widget.workout.id ?? -1)
                                     .then((value) {
                                   if (value) {
-                                    showToast(
-                                        '${deleteSuccess[configProvider.activeLanguage()]}');
+                                    showSnackBar('${deleteSuccess[configProvider.activeLanguage()]}',  context,  Colors.green,  Colors.white);
+                                   // showToast('${deleteSuccess[configProvider.activeLanguage()]}');
                                     Navigator.pop(context);
                                   }
                                 });
