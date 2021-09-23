@@ -1,0 +1,17 @@
+import 'package:test/test.dart';
+import 'package:workoutnote/providers/config%20provider.dart';
+import 'package:workoutnote/utils/utils.dart';
+
+void main() {
+  group('Testing ConfigProvider', () {
+    var configProvider = ConfigProvider();
+    test('login', () {
+      // configProvider.login('ilyosbek@nsl.inha.ac.kr', '654321').then((value) {
+      //   expect(configProvider.myemail == 'ilyosbek@nsl.inha.ac.kr', true);
+      // });
+      configProvider.updatePreferences("ilyos199822@gmail.com", "Mark", "1998-06-22", "m", false).then((value) {
+        if (value) expect(userPreferences!.getString("name") == "Mark", true);
+      });
+    });
+  });
+}
