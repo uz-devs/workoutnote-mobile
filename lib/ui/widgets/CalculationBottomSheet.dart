@@ -84,8 +84,11 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
             shrinkWrap: true,
             itemCount: count,
             itemBuilder: (context, index) {
+              print("toooop");
+              print(MediaQueryData.fromWindow(window).padding.top);
               if (index == 0)
                 return Container(
+                    margin: EdgeInsets.only(top: MediaQueryData.fromWindow(window).padding.top),
                     alignment: Alignment.bottomLeft,
                     child: IconButton(
                       onPressed: () {
