@@ -2,18 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/CreateWorkoutProvider.dart';
+import 'package:workoutnote/business_logic/EditWorkoutProvider.dart';
+import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
+import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+import 'package:workoutnote/data/models/WorkoutListModel.dart';
 
-import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/create%20workout%20provider.dart';
-import 'package:workoutnote/providers/edit%20workout%20%20provider.dart';
-import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
-import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
-import 'package:workoutnote/ui/widgets/edit%20workout%20session%20%20dialog.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
-import '../nav controller.dart';
+import '../NavigationController.dart';
+import 'EditWorkoutSessionDialog.dart';
 
 class WorkOutNote extends StatefulWidget {
   final height;
@@ -328,6 +328,8 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                                         userPreferences!.getString('sessionKey') ?? '',
                                         widget.workout.id ?? -1)
                                     .then((value) {
+
+                                    print("delete val :  ${value}");
                                   if (value) {
                                     showSnackBar('${deleteSuccess[configProvider.activeLanguage()]}',  context,  Colors.green,  Colors.white);
                                    // showToast('${deleteSuccess[configProvider.activeLanguage()]}');

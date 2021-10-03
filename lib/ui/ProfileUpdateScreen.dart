@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
 
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
@@ -352,11 +352,10 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
                             child: Text('${update[configProvider.activeLanguage()]}'),
                             onPressed: () {
+                              showLoadingDialog(context);
                               provider.updateProfileSettings(emailController.text, userPreferences!.getString('sessionKey') ?? '', nameController.text, configProvider.g, '${configProvider.selectedYear}-${configProvider.selectedMonth}-${configProvider.selectedDay}', configProvider.isShared).then((value) {
-
                                 showSnackBar('${updateToastMessage[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
-
-                                //showToast('${updateToastMessage[configProvider.activeLanguage()]}');
+                                Navigator.pop(context);
                               });
                             }),
                       );

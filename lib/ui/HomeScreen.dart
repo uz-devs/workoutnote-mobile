@@ -2,13 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/create%20workout%20provider.dart';
-import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
-import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
-
-import 'package:workoutnote/ui/widgets/work%20out%20%20note%20card.dart';
-import 'package:workoutnote/ui/widgets/workout%20%20create%20card.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/CreateWorkoutProvider.dart';
+import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
+import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+import 'package:workoutnote/ui/widgets/WorkoutCreateCard.dart';
+import 'package:workoutnote/ui/widgets/WorkoutnoteCard.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
@@ -24,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var navProvider = MainScreenProvider();
+  var mainProvider = MainScreenProvider();
   var configProvider = ConfigProvider();
   var exerciseDialogProvider = ExercisesDialogProvider();
   var createWorkoutProvider = CreateWorkoutProvider();
@@ -33,16 +32,18 @@ class _HomeScreenState extends State<HomeScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    navProvider = Provider.of<MainScreenProvider>(context, listen: true);
+
+
+
+    mainProvider = Provider.of<MainScreenProvider>(context, listen: true);
     exerciseDialogProvider = Provider.of<ExercisesDialogProvider>(context, listen: true);
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
     createWorkoutProvider = Provider.of<CreateWorkoutProvider>(context, listen: true);
 
     //showLoaderDialog(context);
-    if (!navProvider.requestDone1) {
-      navProvider.requestDone1 = true;
-      navProvider.fetchTodayWorkouts().then((value) {});
+    if (!mainProvider.todayWorkoutsFetched) {
+      mainProvider.fetchTodayWorkouts().then((value) {});
       exerciseDialogProvider.fetchExercises().then((value) {
         createWorkoutProvider.restoreAllLifts(exerciseDialogProvider);
       });
@@ -67,14 +68,14 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView.builder(
           primary: false,
           shrinkWrap: true ,
-          itemCount: navProvider.workOuts.length + 3,
+          itemCount: mainProvider.workOuts.length + 3,
           itemBuilder: (context, index) {
             if (index == 0)
               return Container(margin: EdgeInsets.only(left: 20, top: 30, bottom: 20), child: RichText(text: TextSpan(children: [TextSpan(text: '${welcomeMessage[configProvider.activeLanguage()]}, ', style: TextStyle(fontSize: 30, color: Colors.black)), TextSpan(text: '${userPreferences!.getString('name') ?? ''}', style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontSize: 30))])));
             else if (index == 1) {
-              return CreateWorkOutCard(widget.width, widget.height, navProvider.workOuts, navProvider.calendarWorkouts);
+              return CreateWorkOutCard(widget.width, widget.height, mainProvider.workOuts, mainProvider.calendarWorkouts);
             } else if (index == 2) {
-              if(navProvider.workOuts.isEmpty)
+              if(mainProvider.workOuts.isEmpty)
                 return  Center(child: Container(
 
                     margin:  EdgeInsets.all(10.0),
@@ -89,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ));
             } else {
               index = index - 3;
-              return WorkOutNote(widget.height, navProvider.workOuts[index], 1);
+              return WorkOutNote(widget.height, mainProvider.workOuts[index], 1);
             }
           }),
     );

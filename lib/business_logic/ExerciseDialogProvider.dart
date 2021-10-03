@@ -5,9 +5,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:workoutnote/models/body%20%20parts%20model.dart';
-import 'package:workoutnote/models/exercises%20model.dart';
-import 'package:workoutnote/services/network%20%20service.dart';
+import 'package:workoutnote/data/models/BodyPartsModel.dart';
+import 'package:workoutnote/data/models/ExerciseModel.dart';
+import 'package:workoutnote/data/services/Network.dart';
+
+
 
 import 'package:workoutnote/utils/utils.dart';
 

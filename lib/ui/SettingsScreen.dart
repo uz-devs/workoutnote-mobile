@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/create%20workout%20provider.dart';
-import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
-import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
-import 'package:workoutnote/ui/language%20%20change%20screen.dart';
-import 'package:workoutnote/ui/profile%20update%20screen.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/CreateWorkoutProvider.dart';
+import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
+import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+
 import 'package:workoutnote/utils/strings.dart';
 
-import 'login screen.dart';
+import 'LanguageChangeScreen.dart';
+import 'LoginScreen.dart';
+import 'ProfileUpdateScreen.dart';
 
 class SeetingsScreen extends StatefulWidget {
   final height;

@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
 
-import 'package:workoutnote/ui/verification%20screen.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
+
+import 'VerificationScreen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen();
@@ -156,17 +157,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: CupertinoButton(
                           color: Color.fromRGBO(102, 51, 204, 1),
                           borderRadius: const BorderRadius.all(Radius.circular(120)),
-                          child: Text('${signUpText['한국어']}',  style:  TextStyle(fontSize: 16)),
+                          child: Text('${signUpText['한국어']}',  style: TextStyle(fontSize: 16)),
                           onPressed: ()  {
+                            showLoadingDialog(context);
+
                             if (_emailController.text.isNotEmpty && _nameController.text.isNotEmpty && _passwordController.text.isNotEmpty)
                               user.sendVerificationCode(_emailController.text, _nameController.text, _passwordController.text).then((value) async {
+                                Navigator.pop(context);
                                 if (value) {
                                  await  userPreferences!.setBool('signUpDone',  true);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen()));
                                 } else {
                                   showSnackBar('${signUpError[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-
-                                  //showToast('${signUpError[configProvider.activeLanguage()]}');
                                 }
                               });
                             else {

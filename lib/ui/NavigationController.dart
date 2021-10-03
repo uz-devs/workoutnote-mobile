@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
-import 'package:workoutnote/ui/calculate%20screen.dart';
-import 'package:workoutnote/ui/calendar%20screen.dart';
-import 'package:workoutnote/ui/home%20screen.dart';
-import 'package:workoutnote/ui/settings%20%20screen.dart';
+import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+
+
+import 'CalculateScreen.dart';
+import 'CalendarScreen.dart';
+import 'HomeScreen.dart';
+import 'SettingsScreen.dart';
 
 class NavController extends StatefulWidget {
   GlobalKey globalKey = new GlobalKey(debugLabel: 'btm_app_bar');

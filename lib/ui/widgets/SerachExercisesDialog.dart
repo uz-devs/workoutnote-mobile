@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/models/exercises%20model.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
+import 'package:workoutnote/data/models/ExerciseModel.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 

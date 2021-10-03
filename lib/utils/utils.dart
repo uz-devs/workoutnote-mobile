@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
-import 'package:workoutnote/models/language%20model.dart';
+import 'package:workoutnote/data/models/LanguageModel.dart';
 import 'package:workoutnote/utils/strings.dart';
 
 const String baseUrl = 'workoutnote.com';
@@ -119,3 +119,20 @@ double roundDouble(double value, int places) {
   return ((value * mod).round().toDouble() / mod);
 }
 
+void showLoadingDialog (BuildContext context){
+  AlertDialog alert=AlertDialog(
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    content: Container(
+      child: Center(
+        child: CircularProgressIndicator(color: Color.fromRGBO(102, 51, 204, 1)),
+      ),
+    ),
+  );
+  showDialog(barrierDismissible: false,
+    context:context,
+    builder:(BuildContext context){
+      return alert;
+    },
+  );
+}

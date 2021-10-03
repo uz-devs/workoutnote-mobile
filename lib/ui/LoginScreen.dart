@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/ui/language%20set%20screen.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
 
-import 'package:workoutnote/ui/signup%20%20screen.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
+
+import 'LanguageSetScreen.dart';
+import 'SignupScreen.dart';
 
 class LoginScreen extends StatelessWidget {
   static String route = 'auth';
@@ -122,18 +123,18 @@ class LoginScreen extends StatelessWidget {
                             child: Text('${loginText['한국어']}',  style:  TextStyle(fontSize: 16)),
                             onPressed: () {
                               if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
+                                showLoadingDialog(context);
+
                                 user.login(_emailController.text, _passwordController.text).then((value) {
+                                  Navigator.pop(context);
                                   if (value) {
                                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
                                   } else {
-
                                     showSnackBar('${authErrorMesage[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-                                    //showToast('${authErrorMesage[configProvider.activeLanguage()]}');
                                   }
                                 });
                               } else
                                 showSnackBar('${authEmptyFields[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-                               // showToast('${authEmptyFields[configProvider.activeLanguage()]}');
                             }),
                       ),
                       Container(

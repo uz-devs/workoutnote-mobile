@@ -3,10 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
-import 'package:workoutnote/ui/widgets/work%20out%20%20note%20card.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+import 'package:workoutnote/data/models/WorkoutListModel.dart';
+import 'package:workoutnote/ui/widgets/WorkoutnoteCard.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
@@ -47,7 +47,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     super.didChangeDependencies();
     calendarProvider = Provider.of<MainScreenProvider>(context, listen: true);
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
-    if (!calendarProvider.requestDone3) {
+    if (!calendarProvider.calendarWorkoutsFetched) {
       calendarProvider.fetchCalendarWorkoutSessions().then((value) {});
     }
   }

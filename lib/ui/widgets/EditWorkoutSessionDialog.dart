@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/models/editible%20lift%20model.dart';
-import 'package:workoutnote/models/exercises%20model.dart';
-import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/edit%20workout%20%20provider.dart';
-import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/EditWorkoutProvider.dart';
+import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+import 'package:workoutnote/data/models/EditableLiftModel.dart';
+import 'package:workoutnote/data/models/ExerciseModel.dart';
+import 'package:workoutnote/data/models/WorkoutListModel.dart';
+
+
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
-import 'exercises  search dialog.dart';
+import 'SerachExercisesDialog.dart';
 
 class EditWorkoutSessionDialog extends StatefulWidget {
   final height;
@@ -372,7 +374,6 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                         if (editWorkoutProvider.unselectedExercise != null) {
                           editWorkoutProvider.addExercise(EditableLift.create(editWorkoutProvider.unselectedExercise!.name, editWorkoutProvider.unselectedExercise!.id, editWorkoutProvider.unselectedExercise!.bodyPart, 1, 1, 1.0, true, -1));
                         } else
-
                           showSnackBar('${selectExercise[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                           //showToast('Please, select exercise!');
                       },

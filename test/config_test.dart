@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/utils/utils.dart';
 
 void main() {

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
-import 'language set screen.dart';
+import 'LanguageSetScreen.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen();
@@ -95,14 +95,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
                             child: Text('완료', style:  TextStyle(fontSize: 16)),
                             onPressed: () {
-                             // Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
+                              showLoadingDialog(context);
+
                               user.verifyUser(_codeController.text).then((value) {
+
                                 if (value) {
+                                  Navigator.pop(context);
                                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
                                 }
                                 else{
                                   showSnackBar('${verificationError[configProvider.activeLanguage()]}',  context, Colors.red, Colors.white);
-                                  // showToast('${verificationError[configProvider.activeLanguage()]}');
                                 }
                               });
 

@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
-import 'package:workoutnote/ui/widgets/work%20out%20%20note%20card.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
+
+import 'WorkoutnoteCard.dart';
 
 class AllWorkoutsDialog extends StatefulWidget {
   const AllWorkoutsDialog();
@@ -25,7 +27,7 @@ class _AllWorkoutsDialogState extends State<AllWorkoutsDialog> {
     mainScreenProvider = Provider.of<MainScreenProvider>(context, listen: true);
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
 
-    if (!mainScreenProvider.requestDone2) {
+    if (!mainScreenProvider.favoriteWorkoutsFetched) {
       mainScreenProvider.fetchFavoriteWorkoutSessions(userPreferences!.getString('sessionKey') ?? '').then((value) {});
     }
   }

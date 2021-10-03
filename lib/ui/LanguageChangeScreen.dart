@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/models/language%20model.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/data/models/LanguageModel.dart';
+
 import 'package:workoutnote/utils/strings.dart';
 
 class LanguageChangeScreen extends StatefulWidget {

@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/ui/nav%20controller.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
+
+import 'NavigationController.dart';
 
 class MyIntroductionScreen extends StatefulWidget {
   const MyIntroductionScreen();

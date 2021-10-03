@@ -4,15 +4,17 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:workoutnote/models/editible%20lift%20model.dart';
-import 'package:workoutnote/models/exercises%20model.dart';
-import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/services/network%20%20service.dart';
+import 'package:workoutnote/data/models/EditableLiftModel.dart';
+import 'package:workoutnote/data/models/ExerciseModel.dart';
+import 'package:workoutnote/data/models/WorkoutListModel.dart';
+import 'package:workoutnote/data/services/Network.dart';
+
+
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
-import 'exercises dialog provider .dart';
+import 'ConfigProvider.dart';
+import 'ExerciseDialogProvider.dart';
 
 class CreateWorkoutProvider extends ChangeNotifier {
   //region vars

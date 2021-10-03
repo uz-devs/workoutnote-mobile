@@ -5,16 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/models/editible%20lift%20model.dart';
-import 'package:workoutnote/models/exercises%20model.dart';
-import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/create%20workout%20provider.dart';
-import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/CreateWorkoutProvider.dart';
+import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+import 'package:workoutnote/data/models/EditableLiftModel.dart';
+import 'package:workoutnote/data/models/ExerciseModel.dart';
+import 'package:workoutnote/data/models/WorkoutListModel.dart';
+
+
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
-import 'exercises  search dialog.dart';
+import 'SerachExercisesDialog.dart';
 import 'favorite workouts dialog.dart';
 
 
@@ -234,6 +236,7 @@ class CreateWorkOutCard extends StatelessWidget {
                   ),
                   color: Color.fromRGBO(102, 51, 204, 1),
                   onPressed: () async {
+
                     await _showFavoriteWorkoutsDialog(context, configProvider, exProvider);
                   },
                   textColor: Colors.white,
@@ -305,8 +308,10 @@ class CreateWorkOutCard extends StatelessWidget {
                           showSnackBar('${emptyWorkoutTitle[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                           // showToast('${emptyWorkoutTitle[configProvider.activeLanguage()]}');
                         } else {
+                          showLoadingDialog(context);
                           exProvider.createWorkOutSession(userPreferences!.getString('sessionKey') ?? '', exProvider.titleContoller.text, DateTime.now().microsecondsSinceEpoch, workOuts, calendarWorkouts, configProvider,  context).then((value) {
                             mainScreenProvider.update();
+                            Navigator.pop(context);
                           });
                           await exProvider.clearPreferences();
                         }

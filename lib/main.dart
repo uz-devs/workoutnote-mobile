@@ -1,19 +1,19 @@
-
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:workoutnote/providers/exercises%20dialog%20provider%20.dart';
-import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
-import 'package:workoutnote/providers/edit%20workout%20%20provider.dart';
-import 'package:workoutnote/providers/create%20workout%20provider.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
-import 'package:workoutnote/ui/language%20set%20screen.dart';
-import 'package:workoutnote/ui/nav%20controller.dart';
-import 'package:workoutnote/ui/login%20screen.dart';
+import 'package:workoutnote/ui/LanguageSetScreen.dart';
+import 'package:workoutnote/ui/LoginScreen.dart';
+import 'package:workoutnote/ui/NavigationController.dart';
+import 'package:workoutnote/ui/VerificationScreen.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:workoutnote/ui/verification%20screen.dart';
 import 'package:workoutnote/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'business_logic/ConfigProvider.dart';
+import 'business_logic/CreateWorkoutProvider.dart';
+import 'business_logic/EditWorkoutProvider.dart';
+import 'business_logic/ExerciseDialogProvider.dart';
+import 'business_logic/WorkoutListProvider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

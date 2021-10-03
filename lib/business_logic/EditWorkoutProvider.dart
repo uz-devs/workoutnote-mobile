@@ -2,14 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:workoutnote/models/editible%20lift%20model.dart';
-import 'package:workoutnote/models/exercises%20model.dart';
-import 'package:workoutnote/models/work%20out%20list%20%20model.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/providers/workout%20list%20%20provider.dart';
-import 'package:workoutnote/services/network%20%20service.dart';
+import 'package:workoutnote/data/models/EditableLiftModel.dart';
+import 'package:workoutnote/data/models/ExerciseModel.dart';
+import 'package:workoutnote/data/models/WorkoutListModel.dart';
+import 'package:workoutnote/data/services/Network.dart';
+
+
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
+
+import 'ConfigProvider.dart';
+import 'WorkoutListProvider.dart';
 
 class EditWorkoutProvider extends ChangeNotifier {
   //region vars
@@ -124,6 +127,7 @@ class EditWorkoutProvider extends ChangeNotifier {
   void updateAllWorkOutLists(WorkOut workOut, MainScreenProvider mainScreenProvider, ConfigProvider configProvider, BuildContext context) {
     editWorkout(workOut, configProvider).then((value) {
       //update  today's  workouts locally
+
       for (int k = 0; k < mainScreenProvider.workOuts.length; k++) {
         if (mainScreenProvider.workOuts[k].id == workOut.id) {
           mainScreenProvider.workOuts[k].lifts!.clear();

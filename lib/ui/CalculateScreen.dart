@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:workoutnote/providers/config%20provider.dart';
-import 'package:workoutnote/ui/widgets/calculation%20bottom%20%20sheet.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/ui/widgets/CalculationBottomSheet.dart';
 import 'package:workoutnote/utils/strings.dart';
 
 class CalculateScreen extends StatefulWidget {
