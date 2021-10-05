@@ -9,6 +9,7 @@ import 'package:workoutnote/utils/strings.dart';
 
 import 'LanguageChangeScreen.dart';
 import 'LoginScreen.dart';
+import 'PrivacyPolicyScreen.dart';
 import 'ProfileUpdateScreen.dart';
 
 class SeetingsScreen extends StatefulWidget {
@@ -62,8 +63,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                 return InkWell(
                   onTap: () async {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileUpdateScreen()));
-
-                  },
+                    },
                   child: ListTile(
                     dense: true,
                     leading: Text('${profileInfo[configProvider.activeLanguage()]}'),
@@ -92,58 +92,62 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                     ),
                   ),
                 );
+              // else if (index == 4)
+              //   return InkWell(
+              //     child: ListTile(
+              //       dense: true,
+              //       leading: Text('${appUsageGuide[configProvider.activeLanguage()]}'),
+              //       trailing: icon,
+              //     ),
+              //   );
+              // else if (index == 5)
+              //   return InkWell(
+              //     child: ListTile(
+              //       dense: true,
+              //       leading: Text('${termsAndConditions[configProvider.activeLanguage()]}'),
+              //       trailing: icon,
+              //     ),
+              //   );
               else if (index == 4)
                 return InkWell(
-                  child: ListTile(
-                    dense: true,
-                    leading: Text('${appUsageGuide[configProvider.activeLanguage()]}'),
-                    trailing: icon,
-                  ),
-                );
-              else if (index == 5)
-                return InkWell(
-                  child: ListTile(
-                    dense: true,
-                    leading: Text('${termsAndConditions[configProvider.activeLanguage()]}'),
-                    trailing: icon,
-                  ),
-                );
-              else if (index == 6)
-                return InkWell(
+
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacyPolicy()));
+                  },
                   child: ListTile(
                     dense: true,
                     leading: Text('${privacyPolicy[configProvider.activeLanguage()]}'),
                     trailing: icon,
                   ),
                 );
-              else if (index == 7)
-                return Container(
-                  padding: EdgeInsets.all(10.0),
-                  child: Container(
-                    margin: EdgeInsets.only(left: 5.0),
-                    child: Text(
-                      '${customerCenter[configProvider.activeLanguage()]}',
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1), fontSize: 18),
-                    ),
-                  ),
-                );
-              else if (index == 8)
-                return InkWell(
-                  child: ListTile(
-                    dense: true,
-                    leading: Text('${customerCenter[configProvider.activeLanguage()]}'),
-                    trailing: icon,
-                  ),
-                );
-              else if (index == 9)
-                return InkWell(
-                  child: ListTile(
-                    dense: true,
-                    leading: Text('Q&A'),
-                    trailing: icon,
-                  ),
-                );
-              else if (index  == 10)
+              // else if (index == 7)
+              //   return Container(
+              //     padding: EdgeInsets.all(10.0),
+              //     child: Container(
+              //       margin: EdgeInsets.only(left: 5.0),
+              //       child: Text(
+              //         '${customerCenter[configProvider.activeLanguage()]}',
+              //         style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1), fontSize: 18),
+              //       ),
+              //     ),
+              //   );
+              // else if (index == 8)
+              //   return InkWell(
+              //     child: ListTile(
+              //       dense: true,
+              //       leading: Text('${customerCenter[configProvider.activeLanguage()]}'),
+              //       trailing: icon,
+              //     ),
+              //   );
+              // else if (index == 9)
+              //   return InkWell(
+              //     child: ListTile(
+              //       dense: true,
+              //       leading: Text('Q&A'),
+              //       trailing: icon,
+              //     ),
+              //   );
+              else if (index  == 5)
                 return InkWell(
                   onTap: () {
                     configProvider.logout();
@@ -163,11 +167,11 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
 
             },
             separatorBuilder: (context, index) {
-              if (index == 2 || index == 6 || index == 9) return Divider(height: 1.0, thickness: 4, color: Colors.deepPurpleAccent.withOpacity(0.1));
+              if (index == 2 || index == 5 || index == 9) return Divider(height: 1.0, thickness: 4, color: Colors.deepPurpleAccent.withOpacity(0.1));
 
               return Divider(height: 1.0);
             },
-            itemCount: 12));
+            itemCount: 6));
   }
 
 

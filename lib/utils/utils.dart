@@ -32,8 +32,9 @@ const String removeWorkOut = '/api/remove_workout';
 const String updateLift = 'api/update_lift';
 const String insert_lift = '/api/insert_lift';
 const String deleteLift = '/api/remove_lift';
-const String setNote  = '/api/set_note';
-const String fetchNote  = '/api/fetch_note';
+const String setNote = '/api/set_note';
+const String fetchNote = '/api/fetch_note';
+const String privacyPolicyUrl = 'https://workoutnote.com/policy/';
 //network  state codes
 const int LOADING = 0;
 const int TIMEOUT_EXCEPTION = 1;
@@ -64,10 +65,13 @@ void showToast(String message) {
   Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIosWeb: 1, backgroundColor: Colors.black54, textColor: Colors.white, fontSize: 16.0);
 }
 
-void showSnackBar(String  message,  BuildContext context,  Color  backgroundColor,  Color  textColor){
+void showSnackBar(String message, BuildContext context, Color backgroundColor, Color textColor) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     backgroundColor: backgroundColor,
-    content: Text(message,  style: TextStyle(color: textColor),),
+    content: Text(
+      message,
+      style: TextStyle(color: textColor),
+    ),
     duration: Duration(milliseconds: 1000),
   ));
 }
@@ -119,8 +123,8 @@ double roundDouble(double value, int places) {
   return ((value * mod).round().toDouble() / mod);
 }
 
-void showLoadingDialog (BuildContext context){
-  AlertDialog alert=AlertDialog(
+void showLoadingDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
     backgroundColor: Colors.transparent,
     elevation: 0,
     content: Container(
@@ -129,10 +133,13 @@ void showLoadingDialog (BuildContext context){
       ),
     ),
   );
-  showDialog(barrierDismissible: false,
-    context:context,
-    builder:(BuildContext context){
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
       return alert;
     },
   );
 }
+
+String trimStringField(String value) => value.trim();

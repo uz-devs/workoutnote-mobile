@@ -123,9 +123,14 @@ class LoginScreen extends StatelessWidget {
                             child: Text('${loginText['한국어']}',  style:  TextStyle(fontSize: 16)),
                             onPressed: () {
                               if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
-                                showLoadingDialog(context);
 
-                                user.login(_emailController.text, _passwordController.text).then((value) {
+
+
+
+
+
+                                showLoadingDialog(context);
+                                user.login(user.trimField(_emailController.text), user.trimField(_passwordController.text)).then((value) {
                                   Navigator.pop(context);
                                   if (value) {
                                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));

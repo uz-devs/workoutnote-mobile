@@ -34,20 +34,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: height,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-
                   children: [
                     Container(
                         padding: EdgeInsets.all(10.0),
                         margin: EdgeInsets.only(left: 10.0),
                         alignment: Alignment.centerLeft,
-                        child: GestureDetector (
+                        child: GestureDetector(
                             onTap: () {
-                              if(Navigator.canPop(context))
-                              Navigator.pop(context);
+                              if (Navigator.canPop(context)) Navigator.pop(context);
                             },
-                            child : Icon(
+                            child: Icon(
                               Icons.arrow_back_ios,
-                              color: Navigator.canPop(context) ?Color.fromRGBO(102, 51, 204, 1):Colors.transparent,
+                              color: Navigator.canPop(context) ? Color.fromRGBO(102, 51, 204, 1) : Colors.transparent,
                             ))),
                     Container(
                       margin: EdgeInsets.only(top: height * 0.1),
@@ -113,9 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: Color.fromRGBO(102, 51, 204, 1),
                             ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25),
-                              borderSide: BorderSide(width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
+                          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(25), borderSide: BorderSide(width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25),
                           ),
@@ -157,25 +153,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: CupertinoButton(
                           color: Color.fromRGBO(102, 51, 204, 1),
                           borderRadius: const BorderRadius.all(Radius.circular(120)),
-                          child: Text('${signUpText['한국어']}',  style: TextStyle(fontSize: 16)),
-                          onPressed: ()  {
+                          child: Text('${signUpText['한국어']}', style: TextStyle(fontSize: 16)),
+                          onPressed: () {
                             showLoadingDialog(context);
 
-                            if (_emailController.text.isNotEmpty && _nameController.text.isNotEmpty && _passwordController.text.isNotEmpty)
-                              user.sendVerificationCode(_emailController.text, _nameController.text, _passwordController.text).then((value) async {
+                            if (_emailController.text.isNotEmpty && _nameController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
+
+                              user.sendVerificationCode(  user.trimField(_emailController.text), user.trimField(_nameController.text), user.trimField(_passwordController.text)).then((value) async {
                                 Navigator.pop(context);
                                 if (value) {
-                                 await  userPreferences!.setBool('signUpDone',  true);
+                                  await userPreferences!.setBool('signUpDone', true);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen()));
                                 } else {
                                   showSnackBar('${signUpError[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                                 }
                               });
-                            else {
-
+                            } else {
                               showSnackBar('${authEmptyFields[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
 
-                            // showToast('${authEmptyFields[configProvider.activeLanguage()]}');
+                              // showToast('${authEmptyFields[configProvider.activeLanguage()]}');
                             }
                             // Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen()));
                           }),
@@ -186,7 +182,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: CupertinoButton(
                           color: Color.fromRGBO(102, 51, 204, 1),
                           borderRadius: const BorderRadius.all(Radius.circular(120)),
-                          child: Text('${loginText['한국어']}', style:  TextStyle(fontSize: 16),),
+                          child: Text(
+                            '${loginText['한국어']}',
+                            style: TextStyle(fontSize: 16),
+                          ),
                           onPressed: () {
                             Navigator.pop(context);
                           }),

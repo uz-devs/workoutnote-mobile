@@ -225,4 +225,6 @@ class ConfigProvider extends ChangeNotifier {
   String? activeLanguage() {
     return userPreferences!.getString('language') ?? korean;
   }
+
+  String  trimField(String value) => trimStringField(value);
 }
