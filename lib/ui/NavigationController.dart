@@ -87,7 +87,7 @@ class _NavControllerState extends State<NavController> {
   }
 
   Widget _buildSettingsScreen(double height) {
-    return SeetingsScreen(height);
+    return SettingsScreen(height);
   }
 
   Widget _builCalculateScreen(double height) {

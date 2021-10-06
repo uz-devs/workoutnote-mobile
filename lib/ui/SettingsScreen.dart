@@ -4,24 +4,25 @@ import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/business_logic/CreateWorkoutProvider.dart';
 import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
 import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:workoutnote/utils/strings.dart';
 
 import 'LanguageChangeScreen.dart';
 import 'LoginScreen.dart';
-import 'PrivacyPolicyScreen.dart';
 import 'ProfileUpdateScreen.dart';
 
-class SeetingsScreen extends StatefulWidget {
+class SettingsScreen extends StatefulWidget {
   final height;
 
-  SeetingsScreen(this.height);
+  SettingsScreen(this.height);
 
   @override
-  _SeetingsScreenState createState() => _SeetingsScreenState();
+  _SettingsScreenState createState() => _SettingsScreenState();
 }
 
-class _SeetingsScreenState extends State<SeetingsScreen> {
+class _SettingsScreenState extends State<SettingsScreen> {
+  static const _policyUrl = 'https://workoutnote.com/policy/';
   var icon = Icon(
     Icons.arrow_forward_ios,
     color: Color.fromRGBO(170, 170, 170, 1),
@@ -63,7 +64,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                 return InkWell(
                   onTap: () async {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileUpdateScreen()));
-                    },
+                  },
                   child: ListTile(
                     dense: true,
                     leading: Text('${profileInfo[configProvider.activeLanguage()]}'),
@@ -110,10 +111,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
               //   );
               else if (index == 4)
                 return InkWell(
-
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacyPolicy()));
-                  },
+                  onTap: () async => await canLaunch(_policyUrl) ? await launch(_policyUrl) : throw 'Could not launch $_policyUrl',
                   child: ListTile(
                     dense: true,
                     leading: Text('${privacyPolicy[configProvider.activeLanguage()]}'),
@@ -147,7 +145,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
               //       trailing: icon,
               //     ),
               //   );
-              else if (index  == 5)
+              else if (index == 5)
                 return InkWell(
                   onTap: () {
                     configProvider.logout();
@@ -162,17 +160,15 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
                     trailing: icon,
                   ),
                 );
-
-              else  return Container();
-
+              else
+                return Container();
             },
             separatorBuilder: (context, index) {
               if (index == 2 || index == 5 || index == 9) return Divider(height: 1.0, thickness: 4, color: Colors.deepPurpleAccent.withOpacity(0.1));
-
               return Divider(height: 1.0);
             },
-            itemCount: 6));
+            itemCount: 6
+        )
+    );
   }
-
-
 }
