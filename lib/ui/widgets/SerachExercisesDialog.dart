@@ -46,8 +46,7 @@ class _SearchDialogState extends State<SearchDialog> {
     return ListView.separated(
         itemBuilder: (context, index) {
           if (index == 0) return Container(
-
-              child: Stack(
+            child: Stack(
                 alignment: Alignment.center,
                 children: [
                   Align(

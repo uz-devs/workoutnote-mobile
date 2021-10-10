@@ -159,13 +159,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                             if (_emailController.text.isNotEmpty && _nameController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
 
-                              user.sendVerificationCode(  user.trimField(_emailController.text), user.trimField(_nameController.text), user.trimField(_passwordController.text)).then((value) async {
+                              user.sendVerificationCode( user.trimField(_emailController.text), user.trimField(_nameController.text), user.trimField(_passwordController.text)).then((value) async {
                                 Navigator.pop(context);
                                 if (value) {
                                   await userPreferences!.setBool('signUpDone', true);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen()));
-                                } else {
+                                }
+                                else {
+                                   if(user.responseCode == MISC_EXCEPTION)
                                   showSnackBar('${signUpError[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                                   else if (user.responseCode == SOCKET_EXCEPTION)
+                                     showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                                 }
                               });
                             } else {

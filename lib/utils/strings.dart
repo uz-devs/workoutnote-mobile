@@ -80,6 +80,7 @@ Map<String, String> accept = {english: 'accept', korean: '동의'};
 Map<String , String> noteSaveSuccess = {english: 'Note has been saved!',  korean : '노트가 저장되었습니다!'};
 Map<String,  String> chooseLang = {english:  'Choose the language', korean:  '사용할 언어를 선택해주세요'};
 Map<String,  String> selectExercise = {english:  'Please, select exercise first!',  korean: '먼저 운동을 선택하십시오!'};
+Map<String,  String> socketException = {english: 'Please, turn on the internet!', korean: '인터넷 껴주세요!'};
 //One Rep Max
 Map<String, String> oneRepMax1 = {english: 'One Rep Max Calculator', korean: 'One Rep Max 계산기'};
 Map<String, String> oneRepMax2 = {english: '1RM Lift weight percentage', korean: '1RM 리프트 중량 백분율'};

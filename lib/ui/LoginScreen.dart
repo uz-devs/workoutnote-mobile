@@ -124,18 +124,18 @@ class LoginScreen extends StatelessWidget {
                             onPressed: () {
                               if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
 
-
-
-
-
-
                                 showLoadingDialog(context);
                                 user.login(user.trimField(_emailController.text), user.trimField(_passwordController.text)).then((value) {
                                   Navigator.pop(context);
                                   if (value) {
                                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
                                   } else {
+                                    if(user.responseCode == MISC_EXCEPTION)
                                     showSnackBar('${authErrorMesage[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                                    else if (user.responseCode == SOCKET_EXCEPTION)
+                                      showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+
+
                                   }
                                 });
                               } else
@@ -154,17 +154,17 @@ class LoginScreen extends StatelessWidget {
                                       print('value $value');
                                       if (value) {
                                         showSnackBar('${sendEmailForReset[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
-                                       // showToast('${sendEmailForReset[configProvider.activeLanguage()]}');
                                       }
                                       else {
-                                        showSnackBar('${authErrorMesage[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-                                       // showToast('${authErrorMesage[configProvider.activeLanguage()]}');
+                                        if(user.responseCode == MISC_EXCEPTION)
+                                          showSnackBar('${authErrorMesage[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                                        else if (user.responseCode == SOCKET_EXCEPTION)
+                                          showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+
                                       }
                                     });
                                   else {
                                     showSnackBar('${emptyEmail[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-
-                                   // showToast('${emptyEmail[configProvider.activeLanguage()]}');
                                   }
                                 },
                                 child: Text(

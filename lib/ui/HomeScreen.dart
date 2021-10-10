@@ -65,7 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         return false;
       },
-      child: ListView.builder(
+      child:
+
+      ListView.builder(
           primary: false,
           shrinkWrap: true ,
           itemCount: mainProvider.workOuts.length + 3,
@@ -92,10 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
               index = index - 3;
               return WorkOutNote(widget.height, mainProvider.workOuts[index], 1);
             }
-          }),
+          })
     );
   }
-
-
-
 }

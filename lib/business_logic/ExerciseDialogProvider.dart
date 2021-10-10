@@ -53,9 +53,6 @@ class ExercisesDialogProvider extends ChangeNotifier {
           notifyListeners();
         }
       }
-    } on TimeoutException catch (e) {
-      responseCode = TIMEOUT_EXCEPTION;
-      print(e);
     } on SocketException catch (e) {
       responseCode = SOCKET_EXCEPTION;
       print(e);
@@ -75,10 +72,7 @@ class ExercisesDialogProvider extends ChangeNotifier {
             jsonDecode(utf8.decode(response.bodyBytes)));
         myBodyParts.addAll(bodyParts.bodyParts??[]);
       }
-    } on TimeoutException catch (e) {
-      responseCode = TIMEOUT_EXCEPTION;
-      print(e);
-    } on SocketException catch (e) {
+    }  on SocketException catch (e) {
       responseCode = SOCKET_EXCEPTION;
       print(e);
     } on Error catch (e) {

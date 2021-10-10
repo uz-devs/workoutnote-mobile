@@ -46,7 +46,6 @@ class _NavControllerState extends State<NavController> {
 
     return Scaffold(
       backgroundColor: backGroundColor,
-     // resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: SmartRefresher(
           onRefresh: _onRefresh,
@@ -58,7 +57,6 @@ class _NavControllerState extends State<NavController> {
           child: screens[_selectedIndex],
         ),
       ),
-      // : screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         key:widget.globalKey,
         type: BottomNavigationBarType.fixed,
@@ -77,6 +75,8 @@ class _NavControllerState extends State<NavController> {
       ),
     );
   }
+
+
 
   Widget _buildHomeScreen(double height, double width) {
     return HomeScreen(height, width);
@@ -198,7 +198,6 @@ class _NavControllerState extends State<NavController> {
       ],
     );
   }
-
 
   void  _onRefresh() async{
 

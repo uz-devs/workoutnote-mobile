@@ -32,6 +32,9 @@ class MainScreenProvider extends ChangeNotifier {
   var noteController = TextEditingController();
 
 
+  int responseCode = IDLE;
+
+
   // api calls
   Future<bool> fetchTodayWorkouts() async {
     try {
@@ -45,7 +48,7 @@ class MainScreenProvider extends ChangeNotifier {
         if (workoutsResponse.success) {
           workOuts.addAll(workoutsResponse.workouts);
           todayWorkoutsFetched = true;
-
+          responseCode = SUCCESS;
           notifyListeners();
           return true;
         }
@@ -136,59 +139,22 @@ class MainScreenProvider extends ChangeNotifier {
       var response = await WebServices.removeWorkout(sessionKey, id);
 
       if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
-        int timestamp = 0;
-        bool isFavorite = false;
 
-
-        print("1");
         for (int i = 0; i<calendarWorkouts.length; i++){
             if(calendarWorkouts[i].id == id){
               calendarWorkouts.removeAt(i);
             }
         }
-
-        print("2");
-
         for (int  i = 0; i<workOuts.length; i++){
           if(workOuts[i].id == id){
             workOuts.removeAt(i);
           }
         }
-
-
-        print("3");
-
         for(int i = 0; i<favoriteWorkOuts.length; i++){
           if(favoriteWorkOuts[i].id == id){
             favoriteWorkOuts.removeAt(i);
           }
         }
-        print("4");
-
-
-       //  if(calendarWorkouts.isEmpty){
-       //
-       //  }
-       // else if (workOuts.isEmpty){
-       //
-       //  }
-       // else{
-       //
-       //   if (calendarWorkoutsFetched) {
-       //      timestamp = calendarWorkouts.where((element) => element.id == id).single.timestamp ?? 0;
-       //      isFavorite = calendarWorkouts.where((element) => element.id == id).single.isFavorite;
-       //    } else {
-       //      timestamp = workOuts.where((element) => element.id == id).single.timestamp ?? 0;
-       //      isFavorite = workOuts.where((element) => element.id == id).single.isFavorite;
-       //
-       //    }
-       //    workOuts.removeWhere((element) => element.id == id);
-       //    if (isFavorite) favoriteWorkOuts.removeWhere((element) => element.timestamp == timestamp);
-       //    calendarWorkouts.removeWhere((element) => element.id == id);
-       //
-       //
-       //    return true;
-       //  }
 
         notifyListeners();
         return true;

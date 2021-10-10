@@ -20,7 +20,7 @@ class EditWorkoutProvider extends ChangeNotifier {
   List<EditableLift> liftsToStore = [];
   List<EditableLift> updatedList = [];
   TextEditingController titleController = TextEditingController();
-  Exercise? _unselectedExercise;
+  EditableLift? _unselectedExercise = EditableLift();
 
   //endregion
 
@@ -243,9 +243,9 @@ class EditWorkoutProvider extends ChangeNotifier {
 //endregion
 
   //region getters&setters
-  Exercise? get unselectedExercise => _unselectedExercise;
+  EditableLift? get unselectedExercise => _unselectedExercise;
 
-  set unselectedExercise(Exercise? value) {
+  set unselectedExercise(EditableLift? value) {
     _unselectedExercise = value;
     notifyListeners();
   }

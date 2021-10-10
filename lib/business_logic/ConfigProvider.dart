@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,8 @@ class ConfigProvider extends ChangeNotifier {
   late String sessionKey;
   int val = -1;
 
+  int responseCode = IDLE;
+
   //api  calls
   Future<bool> sendVerificationCode(String email, name, String password) async {
     mName = name;
@@ -33,14 +36,18 @@ class ConfigProvider extends ChangeNotifier {
     mEmail = email;
     try {
       var response = await WebServices.sendVerification(email);
-      print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
+        responseCode = SUCCESS;
         return true;
       }
-    } catch (e) {
+    } on SocketException catch (e) {
+      responseCode = SOCKET_EXCEPTION;
       print(e);
-      return false;
+    } on Error catch (e) {
+      responseCode = MISC_EXCEPTION;
+      print(e);
     }
+
     return false;
   }
 
@@ -50,14 +57,21 @@ class ConfigProvider extends ChangeNotifier {
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
         if (await login(mEmail!, mPassword!)) {
+          responseCode = SUCCESS;
+          notifyListeners();
           return true;
         }
       }
-      return false;
-    } catch (e) {
-      print(e);
-      return false;
+
     }
+    on SocketException catch (e) {
+      responseCode = SOCKET_EXCEPTION;
+      print(e);
+    } on Error catch (e) {
+      responseCode = MISC_EXCEPTION;
+      print(e);
+    }
+    return false;
   }
 
   Future<bool> login(String email, String password) async {
@@ -68,9 +82,9 @@ class ConfigProvider extends ChangeNotifier {
         if (user.authSuccess) {
           Response settingsResponse = await WebServices.fetchSettings(user.sessionKey ?? '');
           if (settingsResponse.statusCode == 200) {
+            responseCode = SUCCESS;
             print(settingsResponse.body);
             var settings = Settings.fromJson(jsonDecode(settingsResponse.body));
-
             myemail = email;
             myname = settings.name ?? '';
             selectedYear = settings.dateOfBirth != null ? settings.dateOfBirth!.split('-')[0] : '20000';
@@ -79,15 +93,20 @@ class ConfigProvider extends ChangeNotifier {
             g = settings.gender!;
             isShared = settings.iProfileShared;
 
+
             if (await userPreferences!.setString('sessionKey', user.sessionKey ?? '') && await updatePreferences(email, settings.name ?? '', settings.dateOfBirth ?? '2000-01-01', settings.gender ?? 'MALE', settings.iProfileShared)) return true;
           }
         }
-        return false;
+
       }
-    } catch (e) {
+    }   on SocketException catch (e) {
+      responseCode = SOCKET_EXCEPTION;
       print(e);
-      return false;
+    } on Error catch (e) {
+      responseCode = MISC_EXCEPTION;
+      print(e);
     }
+
     return false;
   }
 
@@ -106,13 +125,18 @@ class ConfigProvider extends ChangeNotifier {
 
       print(response.body);
       if (response.statusCode == 200) {
+        responseCode=SUCCESS;
         return true;
       }
       return false;
-    } catch (e) {
+    }   on SocketException catch (e) {
+      responseCode = SOCKET_EXCEPTION;
       print(e);
-      return false;
+    } on Error catch (e) {
+      responseCode = MISC_EXCEPTION;
+      print(e);
     }
+    return false;
   }
 
   Future<bool> updateProfileSettings(String email, String sessionKey, String name, String gender, String birthDate, bool isProfileShared) async {
@@ -120,27 +144,31 @@ class ConfigProvider extends ChangeNotifier {
     try {
       var response = await WebServices.updateSettings(sessionKey, name, gender, birthDate, isProfileShared);
 
-      print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
+        responseCode = SUCCESS;
         updatePreferences(email, name, birthDate, gender, isProfileShared).then((value) {
-          if(value){
-          myemail = email;
-          myname = name;
-          selectedYear = birthDate.split('-')[0];
-          selectedMonth = birthDate.split('-')[1];
-          selectedDay = birthDate.split('-')[2];
-          isShared = isProfileShared;
-          g = gender;
-          notifyListeners();
-          return true;
+          if (value) {
+            myemail = email;
+            myname = name;
+            selectedYear = birthDate.split('-')[0];
+            selectedMonth = birthDate.split('-')[1];
+            selectedDay = birthDate.split('-')[2];
+            isShared = isProfileShared;
+            g = gender;
+            notifyListeners();
+            return true;
           }
         });
       }
-      return false;
-    } catch (e) {
+
+    }   on SocketException catch (e) {
+      responseCode = SOCKET_EXCEPTION;
       print(e);
-      return false;
+    } on Error catch (e) {
+      responseCode = MISC_EXCEPTION;
+      print(e);
     }
+    return false;
   }
 
   //utils
@@ -157,13 +185,14 @@ class ConfigProvider extends ChangeNotifier {
   }
 
   Future<bool> updatePreferences(String email, String name, String birthDate, String gender, bool isShared) async {
-    if(userPreferences == null){
-      initPreferences().then((value) async   {
+    if (userPreferences == null) {
+      initPreferences().then((value) async {
         return await userPreferences!.setString('email', email) && await userPreferences!.setString('name', name) && await userPreferences!.setString('birthDate', birthDate) && await userPreferences!.setString('gender', gender) && await userPreferences!.setBool('isShared', isShared);
       });
     }
     return await userPreferences!.setString('email', email) && await userPreferences!.setString('name', name) && await userPreferences!.setString('birthDate', birthDate) && await userPreferences!.setString('gender', gender) && await userPreferences!.setBool('isShared', isShared);
   }
+
   Future<void> changeLanguage(int val) async {
     switch (val) {
       case 1:
@@ -226,5 +255,5 @@ class ConfigProvider extends ChangeNotifier {
     return userPreferences!.getString('language') ?? korean;
   }
 
-  String  trimField(String value) => trimStringField(value);
+  String trimField(String value) => trimStringField(value);
 }

@@ -1,6 +1,8 @@
-//api  urls
+
 import 'dart:async';
 import 'dart:math';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,6 +12,8 @@ import 'package:tuple/tuple.dart';
 import 'package:workoutnote/data/models/LanguageModel.dart';
 import 'package:workoutnote/utils/strings.dart';
 
+
+//region  api  urls
 const String baseUrl = 'workoutnote.com';
 const String login = 'api/login/';
 const String fetch_workouts = 'api/fetch_workouts/';
@@ -35,20 +39,25 @@ const String deleteLift = '/api/remove_lift';
 const String setNote = '/api/set_note';
 const String fetchNote = '/api/fetch_note';
 const String privacyPolicyUrl = 'https://workoutnote.com/policy/';
-//network  state codes
+//endregion
+
+//region network  states
 const int LOADING = 0;
-const int TIMEOUT_EXCEPTION = 1;
+const int IDLE = 1;
 const int SOCKET_EXCEPTION = 2;
 const int MISC_EXCEPTION = 3;
 const int SUCCESS = 4;
 
-//util  methods
+//endregion
+
 SharedPreferences? userPreferences, appPreferences;
 List<Language> lList = [Language(english, 1), Language(korean, 2)];
 const int KG = 1, LBS = -1;
 const int EXERCISE_EDIT_MODE = 1;
 const int EXERCISE_CREATE_MODE = 0;
 
+
+//region utils functions
 Future<void> initPreferences() async {
   userPreferences = await SharedPreferences.getInstance();
   appPreferences = await SharedPreferences.getInstance();
@@ -143,3 +152,17 @@ void showLoadingDialog(BuildContext context) {
 }
 
 String trimStringField(String value) => value.trim();
+
+bool? isInternetConnected()  {
+
+   (Connectivity().checkConnectivity()).then((value)  {
+    if (value  == ConnectivityResult.mobile || value == ConnectivityResult.wifi ) {
+      return  true;
+    } else {
+      return false;
+    }
+  });
+   return null;
+
+}
+//endregion

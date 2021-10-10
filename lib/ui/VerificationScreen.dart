@@ -98,13 +98,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
                               showLoadingDialog(context);
 
                               user.verifyUser(_codeController.text).then((value) {
+                                Navigator.pop(context);
 
                                 if (value) {
-                                  Navigator.pop(context);
                                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
                                 }
                                 else{
-                                  showSnackBar('${verificationError[configProvider.activeLanguage()]}',  context, Colors.red, Colors.white);
+                                  if(user.responseCode == MISC_EXCEPTION)
+                                    showSnackBar('${verificationError[configProvider.activeLanguage()]}',  context, Colors.red, Colors.white);
+                                  else if (user.responseCode == SOCKET_EXCEPTION)
+                                    showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                                 }
                               });
 
