@@ -42,6 +42,10 @@ class MainScreenProvider extends ChangeNotifier {
       var fromTimeStamp = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).millisecondsSinceEpoch;
       var tillTimeStamp = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1).millisecondsSinceEpoch - 1;
       var response = await WebServices.fetchWorkOuts(sessionKey, fromTimeStamp, tillTimeStamp);
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+
+
+
       if (response.statusCode == 200) {
         var workoutsResponse = WorkOutsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 

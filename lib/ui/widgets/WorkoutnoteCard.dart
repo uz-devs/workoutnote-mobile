@@ -30,7 +30,8 @@ class _WorkOutNoteState extends State<WorkOutNote> {
   ConfigProvider configProvider = ConfigProvider();
   MainScreenProvider mainScreenProvider = MainScreenProvider();
   CreateWorkoutProvider createWorkoutProvider = CreateWorkoutProvider();
-  ExercisesDialogProvider dialogProvider = ExercisesDialogProvider();
+  ExercisesDialogProvider exercisesProvider = ExercisesDialogProvider();
+
 
   @override
   void didChangeDependencies() {
@@ -39,7 +40,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
     mainScreenProvider = Provider.of<MainScreenProvider>(context, listen: true);
     createWorkoutProvider =
         Provider.of<CreateWorkoutProvider>(context, listen: false);
-    dialogProvider =
+    exercisesProvider =
         Provider.of<ExercisesDialogProvider>(context, listen: false);
   }
 
@@ -182,7 +183,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                       .repeatWorkoutSession(
                           widget.workout.id ?? -1,
                           createWorkoutProvider,
-                          dialogProvider.allExercises,
+                          exercisesProvider.allExercises,
                           widget.mode)
                       .then((value) {
                     if (widget.mode == 3) {
@@ -214,7 +215,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                 margin: EdgeInsets.only(left: 20.0, right: 10.0),
                 padding: EdgeInsets.only(bottom: 10.0),
                 child: Text(
-                    '${index + 1}. ${widget.workout.lifts![index].exerciseName}, ${mass} ${identifier}, ${widget.workout.lifts![index].repetitions} REP, ${rm} RM'));
+                    '${index + 1}. ${createWorkoutProvider.getExerciseName(exercisesProvider, configProvider, widget.workout.lifts![index].exerciseId)}, ${mass} ${identifier}, ${widget.workout.lifts![index].repetitions} REP, ${rm} RM'));
           }
         });
   }

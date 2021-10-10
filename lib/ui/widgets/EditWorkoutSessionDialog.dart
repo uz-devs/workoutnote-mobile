@@ -3,12 +3,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/CreateWorkoutProvider.dart';
 import 'package:workoutnote/business_logic/EditWorkoutProvider.dart';
+import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
 import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
 import 'package:workoutnote/data/models/EditableLiftModel.dart';
 import 'package:workoutnote/data/models/ExerciseModel.dart';
 import 'package:workoutnote/data/models/WorkoutListModel.dart';
-
 
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
@@ -29,6 +30,8 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
   var configProvider = ConfigProvider();
   var workoutSessionListProvider = MainScreenProvider();
   var editWorkouSessionProvider = EditWorkoutProvider();
+  var exercisesProvider = ExercisesDialogProvider();
+  var createWorkoutProvider = CreateWorkoutProvider();
   bool dataRetrieved = false;
 
   @override
@@ -42,6 +45,8 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
     editWorkouSessionProvider = Provider.of<EditWorkoutProvider>(context, listen: true);
     workoutSessionListProvider = Provider.of<MainScreenProvider>(context, listen: true);
+    exercisesProvider = Provider.of<ExercisesDialogProvider>(context, listen: false);
+    createWorkoutProvider = Provider.of<CreateWorkoutProvider>(context, listen: false);
 
     if (!dataRetrieved) {
       dataRetrieved = true;
@@ -81,7 +86,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                           ).format(DateTime.now())}. ${DateFormat(
                             'EEEE',
                             configProvider.activeLanguage() == english ? 'en_EN' : 'ko_KR',
-                          ).format(DateTime.now()).substring(0, configProvider.activeLanguage() == english?3:1).toUpperCase()}',
+                          ).format(DateTime.now()).substring(0, configProvider.activeLanguage() == english ? 3 : 1).toUpperCase()}',
                           style: TextStyle(fontSize: 12, color: Colors.grey),
                         )),
                     Container(
@@ -146,17 +151,15 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                       ),
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   child: _buildExerciseListItem('No.', '${exercisesName[configProvider.activeLanguage()]}', 'KG', 'REP', 'RM', Color.fromRGBO(102, 51, 204, 1), 1, editWorkouSessionProvider, index, context, configProvider));
-            else if (index  == 4) {
+            else if (index == 4) {
               return _buildReorderableListView();
-            }
-            else if (index == 5) {
+            } else if (index == 5) {
               return Container(
                   padding: EdgeInsets.only(left: 10, right: 10.0),
                   margin: EdgeInsets.only(
                     bottom: 10,
                   ),
-                  child: _buildExerciseListItem('1', '${editWorkouSessionProvider.unselectedExercise?.exerciseName == null ? '${exerciseName[configProvider.activeLanguage()]}' : editWorkouSessionProvider.unselectedExercise?.exerciseName}(${(editWorkouSessionProvider.unselectedExercise?.exerciseName == null ? '${bodyPart[configProvider.activeLanguage()]}' : editWorkouSessionProvider.unselectedExercise!.bodyPart)})', 'KG', 'REP', 'RM', Colors.grey, 3, editWorkouSessionProvider, index, context,
-                  configProvider));
+                  child: _buildExerciseListItem('1', '${editWorkouSessionProvider.unselectedExercise?.exerciseName == null ? '${exerciseName[configProvider.activeLanguage()]}' : createWorkoutProvider.getExerciseName(exercisesProvider, configProvider, editWorkouSessionProvider.unselectedExercise?.exerciseId ?? 0)}', 'KG', 'REP', 'RM', Colors.grey, 3, editWorkouSessionProvider, index, context, configProvider));
             } else
               return Container(
                 margin: EdgeInsets.only(top: 10.0),
@@ -190,7 +193,7 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                         onPressed: () {
                           editWorkouSessionProvider.updateAllWorkOutLists(widget.workout, workoutSessionListProvider, configProvider, context);
 
-                          showSnackBar('${workOutUpdateMessage[configProvider.activeLanguage()]}',  context,  Colors.green,  Colors.white);
+                          showSnackBar('${workOutUpdateMessage[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
                           //showToast('${workOutUpdateMessage[configProvider.activeLanguage()]}');
                         },
                         textColor: Colors.white,
@@ -204,31 +207,31 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
     );
   }
 
-  Widget  _buildReorderableListView(){
-     return ReorderableListView(
-       shrinkWrap: true ,
-       physics: NeverScrollableScrollPhysics(),
-       onReorder: editWorkouSessionProvider.reorderList,
-       children:  List.generate(editWorkouSessionProvider.existingLifts.length, (index)  {
-         return     Container(
-           key: Key('${index}'),
-         padding: EdgeInsets.only(left: 10, right: 10.0),
-         margin: EdgeInsets.only(
-         bottom: 10,
-         ),
-         child: Column(
-           children: [
-             _buildExerciseListItem((index + 1).toString(), '${editWorkouSessionProvider.existingLifts[index].exerciseName}', '0.0', '0.0', editWorkouSessionProvider.existingLifts[index].rm.toString(), Colors.black, 2, editWorkouSessionProvider, index, context, configProvider),
-
-             Container(
-                 margin: EdgeInsets.only(left: 15.0, right:  15.0),
-                 child: Divider(
-                   height: 1,
-                   color: Color.fromRGBO(170, 170, 170, 1),
-                 ))
-           ],
-         ));
-       }),);
+  Widget _buildReorderableListView() {
+    return ReorderableListView(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      onReorder: editWorkouSessionProvider.reorderList,
+      children: List.generate(editWorkouSessionProvider.existingLifts.length, (index) {
+        return Container(
+            key: Key('${index}'),
+            padding: EdgeInsets.only(left: 10, right: 10.0),
+            margin: EdgeInsets.only(
+              bottom: 10,
+            ),
+            child: Column(
+              children: [
+                _buildExerciseListItem((index + 1).toString(), '${createWorkoutProvider.getExerciseName(exercisesProvider, configProvider, editWorkouSessionProvider.existingLifts[index].exerciseId ?? 0)}', '0.0', '0.0', editWorkouSessionProvider.existingLifts[index].rm.toString(), Colors.black, 2, editWorkouSessionProvider, index, context, configProvider),
+                Container(
+                    margin: EdgeInsets.only(left: 15.0, right: 15.0),
+                    child: Divider(
+                      height: 1,
+                      color: Color.fromRGBO(170, 170, 170, 1),
+                    ))
+              ],
+            ));
+      }),
+    );
   }
 
   Future<void> _showExercisesDialog(BuildContext context, ConfigProvider configProvider, EditWorkoutProvider editWorkoutProvider, mode, existingLiftIndex) async {
@@ -238,17 +241,18 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
           return SearchDialog(widget.height);
         }).then((value) {
       if (mode == 2) {
-
         Exercise? exercise = value;
         editWorkoutProvider.unselectedExercise = EditableLift.create(exercise?.name, exercise?.id, exercise?.bodyPart, 1, 1, 1.2, false, -1);
-      }
-      else {
+      } else {
         editWorkoutProvider.updateLiftExercise(value as Exercise, existingLiftIndex);
       }
     });
   }
 
   Widget _buildExerciseListItem(String exerciseNumber, String exerciseName, String kg, String rep, String rm, Color color, int mode, EditWorkoutProvider editWorkoutProvider, int index, BuildContext context, ConfigProvider configProvider) {
+    print("p1: ${editWorkoutProvider.unselectedExercise?.kgs.length}");
+    print("p2: ${editWorkoutProvider.unselectedExercise?.mass}");
+
     return Row(
       children: [
         Expanded(
@@ -320,31 +324,28 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                       ),
                     )
                   : DropdownButton<int>(
-            isExpanded: true,
-            underline: SizedBox(),
-            iconSize: 0.0,
-            value: editWorkoutProvider.unselectedExercise?.mass??1,
-            onChanged: (newValue) {
-              editWorkoutProvider.updateMass(index, newValue!);
-            },
-            items: editWorkoutProvider.unselectedExercise?.kgs.map((int value) {
-              return DropdownMenuItem<int>(
-                value: value,
-                child: configProvider.measureMode == KG
-                    ? Text(
-                  '${value}KG',
-                  style: TextStyle(fontSize: 13, color: Colors.grey),
-                )
-                    : Text(
-                  '${configProvider.getConvertedMass(value.toDouble())}LBS',
-                  style: TextStyle(fontSize: 13,  color: Colors.grey
-
-
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
+                      isExpanded: true,
+                      underline: SizedBox(),
+                      iconSize: 0.0,
+                      value: editWorkoutProvider.unselectedExercise?.mass ?? 1,
+                      onChanged: (newValue) {
+                        editWorkoutProvider.updateMass(index, newValue!);
+                      },
+                      items: editWorkoutProvider.unselectedExercise?.kgs.map((int value) {
+                        return DropdownMenuItem<int>(
+                          value: value,
+                          child: configProvider.measureMode == KG
+                              ? Text(
+                                  '${value}KG',
+                                  style: TextStyle(fontSize: 13, color: Colors.grey),
+                                )
+                              : Text(
+                                  '${configProvider.getConvertedMass(value.toDouble())}LBS',
+                                  style: TextStyle(fontSize: 13, color: Colors.grey),
+                                ),
+                        );
+                      }).toList(),
+                    ),
         ),
         Expanded(
           flex: 2,
@@ -370,32 +371,32 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                     );
                   }).toList(),
                 )
-              : mode == 1? Text(
-                  'REP',
-                  style: TextStyle(fontSize: 13, color: mode == 1 ? Color.fromRGBO(102, 51, 204, 1) : Colors.grey),
-                ):
-          DropdownButton<int>(
-            isExpanded: true,
-            underline: SizedBox(),
-            iconSize: 0.0,
-            value: editWorkoutProvider.unselectedExercise?.rep??1,
-            onChanged: (newValue) {
-              editWorkoutProvider.updateRep(index, newValue!);
-            },
-            items: editWorkoutProvider.unselectedExercise?.reps.map((int value) {
-              return DropdownMenuItem<int>(
-                value: value,
-                child: Container(
-                  child: Text(
-                    '$value',
-                    style: TextStyle(fontSize: 13, color:  Colors.grey),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              );
-            }).toList(),
-          )
-          ,
+              : mode == 1
+                  ? Text(
+                      'REP',
+                      style: TextStyle(fontSize: 13, color: mode == 1 ? Color.fromRGBO(102, 51, 204, 1) : Colors.grey),
+                    )
+                  : DropdownButton<int>(
+                      isExpanded: true,
+                      underline: SizedBox(),
+                      iconSize: 0.0,
+                      value: editWorkoutProvider.unselectedExercise?.rep ?? 1,
+                      onChanged: (newValue) {
+                        editWorkoutProvider.updateRep(index, newValue!);
+                      },
+                      items: editWorkoutProvider.unselectedExercise?.reps.map((int value) {
+                        return DropdownMenuItem<int>(
+                          value: value,
+                          child: Container(
+                            child: Text(
+                              '$value',
+                              style: TextStyle(fontSize: 13, color: Colors.grey),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
         ),
         Expanded(
           flex: 2,
@@ -420,10 +421,10 @@ class _EditWorkoutSessionDialogState extends State<EditWorkoutSessionDialog> {
                   : IconButton(
                       onPressed: () async {
                         if (editWorkoutProvider.unselectedExercise?.exerciseName != null) {
-                          editWorkoutProvider.addExercise(EditableLift.create(editWorkoutProvider.unselectedExercise!.exerciseName, editWorkoutProvider.unselectedExercise!.exerciseId, editWorkoutProvider.unselectedExercise!.bodyPart, 1, 1, 1.2, false, -1));
+                          editWorkoutProvider.addExercise(EditableLift.create(editWorkoutProvider.unselectedExercise!.exerciseName, editWorkoutProvider.unselectedExercise!.exerciseId, editWorkoutProvider.unselectedExercise!.bodyPart, 1, 1, 1.2, true, -1));
                         } else
                           showSnackBar('${selectExercise[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-                          //showToast('Please, select exercise!');
+                        //showToast('Please, select exercise!');
                       },
                       icon: Icon(
                         Icons.add_circle,

@@ -9,8 +9,8 @@ class EditableLift {
   double rm = 1.0;
   bool isSelected = false;
   int? liftId;
-  late  List<int> kgs;
-  late  List<int> reps;
+    List<int> kgs = [];
+    List<int> reps = [];
 
   EditableLift.create(this.exerciseName, this.exerciseId, this.bodyPart, this.mass, this.rep, this.rm, this.isSelected, this.liftId){
     kgs =  List.generate(51, (index) => (index));

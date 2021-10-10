@@ -47,7 +47,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
         int count = 0;
         var response = await WebServices.insertWorkOut(sessionKey, title, timestamp, duration);
         if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
-          _unselectedExercise = EditableLift.create(_unselectedExercise?.exerciseName, _unselectedExercise?.exerciseId, _unselectedExercise?.bodyPart, 1, 1, 1.2, false, -1);
+          _unselectedExercise = EditableLift.create(_unselectedExercise?.exerciseName, _unselectedExercise?.exerciseId, _unselectedExercise?.bodyPart, 1, 1, 1.02, false, -1);
 
           for (int i = 0; i < _lifts.length; i++) {
             if (_lifts[i].isSelected) {
@@ -94,7 +94,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
       if (userPreferences!.getInt('unselected_ex_id') != null) {
         int? id = userPreferences!.getInt('unselected_ex_id');
         Exercise exercise = exercisesDialogProvider.allExercises.where((element) => element.id == id).single;
-        _unselectedExercise = EditableLift.create(exercise.name, exercise.id, exercise.bodyPart, 1, 1, 1.2, false, -1);
+        _unselectedExercise = EditableLift.create(exercise.name, exercise.id, exercise.bodyPart, 1, 1, 1.02, false, -1);
       }
     }
   }
@@ -239,21 +239,20 @@ class CreateWorkoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-   void updateInactiveExerciseMass(int val){
+  void updateInactiveExerciseMass(int val) {
     _unselectedExercise?.mass = val;
-    updateInactiveExerciseRM(val, _unselectedExercise?.rep??1);
+    updateInactiveExerciseRM(val, _unselectedExercise?.rep ?? 1);
     notifyListeners();
   }
 
-   void updateInactiveExerciseRep(int val){
-       _unselectedExercise?.rep = val;
-       updateInactiveExerciseRM( _unselectedExercise?.rep??1, val);
-       notifyListeners();
+  void updateInactiveExerciseRep(int val) {
+    _unselectedExercise?.rep = val;
+    updateInactiveExerciseRM(_unselectedExercise?.rep ?? 1, val);
+    notifyListeners();
+  }
 
-   }
-
-   void updateInactiveExerciseRM(int mass, int rep){
-     _unselectedExercise?.rm = roundDouble((mass + mass * rep * 0.025), 2);
+  void updateInactiveExerciseRM(int mass, int rep) {
+    _unselectedExercise?.rm = roundDouble((mass + mass * rep * 0.025), 2);
   }
 
   void updateRep(index, int val) {
@@ -314,6 +313,20 @@ class CreateWorkoutProvider extends ChangeNotifier {
     appRefreshed = false;
     ticksRefreshed = false;
     timeRefreshed = false;
+  }
+
+  String? getExerciseName(ExercisesDialogProvider exercisesDialogProvider, ConfigProvider configProvider, int exerciseId) {
+    Exercise exercise = exercisesDialogProvider.allExercises.singleWhere((element) => element.id == exerciseId);
+
+    if (configProvider.activeLanguage() == korean)
+      return '${exercise.name}(${exercise.bodyPart})';
+    else {
+      NameTranslation? namedTranslation = exercise.namedTranslations;
+      if (namedTranslation?.english != null) {
+        return '${namedTranslation?.english}(${exercise.bodyPart})';
+      }
+      return '${exercise.name}(${exercise.bodyPart})';
+    }
   }
 
   Future<void> repeatWorkoutSession(List<EditableLift> lifts, String title) async {

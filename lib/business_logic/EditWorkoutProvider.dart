@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
 import 'package:workoutnote/data/models/EditableLiftModel.dart';
 import 'package:workoutnote/data/models/ExerciseModel.dart';
 import 'package:workoutnote/data/models/WorkoutListModel.dart';
@@ -265,6 +266,15 @@ class EditWorkoutProvider extends ChangeNotifier {
 
 //endregion
 
+
+
+  String? getBodyPart(String? name, ExercisesDialogProvider exercisesDialogProvider){
+    String?  bodyPart = exercisesDialogProvider.allExercises.singleWhere((element) => element.name ==  name).bodyPart;
+    print(bodyPart);
+    return bodyPart;
+
+
+  }
   void reset() {
     existingLifts.clear();
     liftsToStore.clear();
