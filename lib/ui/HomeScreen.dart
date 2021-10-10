@@ -44,10 +44,14 @@ class _HomeScreenState extends State<HomeScreen> {
     //showLoaderDialog(context);
     if (!mainProvider.todayWorkoutsFetched) {
       mainProvider.fetchTodayWorkouts().then((value) {});
-      exerciseDialogProvider.fetchExercises().then((value) {
-        createWorkoutProvider.restoreAllLifts(exerciseDialogProvider);
-      });
-      exerciseDialogProvider.fetchBodyParts().then((value) {});
+      if(exerciseDialogProvider.allExercises.isEmpty) {
+        exerciseDialogProvider.fetchExercises().then((value) {
+          createWorkoutProvider.restoreAllLifts(exerciseDialogProvider);
+
+        });
+        exerciseDialogProvider.fetchBodyParts().then((value) {});
+      }
+
     }
   }
 
