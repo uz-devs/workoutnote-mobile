@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
 import 'package:workoutnote/data/models/UserModel.dart';
 import 'package:workoutnote/data/services/Network.dart';
 import 'package:workoutnote/utils/strings.dart';
@@ -110,8 +111,10 @@ class ConfigProvider extends ChangeNotifier {
     return false;
   }
 
-  Future<bool> logout() async {
+  Future<bool> logout(MainScreenProvider mainScreenProvider) async {
     bool noActiveUser = await userPreferences!.clear();
+    mainScreenProvider.reset();
+
     if (noActiveUser) {
       notifyListeners();
       return true;
@@ -140,7 +143,6 @@ class ConfigProvider extends ChangeNotifier {
   }
 
   Future<bool> updateProfileSettings(String email, String sessionKey, String name, String gender, String birthDate, bool isProfileShared) async {
-    print(gender);
     try {
       var response = await WebServices.updateSettings(sessionKey, name, gender, birthDate, isProfileShared);
 

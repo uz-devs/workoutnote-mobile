@@ -84,8 +84,6 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
             shrinkWrap: true,
             itemCount: count,
             itemBuilder: (context, index) {
-              print("toooop");
-              print(MediaQueryData.fromWindow(window).padding.top);
               if (index == 0)
                 return Container(
                     margin: EdgeInsets.only(top: MediaQueryData.fromWindow(window).padding.top),
@@ -129,7 +127,6 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                 );
               } else if ((index > 4 && index < count - 7) || (index == 5 && widget.mode == 4) || (index == 5 && widget.mode == 1)) {
 
-                print('current mode is ${widget.mode}');
 
                 if (widget.mode == 1)
                   return Container(
@@ -191,7 +188,6 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                 else
                   return Container();
               } else if (index == count - 7) {
-                print('heeeee');
                 if (widget.mode == 1)
                   return Container(
                     margin: EdgeInsets.all(15),
@@ -235,7 +231,6 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
 
                 if (widget.mode == 1) {
                   index = index  - 7;
-                  print('index  ${index}');
                   return _buildCustomRow(list[index].keys.single, list[index].values.single, int.parse(textController2.text.isNotEmpty ? textController2.text : '0'), index);
                 }
                 else if (widget.mode == 2) {
@@ -519,7 +514,6 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                         ),
                         onPressed: () {
                           if (bodyWeightController.text.isNotEmpty && textController2.text.isNotEmpty && currentGender != 'None') {
-                            print('georugqoeur');
                             FocusScope.of(context).unfocus();
                             _calculateWilks();
                           } else {
@@ -575,12 +569,10 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
       setState(() {
         wilksCoeff = (liftWeight * 500 / (fA + fB * pow(bodyWeight, 1) + fC * pow(bodyWeight, 2) + fD * pow(bodyWeight, 3) + fE * pow(bodyWeight, 4) + fF * pow(bodyWeight, 5))).toStringAsPrecision(4);
 
-        print(wilksCoeff);
       });
     } else if (currentGender == wilksGender[1][configProvider.activeLanguage()]) {
       setState(() {
         wilksCoeff = (liftWeight * 500 / (mA + mB * pow(bodyWeight, 1) + mC * pow(bodyWeight, 2) + mD * pow(bodyWeight, 3) + mE * pow(bodyWeight, 4) + mF * pow(bodyWeight, 5))).toStringAsPrecision(4);
-        print(wilksCoeff);
       });
     }
   }

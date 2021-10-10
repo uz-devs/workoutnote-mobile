@@ -283,6 +283,7 @@ class MainScreenProvider extends ChangeNotifier {
 
       favoriteWorkOuts.removeWhere((element) => element.id == id);
       if (todayWorkoutsFetched) {
+
         for (int i = 0; i < workOuts.length; i++) {
           if (workOuts[i].id == id) {
             workOuts[i].isFavorite = false;
@@ -298,6 +299,7 @@ class MainScreenProvider extends ChangeNotifier {
   void reset() {
     workOuts.clear();
     calendarWorkouts.clear();
+    favoriteWorkOuts.clear();
     todayWorkoutsFetched = false;
     favoriteWorkoutsFetched = false;
     calendarWorkoutsFetched = false;

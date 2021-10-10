@@ -25,6 +25,7 @@ class ExercisesDialogProvider extends ChangeNotifier {
  //endregion
   //region api calls
   Future<void> fetchExercises() async {
+    if(allExercises.isNotEmpty) allExercises.clear();
     try {
       var response = await WebServices.fetchExercises();
 

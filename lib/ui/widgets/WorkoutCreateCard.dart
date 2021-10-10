@@ -16,8 +16,8 @@ import 'package:workoutnote/data/models/WorkoutListModel.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
-import 'SerachExercisesDialog.dart';
-import 'FvoriteWorkoutsDialog.dart';
+import 'ExercisesListDialog.dart';
+import 'FavoriteWorkoutsDialog.dart';
 
 class CreateWorkOutCard extends StatelessWidget {
   final width;
@@ -62,9 +62,19 @@ class CreateWorkOutCard extends StatelessWidget {
         builder: (BuildContext context) {
           return SearchDialog(height);
         }).then((value) async {
-      Exercise exercise = value;
-      exProvider.unselectedExercise = EditableLift.create(exercise.name, exercise.id, exercise.bodyPart, 1, 1, 1.02, false, -1);
-      await exProvider.saveUnselectedExerciseToPreferences();
+       if(value != null) {
+         Exercise exercise = value;
+         exProvider.unselectedExercise = EditableLift.create(
+             exercise.name,
+             exercise.id,
+             exercise.bodyPart,
+             1,
+             1,
+             1.02,
+             false,
+             -1);
+         await exProvider.saveUnselectedExerciseToPreferences();
+       }
     });
   }
 

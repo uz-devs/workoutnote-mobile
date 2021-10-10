@@ -270,10 +270,7 @@ class EditWorkoutProvider extends ChangeNotifier {
 
   String? getBodyPart(String? name, ExercisesDialogProvider exercisesDialogProvider){
     String?  bodyPart = exercisesDialogProvider.allExercises.singleWhere((element) => element.name ==  name).bodyPart;
-    print(bodyPart);
     return bodyPart;
-
-
   }
   void reset() {
     existingLifts.clear();

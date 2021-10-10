@@ -14,7 +14,7 @@ import 'package:workoutnote/data/models/WorkoutListModel.dart';
 import 'package:workoutnote/utils/strings.dart';
 import 'package:workoutnote/utils/utils.dart';
 
-import 'SerachExercisesDialog.dart';
+import 'ExercisesListDialog.dart';
 
 class EditWorkoutSessionDialog extends StatefulWidget {
   final height;

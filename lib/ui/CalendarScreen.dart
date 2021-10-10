@@ -27,19 +27,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
   var configProvider = ConfigProvider();
   var decoration1 = BoxDecoration();
   var decoration2 = BoxDecoration(
+    color: Color.fromRGBO(102, 51, 204, 1),
     border: Border.all(
-      color: Color.fromRGBO(102, 51, 204, 1),
+      color: Colors.transparent,
     ),
     borderRadius: BorderRadius.circular(50.0),
   );
   var decoration3 = BoxDecoration(
-    color: Color.fromRGBO(102, 51, 204, 1),
+    color: Color.fromRGBO(102, 51, 204, 0.5),
     border: Border.all(
-      color: Color.fromRGBO(102, 51, 204, 1),
+      color: Colors.transparent,
     ),
     borderRadius: BorderRadius.circular(50.0),
   );
-  var decoration4 = BoxDecoration(color: Color.fromRGBO(245, 245, 245, 1));
+
   double? width;
 
   @override
@@ -144,16 +145,40 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               Container(
                                   width: 25,
                                   height: 25,
-                                  decoration: isDaySelected
-                                      ? isDayToday
-                                          ? decoration3
-                                          : decoration2
-                                      : isDayToday
+
+                                  decoration: isDaySelected?
+                                  decoration2
+                                      :isDayToday
                                           ? decoration3
                                           : decoration1,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                   child: Text(
                                     '${day.day}',
-                                    style: TextStyle(fontWeight: FontWeight.bold, color: isDayToday ? Colors.white : Colors.black),
+                                    style: TextStyle(fontWeight: FontWeight.bold, color: isDayToday || isDaySelected ? Colors.white : Colors.black),
                                     textAlign: TextAlign.center,
                                   )),
                             ],
@@ -181,7 +206,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       : decoration1,
                               child: Text(
                                 '${day.day}',
-                                style: TextStyle(color: isDayToday ? Colors.white : Colors.black),
+                                style: TextStyle(color: isDayToday || isDaySelected ? Colors.white :   Colors.black),
                                 textAlign: TextAlign.center,
                               ),
                             ),

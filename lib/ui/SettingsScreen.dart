@@ -150,7 +150,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
               else if (index  == 5)
                 return InkWell(
                   onTap: () {
-                    configProvider.logout();
+                    configProvider.logout(homeProvider);
                     homeProvider.reset();
                     dialogProvider.reset();
                     createWorkOutProvider.reset();

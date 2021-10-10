@@ -33,7 +33,6 @@ class CreateWorkoutProvider extends ChangeNotifier {
   //endregion
   //region api calls
   Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, List<WorkOut> workOuts, List<WorkOut> calendarWorkouts, ConfigProvider configProvider, BuildContext context) async {
-    print('create started!');
     bool canCreateSession = false;
     for (int i = 0; i < _lifts.length; i++) {
       if (_lifts[i].isSelected) {
@@ -316,17 +315,22 @@ class CreateWorkoutProvider extends ChangeNotifier {
   }
 
   String? getExerciseName(ExercisesDialogProvider exercisesDialogProvider, ConfigProvider configProvider, int exerciseId) {
-    Exercise exercise = exercisesDialogProvider.allExercises.singleWhere((element) => element.id == exerciseId);
+    //TODO: calling it after completing network request
 
-    if (configProvider.activeLanguage() == korean)
-      return '${exercise.name}(${exercise.bodyPart})';
-    else {
-      NameTranslation? namedTranslation = exercise.namedTranslations;
-      if (namedTranslation?.english != null) {
-        return '${namedTranslation?.english}(${exercise.bodyPart})';
-      }
-      return '${exercise.name}(${exercise.bodyPart})';
-    }
+   if(exercisesDialogProvider.allExercises.isNotEmpty) {
+
+     Exercise exercise = exercisesDialogProvider.allExercises.where((element) => element.id == exerciseId).first;
+     if (configProvider.activeLanguage() == korean)
+       return '${exercise.name}(${exercise.bodyPart})';
+     else {
+       NameTranslation? namedTranslation = exercise.namedTranslations;
+       if (namedTranslation?.english != null) {
+         return '${namedTranslation?.english}(${exercise.bodyPart})';
+       }
+       return '${exercise.name}(${exercise.bodyPart})';
+     }
+   }
+   return configProvider.activeLanguage() == english? 'Loading...':'로드 중...';
   }
 
   Future<void> repeatWorkoutSession(List<EditableLift> lifts, String title) async {
