@@ -86,13 +86,14 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
             itemBuilder: (context, index) {
               if (index == 0)
                 return Container(
-                    margin: EdgeInsets.only(top: MediaQueryData.fromWindow(window).padding.top),
+                    margin: EdgeInsets.only(left: 20.0,   top: MediaQueryData.fromWindow(window).padding.top),
                     alignment: Alignment.bottomLeft,
-                    child: IconButton(
-                      onPressed: () {
+                    child: GestureDetector(
+                      onTap: () {
                         Navigator.pop(context);
                       },
-                      icon: Icon(
+                      child: Icon(
+
                         Icons.arrow_back_ios,
                         color: Color.fromRGBO(102, 51, 204, 1),
                       ),
