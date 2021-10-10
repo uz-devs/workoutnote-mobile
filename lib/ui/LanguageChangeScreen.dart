@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/data/models/LanguageModel.dart';
 
-import 'package:workoutnote/utils/strings.dart';
+import 'package:workoutnote/utils/Strings.dart';
 
 class LanguageChangeScreen extends StatefulWidget {
   const LanguageChangeScreen();

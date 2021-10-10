@@ -9,8 +9,8 @@ import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
 import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
 import 'package:workoutnote/data/models/WorkoutListModel.dart';
 
-import 'package:workoutnote/utils/strings.dart';
-import 'package:workoutnote/utils/utils.dart';
+import 'package:workoutnote/utils/Strings.dart';
+import 'package:workoutnote/utils/Utils.dart';
 
 import '../NavigationController.dart';
 import 'EditWorkoutSessionDialog.dart';

@@ -8,8 +8,8 @@ import 'package:workoutnote/data/models/WorkoutListModel.dart';
 import 'package:workoutnote/data/services/Network.dart';
 
 
-import 'package:workoutnote/utils/strings.dart';
-import 'package:workoutnote/utils/utils.dart';
+import 'package:workoutnote/utils/Strings.dart';
+import 'package:workoutnote/utils/Utils.dart';
 
 import 'ConfigProvider.dart';
 import 'CreateWorkoutProvider.dart';

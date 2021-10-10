@@ -8,8 +8,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
-import 'package:workoutnote/utils/strings.dart';
-import 'package:workoutnote/utils/utils.dart';
+import 'package:workoutnote/utils/Strings.dart';
+import 'package:workoutnote/utils/Utils.dart';
 
 class CalculationBottomSheet extends StatefulWidget {
   final height;
@@ -125,7 +125,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                     style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
                 );
-              } else if ((index > 4 && index < count - 7) || (index == 5 && widget.mode == 4) || (index == 5 && widget.mode == 1)) {
+              } else if ((index > 4 && index < count - 7) || (index == 5 && widget.mode == 3) || (index == 5 && widget.mode == 1)) {
 
 
                 if (widget.mode == 1)
@@ -168,7 +168,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                     ),
                   );
                 }
-                else if (widget.mode == 4)
+                else if (widget.mode == 3)
                   return Container(
                     padding: EdgeInsets.all(15.0),
                     alignment: Alignment.center,

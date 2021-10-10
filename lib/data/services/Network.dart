@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:workoutnote/utils/utils.dart';
+import 'package:workoutnote/utils/Utils.dart';
 
 class WebServices {
   static Map<String, String> headers = {'Accept': 'application/json; charset=UTF-8'};

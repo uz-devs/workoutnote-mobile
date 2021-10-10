@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
 import 'package:workoutnote/data/models/ExerciseModel.dart';
-import 'package:workoutnote/utils/strings.dart';
-import 'package:workoutnote/utils/utils.dart';
+import 'package:workoutnote/utils/Strings.dart';
+import 'package:workoutnote/utils/Utils.dart';
 
 class SearchDialog extends StatefulWidget {
   final height;

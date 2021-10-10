@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
-import 'package:workoutnote/utils/strings.dart';
-import 'package:workoutnote/utils/utils.dart';
+import 'package:workoutnote/utils/Strings.dart';
+import 'package:workoutnote/utils/Utils.dart';
 
 import 'IntroScreen.dart';
 

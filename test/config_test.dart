@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
-import 'package:workoutnote/utils/utils.dart';
+import 'package:workoutnote/utils/Utils.dart';
 
 void main() {
   group('Testing ConfigProvider', () {

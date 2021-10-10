@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tuple/tuple.dart';
 import 'package:workoutnote/data/models/LanguageModel.dart';
-import 'package:workoutnote/utils/strings.dart';
+import 'package:workoutnote/utils/Strings.dart';
 
 
 //region  api  urls

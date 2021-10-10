@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
 
-import 'package:workoutnote/utils/strings.dart';
-import 'package:workoutnote/utils/utils.dart';
+import 'package:workoutnote/utils/Strings.dart';
+import 'package:workoutnote/utils/Utils.dart';
 
 import 'WorkoutnoteCard.dart';
 

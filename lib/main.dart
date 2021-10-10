@@ -5,7 +5,7 @@ import 'package:workoutnote/ui/LoginScreen.dart';
 import 'package:workoutnote/ui/NavigationController.dart';
 import 'package:workoutnote/ui/VerificationScreen.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:workoutnote/utils/utils.dart';
+import 'package:workoutnote/utils/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,8 +47,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget screen;
-
-
     if(userPreferences!.getString('sessionKey') == null){
       if(userPreferences!.getBool('signUpDone')??false) screen  = VerificationScreen();
       else screen = LoginScreen();

@@ -11,7 +11,7 @@ import 'package:workoutnote/data/services/Network.dart';
 
 
 
-import 'package:workoutnote/utils/utils.dart';
+import 'package:workoutnote/utils/Utils.dart';
 
 class ExercisesDialogProvider extends ChangeNotifier {
   //region vars

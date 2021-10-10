@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:workoutnote/utils/utils.dart';
+import 'package:workoutnote/utils/Utils.dart';
 
 
 class PrivacyPolicy extends StatefulWidget {

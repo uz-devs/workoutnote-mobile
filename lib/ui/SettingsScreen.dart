@@ -5,7 +5,7 @@ import 'package:workoutnote/business_logic/CreateWorkoutProvider.dart';
 import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
 import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
 
-import 'package:workoutnote/utils/strings.dart';
+import 'package:workoutnote/utils/Strings.dart';
 
 import 'LanguageChangeScreen.dart';
 import 'LoginScreen.dart';

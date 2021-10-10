@@ -11,8 +11,8 @@ import 'package:workoutnote/data/models/EditableLiftModel.dart';
 import 'package:workoutnote/data/models/ExerciseModel.dart';
 import 'package:workoutnote/data/models/WorkoutListModel.dart';
 
-import 'package:workoutnote/utils/strings.dart';
-import 'package:workoutnote/utils/utils.dart';
+import 'package:workoutnote/utils/Strings.dart';
+import 'package:workoutnote/utils/Utils.dart';
 
 import 'ExercisesListDialog.dart';
 

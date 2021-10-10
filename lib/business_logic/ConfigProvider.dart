@@ -7,8 +7,8 @@ import 'package:http/http.dart';
 import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
 import 'package:workoutnote/data/models/UserModel.dart';
 import 'package:workoutnote/data/services/Network.dart';
-import 'package:workoutnote/utils/strings.dart';
-import 'package:workoutnote/utils/utils.dart';
+import 'package:workoutnote/utils/Strings.dart';
+import 'package:workoutnote/utils/Utils.dart';
 
 class ConfigProvider extends ChangeNotifier {
   //vars
@@ -16,7 +16,6 @@ class ConfigProvider extends ChangeNotifier {
   int measureMode = KG;
 
   //user info
-
   int c = 0;
   late String g = userPreferences!.getString('gender') ?? 'MALE';
   late String myname;
