@@ -38,6 +38,7 @@ dependencies:
   pull_to_refresh: ^2.0.0
   flutter_inappwebview: ^5.3.2
   connectivity_plus: ^2.0.2
+  percent_indicator: ^3.4.0
 
 
   # The following adds the Cupertino Icons font to your application.

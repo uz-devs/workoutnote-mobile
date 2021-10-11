@@ -167,7 +167,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 }
                                 else {
                                    if(user.responseCode == MISC_EXCEPTION)
-                                  showSnackBar('${signUpError[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                                  showSnackBar('${unexpectedError[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                                    else if (user.responseCode == SOCKET_EXCEPTION)
                                      showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                                 }

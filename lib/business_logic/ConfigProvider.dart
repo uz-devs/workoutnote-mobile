@@ -87,7 +87,7 @@ class ConfigProvider extends ChangeNotifier {
             var settings = Settings.fromJson(jsonDecode(settingsResponse.body));
             myemail = email;
             myname = settings.name ?? '';
-            selectedYear = settings.dateOfBirth != null ? settings.dateOfBirth!.split('-')[0] : '20000';
+            selectedYear = settings.dateOfBirth != null ? settings.dateOfBirth!.split('-')[0] : '2000';
             selectedMonth = settings.dateOfBirth != null ? settings.dateOfBirth!.split('-')[1] : '01';
             selectedDay = settings.dateOfBirth != null ? settings.dateOfBirth!.split('-')[2] : '01';
             g = settings.gender!;

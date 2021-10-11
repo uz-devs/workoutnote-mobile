@@ -50,7 +50,7 @@ class WebServices {
     return response;
   }
 
-  static Future<http.Response> updateSettings(String sessionKey, String name, String gender, String   birthDate, bool isProfileShared) async {
+  static Future<http.Response> updateSettings(String sessionKey, String name, String gender, String birthDate, bool isProfileShared) async {
     final url = Uri.https(baseUrl, update_settings);
     final body = {'sessionKey': sessionKey, 'new_name': name, 'new_gender': gender, 'new_date_of_birth': birthDate, 'new_is_profile_shared': isProfileShared};
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
@@ -165,10 +165,46 @@ class WebServices {
 
   static Future<http.Response> fetchCalendarNote(String sessionKey, int timestamp) async {
     final url = Uri.https(baseUrl, fetchNote);
-    final body = {'sessionKey': sessionKey, 'timestamp': timestamp,};
+    final body = {
+      'sessionKey': sessionKey,
+      'timestamp': timestamp,
+    };
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }
 
-}
+  static Future<http.Response> registerTarget(String sessionKey, String targetName, int startTimestamp, int endTimestamp) async {
+    final url = Uri.https(baseUrl, targetReg);
+    final body = {'sessionKey': sessionKey, 'name': targetName, 'start_date_ms': startTimestamp, 'end_date_ms': endTimestamp};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
 
+  static Future<http.Response> fetchTargets(String sessionKey) async {
+
+    final url = Uri.https(baseUrl, targetFetch);
+    final body = {'sessionKey': sessionKey};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
+
+  static Future<http.Response> toggleTarget(String sessionKey, int targetId) async {
+    final url = Uri.https(baseUrl, targetToggle);
+    final body = {
+      'sessionKey': sessionKey,
+      'target_id': targetId,
+    };
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
+
+  static Future<http.Response> removeTarget(String sessionKey, int targetId) async {
+    final url = Uri.https(baseUrl, targetDel);
+    final body = {
+      'sessionKey': sessionKey,
+      'target_id': targetId,
+    };
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+    return response;
+  }
+}

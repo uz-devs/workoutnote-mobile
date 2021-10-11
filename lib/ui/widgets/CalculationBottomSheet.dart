@@ -41,6 +41,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
   List<int> dropDownValues = [1, 1, 1, 1, 1, 1];
   List<double> plates = [25, 20, 15, 10, 5, 2.5];
   List<double> qty = [0, 10, 10, 10, 10, 10];
+
   //Wilks  relates stuff
   String currentGender = wilksGender[0][english] ?? 'None';
   List<String?> genders = [];
@@ -67,188 +68,175 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
 
     var count;
 
-    if (widget.mode == 1) {
+    if (widget.mode == 3) {
       count = 13;
-    }
-    else if  (widget.mode == 2){
+    } else if (widget.mode == 4) {
       count = 12 + currentPlateBarbellKG.length;
-
-    }
-    else {
+    } else {
       count = 6;
     }
     return Container(
-        margin: EdgeInsets.only(top: 20),
-        height: widget.height,
-        child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: count,
-            itemBuilder: (context, index) {
-              if (index == 0)
-                return Container(
-                    margin: EdgeInsets.only(left: 20.0,   top: MediaQueryData.fromWindow(window).padding.top),
-                    alignment: Alignment.bottomLeft,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-
-                        Icons.arrow_back_ios,
-                        color: Color.fromRGBO(102, 51, 204, 1),
-                      ),
-                    ));
-              else if (index == 1)
-                return Container(
-                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                    margin: EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      '${widget.title}',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-                    ));
-              else if (index == 2)
-                return Container(
-                    margin: EdgeInsets.only(left: 20.0),
-                    padding: EdgeInsets.only(bottom: 10.0),
-                    child: Center(
-                      child: Text(
-                        '${widget.subtitle}',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ));
-              else if (index == 3)
-                return _buildCalculationWidget();
-              else if (index == 4) {
-                return Container(
+      margin: EdgeInsets.only(top: 20),
+      height: widget.height,
+      child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: count,
+          itemBuilder: (context, index) {
+            if (index == 0)
+              return Container(
+                  margin: EdgeInsets.only(left: 20.0, top: MediaQueryData.fromWindow(window).padding.top),
+                  alignment: Alignment.bottomLeft,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Color.fromRGBO(102, 51, 204, 1),
+                    ),
+                  ));
+            else if (index == 1)
+              return Container(
+                  padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                   margin: EdgeInsets.only(left: 20.0),
                   child: Text(
-                    '${widget.text3}',
-                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                    '${widget.title}',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  ));
+            else if (index == 2)
+              return Container(
+                  margin: EdgeInsets.only(left: 20.0),
+                  padding: EdgeInsets.only(bottom: 10.0),
+                  child: Center(
+                    child: Text(
+                      '${widget.subtitle}',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ));
+            else if (index == 3)
+              return _buildCalculationWidget();
+            else if (index == 4) {
+              return Container(
+                margin: EdgeInsets.only(left: 20.0),
+                child: Text(
+                  '${widget.text3}',
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+              );
+            } else if ((index > 4 && index < count - 7) || (index == 5 && widget.mode == 5) || (index == 5 && widget.mode == 3)) {
+              if (widget.mode == 3)
+                return Container(
+                  padding: EdgeInsets.all(15.0),
+                  alignment: Alignment.center,
+                  child: RichText(
+                    text: TextSpan(style: TextStyle(fontSize: 14.0, color: Colors.black), children: [
+                      TextSpan(text: '$currentRM', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1))),
+                      TextSpan(text: '  '),
+                      TextSpan(text: 'kg', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black26)),
+                      TextSpan(text: '  '),
+                      TextSpan(
+                          text: '${widget.text4}',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ))
+                    ]),
                   ),
                 );
-              } else if ((index > 4 && index < count - 7) || (index == 5 && widget.mode == 3) || (index == 5 && widget.mode == 1)) {
-
-
-                if (widget.mode == 1)
-                  return Container(
-                    padding: EdgeInsets.all(15.0),
-                    alignment: Alignment.center,
-                    child: RichText(
-                      text: TextSpan(style: TextStyle(fontSize: 14.0, color: Colors.black), children: [
-                        TextSpan(text: '$currentRM', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1))),
-                        TextSpan(text: '  '),
-                        TextSpan(text: 'kg', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black26)),
-                        TextSpan(text: '  '),
-                        TextSpan(
-                            text: '${widget.text4}',
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ))
-                      ]),
-                    ),
-                  );
-                else if (widget.mode == 2 && currentPlateBarbellKG.isNotEmpty) {
-                  index = index - 5;
-                  return Container(
-                    padding: EdgeInsets.all(15.0),
-                    alignment: Alignment.center,
-                    child: RichText(
-                      text: TextSpan(style: TextStyle(fontSize: 14.0, color: Colors.black), children: [
-                        TextSpan(text: '${currentPlateBarbellKG[index].values.single} x ${currentPlateBarbellKG[index].keys.single}', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1))),
-                        TextSpan(text: '  '),
-                        TextSpan(text: 'kg ', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black26)),
-                        TextSpan(text: '  '),
-                        TextSpan(
-                            text: '${widget.text4}',
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ))
-                      ]),
-                    ),
-                  );
-                }
-                else if (widget.mode == 3)
-                  return Container(
-                    padding: EdgeInsets.all(15.0),
-                    alignment: Alignment.center,
-                    child: RichText(
-                      text: TextSpan(style: TextStyle(fontSize: 14.0, color: Colors.black), children: [
-                        TextSpan(text: '$wilksCoeff', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1))),
-                        TextSpan(text: '  '),
-                        TextSpan(
-                            text: '${widget.text4}',
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ))
-                      ]),
-                    ),
-                  );
-                else
-                  return Container();
-              } else if (index == count - 7) {
-                if (widget.mode == 1)
-                  return Container(
-                    margin: EdgeInsets.all(15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '${oneRepMax7[configProvider.activeLanguage()]}',
-                          style: TextStyle(fontSize: 14, color: Color.fromRGBO(119, 119, 119, 1)),
-                        ),
-                        Text(
-                          '${oneRepMax8[configProvider.activeLanguage()]}',
-                          style: TextStyle(fontSize: 14, color: Color.fromRGBO(119, 119, 119, 1)),
-                        ),
-                      ],
-                    ),
-                  );
-                else if (widget.mode == 2) {
-                  return Container(
-                    margin: EdgeInsets.all(15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '${plateBarbell7[configProvider.activeLanguage()]}',
-                          style: TextStyle(fontSize: 14, color: Color.fromRGBO(119, 119, 119, 1)),
-                        ),
-                        Text(
-                          '${plateBarbell8[configProvider.activeLanguage()]}',
-                          style: TextStyle(fontSize: 14, color: Color.fromRGBO(119, 119, 119, 1)),
-                        ),
-                      ],
-                    ),
-                  );
-                } else
-                  return Container();
-              }
-              else {
-
-
-
-                if (widget.mode == 1) {
-                  index = index  - 7;
-                  return _buildCustomRow(list[index].keys.single, list[index].values.single, int.parse(textController2.text.isNotEmpty ? textController2.text : '0'), index);
-                }
-                else if (widget.mode == 2) {
-                  index = index - (6 + currentPlateBarbellKG.length);
-                  return _buildCustomRow(list[index].keys.single, list[index].values.single, -1, index);
-                } else
-                  return Container();
-              }
-            }),
-      );
-
+              else if (widget.mode == 4 && currentPlateBarbellKG.isNotEmpty) {
+                index = index - 5;
+                return Container(
+                  padding: EdgeInsets.all(15.0),
+                  alignment: Alignment.center,
+                  child: RichText(
+                    text: TextSpan(style: TextStyle(fontSize: 14.0, color: Colors.black), children: [
+                      TextSpan(text: '${currentPlateBarbellKG[index].values.single} x ${currentPlateBarbellKG[index].keys.single}', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1))),
+                      TextSpan(text: '  '),
+                      TextSpan(text: 'kg ', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black26)),
+                      TextSpan(text: '  '),
+                      TextSpan(
+                          text: '${widget.text4}',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ))
+                    ]),
+                  ),
+                );
+              } else if (widget.mode == 5)
+                return Container(
+                  padding: EdgeInsets.all(15.0),
+                  alignment: Alignment.center,
+                  child: RichText(
+                    text: TextSpan(style: TextStyle(fontSize: 14.0, color: Colors.black), children: [
+                      TextSpan(text: '$wilksCoeff', style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1))),
+                      TextSpan(text: '  '),
+                      TextSpan(
+                          text: '${widget.text4}',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                          ))
+                    ]),
+                  ),
+                );
+              else
+                return Container();
+            } else if (index == count - 7) {
+              if (widget.mode == 3)
+                return Container(
+                  margin: EdgeInsets.all(15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${oneRepMax7[configProvider.activeLanguage()]}',
+                        style: TextStyle(fontSize: 14, color: Color.fromRGBO(119, 119, 119, 1)),
+                      ),
+                      Text(
+                        '${oneRepMax8[configProvider.activeLanguage()]}',
+                        style: TextStyle(fontSize: 14, color: Color.fromRGBO(119, 119, 119, 1)),
+                      ),
+                    ],
+                  ),
+                );
+              else if (widget.mode == 4) {
+                return Container(
+                  margin: EdgeInsets.all(15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${plateBarbell7[configProvider.activeLanguage()]}',
+                        style: TextStyle(fontSize: 14, color: Color.fromRGBO(119, 119, 119, 1)),
+                      ),
+                      Text(
+                        '${plateBarbell8[configProvider.activeLanguage()]}',
+                        style: TextStyle(fontSize: 14, color: Color.fromRGBO(119, 119, 119, 1)),
+                      ),
+                    ],
+                  ),
+                );
+              } else
+                return Container();
+            } else {
+              if (widget.mode == 3) {
+                index = index - 7;
+                return _buildCustomRow(list[index].keys.single, list[index].values.single, int.parse(textController2.text.isNotEmpty ? textController2.text : '0'), index);
+              } else if (widget.mode == 4) {
+                index = index - (6 + currentPlateBarbellKG.length);
+                return _buildCustomRow(list[index].keys.single, list[index].values.single, -1, index);
+              } else
+                return Container();
+            }
+          }),
+    );
   }
 
   //Widgets
   Widget _buildCustomRow(double percentage, double mass, int repNumber, int index) {
     switch (widget.mode) {
-      case 1:
+      case 3:
         return Container(
           margin: EdgeInsets.only(left: 15, right: 15, bottom: 5.0),
           child: Row(
@@ -267,7 +255,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
             ],
           ),
         );
-      case 2:
+      case 4:
         return Container(
             margin: EdgeInsets.only(left: 15, right: 15, bottom: 5.0),
             child: Row(
@@ -296,10 +284,9 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                 )
               ],
             ));
-      case 3:
+      case 5:
         return Container();
-      case 4:
-        return Container();
+
       default:
         return Container();
     }
@@ -314,7 +301,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
-        child: widget.mode == 1 || widget.mode == 2
+        child: widget.mode == 3 || widget.mode == 4
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -385,12 +372,12 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                           style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                         ),
                         onPressed: () {
-                          if (widget.mode == 1 || widget.mode == 2) {
+                          if (widget.mode == 3 || widget.mode == 4) {
                             if (textController2.text.isNotEmpty && textController1.text.isNotEmpty) {
                               FocusScope.of(context).unfocus();
-                              if (widget.mode == 1)
+                              if (widget.mode == 3)
                                 _calculateRM();
-                              else if (widget.mode == 2) {
+                              else if (widget.mode == 4) {
                                 _calculatePlateBarbell();
                               }
                             } else {
@@ -481,12 +468,15 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                               color: Colors.white,
                             ),
                             isExpanded: true,
-                            selectedItemBuilder: (BuildContext context){
-                              return  genders.map( (String? value) {
-                                 return  Container(
-                                     alignment: Alignment.centerLeft,
-
-                                     child: Text('$value', style:  TextStyle(color:  Colors.white, fontWeight: FontWeight.bold),  textAlign: TextAlign.center,));
+                            selectedItemBuilder: (BuildContext context) {
+                              return genders.map((String? value) {
+                                return Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      '$value',
+                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ));
                               }).toList();
                             },
                             underline: SizedBox(),
@@ -551,25 +541,24 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
         }
       }
       if (currentPlateBarbellKG.isEmpty) {
-        showSnackBar('${cantCalculateBarbell[configProvider.activeLanguage()]}',  context, Colors.red,  Colors.white);
-      //  showToast('Plate Barbell cannot  be  calculated!');
+        showSnackBar('${cantCalculateBarbell[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+        //  showToast('Plate Barbell cannot  be  calculated!');
       }
     } else {
-      showSnackBar("${liftlessthanbar[configProvider.activeLanguage()]}",  context, Colors.red,  Colors.white);
+      showSnackBar("${liftlessthanbar[configProvider.activeLanguage()]}", context, Colors.red, Colors.white);
 
       //showToast('Total Lift cannot be less than Bar weight!');
     }
     setState(() {});
   }
 
-  //mode == 4
+  //mode == 3
   void _calculateWilks() {
     var bodyWeight = double.parse(bodyWeightController.text);
     var liftWeight = double.parse(textController2.text);
     if (currentGender == wilksGender[2][configProvider.activeLanguage()]) {
       setState(() {
         wilksCoeff = (liftWeight * 500 / (fA + fB * pow(bodyWeight, 1) + fC * pow(bodyWeight, 2) + fD * pow(bodyWeight, 3) + fE * pow(bodyWeight, 4) + fF * pow(bodyWeight, 5))).toStringAsPrecision(4);
-
       });
     } else if (currentGender == wilksGender[1][configProvider.activeLanguage()]) {
       setState(() {
@@ -581,7 +570,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
   //utils
   List<Map<double, double>> customList(double mass) {
     switch (widget.mode) {
-      case 1:
+      case 3:
         {
           List<Map<double, double>> masses = [];
           double p = 100;
@@ -593,7 +582,7 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
           return masses;
         }
 
-      case 2:
+      case 4:
         {
           List<Map<double, double>> availableOptions = [];
           for (int i = 0; i < 6; i++) {
@@ -603,16 +592,10 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
           return availableOptions;
         }
 
-      case 3:
+      case 5:
         {
           return [];
         }
-
-      case 4:
-        {
-          return [];
-        }
-
       default:
         return [];
     }

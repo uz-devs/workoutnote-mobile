@@ -117,7 +117,9 @@ class LoginScreen extends StatelessWidget {
                       Container(
                         width: double.infinity,
                         margin: EdgeInsets.only(left: 15, right: 15),
-                        child: CupertinoButton(
+                        child: CupertinoButton
+
+                          (
                             color: Color.fromRGBO(102, 51, 204, 1),
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
                             child: Text('${loginText['한국어']}',  style:  TextStyle(fontSize: 16)),

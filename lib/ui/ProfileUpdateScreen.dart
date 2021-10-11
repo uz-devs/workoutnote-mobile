@@ -26,14 +26,6 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   Widget build(BuildContext context) {
     var configProvider = Provider.of<ConfigProvider>(context, listen: true);
 
-
-
-
-
-
-
-
-
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,

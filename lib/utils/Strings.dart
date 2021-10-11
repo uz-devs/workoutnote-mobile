@@ -1,4 +1,3 @@
-
 //available langs
 const String korean = '한국어';
 const String english = 'English';
@@ -21,7 +20,7 @@ Map<String, String> introBackButton = {english: 'Skip', korean: '건너뛰기'};
 Map<String, String> introStartButton = {english: 'Start', korean: '시작하기'};
 Map<String, String> authErrorMesage = {english: 'Please check your password/email and try again!', korean: '비밀번호/이메일을 확인하고 다시 시도하십시오!'};
 Map<String, String> authEmptyFields = {english: 'Email or/and Password cannot be empty!', korean: '전자 메일 및 암호는 비워 둘 수 없습니다!'};
-Map<String, String> signUpError = {english: 'Unexpected error happened, Please try  again', korean: '예기치 않은 오류가 발생했습니다. 다시 시도하십시오!'};
+Map<String, String> unexpectedError = {english: 'Unexpected error happened, Please try  again', korean: '예기치 않은 오류가 발생했습니다. 다시 시도하십시오!'};
 Map<String, String> verificationError = {english: 'Please check your verification code!', korean: '인증 코드를 다시 확인하십시오!'};
 Map<String, String> sendEmailForReset = {english: 'We have sent temporary password to your email!', korean: '귀하의 이메일에 임시 암호를 보냈습니다!'};
 Map<String, String> emptyEmail = {english: 'Email cannot be empty!', korean: '메일이 비워 둘 수 없습니다!'};
@@ -77,10 +76,20 @@ Map<String, String> agree = {english: 'Agree: Your data will be released and use
 Map<String, String> disagree = {english: 'Disagree: Your data is not used to calculate pojun.', korean: '비동의: 포준을 계산하는대 귀하의 데이터를 사용되지 않습니다.'};
 Map<String, String> emptyWorkouts = {english: 'No workouts to show!', korean: '운동 세션이  없습니다!'};
 Map<String, String> accept = {english: 'accept', korean: '동의'};
-Map<String , String> noteSaveSuccess = {english: 'Note has been saved!',  korean : '노트가 저장되었습니다!'};
-Map<String,  String> chooseLang = {english:  'Choose the language', korean:  '사용할 언어를 선택해주세요'};
-Map<String,  String> selectExercise = {english:  'Please, select exercise first!',  korean: '먼저 운동을 선택하십시오!'};
-Map<String,  String> socketException = {english: 'Please, turn on the internet!', korean: '인터넷 껴주세요!'};
+Map<String, String> noteSaveSuccess = {english: 'Note has been saved!', korean: '노트가 저장되었습니다!'};
+Map<String, String> chooseLang = {english: 'Choose the language', korean: '사용할 언어를 선택해주세요'};
+Map<String, String> selectExercise = {english: 'Please, select exercise first!', korean: '먼저 운동을 선택하십시오!'};
+Map<String, String> socketException = {english: 'Please, turn on the internet!', korean: '인터넷 껴주세요!'};
+Map<String, String> registerPlan = {english: 'Register target', korean: '목표 등록하기'};
+Map<String, String> planName = {english: 'Target name', korean: '목표 이름'};
+Map<String, String> startDate = {english: 'Start date', korean: '시작 일자'};
+Map<String, String> endDate = {english: 'End date', korean: '종료 일자'};
+Map<String, String> register = {english: 'Register', korean: '들록하기'};
+Map<String, String> targetRegisterSuccess = {english: 'Target created successfully!', korean: '목표  성공적으로 생성되었습니다!'};
+Map<String, String> targetDeleteSuccess = {english: 'Target deleted  successfully!', korean: '목표  성공적으로 삭제!'};
+Map<String, String> achieved = {english: 'DONE', korean: '달성'};
+Map<String, String> notAchieved = {english: 'FAIL', korean: '미달성'};
+Map<String, String> targetList = {english: 'Target list', korean:'목표 목록'};
 //One Rep Max
 Map<String, String> oneRepMax1 = {english: 'One Rep Max Calculator', korean: 'One Rep Max 계산기'};
 Map<String, String> oneRepMax2 = {english: '1RM Lift weight percentage', korean: '1RM 리프트 중량 백분율'};
@@ -90,8 +99,8 @@ Map<String, String> oneRepMax5 = {english: 'Your 1RM is', korean: '당신은 1RM
 Map<String, String> oneRepMax6 = {english: '', korean: '입니다'};
 Map<String, String> oneRepMax7 = {english: '1RM weight percentage', korean: '1RM 리프트 중량 백분율'};
 Map<String, String> oneRepMax8 = {english: 'Repetitions', korean: '1RM 반복횟수'};
-Map<String,  String> cantCalculateBarbell  = {english: 'Plate Barbell cannot  be  calculated!', korean: '플레이트 바벨을 계산할 수 없습니다!'};
-Map<String,  String> liftlessthanbar  = {english: 'Total Lift cannot be less than Bar weight!', korean: '총 리프트는 막대 무게보다 작을 수 없습니다!'};
+Map<String, String> cantCalculateBarbell = {english: 'Plate Barbell cannot  be  calculated!', korean: '플레이트 바벨을 계산할 수 없습니다!'};
+Map<String, String> liftlessthanbar = {english: 'Total Lift cannot be less than Bar weight!', korean: '총 리프트는 막대 무게보다 작을 수 없습니다!'};
 
 //Barbell
 Map<String, String> plateBarbell1 = {english: 'Plate Barbell Calculator', korean: '플레이트 바벨 계산기'};
@@ -103,6 +112,10 @@ Map<String, String> plateBarbell6 = {english: 'Number(respectively)', korean: '�
 Map<String, String> plateBarbell7 = {english: 'Plate weight', korean: '프레이트 무게'};
 Map<String, String> plateBarbell8 = {english: 'Quantity(each side)', korean: '수량(각각)'};
 
+//extra
+Map<String, String> gripTest = {english: 'Grip Strength Test', korean: '그립 강도 테스트'};
+Map<String, String> runTest = {english: '12 min Run Test', korean: '12분 뛰기 테스트'};
+
 //Wilks
 Map<String, String> wilks1 = {english: 'Wilks Calculator', korean: 'Wilks 계산기'};
 Map<String, String> wilks2 = {english: 'Calculate Wilks Coefficient according to your gender and maximum weight lifted', korean: '성별 및 최대 체중을 기준으로 Wilks 계수 계산합니다'};
@@ -113,10 +126,3 @@ List<Map<String, String>> wilksGender = [
   {english: 'Male', korean: '남'},
   {english: 'Female', korean: '여'}
 ];
-
-
-
-
-
-
-

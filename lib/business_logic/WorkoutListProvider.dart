@@ -47,7 +47,8 @@ class MainScreenProvider extends ChangeNotifier {
 
 
       if (response.statusCode == 200) {
-        var workoutsResponse = WorkOutsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+        var workoutsResponse
+        = WorkOutsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
 
         if (workoutsResponse.success) {
           workOuts.addAll(workoutsResponse.workouts);

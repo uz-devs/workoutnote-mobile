@@ -13,6 +13,7 @@ import 'business_logic/ConfigProvider.dart';
 import 'business_logic/CreateWorkoutProvider.dart';
 import 'business_logic/EditWorkoutProvider.dart';
 import 'business_logic/ExerciseDialogProvider.dart';
+import 'business_logic/TargetProvider.dart';
 import 'business_logic/WorkoutListProvider.dart';
 
 void main() async {
@@ -35,6 +36,9 @@ void main() async {
     ),
     ChangeNotifierProvider(
       create: (_) => EditWorkoutProvider(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => TargetProvider(),
     ),
   ];
   runApp(MultiProvider(

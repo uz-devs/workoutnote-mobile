@@ -1,14 +1,21 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/TargetProvider.dart';
 import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
 import 'package:workoutnote/data/models/WorkoutListModel.dart';
+import 'package:workoutnote/ui/widgets/TargetRegisterWidget.dart';
+import 'package:workoutnote/ui/widgets/TargetWidget.dart';
 import 'package:workoutnote/ui/widgets/WorkoutnoteCard.dart';
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
+
+import 'TargetRegisterScreen.dart';
 
 class CalendarScreen extends StatefulWidget {
   final height;
@@ -20,11 +27,9 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  List<String>? years_en = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  List<String>? years_kr = ['1 월', '2 월', '3 월', '4 월', '5 월', '6 월', '7 월', '8 월', '9 월', '10 월', '11 월', '12 월'];
-
   var calendarProvider = MainScreenProvider();
   var configProvider = ConfigProvider();
+  var targetProvider = TargetProvider();
   var decoration1 = BoxDecoration();
   var decoration2 = BoxDecoration(
     color: Color.fromRGBO(102, 51, 204, 1),
@@ -48,8 +53,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
     super.didChangeDependencies();
     calendarProvider = Provider.of<MainScreenProvider>(context, listen: true);
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
+    targetProvider = Provider.of<TargetProvider>(context, listen: true);
     if (!calendarProvider.calendarWorkoutsFetched) {
       calendarProvider.fetchCalendarWorkoutSessions().then((value) {});
+    }
+
+    if (!targetProvider.hasRequestDone && targetProvider.responseCode != SUCCESS) {
+      targetProvider.fetchAllTargets().then((value) {});
     }
   }
 
@@ -74,9 +84,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
       child: ListView.builder(
           shrinkWrap: true,
           physics: ScrollPhysics(),
-          itemCount: showWorkOuts.isNotEmpty ? showWorkOuts.length + 3 : 3,
+          itemCount: showWorkOuts.isNotEmpty ? showWorkOuts.length + 4 : 4,
           itemBuilder: (ctx, index) {
-            if (index == 0)
+            if (index == 0) return Container(margin: EdgeInsets.all(10.0), child: targetProvider.getLatestTarget() != null ? TargetWidget(target: targetProvider.getLatestTarget()!) : TargetRegisterWidget());
+            if (index == 1)
               return Container(
                 color: Colors.white,
                 padding: EdgeInsets.all(10.0),
@@ -98,20 +109,29 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       icon: Container(margin: EdgeInsets.only(left: 15.0), child: SvgPicture.asset('assets/icons/expand.svg')),
                       underline: SizedBox(),
                       value: configProvider.activeLanguage() == english ? years_en![calendarProvider.currentMonthIndex] : years_kr![calendarProvider.currentMonthIndex],
-                      hint: configProvider.activeLanguage() == english ? Text('${years_en![calendarProvider.selectedDate!.month-1]}') : Text('${years_kr![calendarProvider.selectedDate!.month-1]}'),
+                      hint: configProvider.activeLanguage() == english ? Text('${years_en![calendarProvider.selectedDate!.month - 1]}') : Text('${years_kr![calendarProvider.selectedDate!.month - 1]}'),
                       onChanged: (item) async {
                         calendarProvider.onCalendarDropDownButtonValueChanged(item.toString(), years_en, years_kr, configProvider);
 
                         //TODO this  is not working
                         await calendarProvider.fetchSingleNote(calendarProvider.selectedDate!.millisecondsSinceEpoch);
-
                       },
                       items: configProvider.activeLanguage() == english
                           ? years_en!.map((String year) {
-                              return DropdownMenuItem<String>(value: year, child: Text('$year'));
+                              return DropdownMenuItem<String>(
+                                  value: year,
+                                  child: Text(
+                                    '$year',
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ));
                             }).toList()
                           : years_kr!.map((String year) {
-                              return DropdownMenuItem<String>(value: year, child: Text('$year'));
+                              return DropdownMenuItem<String>(
+                                  value: year,
+                                  child: Text(
+                                    '$year',
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ));
                             }).toList(),
                     ),
                   ),
@@ -145,37 +165,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               Container(
                                   width: 25,
                                   height: 25,
-
-                                  decoration: isDaySelected?
-                                  decoration2
-                                      :isDayToday
+                                  decoration: isDaySelected
+                                      ? decoration2
+                                      : isDayToday
                                           ? decoration3
                                           : decoration1,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                   child: Text(
                                     '${day.day}',
                                     style: TextStyle(fontWeight: FontWeight.bold, color: isDayToday || isDaySelected ? Colors.white : Colors.black),
@@ -206,7 +200,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       : decoration1,
                               child: Text(
                                 '${day.day}',
-                                style: TextStyle(color: isDayToday || isDaySelected ? Colors.white :   Colors.black),
+                                style: TextStyle(color: isDayToday || isDaySelected ? Colors.white : Colors.black),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -227,7 +221,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   },
                 ),
               );
-            else if (index == 1) {
+            else if (index == 2) {
               return Container(
                   color: Colors.white,
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -258,7 +252,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     if (value) {
                                       showSnackBar('${noteSaveSuccess[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
 
-                                    //showToast('${noteSaveSuccess[configProvider.activeLanguage()]}');
+                                      //showToast('${noteSaveSuccess[configProvider.activeLanguage()]}');
                                       FocusScope.of(context).unfocus();
                                     }
                                   });
@@ -296,7 +290,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               hintStyle: TextStyle(fontSize: 16)),
                         )),
                   ]));
-            } else if (index == 2) {
+            } else if (index == 3) {
               return Container(
                   margin: EdgeInsets.only(left: 20.0, top: 10.0),
                   child: Text(
@@ -306,11 +300,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     ).format(calendarProvider.selectedDate ?? DateTime.now())}, ${DateFormat(
                       'EEEE',
                       configProvider.activeLanguage() == english ? 'en_EN' : 'ko_KR',
-                    ).format(calendarProvider.selectedDate ?? DateTime.now()).substring(0,configProvider.activeLanguage() == english? 3:1).toUpperCase()}',
+                    ).format(calendarProvider.selectedDate ?? DateTime.now()).substring(0, configProvider.activeLanguage() == english ? 3 : 1).toUpperCase()}',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
                   ));
             } else {
-              index = index - 3;
+              index = index - 4;
               return WorkOutNote(widget.height, showWorkOuts[index], 2);
             }
           }),

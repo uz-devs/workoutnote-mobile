@@ -38,6 +38,10 @@ const String insert_lift = '/api/insert_lift';
 const String deleteLift = '/api/remove_lift';
 const String setNote = '/api/set_note';
 const String fetchNote = '/api/fetch_note';
+const String targetReg = '/api/insert_target';
+const  String  targetFetch = '/api/fetch_targets';
+const  String targetDel = '/api/remove_target';
+const  String targetToggle = '/api/toggle_target';
 const String privacyPolicyUrl = 'https://workoutnote.com/policy/';
 //endregion
 
@@ -66,7 +70,7 @@ Future<void> initPreferences() async {
 String toDate(int timestamp) {
   var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
   var formattedDate = DateFormat('yyyy.M.d').format(date);
-  print(formattedDate);
+
   return formattedDate;
 }
 
@@ -165,4 +169,6 @@ bool? isInternetConnected()  {
    return null;
 
 }
+List<String>? years_en = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+List<String>? years_kr = ['1 월', '2 월', '3 월', '4 월', '5 월', '6 월', '7 월', '8 월', '9 월', '10 월', '11 월', '12 월'];
 //endregion
