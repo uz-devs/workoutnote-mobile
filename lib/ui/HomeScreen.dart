@@ -41,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
     createWorkoutProvider = Provider.of<CreateWorkoutProvider>(context, listen: true);
 
-    print("fuck");
     //showLoaderDialog(context);
     if (!mainProvider.todayWorkoutsFetched) {
 
