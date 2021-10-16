@@ -13,7 +13,7 @@ import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
 
 import 'ConfigProvider.dart';
-import 'ExerciseDialogProvider.dart';
+import 'ExercisesListProvider.dart';
 
 class CreateWorkoutProvider extends ChangeNotifier {
   //region vars

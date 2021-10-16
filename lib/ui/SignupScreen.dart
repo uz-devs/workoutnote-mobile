@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/UserProvider.dart';
 
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
@@ -22,7 +23,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var configProvider = Provider.of<ConfigProvider>(context, listen: true);
+    var configProvider = Provider.of<ConfigProvider>(context);
+    var  userProvider = Provider.of<UserProvider>(context);
+
     var height = MediaQuery.of(context).size.height;
 
     return Scaffold(body: SafeArea(
@@ -159,16 +162,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                             if (_emailController.text.isNotEmpty && _nameController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
 
-                              user.sendVerificationCode( user.trimField(_emailController.text), user.trimField(_nameController.text), user.trimField(_passwordController.text)).then((value) async {
+                              userProvider.sendVerificationCode( user.trimField(_emailController.text), user.trimField(_nameController.text), user.trimField(_passwordController.text)).then((value) async {
                                 Navigator.pop(context);
                                 if (value) {
                                   await userPreferences!.setBool('signUpDone', true);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen()));
                                 }
                                 else {
-                                   if(user.responseCode == MISC_EXCEPTION)
+                                   if(userProvider.responseCode == MISC_EXCEPTION)
                                   showSnackBar('${unexpectedError[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-                                   else if (user.responseCode == SOCKET_EXCEPTION)
+                                   else if (userProvider.responseCode == SOCKET_EXCEPTION)
                                      showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                                 }
                               });

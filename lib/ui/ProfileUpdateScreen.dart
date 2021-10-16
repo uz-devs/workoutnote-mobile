@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/UserProvider.dart';
 
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
@@ -24,7 +25,9 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var configProvider = Provider.of<ConfigProvider>(context, listen: true);
+    var configProvider = Provider.of<ConfigProvider>(context);
+    var userProvider = Provider.of<UserProvider>(context);
+
 
     return Scaffold(
         appBar: AppBar(
@@ -66,7 +69,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                               ),
                               child: TextFormField(
                                 cursorColor: Color.fromRGBO(102, 51, 204, 1),
-                                controller: nameController..text = configProvider.myname,
+                                controller: nameController..text = userProvider.userName??'',
                                 decoration: InputDecoration(
 
                                     focusedBorder: InputBorder.none,
@@ -98,14 +101,14 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                     fillColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(102, 51, 204, 1)),
                                     activeColor: Color.fromRGBO(102, 51, 204, 1),
                                     value: 1,
-                                    groupValue: configProvider.val,
+                                    groupValue: userProvider.genderGroupValue,
                                     onChanged: (int? value) {
 
                                       setState(() {
                                         if (value == 1) {
-                                          configProvider.g = 'MALE';
+                                          userProvider.userGender = 'MALE';
                                         }
-                                        configProvider.val = value!;
+                                        userProvider.genderGroupValue = value!;
                                       });
                                     },
                                   ),
@@ -114,13 +117,13 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                     fillColor: MaterialStateColor.resolveWith((states) => Color.fromRGBO(102, 51, 204, 1)),
                                     activeColor: Color.fromRGBO(102, 51, 204, 1),
                                     value: 0,
-                                    groupValue: configProvider.val,
+                                    groupValue: userProvider.genderGroupValue,
                                     onChanged: (int? value) {
                                       setState(() {
                                         if (value == 0) {
-                                          configProvider. g = 'FEMALE';
+                                          userProvider.userGender = 'FEMALE';
                                         }
-                                        configProvider.val = value!;
+                                        userProvider.genderGroupValue = value!;
                                       });
                                     },
                                   ),
@@ -161,11 +164,11 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                           color: Color.fromRGBO(102, 51, 204, 1),
                                         ),
                                         underline: SizedBox(),
-                                        value: configProvider.selectedYear,
+                                        value: userProvider.selectedBirthYear,
                                         hint: Text('${year[configProvider.activeLanguage()]}'),
                                         onChanged: (item) {
                                           setState(() {
-                                            configProvider.selectedYear = item.toString();
+                                            userProvider.selectedBirthYear = item.toString();
                                           });
                                         },
                                         items: years!.map((String year) {
@@ -189,12 +192,12 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                           Icons.arrow_drop_down,
                                           color: Color.fromRGBO(102, 51, 204, 1),
                                         ),
-                                        value: configProvider.selectedMonth,
+                                        value: userProvider.selectedBirthMonth,
                                         underline: SizedBox(),
                                         hint: Text('${month[configProvider.activeLanguage()]}'),
                                         onChanged: (item) {
                                           setState(() {
-                                            configProvider.selectedMonth = item.toString();
+                                            userProvider.selectedBirthMonth = item.toString();
                                           });
                                         },
                                         items: months!.map((String month) {
@@ -219,11 +222,11 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                           color: Color.fromRGBO(102, 51, 204, 1),
                                         ),
                                         underline: SizedBox(),
-                                        value: configProvider.selectedDay,
+                                        value: userProvider.selectedBirthDay,
                                         hint: Text('${day[configProvider.activeLanguage()]}'),
                                         onChanged: (item) {
                                           setState(() {
-                                            configProvider.selectedDay = item.toString();
+                                            userProvider.selectedBirthDay = item.toString();
                                           });
                                         },
                                         items: days!.map((String day) {
@@ -253,7 +256,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                             child: TextFormField(
                               cursorColor: Color.fromRGBO(102, 51, 204, 1),
 
-                              controller: emailController..text = userPreferences!.getString('email') ?? '',
+                              controller: emailController..text = userProvider.userEmail??'',
                               decoration: InputDecoration(
                                   focusedBorder: InputBorder.none,
                                   enabledBorder: InputBorder.none,
@@ -317,9 +320,9 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                 inactiveText: '',
                                 activeTextColor: Colors.white,
                                 activeColor: Color.fromRGBO(102, 51, 204, 1),
-                                value: configProvider.isShared,
+                                value: userProvider.isUserProfileShared,
                                 onToggle: (val) {
-                                  configProvider.isShared = val;
+                                  userProvider.isUserProfileShared = val;
                                   setState(() {});
                                 })
                           ],
@@ -345,7 +348,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                             child: Text('${update[configProvider.activeLanguage()]}'),
                             onPressed: () {
                               showLoadingDialog(context);
-                              provider.updateProfileSettings(emailController.text, userPreferences!.getString('sessionKey') ?? '', nameController.text, configProvider.g, '${configProvider.selectedYear}-${configProvider.selectedMonth}-${configProvider.selectedDay}', configProvider.isShared).then((value) {
+                              userProvider.updateProfileSettings(emailController.text, userPreferences!.getString('sessionKey') ?? '', nameController.text, userProvider.userGender, '${userProvider.selectedBirthYear}-${userProvider.selectedBirthMonth}-${userProvider.selectedBirthDay}', userProvider.isUserProfileShared).then((value) {
                                 showSnackBar('${updateToastMessage[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
                                 Navigator.pop(context);
                               });

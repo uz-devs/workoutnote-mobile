@@ -6,9 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
-import 'package:workoutnote/business_logic/CreateWorkoutProvider.dart';
-import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
-import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+import 'package:workoutnote/business_logic/CreateWorkoutSessionProvider.dart';
+import 'package:workoutnote/business_logic/ExercisesListProvider.dart';
+import 'package:workoutnote/business_logic/HomeProvider.dart';
 import 'package:workoutnote/data/models/EditableLiftModel.dart';
 import 'package:workoutnote/data/models/ExerciseModel.dart';
 import 'package:workoutnote/data/models/WorkoutListModel.dart';
@@ -388,6 +388,9 @@ class CreateWorkOutCard extends StatelessWidget {
           flex: 3,
           child: mode == 2
               ? DropdownButton<int>(
+
+
+                  alignment: Alignment.center,
                   isExpanded: true,
                   underline: SizedBox(),
                   iconSize: 0.0,

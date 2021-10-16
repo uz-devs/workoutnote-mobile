@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
-
+import 'package:workoutnote/business_logic/UserProvider.dart';
+import 'package:workoutnote/business_logic/HomeProvider.dart';
 
 import 'CalculateScreen.dart';
 import 'CalendarScreen.dart';
@@ -13,8 +13,6 @@ import 'SettingsScreen.dart';
 class NavController extends StatefulWidget {
   GlobalKey globalKey = new GlobalKey(debugLabel: 'btm_app_bar');
 
-
-
   @override
   _NavControllerState createState() => _NavControllerState();
 }
@@ -22,12 +20,22 @@ class NavController extends StatefulWidget {
 class _NavControllerState extends State<NavController> {
   int _selectedIndex = 0;
   var listProvider = MainScreenProvider();
+  var userProvider = UserProvider();
   RefreshController _refreshController = RefreshController(initialRefresh: false);
 
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      userProvider = Provider.of<UserProvider>(context, listen: false);
+      userProvider.setUserInfo();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    listProvider = Provider.of<MainScreenProvider>(context, listen: false );
+    listProvider = Provider.of<MainScreenProvider>(context, listen: false);
 
     Color backGroundColor;
     double height = MediaQuery.of(context).size.height;
@@ -58,7 +66,7 @@ class _NavControllerState extends State<NavController> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        key:widget.globalKey,
+        key: widget.globalKey,
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -75,8 +83,6 @@ class _NavControllerState extends State<NavController> {
       ),
     );
   }
-
-
 
   Widget _buildHomeScreen(double height, double width) {
     return HomeScreen(height, width);
@@ -199,14 +205,10 @@ class _NavControllerState extends State<NavController> {
     );
   }
 
-  void  _onRefresh() async{
-
-
-
+  void _onRefresh() async {
     listProvider.reset();
     await Future.delayed(Duration(milliseconds: 200));
     _refreshController.refreshCompleted();
-
   }
 
   void _onItemSelected(int index) {

@@ -7,15 +7,13 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/business_logic/TargetProvider.dart';
-import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+import 'package:workoutnote/business_logic/HomeProvider.dart';
 import 'package:workoutnote/data/models/WorkoutListModel.dart';
 import 'package:workoutnote/ui/widgets/TargetRegisterWidget.dart';
 import 'package:workoutnote/ui/widgets/TargetWidget.dart';
 import 'package:workoutnote/ui/widgets/WorkoutnoteCard.dart';
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
-
-import 'TargetRegisterScreen.dart';
 
 class CalendarScreen extends StatefulWidget {
   final height;
@@ -51,10 +49,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    calendarProvider = Provider.of<MainScreenProvider>(context, listen: true);
-    configProvider = Provider.of<ConfigProvider>(context, listen: true);
-    targetProvider = Provider.of<TargetProvider>(context, listen: true);
-    if (!calendarProvider.calendarWorkoutsFetched) {
+    calendarProvider = Provider.of<MainScreenProvider>(context);
+    configProvider = Provider.of<ConfigProvider>(context);
+    targetProvider = Provider.of<TargetProvider>(context);
+
+    if (!calendarProvider.isCalendarWorkoutsRequestDone && calendarProvider.calendarResponseCode != SUCCESS) {
       calendarProvider.fetchCalendarWorkoutSessions().then((value) {});
     }
 
@@ -191,13 +190,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             Container(
                               width: 25,
                               height: 25,
-                              decoration: isDaySelected
-                                  ? isDayToday
-                                      ? decoration3
-                                      : decoration2
-                                  : isDayToday
-                                      ? decoration3
-                                      : decoration1,
+                              decoration: isDaySelected ? (decoration2) : (isDayToday ? decoration3 : decoration1),
                               child: Text(
                                 '${day.day}',
                                 style: TextStyle(color: isDayToday || isDaySelected ? Colors.white : Colors.black),
@@ -211,7 +204,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   ),
                   onDaySelected: (selectedDay, focusDay) async {
                     await calendarProvider.fetchSingleNote(selectedDay.millisecondsSinceEpoch);
-
                     setState(() {
                       calendarProvider.selectedDate = selectedDay;
                     });

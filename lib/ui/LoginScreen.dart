@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/UserProvider.dart';
 
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
@@ -18,6 +19,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var configProvider = Provider.of<ConfigProvider>(context);
+    var userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
       body: SafeArea(
@@ -127,14 +129,14 @@ class LoginScreen extends StatelessWidget {
                               if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
 
                                 showLoadingDialog(context);
-                                user.login(user.trimField(_emailController.text), user.trimField(_passwordController.text)).then((value) {
+                                userProvider.login(user.trimField(_emailController.text), user.trimField(_passwordController.text)).then((value) {
                                   Navigator.pop(context);
                                   if (value) {
                                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
                                   } else {
-                                    if(user.responseCode == MISC_EXCEPTION)
+                                    if(userProvider.responseCode == MISC_EXCEPTION)
                                     showSnackBar('${authErrorMesage[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-                                    else if (user.responseCode == SOCKET_EXCEPTION)
+                                    else if (userProvider.responseCode == SOCKET_EXCEPTION)
                                       showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
 
 
@@ -152,15 +154,15 @@ class LoginScreen extends StatelessWidget {
                               TextButton(
                                 onPressed: () {
                                   if (_emailController.text.isNotEmpty)
-                                    user.passwordReset(_emailController.text).then((value) {
+                                    userProvider.passwordReset(_emailController.text).then((value) {
                                       print('value $value');
                                       if (value) {
                                         showSnackBar('${sendEmailForReset[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
                                       }
                                       else {
-                                        if(user.responseCode == MISC_EXCEPTION)
+                                        if(userProvider.responseCode == MISC_EXCEPTION)
                                           showSnackBar('${authErrorMesage[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-                                        else if (user.responseCode == SOCKET_EXCEPTION)
+                                        else if (userProvider.responseCode == SOCKET_EXCEPTION)
                                           showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
 
                                       }

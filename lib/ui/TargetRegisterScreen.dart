@@ -17,7 +17,7 @@ class TargetRegistrationScreen extends StatefulWidget {
 class _TargetRegistrationScreenState extends State<TargetRegistrationScreen> {
   var configProvider = ConfigProvider();
   var targetProvider = TargetProvider();
-  List<String>? years = List.generate(100, (index) => '${index + 2020}');
+  List<String>? years = List.generate(100, (index) => '${index + DateTime.now().year}');
   List<String>? months = List.generate(12, (index) => index < 9 ? '0${index + 1}' : '${index + 1}');
   List<String>? days = List.generate(31, (index) => index < 9 ? '0${index + 1}' : '${index + 1}');
 
@@ -60,12 +60,12 @@ class _TargetRegistrationScreenState extends State<TargetRegistrationScreen> {
                   Expanded(
                       child: Center(
                           child: Container(
-                            margin: EdgeInsets.only(right: 10.0),
-                            child: Text(
-                    '${registerPlan[configProvider.activeLanguage()]}',
-                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                  ),
-                          )))
+                    margin: EdgeInsets.only(right: 10.0),
+                    child: Text(
+                      '${registerPlan[configProvider.activeLanguage()]}',
+                      style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                    ),
+                  )))
                 ],
               ),
               Container(

@@ -1,33 +1,30 @@
 
-class User{
+class AppUser{
   String? sessionKey;
   bool  authSuccess = false ;
 
-  User.create(this.sessionKey, this.authSuccess);
+  AppUser.create(this.sessionKey, this.authSuccess);
 
-
-
-
-  factory User.fromJson(Map<String, dynamic> parsedJson) {
+  factory AppUser.fromJson(Map<String, dynamic> parsedJson) {
     print(parsedJson['sessionKey']);
-    return User.create(parsedJson['sessionKey'],parsedJson['success']);
+    return AppUser.create(parsedJson['sessionKey'],parsedJson['success']);
   }
 
 }
 
-class  Settings{
+class  UserProfile{
   bool success = false;
   String? name;
   String?  dateOfBirth;
   String? gender;
   bool  iProfileShared  = false;
 
-  Settings.fetch(this.success, this.name, this.dateOfBirth, this.gender, this.iProfileShared);
+  UserProfile.fetch(this.success, this.name, this.dateOfBirth, this.gender, this.iProfileShared);
 
 
 
-  factory Settings.fromJson(Map<String, dynamic> parsedJson) {
-    return Settings.fetch(parsedJson['success'], parsedJson['name'], parsedJson['date_of_birth'],  parsedJson['gender'],  parsedJson['is_profile_shared']);
+  factory UserProfile.fromJson(Map<String, dynamic> parsedJson) {
+    return UserProfile.fetch(parsedJson['success'], parsedJson['name'], parsedJson['date_of_birth'],  parsedJson['gender'],  parsedJson['is_profile_shared']);
   }
 
 

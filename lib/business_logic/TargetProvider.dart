@@ -19,21 +19,25 @@ class TargetProvider extends ChangeNotifier {
     var startTimestamp = DateTime.parse(startDate).millisecondsSinceEpoch;
     var endTimestamp = DateTime.parse(endDate).millisecondsSinceEpoch;
 
-    try {
-      var response = await WebServices.registerTarget(sessionKey!, targetName, startTimestamp, endTimestamp);
-      if (response.statusCode == 200) {
-        await fetchAllTargets();
-        if (responseCode == SUCCESS) return SUCCESS;
+    if(isTargetPeriodValid(startTimestamp, endTimestamp)){
+      try {
+        var response = await WebServices.registerTarget(sessionKey!, targetName, startTimestamp, endTimestamp);
+        if (response.statusCode == 200) {
+          await fetchAllTargets();
+          if (responseCode == SUCCESS) return SUCCESS;
+        }
+      } on SocketException catch (e) {
+        print(e);
+        return SOCKET_EXCEPTION;
+      } on Error catch (e) {
+        print(e);
+        return MISC_EXCEPTION;
       }
-    } on SocketException catch (e) {
-      print(e);
-      return SOCKET_EXCEPTION;
-    } on Error catch (e) {
-      print(e);
-      return MISC_EXCEPTION;
-    }
 
-    return LOADING;
+      return LOADING;
+    }
+    else  return MISC_EXCEPTION;
+
   }
 
   Future<int> toggleTarget(int targetId) async {
@@ -104,6 +108,9 @@ class TargetProvider extends ChangeNotifier {
     }
   }
 
+
+
+
   //utils
   int getNthDate(int startTimeStamp) {
     var todayTimeStamp = DateTime.now().millisecondsSinceEpoch;
@@ -160,5 +167,9 @@ class TargetProvider extends ChangeNotifier {
   bool isTargetPassed(Target target) {
     if (target.endTimestamp! < DateTime.now().millisecondsSinceEpoch) return true;
     return false;
+  }
+
+  bool  isTargetPeriodValid(int  startTimestamp, int  endTimestamp){
+     return  (startTimestamp < endTimestamp );
   }
 }

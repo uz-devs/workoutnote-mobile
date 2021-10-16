@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
-import 'package:workoutnote/business_logic/CreateWorkoutProvider.dart';
-import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
-import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+import 'package:workoutnote/business_logic/CreateWorkoutSessionProvider.dart';
+import 'package:workoutnote/business_logic/ExercisesListProvider.dart';
+import 'package:workoutnote/business_logic/HomeProvider.dart';
 import 'package:workoutnote/ui/widgets/WorkoutCreateCard.dart';
 import 'package:workoutnote/ui/widgets/WorkoutnoteCard.dart';
 import 'package:workoutnote/utils/Strings.dart';
@@ -41,8 +41,10 @@ class _HomeScreenState extends State<HomeScreen> {
     configProvider = Provider.of<ConfigProvider>(context, listen: true);
     createWorkoutProvider = Provider.of<CreateWorkoutProvider>(context, listen: true);
 
+    print("fuck");
     //showLoaderDialog(context);
     if (!mainProvider.todayWorkoutsFetched) {
+
       mainProvider.fetchTodayWorkouts().then((value) {});
       if(exerciseDialogProvider.allExercises.isEmpty) {
         exerciseDialogProvider.fetchExercises().then((value) {

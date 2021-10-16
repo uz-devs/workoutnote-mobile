@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
-import 'package:workoutnote/business_logic/CreateWorkoutProvider.dart';
-import 'package:workoutnote/business_logic/EditWorkoutProvider.dart';
-import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
-import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+import 'package:workoutnote/business_logic/CreateWorkoutSessionProvider.dart';
+import 'package:workoutnote/business_logic/EditWorkouSessiontProvider.dart';
+import 'package:workoutnote/business_logic/ExercisesListProvider.dart';
+import 'package:workoutnote/business_logic/HomeProvider.dart';
 import 'package:workoutnote/data/models/WorkoutListModel.dart';
 
 import 'package:workoutnote/utils/Strings.dart';
@@ -27,21 +27,21 @@ class WorkOutNote extends StatefulWidget {
 }
 
 class _WorkOutNoteState extends State<WorkOutNote> {
-  ConfigProvider configProvider = ConfigProvider();
-  MainScreenProvider mainScreenProvider = MainScreenProvider();
-  CreateWorkoutProvider createWorkoutProvider = CreateWorkoutProvider();
-  ExercisesDialogProvider exercisesProvider = ExercisesDialogProvider();
+  var configProvider = ConfigProvider();
+  var mainScreenProvider = MainScreenProvider();
+  var createWorkoutProvider = CreateWorkoutProvider();
+  var exercisesProvider = ExercisesDialogProvider();
 
+  //var favoriteWorkoutProvider = FavoriteWorkoutSessionsProvider();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    configProvider = Provider.of<ConfigProvider>(context, listen: true);
-    mainScreenProvider = Provider.of<MainScreenProvider>(context, listen: true);
-    createWorkoutProvider =
-        Provider.of<CreateWorkoutProvider>(context, listen: false);
-    exercisesProvider =
-        Provider.of<ExercisesDialogProvider>(context, listen: false);
+    configProvider = Provider.of<ConfigProvider>(context);
+    mainScreenProvider = Provider.of<MainScreenProvider>(context);
+    createWorkoutProvider = Provider.of<CreateWorkoutProvider>(context, listen: false);
+    exercisesProvider = Provider.of<ExercisesDialogProvider>(context, listen: false);
+    // favoriteWorkoutProvider = Provider.of<FavoriteWorkoutSessionsProvider>(context);
   }
 
   @override
@@ -52,11 +52,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
       child: Card(
           elevation: 10,
           shape: RoundedRectangleBorder(
-            side: BorderSide(
-                width: 1.5,
-                color: widget.mode == 3
-                    ? Color.fromRGBO(102, 51, 204, 1)
-                    : Colors.transparent),
+            side: BorderSide(width: 1.5, color: widget.mode == 3 ? Color.fromRGBO(102, 51, 204, 1) : Colors.transparent),
             borderRadius: BorderRadius.circular(15.0),
           ),
           child: _buildListViewWidget(count)),
@@ -78,12 +74,8 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                     Container(
                         margin: EdgeInsets.only(left: 20, top: 10.0),
                         child: Text(
-                          widget.workout.title.length > 15
-                              ? '${widget.workout.title.substring(0, 14)}...'
-                              : '${widget.workout.title}',
-                          style: TextStyle(
-                              fontSize: 16.0,
-                              color: Color.fromRGBO(102, 51, 204, 1)),
+                          widget.workout.title.length > 15 ? '${widget.workout.title.substring(0, 14)}...' : '${widget.workout.title}',
+                          style: TextStyle(fontSize: 16.0, color: Color.fromRGBO(102, 51, 204, 1)),
                         )),
                     Container(
                         margin: EdgeInsets.only(top: 10, left: 9.0),
@@ -91,30 +83,14 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                             padding: EdgeInsets.zero,
                             constraints: BoxConstraints(),
                             onPressed: () {
-
-                                if (!widget.workout.isFavorite)
-                                  mainScreenProvider
-                                      .setFavoriteWorkOut(
-                                          userPreferences!
-                                                  .getString('sessionKey') ??
-                                              '',
-                                          widget.workout.id ?? -1,
-                                          widget.mode)
-                                      .then((value) {
-                                    setState(() {});
-                                  });
-                                else
-                                  mainScreenProvider
-                                      .unsetFavoriteWorkOut(
-                                          userPreferences!
-                                                  .getString('sessionKey') ??
-                                              '',
-                                          widget.workout.id ?? -1,
-                                          widget.mode)
-                                      .then((value) {
-                                    setState(() {});
-                                  });
-
+                              if (!widget.workout.isFavorite)
+                                mainScreenProvider.setFavoriteWorkOut(userPreferences!.getString('sessionKey') ?? '', widget.workout.id ?? -1, widget.mode).then((value) {
+                                  setState(() {});
+                                });
+                              else
+                                mainScreenProvider.unsetFavoriteWorkOut(userPreferences!.getString('sessionKey') ?? '', widget.workout.id ?? -1, widget.mode).then((value) {
+                                  setState(() {});
+                                });
                             },
                             icon: widget.workout.isFavorite
                                 ? SvgPicture.asset(
@@ -134,8 +110,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                         padding: EdgeInsets.zero,
                         constraints: BoxConstraints(),
                         onPressed: () async {
-                          await _showOptionDialog(
-                              configProvider, mainScreenProvider);
+                          await _showOptionDialog(configProvider, mainScreenProvider);
                         },
                         icon: SvgPicture.asset(
                           'assets/icons/menu.svg',
@@ -147,8 +122,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                   ],
                 ),
                 Container(
-                  margin:
-                      EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
+                  margin: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0),
                   child: Divider(
                     color: Colors.black54,
                   ),
@@ -161,33 +135,21 @@ class _WorkOutNoteState extends State<WorkOutNote> {
               margin: EdgeInsets.only(top: 15.0, bottom: 15.0),
               child: Text(
                 '${calculateDuration(widget.workout.duration ?? 0).item1} : ${calculateDuration(widget.workout.duration ?? 0).item2} : ${calculateDuration(widget.workout.duration ?? 0).item3}',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Color.fromRGBO(102, 51, 204, 1)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Color.fromRGBO(102, 51, 204, 1)),
               ),
             );
-          }
-          else if (index == count - 1) {
+          } else if (index == count - 1) {
             return Container(
               width: double.infinity,
               margin: EdgeInsets.only(bottom: 20, left: 20, right: 20),
               child: MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                 color: Color.fromRGBO(102, 51, 204, 1),
                 textColor: Colors.white,
                 child: Text('${repeat[configProvider.activeLanguage()]}'),
                 onPressed: () {
-                  mainScreenProvider
-                      .repeatWorkoutSession(
-                          widget.workout.id ?? -1,
-                          createWorkoutProvider,
-                          exercisesProvider.allExercises,
-                          widget.mode)
-                      .then((value) {
+                  mainScreenProvider.repeatWorkoutSession(widget.workout.id ?? -1, createWorkoutProvider, exercisesProvider.allExercises, widget.mode).then((value) {
                     if (widget.mode == 3) {
-
                       Navigator.pop(context);
                     } else if (widget.mode == 2) {
                       Navigator.pushAndRemoveUntil(
@@ -195,34 +157,26 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                         MaterialPageRoute(
                           builder: (BuildContext context) => NavController(),
                         ),
-                            (route) => false,
+                        (route) => false,
                       );
                     }
                   });
                 },
               ),
             );
-          }
-          else {
+          } else {
             index = index - 1;
 
-            String mass =
-                '${configProvider.getConvertedMass(widget.workout.lifts![index].liftMas ?? 0)}';
-            String rm =
-                '${configProvider.getConvertedRM(widget.workout.lifts![index].oneRepMax ?? 0)}';
+            String mass = '${configProvider.getConvertedMass(widget.workout.lifts![index].liftMas ?? 0)}';
+            String rm = '${configProvider.getConvertedRM(widget.workout.lifts![index].oneRepMax ?? 0)}';
             String identifier = configProvider.measureMode == KG ? 'KG' : 'LBS';
-            return Container(
-                margin: EdgeInsets.only(left: 20.0, right: 10.0),
-                padding: EdgeInsets.only(bottom: 10.0),
-                child: Text(
-                    '${index + 1}. ${createWorkoutProvider.getExerciseName(exercisesProvider, configProvider, widget.workout.lifts![index].exerciseId)}, ${mass} ${identifier}, ${widget.workout.lifts![index].repetitions} REP, ${rm} RM'));
+            return Container(margin: EdgeInsets.only(left: 20.0, right: 10.0), padding: EdgeInsets.only(bottom: 10.0), child: Text('${index + 1}. ${createWorkoutProvider.getExerciseName(exercisesProvider, configProvider, widget.workout.lifts![index].exerciseId)}, ${mass} ${identifier}, ${widget.workout.lifts![index].repetitions} REP, ${rm} RM'));
           }
         });
   }
 
   //region  dialogs
-  Future<void> _showOptionDialog(
-      ConfigProvider configProvider, MainScreenProvider mainScreenProvider) {
+  Future<void> _showOptionDialog(ConfigProvider configProvider, MainScreenProvider mainScreenProvider) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -240,8 +194,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                         await _showEditWorkoutDialog(context, widget.workout);
                         Navigator.pop(context);
                       },
-                      child: Text('${edit[configProvider.activeLanguage()]}',
-                          style: TextStyle(fontSize: 16.0)),
+                      child: Text('${edit[configProvider.activeLanguage()]}', style: TextStyle(fontSize: 16.0)),
                     )),
                 Divider(),
                 Container(
@@ -264,8 +217,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
         });
   }
 
-  Future<void> _showEditWorkoutDialog(
-      BuildContext context, WorkOut workOut) async {
+  Future<void> _showEditWorkoutDialog(BuildContext context, WorkOut workOut) async {
     await showDialog(
         barrierDismissible: false,
         context: context,
@@ -314,8 +266,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                               },
                               child: Text(
                                 '${deleteCancel[configProvider.activeLanguage()]}',
-                                style: TextStyle(
-                                    color: Colors.blueAccent, fontSize: 18),
+                                style: TextStyle(color: Colors.blueAccent, fontSize: 18),
                               ),
                             ),
                           ),
@@ -324,24 +275,16 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                             flex: 5,
                             child: MaterialButton(
                               onPressed: () {
-                                mainScreenProvider
-                                    .deleteWorkoutSession(
-                                        userPreferences!.getString('sessionKey') ?? '',
-                                        widget.workout.id ?? -1)
-                                    .then((value) {
-
-                                    print("delete val :  ${value}");
+                                mainScreenProvider.deleteWorkoutSession(userPreferences!.getString('sessionKey') ?? '', widget.workout.id ?? -1).then((value) {
+                                  print("delete val :  ${value}");
                                   if (value) {
-                                    showSnackBar('${deleteSuccess[configProvider.activeLanguage()]}',  context,  Colors.green,  Colors.white);
-                                   // showToast('${deleteSuccess[configProvider.activeLanguage()]}');
+                                    showSnackBar('${deleteSuccess[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
+                                    // showToast('${deleteSuccess[configProvider.activeLanguage()]}');
                                     Navigator.pop(context);
                                   }
                                 });
                               },
-                              child: Text(
-                                  '${deleteYes[configProvider.activeLanguage()]}',
-                                  style: TextStyle(
-                                      color: Colors.red, fontSize: 18)),
+                              child: Text('${deleteYes[configProvider.activeLanguage()]}', style: TextStyle(color: Colors.red, fontSize: 18)),
                             ),
                           ),
                         ],

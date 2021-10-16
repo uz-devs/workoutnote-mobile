@@ -1,10 +1,10 @@
 import 'package:test/test.dart';
-import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/UserProvider.dart';
 import 'package:workoutnote/utils/Utils.dart';
 
 void main() {
   group('Testing ConfigProvider', () {
-    var configProvider = ConfigProvider();
+    var configProvider = UserProvider();
     test('login', () {
       // configProvider.login('ilyosbek@nsl.inha.ac.kr', '654321').then((value) {
       //   expect(configProvider.myemail == 'ilyosbek@nsl.inha.ac.kr', true);

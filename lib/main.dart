@@ -10,11 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'business_logic/ConfigProvider.dart';
-import 'business_logic/CreateWorkoutProvider.dart';
-import 'business_logic/EditWorkoutProvider.dart';
-import 'business_logic/ExerciseDialogProvider.dart';
+import 'business_logic/CreateWorkoutSessionProvider.dart';
+import 'business_logic/EditWorkouSessiontProvider.dart';
+import 'business_logic/ExercisesListProvider.dart';
 import 'business_logic/TargetProvider.dart';
-import 'business_logic/WorkoutListProvider.dart';
+import 'business_logic/UserProvider.dart';
+import 'business_logic/HomeProvider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +41,12 @@ void main() async {
     ChangeNotifierProvider(
       create: (_) => TargetProvider(),
     ),
+    ChangeNotifierProvider(
+      create: (_) => UserProvider(),
+    ),
+    // ChangeNotifierProvider(
+    //   create: (_) => FavoriteWorkoutSessionsProvider(),
+    // ),
   ];
   runApp(MultiProvider(
     providers: providers,

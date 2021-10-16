@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
-import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+import 'package:workoutnote/business_logic/HomeProvider.dart';
 
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
@@ -17,18 +17,18 @@ class AllWorkoutsDialog extends StatefulWidget {
 }
 
 class _AllWorkoutsDialogState extends State<AllWorkoutsDialog> {
-  MainScreenProvider mainScreenProvider = MainScreenProvider();
+  MainScreenProvider favoriteWorkoutSessionsProvider = MainScreenProvider();
   ConfigProvider configProvider = ConfigProvider();
   late double height;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    mainScreenProvider = Provider.of<MainScreenProvider>(context, listen: true);
-    configProvider = Provider.of<ConfigProvider>(context, listen: true);
+    favoriteWorkoutSessionsProvider = Provider.of<MainScreenProvider>(context);
+    configProvider = Provider.of<ConfigProvider>(context);
 
-    if (!mainScreenProvider.favoriteWorkoutsFetched) {
-      mainScreenProvider.fetchFavoriteWorkoutSessions(userPreferences!.getString('sessionKey') ?? '').then((value) {});
+    if (!favoriteWorkoutSessionsProvider.favoriteWorkoutsFetched) {
+      favoriteWorkoutSessionsProvider.fetchFavoriteWorkoutSessions(userPreferences!.getString('sessionKey') ?? '').then((value) {});
     }
   }
 
@@ -62,7 +62,8 @@ class _AllWorkoutsDialogState extends State<AllWorkoutsDialog> {
 
   Widget _buildWorkoutSessionsList() {
     return ListView.builder(
-        itemCount: mainScreenProvider.favoriteWorkOuts.length + 1,
+        itemCount: favoriteWorkoutSessionsProvider.favoriteWorkOuts
+            .length + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
             return Container(
@@ -95,7 +96,7 @@ class _AllWorkoutsDialogState extends State<AllWorkoutsDialog> {
             );
           } else {
             index = index - 1;
-            return WorkOutNote(height, mainScreenProvider.favoriteWorkOuts[index], 3);
+            return WorkOutNote(height, favoriteWorkoutSessionsProvider.favoriteWorkOuts[index], 3);
           }
         });
   }

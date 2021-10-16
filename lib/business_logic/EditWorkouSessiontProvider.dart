@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
+import 'package:workoutnote/business_logic/ExercisesListProvider.dart';
 import 'package:workoutnote/data/models/EditableLiftModel.dart';
 import 'package:workoutnote/data/models/ExerciseModel.dart';
 import 'package:workoutnote/data/models/WorkoutListModel.dart';
@@ -13,7 +13,7 @@ import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
 
 import 'ConfigProvider.dart';
-import 'WorkoutListProvider.dart';
+import 'HomeProvider.dart';
 
 class EditWorkoutProvider extends ChangeNotifier {
   //region vars

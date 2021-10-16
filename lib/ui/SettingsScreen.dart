@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
-import 'package:workoutnote/business_logic/CreateWorkoutProvider.dart';
-import 'package:workoutnote/business_logic/ExerciseDialogProvider.dart';
-import 'package:workoutnote/business_logic/WorkoutListProvider.dart';
+import 'package:workoutnote/business_logic/CreateWorkoutSessionProvider.dart';
+import 'package:workoutnote/business_logic/ExercisesListProvider.dart';
+import 'package:workoutnote/business_logic/UserProvider.dart';
+import 'package:workoutnote/business_logic/HomeProvider.dart';
 
 import 'package:workoutnote/utils/Strings.dart';
 
@@ -39,11 +40,11 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var configProvider = Provider.of<ConfigProvider>(context, listen: true);
+    var configProvider = Provider.of<ConfigProvider>(context);
     var homeProvider = Provider.of<MainScreenProvider>(context, listen: false);
     var dialogProvider = Provider.of<ExercisesDialogProvider>(context, listen: false);
     var createWorkOutProvider = Provider.of<CreateWorkoutProvider>(context, listen: false);
-    configProvider.setUserInfo();
+    var userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
         body: ListView.separated(
             itemBuilder: (context, index) {
@@ -150,7 +151,7 @@ class _SeetingsScreenState extends State<SeetingsScreen> {
               else if (index  == 5)
                 return InkWell(
                   onTap: () {
-                    configProvider.logout(homeProvider);
+                    userProvider.logout(homeProvider);
                     homeProvider.reset();
                     dialogProvider.reset();
                     createWorkOutProvider.reset();

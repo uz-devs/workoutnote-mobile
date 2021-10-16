@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
+import 'package:workoutnote/business_logic/UserProvider.dart';
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
 
@@ -20,7 +21,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
   @override
   Widget build(BuildContext context) {
 
-    var configProvider = Provider.of<ConfigProvider>(context, listen: true);
+    var configProvider = Provider.of<ConfigProvider>(context);
+    var userProvider = Provider.of<UserProvider>(context);
 
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -97,16 +99,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             onPressed: () {
                               showLoadingDialog(context);
 
-                              user.verifyUser(_codeController.text).then((value) {
+                              userProvider.verifyUser(_codeController.text).then((value) {
                                 Navigator.pop(context);
 
                                 if (value) {
                                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
                                 }
                                 else{
-                                  if(user.responseCode == MISC_EXCEPTION)
+                                  if(userProvider.responseCode == MISC_EXCEPTION)
                                     showSnackBar('${verificationError[configProvider.activeLanguage()]}',  context, Colors.red, Colors.white);
-                                  else if (user.responseCode == SOCKET_EXCEPTION)
+                                  else if (userProvider.responseCode == SOCKET_EXCEPTION)
                                     showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                                 }
                               });
