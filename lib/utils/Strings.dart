@@ -90,6 +90,9 @@ Map<String, String> targetDeleteSuccess = {english: 'Target deleted  successfull
 Map<String, String> achieved = {english: 'DONE', korean: '달성'};
 Map<String, String> notAchieved = {english: 'FAIL', korean: '미달성'};
 Map<String, String> targetList = {english: 'Target list', korean:'목표 목록'};
+Map<String,  String> noInternetTitle = {english: 'Internet is not connected!',  korean: '서비스 접속 에러'};
+Map<String,  String> quit = {english: 'Quit',  korean: '나가기'};
+Map<String,  String> connectInternetMsg = {english: 'Please connect to the internet  and try  again!', korean: '인터넷이 접속에 문제가 있습니다. 인터넷 접속을 확인하고 다시  실행해 주세요!'};
 //One Rep Max
 Map<String, String> oneRepMax1 = {english: 'One Rep Max Calculator', korean: 'One Rep Max 계산기'};
 Map<String, String> oneRepMax2 = {english: '1RM Lift weight percentage', korean: '1RM 리프트 중량 백분율'};

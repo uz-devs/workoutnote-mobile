@@ -54,6 +54,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     targetProvider = Provider.of<TargetProvider>(context);
 
     if (!calendarProvider.isCalendarWorkoutsRequestDone && calendarProvider.calendarResponseCode != SUCCESS) {
+      print("Hello world");
       calendarProvider.fetchCalendarWorkoutSessions().then((value) {});
     }
 

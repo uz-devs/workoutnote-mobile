@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/business_logic/UserProvider.dart';
 import 'package:workoutnote/business_logic/HomeProvider.dart';
+import 'package:workoutnote/utils/Strings.dart';
+import 'package:workoutnote/utils/Utils.dart';
 
 import 'CalculateScreen.dart';
 import 'CalendarScreen.dart';
@@ -21,6 +25,7 @@ class _NavControllerState extends State<NavController> {
   int _selectedIndex = 0;
   var listProvider = MainScreenProvider();
   var userProvider = UserProvider();
+  var configProvider = ConfigProvider();
   RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   @override
@@ -30,12 +35,20 @@ class _NavControllerState extends State<NavController> {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       userProvider = Provider.of<UserProvider>(context, listen: false);
       userProvider.setUserInfo();
+
+      isInternetConnected().then((value) {
+        if (!value) {
+          showAlertDialog(context);
+        }
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     listProvider = Provider.of<MainScreenProvider>(context, listen: false);
+    configProvider = Provider.of<ConfigProvider>(context, listen: false);
+
 
     Color backGroundColor;
     double height = MediaQuery.of(context).size.height;
@@ -215,5 +228,43 @@ class _NavControllerState extends State<NavController> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text('${quit[configProvider.activeLanguage()]}', ),
+      onPressed: () {
+        SystemNavigator.pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+
+
+      title: Center(
+          child: Text(
+        '${noInternetTitle[configProvider.activeLanguage()]}',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      )),
+      content: Text('${connectInternetMsg[configProvider.activeLanguage()]}'),
+      actions: [
+        Divider(color: Colors.black,),
+        Center(child: okButton),
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      barrierDismissible: false ,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

@@ -157,16 +157,14 @@ void showLoadingDialog(BuildContext context) {
 
 String trimStringField(String value) => value.trim();
 
-bool? isInternetConnected()  {
+Future<bool> isInternetConnected()  async{
 
-   (Connectivity().checkConnectivity()).then((value)  {
-    if (value  == ConnectivityResult.mobile || value == ConnectivityResult.wifi ) {
-      return  true;
-    } else {
-      return false;
-    }
-  });
-   return null;
+  var connectivity =  await Connectivity().checkConnectivity();
+
+  if(connectivity == ConnectivityResult.wifi || connectivity == ConnectivityResult.mobile)
+    return  true;
+  else return  false;
+
 
 }
 List<String>? years_en = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
