@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/ui/widgets/CalculationBottomSheet.dart';
 import 'package:workoutnote/utils/Strings.dart';
+
+import 'DeltoidOneRepMaxTestScreen.dart';
 
 class CalculateScreen extends StatefulWidget {
   const CalculateScreen();
@@ -13,11 +16,10 @@ class CalculateScreen extends StatefulWidget {
 
 class _CalculateScreenState extends State<CalculateScreen> {
   late double height;
+
   PersistentBottomSheetController? bottomSheetController;
 
   var configProvider = ConfigProvider();
-  List<String> koreanNames = [gripTest[korean] ?? '', runTest[korean] ?? '', oneRepMax1[korean] ?? '', plateBarbell1[korean] ?? '', wilksTitle[korean] ?? ''];
-  List<String> englishNames = [gripTest[english] ?? '', runTest[english] ?? '', oneRepMax1[english] ?? '', plateBarbell1[english] ?? '', wilksTitle[english] ?? ''];
 
   @override
   void dispose() {
@@ -34,12 +36,18 @@ class _CalculateScreenState extends State<CalculateScreen> {
     return Container(
       margin: EdgeInsets.only(top: 15.0),
       child: ListView.builder(
-          itemCount: 5,
+          itemCount: 6,
           itemBuilder: (context, index) {
-            if (configProvider.activeLanguage() == english)
-              return _buildCustomButton(englishNames[index], index);
-            else
-              return _buildCustomButton(koreanNames[index], index);
+            if (index == 0) {
+              return _buildDeltoidTestWidget();
+            } else if (index == 2)
+              return Divider(color: Color.fromRGBO(102, 51, 204, 0.5));
+            else {
+              if (index < 2)
+                return _buildCustomButton(metricsNames[index][configProvider.activeLanguage()]!, index);
+              else
+                return _buildCustomButton(metricsNames[index - 1][configProvider.activeLanguage()]!, index);
+            }
           }),
     );
   }
@@ -47,11 +55,11 @@ class _CalculateScreenState extends State<CalculateScreen> {
   Widget _buildCustomButton(String text, int index) {
     return InkWell(
       onTap: () async {
-        if (index == 2)
-          await showModal(index + 1, '${oneRepMax1[configProvider.activeLanguage()]}', '${oneRepMax4[configProvider.activeLanguage()]}', 'Lift', 'KG', '${oneRepMax5[configProvider.activeLanguage()]}', '${oneRepMax6[configProvider.activeLanguage()]}');
-        else if (index == 3)
-          await showModal(index + 1, '${plateBarbell1[configProvider.activeLanguage()]}', '${plateBarbell2[configProvider.activeLanguage()]}', 'Total Lift (kg)', 'Bar Weight (kg)', '${plateBarbell3[configProvider.activeLanguage()]}', '${plateBarbell4[configProvider.activeLanguage()]}');
-        else if (index == 4) await showModal(index + 1, '${wilks1[configProvider.activeLanguage()]}', '${wilks2[configProvider.activeLanguage()]}', 'Maximum weight', 'Gender', '${wilks3[configProvider.activeLanguage()]}', '${wilks4[configProvider.activeLanguage()]}');
+        if (index == 3)
+          await showModal(index, '${oneRepMax1[configProvider.activeLanguage()]}', '${oneRepMax4[configProvider.activeLanguage()]}', 'Lift', 'KG', '${oneRepMax5[configProvider.activeLanguage()]}', '${oneRepMax6[configProvider.activeLanguage()]}');
+        else if (index == 4)
+          await showModal(index, '${plateBarbell1[configProvider.activeLanguage()]}', '${plateBarbell2[configProvider.activeLanguage()]}', 'Total Lift (kg)', 'Bar Weight (kg)', '${plateBarbell3[configProvider.activeLanguage()]}', '${plateBarbell4[configProvider.activeLanguage()]}');
+        else if (index == 5) await showModal(index, '${wilks1[configProvider.activeLanguage()]}', '${wilks2[configProvider.activeLanguage()]}', 'Maximum weight', 'Gender', '${wilks3[configProvider.activeLanguage()]}', '${wilks4[configProvider.activeLanguage()]}');
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 10.0, left: 20.0, right: 20.0),
@@ -69,6 +77,67 @@ class _CalculateScreenState extends State<CalculateScreen> {
               )),
         ),
       ),
+    );
+  }
+
+  Widget _buildDeltoidTestWidget() {
+    return Stack(
+      fit: StackFit.loose,
+      alignment: Alignment.center,
+      children: [
+        Card(
+
+            //semanticContainer: true,
+            clipBehavior: Clip.antiAlias,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            child: Image.asset(
+              'assets/images/test.png',
+              fit: BoxFit.fill,
+            )),
+        Positioned(
+          child: Column(
+            children: [
+              Text(
+                'Deltoid One Rep Max Test',
+                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: Divider(
+                    color: Colors.white,
+                    thickness: 1,
+                    indent: 50.0,
+                    endIndent: 50.0,
+                  )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => DeltoidOneRepMaxTestScreen()));
+                      },
+                      child: Text(
+                        'Test',
+                        style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                      )),
+                  Text(
+                    '|',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Result',
+                        style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                      )),
+                ],
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 

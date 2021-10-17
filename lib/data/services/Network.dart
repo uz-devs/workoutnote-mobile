@@ -181,7 +181,6 @@ class WebServices {
   }
 
   static Future<http.Response> fetchTargets(String sessionKey) async {
-
     final url = Uri.https(baseUrl, targetFetch);
     final body = {'sessionKey': sessionKey};
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));

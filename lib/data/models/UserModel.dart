@@ -1,4 +1,3 @@
-
 class AppUser{
   String? sessionKey;
   bool  authSuccess = false ;
@@ -20,8 +19,6 @@ class  UserProfile{
   bool  iProfileShared  = false;
 
   UserProfile.fetch(this.success, this.name, this.dateOfBirth, this.gender, this.iProfileShared);
-
-
 
   factory UserProfile.fromJson(Map<String, dynamic> parsedJson) {
     return UserProfile.fetch(parsedJson['success'], parsedJson['name'], parsedJson['date_of_birth'],  parsedJson['gender'],  parsedJson['is_profile_shared']);

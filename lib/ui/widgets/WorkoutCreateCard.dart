@@ -62,19 +62,11 @@ class CreateWorkOutCard extends StatelessWidget {
         builder: (BuildContext context) {
           return SearchDialog(height);
         }).then((value) async {
-       if(value != null) {
-         Exercise exercise = value;
-         exProvider.unselectedExercise = EditableLift.create(
-             exercise.name,
-             exercise.id,
-             exercise.bodyPart,
-             1,
-             1,
-             1.02,
-             false,
-             -1);
-         await exProvider.saveUnselectedExerciseToPreferences();
-       }
+      if (value != null) {
+        Exercise exercise = value;
+        exProvider.unselectedExercise = EditableLift.create(exercise.name, exercise.id, exercise.bodyPart, 1, 1, 1.02, false, -1);
+        await exProvider.saveUnselectedExerciseToPreferences();
+      }
     });
   }
 
@@ -99,18 +91,7 @@ class CreateWorkOutCard extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  _buildExerciseListItem((index + 1).toString(),
-                      '${_createWorkOutProvider.getExerciseName(exerciseProvider, configProvider, _createWorkOutProvider.selectedLifts[index].exerciseId??-0)}',
-                      '0.0',
-                      '0.0',
-                      _createWorkOutProvider.selectedLifts[index].rm.toString(),
-                      Colors.black,
-                      2,
-                      _createWorkOutProvider,
-                      index,
-                      context,
-                      configProvider,
-                      'body'),
+                  _buildExerciseListItem((index + 1).toString(), '${_createWorkOutProvider.getExerciseName(exerciseProvider, configProvider, _createWorkOutProvider.selectedLifts[index].exerciseId ?? -0)}', '0.0', '0.0', _createWorkOutProvider.selectedLifts[index].rm.toString(), Colors.black, 2, _createWorkOutProvider, index, context, configProvider, 'body'),
                   Container(
                       margin: EdgeInsets.only(left: 15.0, right: 15.0),
                       child: Divider(
@@ -284,9 +265,7 @@ class CreateWorkOutCard extends StatelessWidget {
                 margin: EdgeInsets.only(
                   bottom: 10,
                 ),
-                child: _buildExerciseListItem('1', '${exProvider.unselectedExercise?.exerciseName == null ? '${exerciseName[configProvider.activeLanguage()]}' : _createWorkOutProvider.getExerciseName(exerciseProvider, configProvider, exProvider.unselectedExercise!.exerciseId??0)}', 'KG', 'REP', exProvider.unselectedExercise?.rm.toString() ?? '1.02',
-                    Colors.grey,
-                    3, exProvider, index, context, configProvider, 'footer'));
+                child: _buildExerciseListItem('1', '${exProvider.unselectedExercise?.exerciseName == null ? '${exerciseName[configProvider.activeLanguage()]}' : _createWorkOutProvider.getExerciseName(exerciseProvider, configProvider, exProvider.unselectedExercise!.exerciseId ?? 0)}', 'KG', 'REP', exProvider.unselectedExercise?.rm.toString() ?? '1.02', Colors.grey, 3, exProvider, index, context, configProvider, 'footer'));
           } else if (index == 5) {
             index = index - 5;
             return _buildReorderableListView(context);
@@ -388,8 +367,7 @@ class CreateWorkOutCard extends StatelessWidget {
           flex: 3,
           child: mode == 2
               ? DropdownButton<int>(
-
-
+                  menuMaxHeight: 400,
                   alignment: Alignment.center,
                   isExpanded: true,
                   underline: SizedBox(),
@@ -426,6 +404,7 @@ class CreateWorkOutCard extends StatelessWidget {
                       ),
                     )
                   : DropdownButton<int>(
+                      menuMaxHeight: 400,
                       isExpanded: true,
                       underline: SizedBox(),
                       iconSize: 0.0,
@@ -451,6 +430,7 @@ class CreateWorkOutCard extends StatelessWidget {
           flex: 2,
           child: mode == 2
               ? DropdownButton<int>(
+                  menuMaxHeight: 400,
                   isExpanded: true,
                   underline: SizedBox(),
                   iconSize: 0.0,
@@ -472,6 +452,7 @@ class CreateWorkOutCard extends StatelessWidget {
                 )
               : mode == 3
                   ? DropdownButton<int>(
+                      menuMaxHeight: 400,
                       isExpanded: true,
                       underline: SizedBox(),
                       iconSize: 0.0,

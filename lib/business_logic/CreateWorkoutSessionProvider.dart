@@ -317,20 +317,19 @@ class CreateWorkoutProvider extends ChangeNotifier {
   String? getExerciseName(ExercisesDialogProvider exercisesDialogProvider, ConfigProvider configProvider, int exerciseId) {
     //TODO: calling it after completing network request
 
-   if(exercisesDialogProvider.allExercises.isNotEmpty) {
-
-     Exercise exercise = exercisesDialogProvider.allExercises.where((element) => element.id == exerciseId).first;
-     if (configProvider.activeLanguage() == korean)
-       return '${exercise.name}(${exercise.bodyPart})';
-     else {
-       NameTranslation? namedTranslation = exercise.namedTranslations;
-       if (namedTranslation?.english != null) {
-         return '${namedTranslation?.english}(${exercise.bodyPart})';
-       }
-       return '${exercise.name}(${exercise.bodyPart})';
-     }
-   }
-   return configProvider.activeLanguage() == english? 'Loading...':'로드 중...';
+    if (exercisesDialogProvider.allExercises.isNotEmpty) {
+      Exercise exercise = exercisesDialogProvider.allExercises.where((element) => element.id == exerciseId).first;
+      if (configProvider.activeLanguage() == korean)
+        return '${exercise.name}(${exercise.bodyPart})';
+      else {
+        NameTranslation? namedTranslation = exercise.namedTranslations;
+        if (namedTranslation?.english != null) {
+          return '${namedTranslation?.english}(${exercise.bodyPart})';
+        }
+        return '${exercise.name}(${exercise.bodyPart})';
+      }
+    }
+    return configProvider.activeLanguage() == english ? 'Loading...' : '로드 중...';
   }
 
   Future<void> repeatWorkoutSession(List<EditableLift> lifts, String title) async {

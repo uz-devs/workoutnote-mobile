@@ -133,7 +133,7 @@ class TargetWidget extends StatelessWidget {
                 margin: EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0),
                 child: LinearPercentIndicator(
                   alignment: MainAxisAlignment.center,
-                  width: 250,
+                  width: 230,
                   lineHeight: 7.0,
                   percent: targetProvider.getCurrentPercentage(target.startTimestamp ?? 0, target.endTimestamp ?? 0),
                   progressColor: targetProvider.isTargetPassed(target) ? Colors.grey : Color.fromRGBO(102, 51, 204, 1),

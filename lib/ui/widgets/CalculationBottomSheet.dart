@@ -311,28 +311,8 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                         '${widget.text1}',
                         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
                       )),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(width: 2.0, color: Colors.white),
-                      ),
-                    ),
-                    margin: EdgeInsets.only(left: 31.0, right: 31.0),
-                    child: TextFormField(
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                      keyboardType: TextInputType.number,
-                      onChanged: (c) async {},
-                      controller: textController2,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
-                        hintText: '${enterNumber[configProvider.activeLanguage()]}',
-                        hintStyle: TextStyle(color: Colors.white, fontSize: 14.0),
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                      ),
-                    ),
-                  ),
+
+
                   Container(
                       margin: EdgeInsets.only(left: 31.0, top: 20.0, bottom: 10.0),
                       child: Text(
