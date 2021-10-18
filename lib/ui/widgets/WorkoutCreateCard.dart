@@ -12,6 +12,7 @@ import 'package:workoutnote/business_logic/HomeProvider.dart';
 import 'package:workoutnote/data/models/EditableLiftModel.dart';
 import 'package:workoutnote/data/models/ExerciseModel.dart';
 import 'package:workoutnote/data/models/WorkoutListModel.dart';
+import 'package:workoutnote/ui/widgets/CuatomDropDownButton.dart';
 
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
@@ -36,9 +37,15 @@ class CreateWorkOutCard extends StatelessWidget {
     mainScreenProvider = Provider.of<MainScreenProvider>(context, listen: false);
     exerciseProvider = Provider.of<ExercisesDialogProvider>(context, listen: false);
 
+
+
     return Container(
       margin: EdgeInsets.only(bottom: 35.0),
       child: Consumer<CreateWorkoutProvider>(builder: (context, createWorkoutProvider, child) {
+
+        if(createWorkoutProvider.unselectedExercise == null){
+          createWorkoutProvider.unselectedExercise = EditableLift();
+        }
         _createWorkOutProvider = createWorkoutProvider;
         int count = 8;
         createWorkoutProvider.restoreTimer();
@@ -329,6 +336,12 @@ class CreateWorkOutCard extends StatelessWidget {
   }
 
   Widget _buildExerciseListItem(String exerciseNumber, String exerciseName, String kg, String rep, String rm, Color color, int mode, CreateWorkoutProvider mainScreenProvider, int index, BuildContext context, ConfigProvider configProvider, String listMode) {
+
+    print("length");
+
+    print(mainScreenProvider.unselectedExercise?.kgs.length);
+
+
     return Row(
       children: [
         Expanded(
@@ -367,7 +380,8 @@ class CreateWorkOutCard extends StatelessWidget {
           flex: 3,
           child: mode == 2
               ? DropdownButton<int>(
-                  menuMaxHeight: 400,
+                  //  menuMaxHeight: 400,
+
                   alignment: Alignment.center,
                   isExpanded: true,
                   underline: SizedBox(),
@@ -404,8 +418,9 @@ class CreateWorkOutCard extends StatelessWidget {
                       ),
                     )
                   : DropdownButton<int>(
-                      menuMaxHeight: 400,
+
                       isExpanded: true,
+
                       underline: SizedBox(),
                       iconSize: 0.0,
                       value: mainScreenProvider.unselectedExercise?.mass ?? 1,
@@ -430,7 +445,7 @@ class CreateWorkOutCard extends StatelessWidget {
           flex: 2,
           child: mode == 2
               ? DropdownButton<int>(
-                  menuMaxHeight: 400,
+                  // menuMaxHeight: 400,
                   isExpanded: true,
                   underline: SizedBox(),
                   iconSize: 0.0,
@@ -452,10 +467,11 @@ class CreateWorkOutCard extends StatelessWidget {
                 )
               : mode == 3
                   ? DropdownButton<int>(
-                      menuMaxHeight: 400,
+                      //  menuMaxHeight: 400,
                       isExpanded: true,
                       underline: SizedBox(),
                       iconSize: 0.0,
+
                       value: mainScreenProvider.unselectedExercise?.rep ?? 1,
                       onChanged: (newValue) async {
                         mainScreenProvider.updateInactiveExerciseRep(newValue!);

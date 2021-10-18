@@ -206,4 +206,20 @@ class WebServices {
     http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
     return response;
   }
+
+  static Future<http.Response> ediTarget(String sessionKey, int targetId, String targetName, int startDateTime, int endDateTime, bool achieved) async {
+    final url = Uri.https(baseUrl, updateTarget);
+    final body = {'sessionKey': sessionKey, 'target_id': targetId, 'name': targetName, 'start_date_ms': startDateTime, 'end_date_ms': endDateTime, 'achieved': achieved};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+
+    print(response.body);
+    return response;
+  }
+  static Future<http.Response> checkUserName(String email) async {
+    final url = Uri.https(baseUrl, checkUserEmail);
+    final body = {'email_or_phone': email};
+    http.Response response = await http.post(url, headers: headers, body: jsonEncode(body));
+
+    return response;
+  }
 }

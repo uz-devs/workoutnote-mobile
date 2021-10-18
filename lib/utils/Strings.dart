@@ -61,7 +61,13 @@ Map<String, String> exerciseName = {english: 'Exercise name', korean: '운동 �
 Map<String, String> bodyPart = {english: 'Body part', korean: '신체 부위'};
 Map<String, String> emptyWorkoutTitle = {english: 'Workout session title cannot be empty!', korean: '운동 세션 제목은 비워 둘 수 없습니다!'};
 Map<String, String> deleteMessage = {english: "You can't restore deleted session.Are you sure you want to delete this session?", korean: '삭제하면 복구할 수 없습니다.삭제하시겠습니까?'};
+Map<String, String> deleteTargetMessage = {english: "You can't restore deleted session.Are you sure you want to delete this target?", korean: '삭제하면 복구할 수 없습니다.삭제하시겠습니까?'};
+
 Map<String, String> deleteYes = {english: 'Delete', korean: '삭제'};
+
+
+Map<String, String> deleteTarget = {english: 'Delete target', korean: '목표 삭제하기'};
+Map<String, String> editTarget = {english: 'Edit target', korean: '목표 수정하기'};
 Map<String, String> deleteCancel = {english: 'Cancel', korean: '취소'};
 Map<String, String> favorites = {english: 'Favorites', korean: '내 운동'};
 Map<String, String> exerciseHint = {english: 'Exercise name', korean: '운동 이름'};
@@ -81,11 +87,14 @@ Map<String, String> chooseLang = {english: 'Choose the language', korean: '사�
 Map<String, String> selectExercise = {english: 'Please, select exercise first!', korean: '먼저 운동을 선택하십시오!'};
 Map<String, String> socketException = {english: 'Please, turn on the internet!', korean: '인터넷 껴주세요!'};
 Map<String, String> registerPlan = {english: 'Register target', korean: '목표 등록하기'};
+Map<String, String> editPlan = {english: 'Edit Target', korean: '수정하기'};
 Map<String, String> planName = {english: 'Target name', korean: '목표 이름'};
 Map<String, String> startDate = {english: 'Start date', korean: '시작 일자'};
 Map<String, String> endDate = {english: 'End date', korean: '종료 일자'};
+Map<String,  String> targetSuccess = {english:  'Target achievement', korean: '목표 달성'};
 Map<String, String> register = {english: 'Register', korean: '들록하기'};
 Map<String, String> targetRegisterSuccess = {english: 'Target created successfully!', korean: '목표  성공적으로 생성되었습니다!'};
+Map<String, String> targetEditSuccess = {english: 'Target edited successfully!', korean: '목표  성공적으로 변경되었습니다!'};
 Map<String, String> targetDeleteSuccess = {english: 'Target deleted  successfully!', korean: '목표  성공적으로 삭제!'};
 Map<String, String> achieved = {english: 'DONE', korean: '달성'};
 Map<String, String> notAchieved = {english: 'FAIL', korean: '미달성'};

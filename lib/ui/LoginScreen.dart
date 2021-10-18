@@ -35,12 +35,11 @@ class LoginScreen extends StatelessWidget {
                       Container(
                           padding: EdgeInsets.all(10.0),
                           alignment: Alignment.centerLeft,
-                          child: GestureDetector (
-
-                              child : Icon(
-                                Icons.arrow_back_ios,
-                                color: Colors.transparent,
-                              ))),
+                          child: GestureDetector(
+                              child: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.transparent,
+                          ))),
                       Container(
                         margin: EdgeInsets.only(top: height * 0.1),
                         child: Text(
@@ -61,7 +60,6 @@ class LoginScreen extends StatelessWidget {
                           controller: _emailController,
                           cursorColor: Color.fromRGBO(102, 51, 204, 1),
                           decoration: InputDecoration(
-
                             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(25), borderSide: BorderSide(width: 1.5, color: Color.fromRGBO(102, 51, 204, 1))),
                             hintText: 'E-MAIL/PHONE NUMBER',
                             hintStyle: TextStyle(color: Colors.grey, fontSize: 14.0),
@@ -89,7 +87,6 @@ class LoginScreen extends StatelessWidget {
                         margin: EdgeInsets.only(left: 15, right: 15, bottom: 10),
                         child: TextFormField(
                           cursorColor: Color.fromRGBO(102, 51, 204, 1),
-
                           obscureText: true,
                           controller: _passwordController,
                           decoration: InputDecoration(
@@ -119,27 +116,24 @@ class LoginScreen extends StatelessWidget {
                       Container(
                         width: double.infinity,
                         margin: EdgeInsets.only(left: 15, right: 15),
-                        child: CupertinoButton
-
-                          (
+                        child: CupertinoButton(
                             color: Color.fromRGBO(102, 51, 204, 1),
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
-                            child: Text('${loginText['한국어']}',  style:  TextStyle(fontSize: 16)),
+                            child: Text('${loginText['한국어']}', style: TextStyle(fontSize: 16)),
                             onPressed: () {
                               if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
-
                                 showLoadingDialog(context);
                                 userProvider.login(user.trimField(_emailController.text), user.trimField(_passwordController.text)).then((value) {
                                   Navigator.pop(context);
                                   if (value) {
                                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => LanguageSetScreen()));
                                   } else {
-                                    if(userProvider.responseCode == MISC_EXCEPTION)
-                                    showSnackBar('${authErrorMesage[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                                    if (userProvider.responseCode == MISC_EXCEPTION)
+                                      showSnackBar('${authErrorMesage[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                                     else if (userProvider.responseCode == SOCKET_EXCEPTION)
                                       showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-
-
+                                    else
+                                      showSnackBar('${authErrorMesage[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                                   }
                                 });
                               } else
@@ -147,46 +141,40 @@ class LoginScreen extends StatelessWidget {
                             }),
                       ),
                       Container(
-
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  if (_emailController.text.isNotEmpty)
-                                    userProvider.passwordReset(_emailController.text).then((value) {
-                                      print('value $value');
-                                      if (value) {
-                                        showSnackBar('${sendEmailForReset[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
-                                      }
-                                      else {
-                                        if(userProvider.responseCode == MISC_EXCEPTION)
-                                          showSnackBar('${authErrorMesage[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-                                        else if (userProvider.responseCode == SOCKET_EXCEPTION)
-                                          showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-
-                                      }
-                                    });
-                                  else {
-                                    showSnackBar('${emptyEmail[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              if (_emailController.text.isNotEmpty)
+                                userProvider.passwordReset(_emailController.text).then((value) {
+                                  print('value $value');
+                                  if (value) {
+                                    showSnackBar('${sendEmailForReset[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
+                                  } else {
+                                    if (userProvider.responseCode == MISC_EXCEPTION)
+                                      showSnackBar('${authErrorMesage[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                                    else if (userProvider.responseCode == SOCKET_EXCEPTION) showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                                   }
-                                },
-                                child: Text(
-                                  '비밀번호 찾기',
-                                  style: TextStyle(color: Colors.grey, fontSize: 12.0),
-                                ),
-                              ),
-
-
-                            ],
-                          )),
+                                });
+                              else {
+                                showSnackBar('${emptyEmail[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                              }
+                            },
+                            child: Text(
+                              '비밀번호 찾기',
+                              style: TextStyle(color: Colors.grey, fontSize: 12.0),
+                            ),
+                          ),
+                        ],
+                      )),
                       Container(
                         width: double.infinity,
                         margin: EdgeInsets.only(left: 15.0, right: 15.0, top: 15.0),
                         child: CupertinoButton(
                             color: Color.fromRGBO(102, 51, 204, 1),
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
-                            child: Text('${signUpText['한국어']}', style:  TextStyle(fontSize: 16)),
+                            child: Text('${signUpText['한국어']}', style: TextStyle(fontSize: 16)),
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
                             }),

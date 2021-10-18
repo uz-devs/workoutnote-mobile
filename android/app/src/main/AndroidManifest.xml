@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.workoutnote">
+    package="com.deltoid.workoutnote">
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <application
+   <application
         android:label="Workoutnote"
         android:icon="@mipmap/ic_launcher">
         <activity

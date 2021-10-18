@@ -49,7 +49,6 @@ class _NavControllerState extends State<NavController> {
     listProvider = Provider.of<MainScreenProvider>(context, listen: false);
     configProvider = Provider.of<ConfigProvider>(context, listen: false);
 
-
     Color backGroundColor;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -60,7 +59,7 @@ class _NavControllerState extends State<NavController> {
       _buildSettingsScreen(height),
     ];
 
-    if (_selectedIndex == 0 || _selectedIndex == 1)
+    if (_selectedIndex == 0 || _selectedIndex == 1 || _selectedIndex == 2)
       backGroundColor = Color.fromRGBO(231, 223, 247, 1);
     else
       backGroundColor = Color.fromRGBO(255, 255, 255, 1);
@@ -233,7 +232,9 @@ class _NavControllerState extends State<NavController> {
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = TextButton(
-      child: Text('${quit[configProvider.activeLanguage()]}', ),
+      child: Text(
+        '${quit[configProvider.activeLanguage()]}',
+      ),
       onPressed: () {
         SystemNavigator.pop();
       },
@@ -244,8 +245,6 @@ class _NavControllerState extends State<NavController> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
-
-
       title: Center(
           child: Text(
         '${noInternetTitle[configProvider.activeLanguage()]}',
@@ -253,14 +252,16 @@ class _NavControllerState extends State<NavController> {
       )),
       content: Text('${connectInternetMsg[configProvider.activeLanguage()]}'),
       actions: [
-        Divider(color: Colors.black,),
+        Divider(
+          color: Colors.black,
+        ),
         Center(child: okButton),
       ],
     );
 
     // show the dialog
     showDialog(
-      barrierDismissible: false ,
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return alert;

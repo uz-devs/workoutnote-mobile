@@ -43,6 +43,8 @@ const  String  targetFetch = '/api/fetch_targets';
 const  String targetDel = '/api/remove_target';
 const  String targetToggle = '/api/toggle_target';
 const String privacyPolicyUrl = 'https://workoutnote.com/policy/';
+const  String  updateTarget  = 'api/update_target';
+const  String checkUserEmail = 'api/check_username';
 //endregion
 
 //region network  states
@@ -73,7 +75,12 @@ String toDate(int timestamp) {
 
   return formattedDate;
 }
+String toDate2(int timestamp) {
+  var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+  var formattedDate = DateFormat('yyyy.MM.dd').format(date);
 
+  return formattedDate;
+}
 void showToast(String message) {
   Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIosWeb: 1, backgroundColor: Colors.black54, textColor: Colors.white, fontSize: 16.0);
 }

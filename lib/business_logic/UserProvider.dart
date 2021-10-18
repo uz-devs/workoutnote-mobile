@@ -9,7 +9,6 @@ import 'package:workoutnote/utils/Utils.dart';
 
 import 'HomeProvider.dart';
 
-
 class UserProvider extends ChangeNotifier {
   String? tempName, tempPassword, tempEmail;
 
@@ -17,7 +16,7 @@ class UserProvider extends ChangeNotifier {
   String? userName;
   String? userEmail;
   bool isUserProfileShared = false;
-  late String selectedBirthYear,selectedBirthMonth, selectedBirthDay;
+  late String selectedBirthYear, selectedBirthMonth, selectedBirthDay;
   late String sessionKey;
   int responseCode = IDLE;
   int genderGroupValue = -1;
@@ -26,12 +25,14 @@ class UserProvider extends ChangeNotifier {
   Future<bool> sendVerificationCode(String email, name, String password) async {
     try {
       var response = await WebServices.sendVerification(email);
-      if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
-        responseCode = SUCCESS;
-        tempName = name;
-        tempPassword = password;
-        tempEmail = email;
-        return true;
+      if (!(await checkUsername(email))) {
+        if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
+          responseCode = SUCCESS;
+          tempName = name;
+          tempPassword = password;
+          tempEmail = email;
+          return true;
+        }
       }
     } on SocketException catch (e) {
       responseCode = SOCKET_EXCEPTION;
@@ -42,6 +43,16 @@ class UserProvider extends ChangeNotifier {
     }
 
     return false;
+  }
+
+  Future<bool> checkUsername(String email) async {
+    try {
+      var response = await WebServices.checkUserName(email);
+
+      return jsonDecode(response.body)['isTaken'];
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<bool> verifyUser(String verificationCode) async {
@@ -68,7 +79,7 @@ class UserProvider extends ChangeNotifier {
   Future<bool> login(String email, String password) async {
     try {
       Response response = await WebServices.userLogin(email, password);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
         var appUser = AppUser.fromJson(jsonDecode(response.body));
         if (appUser.authSuccess) {
           Response settingsResponse = await WebServices.fetchSettings(appUser.sessionKey ?? '');

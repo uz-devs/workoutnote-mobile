@@ -86,7 +86,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
           physics: ScrollPhysics(),
           itemCount: showWorkOuts.isNotEmpty ? showWorkOuts.length + 4 : 4,
           itemBuilder: (ctx, index) {
-            if (index == 0) return Container(margin: EdgeInsets.all(10.0), child: targetProvider.getLatestTarget() != null ? TargetWidget(target: targetProvider.getLatestTarget()!) : TargetRegisterWidget());
+            if (index == 0) return Container(
+                color: Colors.white,
+                 child: targetProvider.getLatestTarget() != null ? TargetWidget(target: targetProvider.getLatestTarget()!) : TargetRegisterWidget());
             if (index == 1)
               return Container(
                 color: Colors.white,

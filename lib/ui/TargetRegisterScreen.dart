@@ -17,7 +17,7 @@ class TargetRegistrationScreen extends StatefulWidget {
 class _TargetRegistrationScreenState extends State<TargetRegistrationScreen> {
   var configProvider = ConfigProvider();
   var targetProvider = TargetProvider();
-  List<String>? years = List.generate(100, (index) => '${index + DateTime.now().year}');
+  List<String>? years = List.generate(10, (index) => '${index + DateTime.now().year}');
   List<String>? months = List.generate(12, (index) => index < 9 ? '0${index + 1}' : '${index + 1}');
   List<String>? days = List.generate(31, (index) => index < 9 ? '0${index + 1}' : '${index + 1}');
 

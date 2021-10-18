@@ -1,4 +1,4 @@
-package com.workoutnote
+package com.deltoid.workoutnote
 
 import io.flutter.embedding.android.FlutterActivity
 

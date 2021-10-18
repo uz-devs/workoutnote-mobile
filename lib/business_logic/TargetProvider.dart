@@ -19,7 +19,7 @@ class TargetProvider extends ChangeNotifier {
     var startTimestamp = DateTime.parse(startDate).millisecondsSinceEpoch;
     var endTimestamp = DateTime.parse(endDate).millisecondsSinceEpoch;
 
-    if(isTargetPeriodValid(startTimestamp, endTimestamp)){
+    if (isTargetPeriodValid(startTimestamp, endTimestamp)) {
       try {
         var response = await WebServices.registerTarget(sessionKey!, targetName, startTimestamp, endTimestamp);
         if (response.statusCode == 200) {
@@ -35,9 +35,8 @@ class TargetProvider extends ChangeNotifier {
       }
 
       return LOADING;
-    }
-    else  return MISC_EXCEPTION;
-
+    } else
+      return MISC_EXCEPTION;
   }
 
   Future<int> toggleTarget(int targetId) async {
@@ -108,13 +107,41 @@ class TargetProvider extends ChangeNotifier {
     }
   }
 
+  Future<int> editTarget(int targetId, String targetName, String startDate, String endDate, bool achieved) async {
+    var startTimestamp = DateTime.parse(startDate).millisecondsSinceEpoch;
+    var endTimestamp = DateTime.parse(endDate).millisecondsSinceEpoch;
 
 
+    print(sessionKey);
+    print(targetName);
+    print(startDate);
+    print(endDate);
+    print(achieved);
+    print(targetId);
+
+    try {
+      var response = await WebServices.ediTarget(sessionKey!, targetId, targetName, startTimestamp, endTimestamp, achieved);
+      if (response.statusCode == 200) {
+        var target = allTargets.where((element) => element.id == targetId).single;
+        target.targetName = targetName;
+        target.startTimestamp = startTimestamp;
+        target.endTimestamp = endTimestamp;
+        target.achieved = achieved;
+        notifyListeners();
+        return SUCCESS;
+      }
+    } on SocketException catch (e) {
+      return SOCKET_EXCEPTION;
+    } on Error catch (e) {
+      return MISC_EXCEPTION;
+    }
+    return LOADING;
+  }
 
   //utils
-  int getNthDate(int startTimeStamp) {
+  int getNthDate(int endTimesatmp  ) {
     var todayTimeStamp = DateTime.now().millisecondsSinceEpoch;
-    int numberOfDays = (todayTimeStamp - startTimeStamp) ~/ 86400000;
+    int numberOfDays = (endTimesatmp - todayTimeStamp) ~/ 86400000;
 
     return numberOfDays;
   }
@@ -169,7 +196,7 @@ class TargetProvider extends ChangeNotifier {
     return false;
   }
 
-  bool  isTargetPeriodValid(int  startTimestamp, int  endTimestamp){
-     return  (startTimestamp < endTimestamp );
+  bool isTargetPeriodValid(int startTimestamp, int endTimestamp) {
+    return (startTimestamp < endTimestamp);
   }
 }

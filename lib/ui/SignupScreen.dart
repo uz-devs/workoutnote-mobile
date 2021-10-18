@@ -24,7 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     var configProvider = Provider.of<ConfigProvider>(context);
-    var  userProvider = Provider.of<UserProvider>(context);
+    var userProvider = Provider.of<UserProvider>(context);
 
     var height = MediaQuery.of(context).size.height;
 
@@ -157,22 +157,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           color: Color.fromRGBO(102, 51, 204, 1),
                           borderRadius: const BorderRadius.all(Radius.circular(120)),
                           child: Text('${signUpText['한국어']}', style: TextStyle(fontSize: 16)),
-                          onPressed: () {
+                          onPressed: () async {
                             showLoadingDialog(context);
 
                             if (_emailController.text.isNotEmpty && _nameController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
-
-                              userProvider.sendVerificationCode( user.trimField(_emailController.text), user.trimField(_nameController.text), user.trimField(_passwordController.text)).then((value) async {
+                              userProvider.sendVerificationCode(user.trimField(_emailController.text), user.trimField(_nameController.text), user.trimField(_passwordController.text)).then((value) async {
                                 Navigator.pop(context);
+                                print("weiufhiuewgifugeoi");
+                                print(value);
                                 if (value) {
                                   await userPreferences!.setBool('signUpDone', true);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen()));
-                                }
-                                else {
-                                   if(userProvider.responseCode == MISC_EXCEPTION)
-                                  showSnackBar('${unexpectedError[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-                                   else if (userProvider.responseCode == SOCKET_EXCEPTION)
-                                     showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                                } else {
+                                  if (userProvider.responseCode == MISC_EXCEPTION)
+                                    showSnackBar('${unexpectedError[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                                  else if (userProvider.responseCode == SOCKET_EXCEPTION)
+                                    showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+                                  else
+                                    showSnackBar('${unexpectedError[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                                 }
                               });
                             } else {

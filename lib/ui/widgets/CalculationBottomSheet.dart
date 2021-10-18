@@ -311,8 +311,6 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
                         '${widget.text1}',
                         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
                       )),
-
-
                   Container(
                       margin: EdgeInsets.only(left: 31.0, top: 20.0, bottom: 10.0),
                       child: Text(

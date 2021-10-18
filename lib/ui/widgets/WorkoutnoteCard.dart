@@ -12,6 +12,7 @@ import 'package:workoutnote/data/models/WorkoutListModel.dart';
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
 
+import '../DeltoidOneRepMaxWebViewScreen.dart';
 import '../NavigationController.dart';
 import 'EditWorkoutSessionDialog.dart';
 
@@ -78,7 +79,7 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                           style: TextStyle(fontSize: 16.0, color: Color.fromRGBO(102, 51, 204, 1)),
                         )),
                     Container(
-                        margin: EdgeInsets.only(top: 10, left: 9.0),
+                        margin: EdgeInsets.only(top: 10, left: 10.0),
                         child: IconButton(
                             padding: EdgeInsets.zero,
                             constraints: BoxConstraints(),
@@ -103,6 +104,26 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                                     height: 17,
                                     width: 17,
                                   ))),
+                    Container(
+                      margin: EdgeInsets.only(top: 10.0),
+                      child: IconButton(
+                        alignment: Alignment.center,
+                        onPressed: () {
+                          var sessionKey = userPreferences!.getString('sessionKey');
+                          var workoutId = widget.workout.id;
+                          var lang = configProvider.activeLanguage() == english ? 'en' : 'kr';
+
+                          var fullUrl = 'https://workoutnote.com/workout-photo-card/$sessionKey/$workoutId/$lang';
+
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => OneRepMaxCalWebView(fullUrl)));
+                        },
+                        icon: Icon(
+                          Icons.insert_photo_outlined,
+                          color: Color.fromRGBO(102, 51, 204, 1),
+                          size: 25,
+                        ),
+                      ),
+                    ),
                     Spacer(),
                     Container(
                       margin: EdgeInsets.only(right: 15.0, top: 10.0),

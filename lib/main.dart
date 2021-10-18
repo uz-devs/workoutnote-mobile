@@ -1,3 +1,4 @@
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 import 'package:workoutnote/ui/LanguageSetScreen.dart';
@@ -19,8 +20,12 @@ import 'business_logic/HomeProvider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // await FlutterDownloader.initialize(debug: true // optional: set false to disable printing logs to console
+  //     );
   await initPreferences();
   await initializeDateFormatting('ko_KR', null);
+
+  await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
 
   final List<SingleChildWidget> providers = [
     ChangeNotifierProvider(
@@ -58,16 +63,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget screen;
-    if(userPreferences!.getString('sessionKey') == null){
-      if(userPreferences!.getBool('signUpDone')??false) screen  = VerificationScreen();
-      else screen = LoginScreen();
+    if (userPreferences!.getString('sessionKey') == null) {
+      if (userPreferences!.getBool('signUpDone') ?? false)
+        screen = VerificationScreen();
+      else
+        screen = LoginScreen();
+    } else {
+      if (userPreferences!.getBool('langSetDone') ?? false)
+        screen = NavController();
+      else
+        screen = LanguageSetScreen();
     }
-    else {
-      if(userPreferences!.getBool('langSetDone')??false) screen = NavController();
-      else screen = LanguageSetScreen();
-    }
-
-
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -77,7 +83,7 @@ class MyApp extends StatelessWidget {
           focusColor: Color.fromRGBO(102, 51, 204, 1),
         ),
         home: SplashScreenView(
-          navigateRoute:screen,
+          navigateRoute: screen,
           duration: 3000,
           imageSize: 100,
           imageSrc: 'assets/images/splash_screen.png',
