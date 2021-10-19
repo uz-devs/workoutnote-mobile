@@ -80,7 +80,8 @@ Map<String, String> emptyTextField = {english: 'Input cannot be empty!', korean:
 Map<String, String> agree = {english: 'Agree: Your data will be released and used to calculate the standard.', korean: '동의: 귀하의 데이터가 공개되어 표준을 계산하는대 사용됩니다.'};
 Map<String, String> disagree = {english: 'Disagree: Your data is not used to calculate pojun.', korean: '비동의: 포준을 계산하는대 귀하의 데이터를 사용되지 않습니다.'};
 Map<String, String> emptyWorkouts = {english: 'No workouts to show yet!', korean: '아직 운동 세션이  없습니다!'};
-Map<String, String> accept = {english: 'accept', korean: '동의'};
+Map<String, String> private = {english: 'private', korean: '비공개'};
+Map<String, String> public  = {english: 'public', korean: '공개'};
 Map<String, String> noteSaveSuccess = {english: 'Note has been saved!', korean: '노트가 저장되었습니다!'};
 Map<String, String> chooseLang = {english: 'Choose the language', korean: '사용할 언어를 선택해주세요'};
 Map<String, String> selectExercise = {english: 'Please, select exercise first!', korean: '먼저 운동을 선택하십시오!'};
@@ -125,7 +126,6 @@ Map<String, String> plateBarbell8 = {english: 'Quantity(each side)', korean: '�
 Map<String, String> share_no = {english: 'Close', korean: '아니요'};
 Map<String, String> share_yes = {english: 'Share', korean: '공유하기'};
 Map<String, String> success = {english: 'Download success!', korean: '다운로드 성공!'};
-
 Map<String, String> downloadSuccess = {english: 'Image downloaded successfully!, So you want to  share it?', korean: '이미지가 다운로드되었습니다!, 공유 하시겠습니까?'};
 
 

@@ -196,7 +196,7 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                 value: selectedStartYear,
                 hint: Text('${year[configProvider.activeLanguage()]}'),
                 onChanged: (item) => setState(() => selectedStartYear = item.toString()),
-                items: years!.map((String year) => DropdownMenuItem<String>(value: year, child: Text('$year'))).toList(),
+                items: years!.map((String year) => DropdownMenuItem<String>(value: year, child: Center(child: Text('$year')))).toList(),
               ),
             ),
           ),
@@ -216,7 +216,7 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                 underline: SizedBox(),
                 hint: Text('${month[configProvider.activeLanguage()]}'),
                 onChanged: (item) => setState(() => selectedStartMonth = item.toString()),
-                items: months!.map((String month) => DropdownMenuItem<String>(value: month, child: Text('$month'))).toList(),
+                items: months!.map((String month) => DropdownMenuItem<String>(value: month, child: Center(child: Text('$month')))).toList(),
               ),
             ),
           ),
@@ -236,7 +236,7 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                 value: selectedStartDay,
                 hint: Text('${day[configProvider.activeLanguage()]}'),
                 onChanged: (item) => setState(() => selectedStartDay = item.toString()),
-                items: days!.map((String day) => DropdownMenuItem<String>(value: day, child: Text('$day'))).toList(),
+                items: days!.map((String day) => DropdownMenuItem<String>(value: day, child: Center(child: Text('$day')))).toList(),
               ),
             ),
           ),
@@ -274,7 +274,7 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                   });
                 },
                 items: years!.map((String year) {
-                  return DropdownMenuItem<String>(value: year, child: Text('$year'));
+                  return DropdownMenuItem<String>(value: year, child: Center(child: Text('$year')));
                 }).toList(),
               ),
             ),
@@ -305,7 +305,7 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                   });
                 },
                 items: months!.map((String month) {
-                  return DropdownMenuItem<String>(value: month, child: Text('$month'));
+                  return DropdownMenuItem<String>(value: month, child: Center(child: Text('$month')));
                 }).toList(),
               ),
             ),
@@ -336,7 +336,7 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                   });
                 },
                 items: days!.map((String day) {
-                  return DropdownMenuItem<String>(value: day, child: Text('$day'));
+                  return DropdownMenuItem<String>(value: day, child: Center(child: Text('$day')));
                 }).toList(),
               ),
             ),

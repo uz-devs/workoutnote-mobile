@@ -373,11 +373,14 @@ class WorkoutCreatorWidget extends StatelessWidget {
                     return DropdownMenuItem<int>(
                       value: value,
                       child: configProvider.measureMode == KG
-                          ? Text('${value}KG', textAlign: TextAlign.left, style: TextStyle(fontSize: 13.0))
-                          : Text(
-                              '${configProvider.getConvertedMass(value.toDouble())}LBS',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(fontSize: 13.0),
+                          ? Container(alignment: Alignment.center, child: Text('${value}KG', textAlign: TextAlign.left, style: TextStyle(fontSize: 13.0)))
+                          : Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                '${configProvider.getConvertedMass(value.toDouble())}LBS',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontSize: 13.0),
+                              ),
                             ),
                     );
                   }).toList(),
@@ -387,11 +390,14 @@ class WorkoutCreatorWidget extends StatelessWidget {
                       onTap: () {
                         configProvider.changeMassMeasurement();
                       },
-                      child: Text(
-                        configProvider.measureMode == KG ? 'KG' : 'LBS',
-                        style: TextStyle(
-                          fontSize: 13.0,
-                          color: Color.fromRGBO(102, 51, 204, 1),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          configProvider.measureMode == KG ? 'KG' : 'LBS',
+                          style: TextStyle(
+                            fontSize: 13.0,
+                            color: Color.fromRGBO(102, 51, 204, 1),
+                          ),
                         ),
                       ),
                     )
@@ -407,11 +413,14 @@ class WorkoutCreatorWidget extends StatelessWidget {
                         return DropdownMenuItem<int>(
                           value: value,
                           child: configProvider.measureMode == KG
-                              ? Text('${value}KG', textAlign: TextAlign.left, style: TextStyle(fontSize: 13.0, color: Colors.grey))
-                              : Text(
-                                  '${configProvider.getConvertedMass(value.toDouble())}LBS',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 13.0, color: Colors.grey),
+                              ? Container(alignment: Alignment.center, child: Text('${value}KG', textAlign: TextAlign.left, style: TextStyle(fontSize: 13.0, color: Colors.grey)))
+                              : Container(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    '${configProvider.getConvertedMass(value.toDouble())}LBS',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 13.0, color: Colors.grey),
+                                  ),
                                 ),
                         );
                       }).toList(),
@@ -420,26 +429,31 @@ class WorkoutCreatorWidget extends StatelessWidget {
         Expanded(
           flex: 2,
           child: mode == 2
-              ? DropdownButton<int>(
-                  // menuMaxHeight: 400,
-                  isExpanded: true,
-                  underline: SizedBox(),
-                  iconSize: 0.0,
-                  value: mainScreenProvider.selectedLifts[index].rep,
-                  onChanged: (newValue) async {
-                    mainScreenProvider.updateRep(index, newValue!);
-                    await mainScreenProvider.saveListToSharePreference();
-                  },
-                  items: mainScreenProvider.selectedLifts[index].reps.map((int value) {
-                    return DropdownMenuItem<int>(
-                      value: value,
-                      child: Text(
-                        '$value',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 13.0),
-                      ),
-                    );
-                  }).toList(),
+              ? Container(
+                  child: DropdownButton<int>(
+                    // menuMaxHeight: 400,
+                    isExpanded: true,
+                    underline: SizedBox(),
+                    iconSize: 0.0,
+                    value: mainScreenProvider.selectedLifts[index].rep,
+                    onChanged: (newValue) async {
+                      mainScreenProvider.updateRep(index, newValue!);
+                      await mainScreenProvider.saveListToSharePreference();
+                    },
+                    items: mainScreenProvider.selectedLifts[index].reps.map((int value) {
+                      return DropdownMenuItem<int>(
+                        value: value,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            '$value',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 13.0),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 )
               : mode == 3
                   ? DropdownButton<int>(
@@ -455,19 +469,27 @@ class WorkoutCreatorWidget extends StatelessWidget {
                       items: mainScreenProvider.unselectedExercise?.reps.map((int value) {
                         return DropdownMenuItem<int>(
                           value: value,
-                          child: Text(
-                            '$value',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 13.0, color: Colors.grey),
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '$value',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 13.0, color: Colors.grey),
+                            ),
                           ),
                         );
                       }).toList(),
                     )
-                  : Text('REP', style: TextStyle(fontSize: 13.0, color: Color.fromRGBO(102, 51, 204, 1))),
+                  : Text(
+                      'REP',
+                      style: TextStyle(fontSize: 13.0, color: Color.fromRGBO(102, 51, 204, 1)),
+                      textAlign: TextAlign.center,
+                    ),
         ),
         Expanded(
           flex: 2,
           child: Container(
+            alignment: Alignment.center,
             child: Text(
               mode != 2 ? rm.toString() : configProvider.getConvertedRM(double.parse(rm)).toString(),
               style: TextStyle(color: color, fontSize: 13.0),

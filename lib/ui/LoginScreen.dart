@@ -121,6 +121,7 @@ class LoginScreen extends StatelessWidget {
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
                             child: Text('${loginText['한국어']}', style: TextStyle(fontSize: 16)),
                             onPressed: () {
+                              FocusScope.of(context).unfocus();
                               if (_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
                                 showLoadingDialog(context);
                                 userProvider.login(user.trimField(_emailController.text), user.trimField(_passwordController.text)).then((value) {
@@ -146,8 +147,11 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           TextButton(
                             onPressed: () {
-                              if (_emailController.text.isNotEmpty)
+                              FocusScope.of(context).unfocus();
+                              if (_emailController.text.isNotEmpty) {
+                                showLoadingDialog(context);
                                 userProvider.passwordReset(_emailController.text).then((value) {
+                                  Navigator.pop(context);
                                   print('value $value');
                                   if (value) {
                                     showSnackBar('${sendEmailForReset[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
@@ -157,7 +161,7 @@ class LoginScreen extends StatelessWidget {
                                     else if (userProvider.responseCode == SOCKET_EXCEPTION) showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                                   }
                                 });
-                              else {
+                              } else {
                                 showSnackBar('${emptyEmail[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                               }
                             },
@@ -176,6 +180,8 @@ class LoginScreen extends StatelessWidget {
                             borderRadius: const BorderRadius.all(Radius.circular(120)),
                             child: Text('${signUpText['한국어']}', style: TextStyle(fontSize: 16)),
                             onPressed: () {
+                              FocusScope.of(context).unfocus();
+
                               Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
                             }),
                       ),

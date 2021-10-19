@@ -172,7 +172,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                           });
                                         },
                                         items: years!.map((String year) {
-                                          return DropdownMenuItem<String>(value: year, child: Text('$year'));
+                                          return DropdownMenuItem<String>(value: year, child: Center(child: Text('$year')));
                                         }).toList(),
                                       ),
                                     ),
@@ -201,7 +201,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                           });
                                         },
                                         items: months!.map((String month) {
-                                          return DropdownMenuItem<String>(value: month, child: Text('$month'));
+                                          return DropdownMenuItem<String>(value: month, child: Center(child: Text('$month')));
                                         }).toList(),
                                       ),
                                     ),
@@ -217,6 +217,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Color.fromRGBO(102, 51, 204, 1)), borderRadius: BorderRadius.circular(25.0)),
                                       ),
                                       child: DropdownButton(
+                                        alignment: Alignment.center,
                                         icon: Icon(
                                           Icons.arrow_drop_down,
                                           color: Color.fromRGBO(102, 51, 204, 1),
@@ -230,7 +231,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                           });
                                         },
                                         items: days!.map((String day) {
-                                          return DropdownMenuItem<String>(value: day, child: Text('$day'));
+                                          return DropdownMenuItem<String>(value: day, child: Center(child: Text('$day')));
                                         }).toList(),
                                       ),
                                     ),
@@ -314,10 +315,10 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                             FlutterSwitch(
                               valueFontSize: 10,
                                 showOnOff: true,
-                              activeText: '${accept[configProvider.activeLanguage()]}'
+                              activeText: '${public[configProvider.activeLanguage()]}'
                                 ,
 
-                                inactiveText: '',
+                                inactiveText: '${private[configProvider.activeLanguage()]}',
                                 activeTextColor: Colors.white,
                                 activeColor: Color.fromRGBO(102, 51, 204, 1),
                                 value: userProvider.isUserProfileShared,

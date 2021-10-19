@@ -180,7 +180,9 @@ class MainScreenProvider extends ChangeNotifier {
         String currentNote = jsonDecode(utf8.decode(response.bodyBytes))['note'];
         noteController.text = currentNote;
 
-        print('Noooooteee: ${noteController.text}');
+
+        print("uheifue: ${noteController.text}");
+
         notifyListeners();
       }
     } catch (e) {

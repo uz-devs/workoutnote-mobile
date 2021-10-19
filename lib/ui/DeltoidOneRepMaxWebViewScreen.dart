@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
@@ -197,7 +196,7 @@ class _OneRepMaxCalWebViewState extends State<OneRepMaxCalWebView> {
         ),
         onPressed: () async {
           Navigator.pop(context);
-          await Share.shareFiles([filePath]);
+
         },
       ),
     );

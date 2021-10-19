@@ -55,8 +55,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
     targetProvider = Provider.of<TargetProvider>(context);
 
     if (!calendarProvider.isCalendarWorkoutsRequestDone && calendarProvider.calendarResponseCode != SUCCESS) {
-      print("Hello world");
-      calendarProvider.fetchCalendarWorkoutSessions().then((value) {});
+      calendarProvider.fetchCalendarWorkoutSessions().then((value) async {
+
+      });
     }
 
     if (!targetProvider.hasRequestDone && targetProvider.responseCode != SUCCESS) {
@@ -66,6 +67,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+
+    print(calendarProvider.noteController.text);
     width = MediaQuery.of(context).size.width;
     List<WorkOut> showWorkOuts = [];
 
