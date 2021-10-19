@@ -229,7 +229,6 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                 contentPadding: EdgeInsets.only(left: 10.0, right: 10.0),
               ),
               child: DropdownButton(
-                alignment: Alignment.center,
                 icon: Center(
                   child: Icon(
                     Icons.arrow_drop_down,
@@ -261,7 +260,6 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 2.0, color: Color.fromRGBO(102, 51, 204, 1)), borderRadius: BorderRadius.circular(25.0)),
               ),
               child: DropdownButton(
-                alignment: Alignment.center,
                 icon: Center(
                   child: Icon(
                     Icons.arrow_drop_down,
@@ -293,7 +291,6 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Color.fromRGBO(102, 51, 204, 1)), borderRadius: BorderRadius.circular(25.0)),
               ),
               child: DropdownButton(
-                alignment: Alignment.center,
                 icon: Center(
                   child: Icon(
                     Icons.arrow_drop_down,
@@ -333,7 +330,6 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                 contentPadding: EdgeInsets.only(left: 10.0, right: 10.0),
               ),
               child: DropdownButton(
-                alignment: Alignment.center,
                 icon: Center(
                   child: Icon(
                     Icons.arrow_drop_down,
@@ -365,7 +361,6 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 2.0, color: Color.fromRGBO(102, 51, 204, 1)), borderRadius: BorderRadius.circular(25.0)),
               ),
               child: DropdownButton(
-                alignment: Alignment.center,
                 icon: Center(
                   child: Icon(
                     Icons.arrow_drop_down,
@@ -397,7 +392,6 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Color.fromRGBO(102, 51, 204, 1)), borderRadius: BorderRadius.circular(25.0)),
               ),
               child: DropdownButton(
-                alignment: Alignment.center,
                 icon: Center(
                   child: Icon(
                     Icons.arrow_drop_down,

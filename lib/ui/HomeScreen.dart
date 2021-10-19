@@ -6,7 +6,7 @@ import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/business_logic/CreateWorkoutSessionProvider.dart';
 import 'package:workoutnote/business_logic/ExercisesListProvider.dart';
 import 'package:workoutnote/business_logic/HomeProvider.dart';
-import 'package:workoutnote/ui/widgets/WorkoutCreateCard.dart';
+import 'package:workoutnote/ui/widgets/CreateWorkoutCard.dart';
 import 'package:workoutnote/ui/widgets/WorkoutnoteCard.dart';
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if (index == 0)
               return Container(margin: EdgeInsets.only(left: 20, top: 30, bottom: 20), child: RichText(text: TextSpan(children: [TextSpan(text: '${welcomeMessage[configProvider.activeLanguage()]}, ', style: TextStyle(fontSize: 30, color: Colors.black)), TextSpan(text: '${userPreferences!.getString('name') ?? ''}', style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1), fontSize: 30))])));
             else if (index == 1) {
-              return CreateWorkOutCard(widget.width, widget.height, mainProvider.workOuts, mainProvider.calendarWorkouts);
+              return WorkoutCreatorWidget(widget.width, widget.height, mainProvider.workOuts, mainProvider.calendarWorkouts);
             } else if (index == 2) {
               if(mainProvider.workOuts.isEmpty)
                 return  Center(child: Container(

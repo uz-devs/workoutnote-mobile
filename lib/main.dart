@@ -25,7 +25,7 @@ void main() async {
   await initPreferences();
   await initializeDateFormatting('ko_KR', null);
 
-  await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+  // todo @ilyosbek await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
 
   final List<SingleChildWidget> providers = [
     ChangeNotifierProvider(
