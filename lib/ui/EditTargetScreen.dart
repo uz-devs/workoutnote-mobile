@@ -58,6 +58,7 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
     var height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      appBar: AppBar(leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: Color.fromRGBO(102, 51, 204, 1)), onPressed: () => Navigator.of(context).pop()), backgroundColor: Colors.white, title: Text('${editTarget[configProvider.activeLanguage()]}', style: TextStyle(color: Colors.black))),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -66,30 +67,6 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.arrow_back_ios,
-                          color: Color.fromRGBO(102, 51, 204, 1),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                        child: Center(
-                            child: Container(
-                      margin: EdgeInsets.only(right: 10.0),
-                      child: Text(
-                        '${editPlan[configProvider.activeLanguage()]}',
-                        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                      ),
-                    )))
-                  ],
-                ),
                 Container(
                     margin: EdgeInsets.only(left: 15.0, top: 25.0),
                     child: Text(
@@ -115,13 +92,9 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                       contentPadding: EdgeInsets.only(left: 20.0),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25.0),
-                        borderSide: BorderSide(
-                          color: Color.fromRGBO(102, 51, 204, 1),
-                        ),
+                        borderSide: BorderSide(color: Color.fromRGBO(102, 51, 204, 1)),
                       ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
                     ),
                   ),
                 ),
@@ -151,57 +124,46 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       CupertinoButton(
-                          color: widget.target.achieved ? Color.fromRGBO(102, 51, 204, 1) : Colors.grey,
-                          borderRadius: const BorderRadius.all(Radius.circular(120)),
-                          child: Text('${achieved[configProvider.activeLanguage()]}', style: TextStyle(fontSize: 16)),
-                          onPressed: () {
-                            setState(() {
-                              widget.target.achieved = true;
-                            });
-                          }),
+                        color: widget.target.achieved ? Color.fromRGBO(102, 51, 204, 1) : Colors.grey,
+                        borderRadius: const BorderRadius.all(Radius.circular(120)),
+                        child: Text('${achieved[configProvider.activeLanguage()]}', style: TextStyle(fontSize: 16)),
+                        onPressed: () => setState(() => widget.target.achieved = true),
+                      ),
                       CupertinoButton(
-                          color: !widget.target.achieved ? Color.fromRGBO(102, 51, 204, 1) : Colors.grey,
-                          borderRadius: const BorderRadius.all(Radius.circular(120)),
-                          child: Text('${notAchieved[configProvider.activeLanguage()]}', style: TextStyle(fontSize: 16)),
-                          onPressed: () {
-                            setState(() {
-                              widget.target.achieved = false;
-                            });
-                          }),
+                        color: !widget.target.achieved ? Color.fromRGBO(102, 51, 204, 1) : Colors.grey,
+                        borderRadius: const BorderRadius.all(Radius.circular(120)),
+                        child: Text('${notAchieved[configProvider.activeLanguage()]}', style: TextStyle(fontSize: 16)),
+                        onPressed: () => setState(() => widget.target.achieved = false),
+                      ),
                     ],
                   ),
                 ),
-                Spacer(),
+                Container(height: 50),
                 Center(
                   child: Container(
                     width: double.infinity,
-                    margin: EdgeInsets.only(bottom: 15.0, left: 15.0, right: 15.0),
+                    margin: EdgeInsets.all(30),
                     child: CupertinoButton(
                         color: Color.fromRGBO(102, 51, 204, 1),
                         borderRadius: const BorderRadius.all(Radius.circular(120)),
-                        child: Text('${editPlan[configProvider.activeLanguage()]}', style: TextStyle(fontSize: 16)),
+                        child: Text('${update[configProvider.activeLanguage()]}', style: TextStyle(fontSize: 16)),
+                        padding: EdgeInsets.all(16),
                         onPressed: () {
                           showLoadingDialog(context);
                           targetProvider.editTarget(widget.target.id ?? -1, targetNameTextEditingController.text, '${selectedStartYear}-${selectedStartMonth}-${selectedStartDay}', '${selectedEndYear}-${selectedEndMonth}-${selectedEndDay}', widget.target.achieved).then((value) {
                             Navigator.pop(context);
                             switch (value) {
                               case SUCCESS:
-                                {
-                                  showSnackBar('${targetEditSuccess[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
-                                }
+                                showSnackBar('${targetEditSuccess[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
                                 break;
                               case SOCKET_EXCEPTION:
-                                {
-                                  showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-                                }
+                                showSnackBar('${socketException[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                                 break;
                               case MISC_EXCEPTION:
-                                {
-                                  showSnackBar('${unexpectedError[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-                                }
+                                showSnackBar('${unexpectedError[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
                                 break;
                               default:
-                                {}
+                                break;
                             }
                           });
                         }),
@@ -229,23 +191,12 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                 contentPadding: EdgeInsets.only(left: 10.0, right: 10.0),
               ),
               child: DropdownButton(
-                icon: Center(
-                  child: Icon(
-                    Icons.arrow_drop_down,
-                    color: Color.fromRGBO(102, 51, 204, 1),
-                  ),
-                ),
+                icon: Center(child: Icon(Icons.arrow_drop_down, color: Color.fromRGBO(102, 51, 204, 1))),
                 underline: SizedBox(),
                 value: selectedStartYear,
                 hint: Text('${year[configProvider.activeLanguage()]}'),
-                onChanged: (item) {
-                  setState(() {
-                    selectedStartYear = item.toString();
-                  });
-                },
-                items: years!.map((String year) {
-                  return DropdownMenuItem<String>(value: year, child: Text('$year'));
-                }).toList(),
+                onChanged: (item) => setState(() => selectedStartYear = item.toString()),
+                items: years!.map((String year) => DropdownMenuItem<String>(value: year, child: Text('$year'))).toList(),
               ),
             ),
           ),
@@ -260,23 +211,12 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 2.0, color: Color.fromRGBO(102, 51, 204, 1)), borderRadius: BorderRadius.circular(25.0)),
               ),
               child: DropdownButton(
-                icon: Center(
-                  child: Icon(
-                    Icons.arrow_drop_down,
-                    color: Color.fromRGBO(102, 51, 204, 1),
-                  ),
-                ),
+                icon: Center(child: Icon(Icons.arrow_drop_down, color: Color.fromRGBO(102, 51, 204, 1))),
                 value: selectedStartMonth,
                 underline: SizedBox(),
                 hint: Text('${month[configProvider.activeLanguage()]}'),
-                onChanged: (item) {
-                  setState(() {
-                    selectedStartMonth = item.toString();
-                  });
-                },
-                items: months!.map((String month) {
-                  return DropdownMenuItem<String>(value: month, child: Text('$month'));
-                }).toList(),
+                onChanged: (item) => setState(() => selectedStartMonth = item.toString()),
+                items: months!.map((String month) => DropdownMenuItem<String>(value: month, child: Text('$month'))).toList(),
               ),
             ),
           ),
@@ -291,23 +231,12 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Color.fromRGBO(102, 51, 204, 1)), borderRadius: BorderRadius.circular(25.0)),
               ),
               child: DropdownButton(
-                icon: Center(
-                  child: Icon(
-                    Icons.arrow_drop_down,
-                    color: Color.fromRGBO(102, 51, 204, 1),
-                  ),
-                ),
+                icon: Center(child: Icon(Icons.arrow_drop_down, color: Color.fromRGBO(102, 51, 204, 1))),
                 underline: SizedBox(),
                 value: selectedStartDay,
                 hint: Text('${day[configProvider.activeLanguage()]}'),
-                onChanged: (item) {
-                  setState(() {
-                    selectedStartDay = item.toString();
-                  });
-                },
-                items: days!.map((String day) {
-                  return DropdownMenuItem<String>(value: day, child: Text('$day'));
-                }).toList(),
+                onChanged: (item) => setState(() => selectedStartDay = item.toString()),
+                items: days!.map((String day) => DropdownMenuItem<String>(value: day, child: Text('$day'))).toList(),
               ),
             ),
           ),

@@ -87,7 +87,6 @@ Map<String, String> chooseLang = {english: 'Choose the language', korean: '사�
 Map<String, String> selectExercise = {english: 'Please, select exercise first!', korean: '먼저 운동을 선택하십시오!'};
 Map<String, String> socketException = {english: 'Please, turn on the internet!', korean: '인터넷 껴주세요!'};
 Map<String, String> registerPlan = {english: 'Register target', korean: '목표 등록하기'};
-Map<String, String> editPlan = {english: 'Edit Target', korean: '수정하기'};
 Map<String, String> planName = {english: 'Target name', korean: '목표 이름'};
 Map<String, String> startDate = {english: 'Start date', korean: '시작 일자'};
 Map<String, String> endDate = {english: 'End date', korean: '종료 일자'};

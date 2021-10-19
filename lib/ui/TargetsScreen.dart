@@ -33,7 +33,7 @@ class _TargetsScreenState extends State<TargetsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: Color.fromRGBO(102, 51, 204, 1)), onPressed: () => Navigator.of(context).pop()), backgroundColor: Colors.white, title: Text('${targetList[configProvider.activeLanguage()]}')),
+      appBar: AppBar(leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: Color.fromRGBO(102, 51, 204, 1)), onPressed: () => Navigator.of(context).pop()), backgroundColor: Colors.white, title: Text('${targetList[configProvider.activeLanguage()]}', style: TextStyle(color: Colors.black))),
       body: Container(
         child: ListView.builder(
             itemCount: targetProvider.allTargets.length + 1,

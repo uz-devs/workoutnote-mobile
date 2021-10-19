@@ -75,7 +75,7 @@ class _OneRepMaxCalWebViewState extends State<OneRepMaxCalWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: Color.fromRGBO(102, 51, 204, 1)), onPressed: () => Navigator.of(context).pop()), backgroundColor: Colors.white, title: Text(widget.pageTitle)),
+        appBar: AppBar(leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: Color.fromRGBO(102, 51, 204, 1)), onPressed: () => Navigator.of(context).pop()), backgroundColor: Colors.white, title: Text(widget.pageTitle, style: TextStyle(color: Colors.black))),
         body: SafeArea(
           child: Column(children: <Widget>[
             Expanded(
