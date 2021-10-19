@@ -54,11 +54,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     configProvider = Provider.of<ConfigProvider>(context);
     targetProvider = Provider.of<TargetProvider>(context);
 
-    if (!calendarProvider.isCalendarWorkoutsRequestDone && calendarProvider.calendarResponseCode != SUCCESS) {
-      calendarProvider.fetchCalendarWorkoutSessions().then((value) async {
 
-      });
-    }
 
     if (!targetProvider.hasRequestDone && targetProvider.responseCode != SUCCESS) {
       targetProvider.fetchAllTargets().then((value) {});

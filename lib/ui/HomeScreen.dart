@@ -39,7 +39,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     //showLoaderDialog(context);
     if (!mainProvider.todayWorkoutsFetched) {
-      mainProvider.fetchTodayWorkouts().then((value) {});
+      mainProvider.fetchTodayWorkouts().then((value) {
+        if (!mainProvider.isCalendarWorkoutsRequestDone && mainProvider.calendarResponseCode != SUCCESS) {
+          mainProvider.fetchCalendarWorkoutSessions().then((value) async {});
+        }
+      });
       if (exerciseDialogProvider.allExercises.isEmpty) {
         exerciseDialogProvider.fetchExercises().then((value) {
           createWorkoutProvider.restoreAllLifts(exerciseDialogProvider);

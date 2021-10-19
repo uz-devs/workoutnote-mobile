@@ -180,7 +180,6 @@ class MainScreenProvider extends ChangeNotifier {
         String currentNote = jsonDecode(utf8.decode(response.bodyBytes))['note'];
         noteController.text = currentNote;
 
-
         print("uheifue: ${noteController.text}");
 
         notifyListeners();
@@ -213,6 +212,9 @@ class MainScreenProvider extends ChangeNotifier {
     List<EditableLift> lifts = [];
     String? title;
 
+    print("1");
+
+    // if (calendarWorkouts.isNotEmpty && calendarWorkouts[0].title == '[]') calendarWorkouts.clear();
     if (calendarWorkouts.isNotEmpty) {
       for (int i = 0; i < calendarWorkouts.length; i++) {
         if (calendarWorkouts[i].id == id) {
@@ -223,6 +225,8 @@ class MainScreenProvider extends ChangeNotifier {
         }
       }
     } else if (mode == 1) {
+      print("3");
+
       print(workOuts.length);
       var workout = workOuts.where((element) => element.id == id).single;
 
@@ -232,6 +236,8 @@ class MainScreenProvider extends ChangeNotifier {
         lifts.add(EditableLift.create(workout.lifts![j].exerciseName, workout.lifts![j].exerciseId, exercises.isNotEmpty ? exercises.where((element) => element.id == workout.lifts![j].exerciseId).first.bodyPart : '', workout.lifts![j].liftMas!.toInt(), workout.lifts![j].repetitions ?? 0, workout.lifts![j].oneRepMax ?? 0.0, true, -1));
       }
     } else if (mode == 3) {
+      print("4");
+
       var workout = favoriteWorkOuts.where((element) => element.id == id).single;
       for (int j = 0; j < workout.lifts!.length; j++) {
         title = workout.title ?? '';
