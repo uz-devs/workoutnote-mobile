@@ -138,3 +138,6 @@ List<Map<String, String>> wilksGender = [
   {english: 'Male', korean: '남'},
   {english: 'Female', korean: '여'}
 ];
+
+Map<String, String> deltoidTest = {english: 'Deltoid 1RM Test', korean: '델토이드 1RM 테스트'};
+Map<String, String> deltoidResult = {english: 'Deltoid 1RM Result', korean: '델토이드 1RM 검사결과'};

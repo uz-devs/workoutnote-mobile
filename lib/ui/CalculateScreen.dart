@@ -6,7 +6,6 @@ import 'package:workoutnote/ui/widgets/CalculationBottomSheet.dart';
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
 
-import 'DeltoidOneRepMaxTestScreen.dart';
 import 'DeltoidOneRepMaxWebViewScreen.dart';
 
 class CalculateScreen extends StatefulWidget {
@@ -101,21 +100,19 @@ class _CalculateScreenState extends State<CalculateScreen> {
                   children: [
                     TextButton(
                         onPressed: () {
-                          var deltoid_test = 'deltoid_test';
                           var sessionKey = userPreferences!.getString('sessionKey');
                           var lang = configProvider.activeLanguage() == english ? 'en' : 'kr';
-                          var fullUrl = 'https://workoutnote.com/calculators/$sessionKey/$deltoid_test/$lang';
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => OneRepMaxCalWebView(deltoid_test, fullUrl)));
+                          var fullUrl = 'https://workoutnote.com/calculators/$sessionKey/deltoid_test/$lang';
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => OneRepMaxCalWebView('${deltoidTest[configProvider.activeLanguage()]}', fullUrl)));
                         },
                         child: Text('Test', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold))),
                     Text('|', style: TextStyle(color: Colors.white)),
                     TextButton(
                         onPressed: () {
-                          var deltoid_test = 'deltoid_result';
                           var sessionKey = userPreferences!.getString('sessionKey');
                           var lang = configProvider.activeLanguage() == english ? 'en' : 'kr';
-                          var fullUrl = 'https://workoutnote.com/calculators/$sessionKey/$deltoid_test/$lang';
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => OneRepMaxCalWebView(deltoid_test, fullUrl)));
+                          var fullUrl = 'https://workoutnote.com/calculators/$sessionKey/deltoid_result/$lang';
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => OneRepMaxCalWebView('${deltoidResult[configProvider.activeLanguage()]}', fullUrl)));
                         },
                         child: Text('Result', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold))),
                   ],
