@@ -84,7 +84,7 @@ class _EditTargetScreenState extends State<EditTargetScreen> {
                       hintStyle: TextStyle(color: Colors.grey, fontSize: 14.0),
                       suffixIcon: IconButton(
                         onPressed: () {
-                          // _emailController.clear();
+                          targetNameTextEditingController.clear();
                         },
                         icon: Icon(Icons.close),
                         color: Color.fromRGBO(102, 51, 204, 1),

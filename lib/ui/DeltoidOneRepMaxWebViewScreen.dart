@@ -196,6 +196,7 @@ class _OneRepMaxCalWebViewState extends State<OneRepMaxCalWebView> {
           style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
         ),
         onPressed: () async {
+          Navigator.pop(context);
           await Share.shareFiles([filePath]);
         },
       ),
