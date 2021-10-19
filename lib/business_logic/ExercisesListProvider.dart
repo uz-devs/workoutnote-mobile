@@ -9,8 +9,6 @@ import 'package:workoutnote/data/models/BodyPartsModel.dart';
 import 'package:workoutnote/data/models/ExerciseModel.dart';
 import 'package:workoutnote/data/services/Network.dart';
 
-
-
 import 'package:workoutnote/utils/Utils.dart';
 
 class ExercisesDialogProvider extends ChangeNotifier {
@@ -22,26 +20,21 @@ class ExercisesDialogProvider extends ChangeNotifier {
   int responseCode = LOADING;
   bool showFavorite = false;
   String activeBodyPart = '';
- //endregion
+
+  //endregion
   //region api calls
   Future<void> fetchExercises() async {
-
-
-
     print("Hello world");
-    if(allExercises.isNotEmpty) allExercises.clear();
+    if (allExercises.isNotEmpty) allExercises.clear();
     try {
       var response = await WebServices.fetchExercises();
 
       if (response.statusCode == 200) {
-        var workoutsResponse = ExercisesResponse.fromJson(
-            jsonDecode(utf8.decode(response.bodyBytes)));
+        var workoutsResponse = ExercisesResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
         if (workoutsResponse.success) {
           allExercises.addAll(workoutsResponse.exercises ?? []);
-          var response = await WebServices.fetchFavoriteExercises(
-              userPreferences!.getString('sessionKey') ?? '');
-          var execResponse = ExercisesResponse.fromJson(
-              jsonDecode(utf8.decode(response.bodyBytes)));
+          var response = await WebServices.fetchFavoriteExercises(userPreferences!.getString('sessionKey') ?? '');
+          var execResponse = ExercisesResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
           if (execResponse.success) {
             responseCode = SUCCESS;
             favoriteExercises.addAll(execResponse.exercises ?? []);
@@ -73,11 +66,10 @@ class ExercisesDialogProvider extends ChangeNotifier {
       var response = await WebServices.fetchBodyParts();
 
       if (response.statusCode == 200) {
-        var bodyParts = BodyPartsResponse.fromJson(
-            jsonDecode(utf8.decode(response.bodyBytes)));
-        myBodyParts.addAll(bodyParts.bodyParts??[]);
+        var bodyParts = BodyPartsResponse.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+        myBodyParts.addAll(bodyParts.bodyParts ?? []);
       }
-    }  on SocketException catch (e) {
+    } on SocketException catch (e) {
       responseCode = SOCKET_EXCEPTION;
       print(e);
     } on Error catch (e) {
@@ -88,8 +80,7 @@ class ExercisesDialogProvider extends ChangeNotifier {
 
   Future<void> setFavoriteExercise(String sessionKey, int exerciseId, Exercise exercise) async {
     try {
-      var response =
-          await WebServices.setMyFavoriteExercise(sessionKey, exerciseId);
+      var response = await WebServices.setMyFavoriteExercise(sessionKey, exerciseId);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
         _updateExerciseFavoriteStatus(exerciseId, 1);
@@ -101,8 +92,7 @@ class ExercisesDialogProvider extends ChangeNotifier {
 
   Future<void> unsetFavoriteExercise(String sessionKey, int exerciseId, Exercise exercise) async {
     try {
-      var response =
-          await WebServices.unsetMyFavoriteExercise(sessionKey, exerciseId);
+      var response = await WebServices.unsetMyFavoriteExercise(sessionKey, exerciseId);
       print(response.body);
       if (response.statusCode == 200 && jsonDecode(response.body)['success']) {
         _updateExerciseFavoriteStatus(exerciseId, 0);
@@ -111,14 +101,14 @@ class ExercisesDialogProvider extends ChangeNotifier {
       print(e);
     }
   }
+
   //endregion
   //region  utils
   void filterExercises(List<Exercise> showExercises) {
     if (showFavorite) {
       if (activeBodyPart.isNotEmpty) {
         for (int i = 0; i < favoriteExercises.length; i++) {
-          if (favoriteExercises[i].bodyPart == activeBodyPart)
-            showExercises.add(favoriteExercises[i]);
+          if (favoriteExercises[i].bodyPart == activeBodyPart) showExercises.add(favoriteExercises[i]);
         }
       } else {
         showExercises.addAll(favoriteExercises);
@@ -126,8 +116,7 @@ class ExercisesDialogProvider extends ChangeNotifier {
     } else {
       if (activeBodyPart.isNotEmpty) {
         for (int i = 0; i < allExercises.length; i++) {
-          if (allExercises[i].bodyPart == activeBodyPart)
-            showExercises.add(allExercises[i]);
+          if (allExercises[i].bodyPart == activeBodyPart) showExercises.add(allExercises[i]);
         }
       } else {
         showExercises.addAll(allExercises);
@@ -139,7 +128,15 @@ class ExercisesDialogProvider extends ChangeNotifier {
     List<Exercise> temps = [];
     if (searchWord.isNotEmpty) {
       for (int i = 0; i < showExercises.length; i++) {
-        if (showExercises[i].name!.contains(searchWord) ||  '${showExercises[i].namedTranslations!.english}'.contains(searchWord)) {
+        String? koreanEx = showExercises[i].name!.toLowerCase();
+        String? englishEx = showExercises[i].namedTranslations!.english;
+        if (englishEx != null) {
+          englishEx = englishEx.toLowerCase();
+        } else {
+          englishEx = '';
+        }
+
+        if (koreanEx.contains(searchWord.toLowerCase()) || englishEx.contains(searchWord.toLowerCase())) {
           temps.add(showExercises[i]);
         }
       }
@@ -160,10 +157,8 @@ class ExercisesDialogProvider extends ChangeNotifier {
         for (int i = 0; i < allExercises.length; i++) {
           if (allExercises[i].id == id) allExercises[i].isFavorite = true;
         }
-        favoriteExercises
-            .addAll(allExercises.where((element) => element.id == id));
-      }
-      else {
+        favoriteExercises.addAll(allExercises.where((element) => element.id == id));
+      } else {
         for (int i = 0; i < allExercises.length; i++) {
           if (allExercises[i].id == id) allExercises[i].isFavorite = false;
         }
@@ -183,7 +178,6 @@ class ExercisesDialogProvider extends ChangeNotifier {
   }
 
   void reset() {
-
     favoriteExercises.clear();
     allExercises.clear();
     myBodyParts.clear();
@@ -192,6 +186,6 @@ class ExercisesDialogProvider extends ChangeNotifier {
     showFavorite = false;
     activeBodyPart = '';
   }
-  //endregion
+//endregion
 
 }

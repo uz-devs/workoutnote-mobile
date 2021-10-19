@@ -244,13 +244,13 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
             children: [
               percentage == 100
                   ? Text(
-                      '${percentage}%\t\t\t\t\t\t\t\t\t\t\t${mass} kg',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )
+                '${percentage}%\t\t\t\t\t\t\t\t\t\t\t${mass} kg',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )
                   : Text(
-                      '${percentage}%\t\t\t\t\t\t\t\t\t\t\t\t\t${mass} kg',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                '${percentage}%\t\t\t\t\t\t\t\t\t\t\t\t\t${mass} kg',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               RichText(text: TextSpan(children: [TextSpan(text: '${repNumber}', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)), TextSpan(text: 'Repeti', style: TextStyle(color: Colors.transparent))]))
             ],
           ),
@@ -303,195 +303,217 @@ class _CalculationBottomSheetState extends State<CalculationBottomSheet> {
         ),
         child: widget.mode == 3 || widget.mode == 4
             ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      margin: EdgeInsets.only(left: 31.0, top: 28.0, bottom: 10.0),
-                      child: Text(
-                        '${widget.text1}',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
-                      )),
-                  Container(
-                      margin: EdgeInsets.only(left: 31.0, top: 20.0, bottom: 10.0),
-                      child: Text(
-                        '${widget.text2}',
-                        style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold),
-                      )),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(width: 2.0, color: Colors.white),
-                      ),
-                    ),
-                    margin: EdgeInsets.only(left: 31.0, right: 31.0),
-                    child: TextFormField(
-                      controller: textController1,
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                      keyboardType: TextInputType.number,
-                      onChanged: (c) async {},
-                      decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
-                        hintText: '${enterNumber[configProvider.activeLanguage()]}',
-                        hintStyle: TextStyle(color: Colors.white, fontSize: 14),
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(bottom: 30.0, top: 30),
-                    child: CupertinoButton(
-                        color: Colors.white,
-                        borderRadius: const BorderRadius.all(Radius.circular(120)),
-                        child: Text(
-                          '${calculate[configProvider.activeLanguage()]}',
-                          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
-                        ),
-                        onPressed: () {
-                          if (widget.mode == 3 || widget.mode == 4) {
-                            if (textController2.text.isNotEmpty && textController1.text.isNotEmpty) {
-                              FocusScope.of(context).unfocus();
-                              if (widget.mode == 3)
-                                _calculateRM();
-                              else if (widget.mode == 4) {
-                                _calculatePlateBarbell();
-                              }
-                            } else {
-                              showToast('${emptyTextField[configProvider.activeLanguage()]}');
-                            }
-                          }
-                        }),
-                  ),
-                ],
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      margin: EdgeInsets.only(left: 31.0, top: 28.0, bottom: 10.0),
-                      child: Text(
-                        'Body weight',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
-                      )),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(width: 2.0, color: Colors.white),
-                      ),
-                    ),
-                    margin: EdgeInsets.only(left: 31.0, right: 31.0),
-                    child: TextFormField(
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                      keyboardType: TextInputType.number,
-                      onChanged: (c) {},
-                      controller: bodyWeightController,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
-                        hintText: '${enterNumber[configProvider.activeLanguage()]}',
-                        hintStyle: TextStyle(color: Colors.white, fontSize: 14.0),
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  Container(
-                      margin: EdgeInsets.only(left: 31.0, top: 28.0, bottom: 10.0),
-                      child: Text(
-                        '${widget.text1}',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
-                      )),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(width: 2.0, color: Colors.white),
-                      ),
-                    ),
-                    margin: EdgeInsets.only(left: 31.0, right: 31.0),
-                    child: TextFormField(
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                      keyboardType: TextInputType.number,
-                      onChanged: (c) {},
-                      controller: textController2,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
-                        hintText: '${enterNumber[configProvider.activeLanguage()]}',
-                        hintStyle: TextStyle(color: Colors.white, fontSize: 14.0),
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  Container(
-                      margin: EdgeInsets.only(left: 31.0, top: 20.0, bottom: 10.0),
-                      child: Text(
-                        '${widget.text2}',
-                        style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold),
-                      )),
-                  Container(
-                      margin: EdgeInsets.only(left: 31.0, right: 31.0),
-                      width: 300,
-                      height: 80,
-                      child: InputDecorator(
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Colors.white), borderRadius: BorderRadius.circular(15.0)),
-                          contentPadding: EdgeInsets.only(left: 20.0, right: 20.0),
-                        ),
-                        child: DropdownButton<String>(
-                            icon: Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.white,
-                            ),
-                            isExpanded: true,
-                            selectedItemBuilder: (BuildContext context) {
-                              return genders.map((String? value) {
-                                return Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      '$value',
-                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    ));
-                              }).toList();
-                            },
-                            underline: SizedBox(),
-                            value: currentGender,
-                            onChanged: (newValue) {
-                              setState(() {
-                                currentGender = newValue!;
-                              });
-                            },
-                            items: genders.map((String? value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text('${value}', style: TextStyle(fontWeight: FontWeight.bold)),
-                              );
-                            }).toList()),
-                      )),
-                  Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(bottom: 30.0),
-                    child: CupertinoButton(
-                        color: Colors.white,
-                        borderRadius: const BorderRadius.all(Radius.circular(120)),
-                        child: Text(
-                          '${calculate[configProvider.activeLanguage()]}',
-                          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
-                        ),
-                        onPressed: () {
-                          if (bodyWeightController.text.isNotEmpty && textController2.text.isNotEmpty && currentGender != 'None') {
-                            FocusScope.of(context).unfocus();
-                            _calculateWilks();
-                          } else {
-                            showToast('${emptyTextField[configProvider.activeLanguage()]}');
-                          }
-                        }),
-                  ),
-                ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                margin: EdgeInsets.only(left: 31.0, top: 28.0, bottom: 10.0),
+                child: Text(
+                  '${widget.text1}',
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
+                )),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 2.0, color: Colors.white),
+                ),
               ),
+              margin: EdgeInsets.only(left: 31.0, right: 31.0),
+              child: TextFormField(
+                style: TextStyle(color: Colors.white, fontSize: 14),
+                keyboardType: TextInputType.number,
+                onChanged: (c) async {},
+                controller: textController2,
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
+                  hintText: '${enterNumber[configProvider.activeLanguage()]}',
+                  hintStyle: TextStyle(color: Colors.white, fontSize: 14.0),
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.only(left: 31.0, top: 20.0, bottom: 10.0),
+                child: Text(
+                  '${widget.text2}',
+                  style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold),
+                )),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 2.0, color: Colors.white),
+                ),
+              ),
+              margin: EdgeInsets.only(left: 31.0, right: 31.0),
+              child: TextFormField(
+                controller: textController1,
+                style: TextStyle(color: Colors.white, fontSize: 14),
+                keyboardType: TextInputType.number,
+                onChanged: (c) async {},
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
+                  hintText: '${enterNumber[configProvider.activeLanguage()]}',
+                  hintStyle: TextStyle(color: Colors.white, fontSize: 14),
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(bottom: 30.0, top: 30),
+              child: CupertinoButton(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(120)),
+                  child: Text(
+                    '${calculate[configProvider.activeLanguage()]}',
+                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
+                  ),
+                  onPressed: () {
+                    if (widget.mode == 3 || widget.mode == 4) {
+                      if (textController2.text.isNotEmpty && textController1.text.isNotEmpty) {
+                        FocusScope.of(context).unfocus();
+                        if (widget.mode == 3)
+                          _calculateRM();
+                        else if (widget.mode == 4) {
+                          _calculatePlateBarbell();
+                        }
+                      } else {
+                        showToast('${emptyTextField[configProvider.activeLanguage()]}');
+                      }
+                    }
+                  }),
+            ),
+          ],
+        )
+            : Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                margin: EdgeInsets.only(left: 31.0, top: 28.0, bottom: 10.0),
+                child: Text(
+                  'Body weight',
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
+                )),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 2.0, color: Colors.white),
+                ),
+              ),
+              margin: EdgeInsets.only(left: 31.0, right: 31.0),
+              child: TextFormField(
+                style: TextStyle(color: Colors.white, fontSize: 14),
+                keyboardType: TextInputType.number,
+                onChanged: (c) {},
+                controller: bodyWeightController,
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
+                  hintText: '${enterNumber[configProvider.activeLanguage()]}',
+                  hintStyle: TextStyle(color: Colors.white, fontSize: 14.0),
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.only(left: 31.0, top: 28.0, bottom: 10.0),
+                child: Text(
+                  '${widget.text1}',
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.0),
+                )),
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 2.0, color: Colors.white),
+                ),
+              ),
+              margin: EdgeInsets.only(left: 31.0, right: 31.0),
+              child: TextFormField(
+                style: TextStyle(color: Colors.white, fontSize: 14),
+                keyboardType: TextInputType.number,
+                onChanged: (c) {},
+                controller: textController2,
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: EdgeInsets.only(left: 10.0, bottom: 5.0),
+                  hintText: '${enterNumber[configProvider.activeLanguage()]}',
+                  hintStyle: TextStyle(color: Colors.white, fontSize: 14.0),
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.only(left: 31.0, top: 20.0, bottom: 10.0),
+                child: Text(
+                  '${widget.text2}',
+                  style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold),
+                )),
+            Container(
+                margin: EdgeInsets.only(left: 31.0, right: 31.0),
+                width: 300,
+                height: 80,
+                child: InputDecorator(
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Colors.white), borderRadius: BorderRadius.circular(15.0)),
+                    contentPadding: EdgeInsets.only(left: 20.0, right: 20.0),
+                  ),
+                  child: DropdownButton<String>(
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.white,
+                      ),
+                      isExpanded: true,
+                      selectedItemBuilder: (BuildContext context) {
+                        return genders.map((String? value) {
+                          return Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '$value',
+                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              ));
+                        }).toList();
+                      },
+                      underline: SizedBox(),
+                      value: currentGender,
+                      onChanged: (newValue) {
+                        setState(() {
+                          currentGender = newValue!;
+                        });
+                      },
+                      items: genders.map((String? value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text('${value}', style: TextStyle(fontWeight: FontWeight.bold)),
+                        );
+                      }).toList()),
+                )),
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(bottom: 30.0),
+              child: CupertinoButton(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(120)),
+                  child: Text(
+                    '${calculate[configProvider.activeLanguage()]}',
+                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(102, 51, 204, 1)),
+                  ),
+                  onPressed: () {
+                    if (bodyWeightController.text.isNotEmpty && textController2.text.isNotEmpty && currentGender != 'None') {
+                      FocusScope.of(context).unfocus();
+                      _calculateWilks();
+                    } else {
+                      showToast('${emptyTextField[configProvider.activeLanguage()]}');
+                    }
+                  }),
+            ),
+          ],
+        ),
       ),
     );
   }
