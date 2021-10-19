@@ -9,7 +9,7 @@ import 'package:workoutnote/business_logic/HomeProvider.dart';
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
 
-import 'CalculateScreen.dart';
+import 'CalculatorsScreen.dart';
 import 'CalendarScreen.dart';
 import 'HomeScreen.dart';
 import 'SettingsScreen.dart';
@@ -109,7 +109,7 @@ class _NavControllerState extends State<NavController> {
   }
 
   Widget _builCalculateScreen(double height) {
-    return CalculateScreen();
+    return CalculatorsScreen();
   }
 
   Widget _buildCalendarBottomIconSelected() {

@@ -8,12 +8,12 @@ import 'package:workoutnote/utils/Utils.dart';
 
 import 'DeltoidOneRepMaxWebViewScreen.dart';
 
-class CalculateScreen extends StatefulWidget {
+class CalculatorsScreen extends StatefulWidget {
   @override
-  _CalculateScreenState createState() => _CalculateScreenState();
+  _CalculatorsScreenState createState() => _CalculatorsScreenState();
 }
 
-class _CalculateScreenState extends State<CalculateScreen> {
+class _CalculatorsScreenState extends State<CalculatorsScreen> {
   late double height;
 
   PersistentBottomSheetController? bottomSheetController;
@@ -93,7 +93,7 @@ class _CalculateScreenState extends State<CalculateScreen> {
             right: 10.0,
             child: Column(
               children: [
-                Text('Deltoid One Rep Max Test', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                Text('${deltoid1RMTest[configProvider.activeLanguage()]}', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
                 Container(margin: EdgeInsets.only(top: 10), child: Divider(color: Colors.white, thickness: 1, indent: 10.0, endIndent: 10.0)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -105,7 +105,7 @@ class _CalculateScreenState extends State<CalculateScreen> {
                           var fullUrl = 'https://workoutnote.com/calculators/$sessionKey/deltoid_test/$lang';
                           Navigator.push(context, MaterialPageRoute(builder: (context) => OneRepMaxCalWebView('${deltoidTest[configProvider.activeLanguage()]}', fullUrl)));
                         },
-                        child: Text('Test', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold))),
+                        child: Text('${test[configProvider.activeLanguage()]}', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold))),
                     Text('|', style: TextStyle(color: Colors.white)),
                     TextButton(
                         onPressed: () {
@@ -114,7 +114,7 @@ class _CalculateScreenState extends State<CalculateScreen> {
                           var fullUrl = 'https://workoutnote.com/calculators/$sessionKey/deltoid_result/$lang';
                           Navigator.push(context, MaterialPageRoute(builder: (context) => OneRepMaxCalWebView('${deltoidResult[configProvider.activeLanguage()]}', fullUrl)));
                         },
-                        child: Text('Result', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold))),
+                        child: Text('${result[configProvider.activeLanguage()]}', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold))),
                   ],
                 )
               ],

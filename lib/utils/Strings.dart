@@ -65,7 +65,6 @@ Map<String, String> deleteTargetMessage = {english: "You can't restore deleted s
 
 Map<String, String> deleteYes = {english: 'Delete', korean: '삭제'};
 
-
 Map<String, String> deleteTarget = {english: 'Delete target', korean: '목표 삭제하기'};
 Map<String, String> editTarget = {english: 'Edit target', korean: '목표 수정하기'};
 Map<String, String> deleteCancel = {english: 'Cancel', korean: '취소'};
@@ -90,7 +89,7 @@ Map<String, String> registerPlan = {english: 'Register target', korean: '목표 
 Map<String, String> planName = {english: 'Target name', korean: '목표 이름'};
 Map<String, String> startDate = {english: 'Start date', korean: '시작 일자'};
 Map<String, String> endDate = {english: 'End date', korean: '종료 일자'};
-Map<String,  String> targetSuccess = {english:  'Target achievement', korean: '목표 달성'};
+Map<String, String> targetSuccess = {english: 'Target achievement', korean: '목표 달성'};
 Map<String, String> register = {english: 'Register', korean: '들록하기'};
 Map<String, String> targetRegisterSuccess = {english: 'Target created successfully!', korean: '목표  성공적으로 생성되었습니다!'};
 Map<String, String> targetEditSuccess = {english: 'Target edited successfully!', korean: '목표  성공적으로 변경되었습니다!'};
@@ -101,7 +100,7 @@ Map<String, String> targetList = {english: 'Target list', korean: '목표 목록
 Map<String, String> noInternetTitle = {english: 'Internet is not connected!', korean: '서비스 접속 에러'};
 Map<String, String> quit = {english: 'Quit', korean: '나가기'};
 Map<String, String> connectInternetMsg = {english: 'Please connect to the internet  and try  again!', korean: '인터넷이 접속에 문제가 있습니다. 인터넷 접속을 확인하고 다시  실행해 주세요!'};
-List<Map<String,  String>> metricsNames = [gripTest, runTest, oneRepMax1, plateBarbell1,  wilksTitle ];
+List<Map<String, String>> metricsNames = [gripTest, runTest, oneRepMax1, plateBarbell1, wilksTitle];
 //One Rep Max
 Map<String, String> oneRepMax1 = {english: 'One Rep Max Calculator', korean: 'One Rep Max 계산기'};
 Map<String, String> oneRepMax2 = {english: '1RM Lift weight percentage', korean: '1RM 리프트 중량 백분율'};
@@ -141,3 +140,6 @@ List<Map<String, String>> wilksGender = [
 
 Map<String, String> deltoidTest = {english: 'Deltoid 1RM Test', korean: '델토이드 1RM 테스트'};
 Map<String, String> deltoidResult = {english: 'Deltoid 1RM Result', korean: '델토이드 1RM 검사결과'};
+Map<String, String> deltoid1RMTest = {english: 'Deltoid One Rep Max Test', korean: '델토이드 최대 근력검사'};
+Map<String, String> test = {english: 'Test', korean: '테스트'};
+Map<String, String> result = {english: 'Result', korean: '결과'};
