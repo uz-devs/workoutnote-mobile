@@ -10,8 +10,6 @@ import 'DeltoidOneRepMaxTestScreen.dart';
 import 'DeltoidOneRepMaxWebViewScreen.dart';
 
 class CalculateScreen extends StatefulWidget {
-  const CalculateScreen();
-
   @override
   _CalculateScreenState createState() => _CalculateScreenState();
 }
@@ -40,16 +38,14 @@ class _CalculateScreenState extends State<CalculateScreen> {
       child: ListView.builder(
           itemCount: 7,
           itemBuilder: (context, index) {
-            if (index == 0) {
+            if (index == 0)
               return _buildDeltoidTestWidget();
-            } else if (index == 3)
+            else if (index < 3)
+              return _buildCustomButton(metricsNames[index - 1][configProvider.activeLanguage()]!, index);
+            else if (index == 3)
               return Container(margin: EdgeInsets.only(left: 15.0, right: 15.0), child: Divider(thickness: 2, color: Color.fromRGBO(102, 51, 204, 0.5)));
-            else {
-              if (index < 3 && index != 0)
-                return _buildCustomButton(metricsNames[index - 1][configProvider.activeLanguage()]!, index);
-              else
-                return _buildCustomButton(metricsNames[index - 2][configProvider.activeLanguage()]!, index);
-            }
+            else
+              return _buildCustomButton(metricsNames[index - 2][configProvider.activeLanguage()]!, index);
           }),
     );
   }
@@ -68,101 +64,67 @@ class _CalculateScreenState extends State<CalculateScreen> {
         child: Card(
           elevation: 10,
           color: index == 1 || index == 2 ? Colors.black : Color.fromRGBO(102, 51, 204, 1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Container(
-              padding: EdgeInsets.all(15.0),
-              child: Text(
-                text,
-                style: TextStyle(fontSize: 18.0, color: Colors.white),
-              )),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Container(padding: EdgeInsets.all(15.0), child: Text(text, style: TextStyle(fontSize: 18.0, color: Colors.white))),
         ),
       ),
     );
   }
 
   Widget _buildDeltoidTestWidget() {
-    return Stack(
-      fit: StackFit.loose,
-      alignment: Alignment.center,
-      children: [
-        Card(
-
-            //semanticContainer: true,
-            clipBehavior: Clip.antiAlias,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            child: Image.asset(
-              'assets/images/test.png',
-              fit: BoxFit.fill,
-            )),
-        Positioned(
-          bottom: 10.0,
-          left: 10.0,
-          right: 10.0,
-          child: Column(
-            children: [
-              Text(
-                'Deltoid One Rep Max Test',
-                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+    return Container(
+      margin: EdgeInsets.only(bottom: 10.0, left: 20.0, right: 20.0),
+      child: Stack(
+        fit: StackFit.loose,
+        alignment: Alignment.center,
+        children: [
+          Card(
+              //semanticContainer: true,
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
               ),
-              Container(
-                  margin: EdgeInsets.only(top: 10),
-                  child: Divider(
-                    color: Colors.white,
-                    thickness: 1,
-                    indent: 50.0,
-                    endIndent: 50.0,
-                  )),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    child: TextButton(
+              child: Image.asset(
+                'assets/images/test.png',
+                fit: BoxFit.fill,
+              )),
+          Positioned(
+            bottom: 10.0,
+            left: 10.0,
+            right: 10.0,
+            child: Column(
+              children: [
+                Text('Deltoid One Rep Max Test', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                Container(margin: EdgeInsets.only(top: 10), child: Divider(color: Colors.white, thickness: 1, indent: 10.0, endIndent: 10.0)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
                         onPressed: () {
-                          //open WebView
-
                           var deltoid_test = 'deltoid_test';
                           var sessionKey = userPreferences!.getString('sessionKey');
                           var lang = configProvider.activeLanguage() == english ? 'en' : 'kr';
-
                           var fullUrl = 'https://workoutnote.com/calculators/$sessionKey/$deltoid_test/$lang';
-
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => OneRepMaxCalWebView(fullUrl)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => OneRepMaxCalWebView(deltoid_test, fullUrl)));
                         },
-                        child: Text(
-                          'Test',
-                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-                        )),
-                  ),
-                  Text(
-                    '|',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Container(
-                    child: TextButton(
+                        child: Text('Test', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold))),
+                    Text('|', style: TextStyle(color: Colors.white)),
+                    TextButton(
                         onPressed: () {
                           var deltoid_test = 'deltoid_result';
                           var sessionKey = userPreferences!.getString('sessionKey');
                           var lang = configProvider.activeLanguage() == english ? 'en' : 'kr';
-
                           var fullUrl = 'https://workoutnote.com/calculators/$sessionKey/$deltoid_test/$lang';
-
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => OneRepMaxCalWebView(fullUrl)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => OneRepMaxCalWebView(deltoid_test, fullUrl)));
                         },
-                        child: Text(
-                          'Result',
-                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-                        )),
-                  ),
-                ],
-              )
-            ],
-          ),
-        )
-      ],
+                        child: Text('Result', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold))),
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 

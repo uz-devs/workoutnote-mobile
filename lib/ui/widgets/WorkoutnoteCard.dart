@@ -112,10 +112,8 @@ class _WorkOutNoteState extends State<WorkOutNote> {
                           var sessionKey = userPreferences!.getString('sessionKey');
                           var workoutId = widget.workout.id;
                           var lang = configProvider.activeLanguage() == english ? 'en' : 'kr';
-
                           var fullUrl = 'https://workoutnote.com/workout-photo-card/$sessionKey/$workoutId/$lang';
-
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => OneRepMaxCalWebView(fullUrl)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => OneRepMaxCalWebView("Workoutnote photo card", fullUrl)));
                         },
                         icon: Icon(
                           Icons.insert_photo_outlined,

@@ -7,9 +7,10 @@ import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
 
 class OneRepMaxCalWebView extends StatefulWidget {
+  final pageTitle;
   final fullUrl;
 
-  OneRepMaxCalWebView(this.fullUrl);
+  OneRepMaxCalWebView(this.pageTitle, this.fullUrl);
 
   @override
   _OneRepMaxCalWebViewState createState() => new _OneRepMaxCalWebViewState();
@@ -74,72 +75,58 @@ class _OneRepMaxCalWebViewState extends State<OneRepMaxCalWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: Color.fromRGBO(102, 51, 204, 1)), onPressed: () => Navigator.of(context).pop()), backgroundColor: Colors.white, title: Text(widget.pageTitle)),
         body: SafeArea(
-            child: Column(children: <Widget>[
-      Expanded(
-        child: Stack(
-          children: [
-            InAppWebView(
-              key: webViewKey,
-              initialUrlRequest: URLRequest(url: Uri.parse(widget.fullUrl)),
-              initialOptions: options,
-              // pullToRefreshController: pullToRefreshController,
-              onWebViewCreated: (controller) {
-                webViewController = controller;
-              },
-              onDownloadStart: (controller, url) async {
-                //TODO  implement download functionality later
-                // final taskId = await FlutterDownloader.enqueue(
-                //   url: url.toString(),
-                //   savedDir: (await getExternalStorageDirectory())!.path,
-                //   showNotification: true, // show download progress in status bar (for Android)
-                //   openFileFromNotification: true, // click on notification to open downloaded file (for Android)
-                // );
-              },
-              onLoadStart: (controller, url) {
-                setState(() {
-                  this.url = url.toString();
-                  urlController.text = this.url;
-                });
-              },
-              androidOnPermissionRequest: (controller, origin, resources) async {
-                return PermissionRequestResponse(resources: resources, action: PermissionRequestResponseAction.GRANT);
-              },
-
-              onLoadStop: (controller, url) async {
-                pullToRefreshController.endRefreshing();
-                setState(() {
-                  this.url = url.toString();
-                  urlController.text = this.url;
-                });
-              },
-              onLoadError: (controller, url, code, message) {
-                pullToRefreshController.endRefreshing();
-              },
-              onProgressChanged: (controller, progress) {
-                if (progress == 100) {
-                  pullToRefreshController.endRefreshing();
-                }
-                setState(() {
-                  this.progress = progress / 100;
-                  urlController.text = this.url;
-                });
-              },
-              onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                setState(() {
-                  this.url = url.toString();
-                  urlController.text = this.url;
-                });
-              },
-              onConsoleMessage: (controller, consoleMessage) {
-                print(consoleMessage);
-              },
-            ),
-            progress < 1.0 ? LinearProgressIndicator(value: progress) : Container(),
-          ],
-        ),
-      ),
-    ])));
+          child: Column(children: <Widget>[
+            Expanded(
+              child: Stack(children: [
+                InAppWebView(
+                    key: webViewKey,
+                    initialUrlRequest: URLRequest(url: Uri.parse(widget.fullUrl)),
+                    initialOptions: options,
+                    // pullToRefreshController: pullToRefreshController,
+                    onWebViewCreated: (controller) => webViewController = controller,
+                    onDownloadStart: (controller, url) async {
+                      //TODO  implement download functionality later
+                      // final taskId = await FlutterDownloader.enqueue(
+                      //   url: url.toString(),
+                      //   savedDir: (await getExternalStorageDirectory())!.path,
+                      //   showNotification: true, // show download progress in status bar (for Android)
+                      //   openFileFromNotification: true, // click on notification to open downloaded file (for Android)
+                      // );
+                    },
+                    onLoadStart: (controller, url) => setState(() {
+                          this.url = url.toString();
+                          urlController.text = this.url;
+                        }),
+                    androidOnPermissionRequest: (controller, origin, resources) async {
+                      return PermissionRequestResponse(resources: resources, action: PermissionRequestResponseAction.GRANT);
+                    },
+                    onLoadStop: (controller, url) async {
+                      pullToRefreshController.endRefreshing();
+                      setState(() {
+                        this.url = url.toString();
+                        urlController.text = this.url;
+                      });
+                    },
+                    onLoadError: (controller, url, code, message) => pullToRefreshController.endRefreshing(),
+                    onProgressChanged: (controller, progress) {
+                      if (progress == 100) pullToRefreshController.endRefreshing();
+                      setState(() {
+                        this.progress = progress / 100;
+                        urlController.text = this.url;
+                      });
+                    },
+                    onUpdateVisitedHistory: (controller, url, androidIsReload) => setState(() {
+                          this.url = url.toString();
+                          urlController.text = this.url;
+                        }),
+                    onConsoleMessage: (controller, consoleMessage) => print(consoleMessage)),
+                progress < 1.0 ? LinearProgressIndicator(value: progress) : Container()
+              ]),
+            )
+          ]),
+        ));
   }
 
   showAlertDialog(BuildContext context) {
