@@ -23,12 +23,10 @@ class TargetWidget extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
       child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => TargetsScreen()),
-          );
-        },
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => TargetsScreen()),
+        ),
         child: Card(
           elevation: 5.0,
           shape: RoundedRectangleBorder(
@@ -84,7 +82,7 @@ class TargetWidget extends StatelessWidget {
                       ),
                       child: !targetProvider.isTargetPassed(target)
                           ? Text(
-                              targetProvider.getNthDate(target.startTimestamp ?? 0) >= 0 ? 'D-${targetProvider.getNthDate(target.startTimestamp ?? 0)}' : 'N.S',
+                              'D-${targetProvider.getNthDate(target.endTimestamp ?? 0)}',
                               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
                               textAlign: TextAlign.center,
                             )

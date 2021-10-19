@@ -13,10 +13,10 @@ class TargetModelResponse {
 }
 
 class Target {
-  int? id;
-  String? targetName;
-  int? startTimestamp;
-  int? endTimestamp;
+  int id;
+  String targetName;
+  int startTimestamp;
+  int endTimestamp;
   bool achieved = false;
 
   Target(this.targetName, this.startTimestamp, this.endTimestamp, this.achieved, this.id);

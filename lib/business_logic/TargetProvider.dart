@@ -105,9 +105,9 @@ class TargetProvider extends ChangeNotifier {
   }
 
   //utils
-  int getNthDate(int startTimeStamp) {
+  int getNthDate(int endTimestamp) {
     var todayTimeStamp = DateTime.now().millisecondsSinceEpoch;
-    int numberOfDays = (todayTimeStamp - startTimeStamp) ~/ 86400000;
+    int numberOfDays = ((endTimestamp - todayTimeStamp) / 86400000).ceil();
 
     return numberOfDays;
   }
