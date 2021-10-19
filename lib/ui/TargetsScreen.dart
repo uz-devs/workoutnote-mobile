@@ -33,46 +33,17 @@ class _TargetsScreenState extends State<TargetsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            margin: EdgeInsets.only(top: 10),
-            child: ListView.builder(
-                itemCount: targetProvider.allTargets.length + 2,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return Container(
-                      margin: EdgeInsets.only(bottom: 10.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            child: IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                color: Color.fromRGBO(102, 51, 204, 1),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                              child: Center(
-                                  child: Container(
-                            margin: EdgeInsets.only(right: 10.0),
-                            child: Text(
-                              '${targetList[configProvider.activeLanguage()]}',
-                              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                            ),
-                          )))
-                        ],
-                      ),
-                    );
-                  }
-                  if (index == 1) {
-                    return TargetRegisterWidget();
-                  } else {
-                    index = index - 2;
-                    return TargetWidget(target: targetProvider.allTargets[index]);
-                  }
-                })));
+      appBar: AppBar(leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: Color.fromRGBO(102, 51, 204, 1)), onPressed: () => Navigator.of(context).pop()), backgroundColor: Colors.white, title: Text('${targetList[configProvider.activeLanguage()]}')),
+      body: Container(
+        child: ListView.builder(
+            itemCount: targetProvider.allTargets.length + 1,
+            itemBuilder: (context, index) {
+              if (index == 0)
+                return TargetRegisterWidget();
+              else
+                return TargetWidget(target: targetProvider.allTargets[index - 1]);
+            }),
+      ),
+    );
   }
 }

@@ -9,6 +9,7 @@ import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/business_logic/TargetProvider.dart';
 import 'package:workoutnote/business_logic/HomeProvider.dart';
 import 'package:workoutnote/data/models/WorkoutListModel.dart';
+import 'package:workoutnote/ui/TargetsScreen.dart';
 import 'package:workoutnote/ui/widgets/TargetRegisterWidget.dart';
 import 'package:workoutnote/ui/widgets/TargetWidget.dart';
 import 'package:workoutnote/ui/widgets/WorkoutnoteCard.dart';
@@ -70,15 +71,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     calendarProvider.updateWorkoutDates(calendarProvider.calendarWorkouts);
 
-    for (int i = 0; i < calendarProvider.calendarWorkouts.length; i++) {
+    for (int i = 0; i < calendarProvider.calendarWorkouts.length; i++)
       if (calendarProvider.workOutDates[i] == '${calendarProvider.selectedDate!.year}.${calendarProvider.selectedDate!.month}.${calendarProvider.selectedDate!.day}') {
         showWorkOuts.add(calendarProvider.calendarWorkouts[i]);
       }
-    }
+
     return Container(child: _buildItemsList(showWorkOuts));
   }
 
   Widget _buildItemsList(List<WorkOut> showWorkOuts) {
+    var lastTarget = targetProvider.getLatestTarget();
     return SingleChildScrollView(
       reverse: true,
       child: ListView.builder(
@@ -86,17 +88,24 @@ class _CalendarScreenState extends State<CalendarScreen> {
           physics: ScrollPhysics(),
           itemCount: showWorkOuts.isNotEmpty ? showWorkOuts.length + 4 : 4,
           itemBuilder: (ctx, index) {
-            if (index == 0) return Container(
-                color: Colors.white,
-                 child: targetProvider.getLatestTarget() != null ? TargetWidget(target: targetProvider.getLatestTarget()!) : TargetRegisterWidget());
+            if (index == 0) {
+              if (lastTarget == null)
+                return Container(padding: EdgeInsets.only(top: 20), color: Colors.white, child: TargetRegisterWidget());
+              else
+                return Container(
+                    padding: EdgeInsets.only(top: 20),
+                    color: Colors.white,
+                    child: InkWell(
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TargetsScreen())),
+                      child: TargetWidget(target: targetProvider.getLatestTarget()!),
+                    ));
+            }
             if (index == 1)
               return Container(
                 color: Colors.white,
-                padding: EdgeInsets.all(10.0),
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
                 child: TableCalendar(
-                  onPageChanged: (v) {
-                    calendarProvider.onCalendarPageRefereshed(v);
-                  },
+                  onPageChanged: (v) => calendarProvider.onCalendarPageRefereshed(v),
                   pageAnimationEnabled: true,
                   locale: configProvider.activeLanguage() == english ? 'en_EN' : 'ko_KR',
                   availableGestures: AvailableGestures.horizontalSwipe,
@@ -207,13 +216,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   ),
                   onDaySelected: (selectedDay, focusDay) async {
                     await calendarProvider.fetchSingleNote(selectedDay.millisecondsSinceEpoch);
-                    setState(() {
-                      calendarProvider.selectedDate = selectedDay;
-                    });
+                    setState(() => calendarProvider.selectedDate = selectedDay);
                   },
-                  selectedDayPredicate: (day) {
-                    return calendarProvider.selectedDate == day;
-                  },
+                  selectedDayPredicate: (day) => calendarProvider.selectedDate == day,
                 ),
               );
             else if (index == 2) {

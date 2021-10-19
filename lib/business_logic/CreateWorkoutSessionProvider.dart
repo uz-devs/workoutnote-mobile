@@ -31,6 +31,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
   bool timeRefreshed = false;
 
   //endregion
+
   //region api calls
   Future<void> createWorkOutSession(String sessionKey, String title, int timestamp, List<WorkOut> workOuts, List<WorkOut> calendarWorkouts, ConfigProvider configProvider, BuildContext context) async {
     bool canCreateSession = false;
@@ -78,6 +79,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
   }
 
   //endregion
+
   //region restore title, lifts, duration  from  shared prefrences
 
   void restoreAllLifts(ExercisesDialogProvider exercisesDialogProvider) {
@@ -108,6 +110,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
   }
 
   //endregion
+
   //region getters/setters
   set unselectedExercise(EditableLift? value) {
     _unselectedExercise = value;
@@ -119,6 +122,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
   EditableLift? get unselectedExercise => _unselectedExercise;
 
   //endregion
+
   //region lifts: add, update,  remove
   void updateLift(int index) {
     if (_lifts[index].isSelected == false)
@@ -140,6 +144,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
   }
 
   //endregion
+
   //region stopwatch
   void startTimer() {
     var timerStream = stopWatchStream();
@@ -231,6 +236,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
   }
 
   //endregion
+
   //region  update mass, rep, rm
   void updateActiveExerciseMass(int index, int val) {
     _lifts[index].mass = val;
@@ -265,6 +271,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
   }
 
   //endregion
+
   //region caching:  Lifts, Title, Duration
   Future<void> saveListToSharePreference() async {
     await userPreferences!.setString('lifts', EditableLift.encode(_lifts));
@@ -297,6 +304,7 @@ class CreateWorkoutProvider extends ChangeNotifier {
   }
 
   //endregion
+
   //region utils
   void reset() {
     titleContoller.clear();

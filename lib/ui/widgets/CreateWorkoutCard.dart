@@ -61,11 +61,7 @@ class WorkoutCreatorWidget extends StatelessWidget {
   }
 
   Future<void> _showExercisesDialog(BuildContext context, ConfigProvider configProvider, CreateWorkoutProvider exProvider) async {
-    await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return SearchDialog(height);
-        }).then((value) async {
+    await showDialog(context: context, builder: (BuildContext context) => SearchDialog(height)).then((value) async {
       if (value != null) {
         Exercise exercise = value;
         exProvider.unselectedExercise = EditableLift.create(exercise.name, exercise.id, exercise.bodyPart, 1, 1, 1.02, false, -1);
@@ -84,28 +80,22 @@ class WorkoutCreatorWidget extends StatelessWidget {
 
   Widget _buildReorderableListView(BuildContext context) {
     return ReorderableListView(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        children: List.generate(_createWorkOutProvider.selectedLifts.length, (index) {
-          return Container(
-              key: Key('$index'),
-              padding: EdgeInsets.only(left: 10, right: 10.0),
-              margin: EdgeInsets.only(
-                bottom: 10,
-              ),
-              child: Column(
-                children: [
-                  _buildExerciseListItem((index + 1).toString(), '${_createWorkOutProvider.getExerciseName(exerciseProvider, configProvider, _createWorkOutProvider.selectedLifts[index].exerciseId ?? -0)}', '0.0', '0.0', _createWorkOutProvider.selectedLifts[index].rm.toString(), Colors.black, 2, _createWorkOutProvider, index, context, configProvider, 'body'),
-                  Container(
-                      margin: EdgeInsets.only(left: 15.0, right: 15.0),
-                      child: Divider(
-                        height: 1,
-                        color: Color.fromRGBO(170, 170, 170, 1),
-                      ))
-                ],
-              ));
-        }),
-        onReorder: _createWorkOutProvider.reorderList);
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: List.generate(_createWorkOutProvider.selectedLifts.length, (index) {
+        return Container(
+            key: Key('$index'),
+            padding: EdgeInsets.only(left: 10, right: 10.0),
+            margin: EdgeInsets.only(bottom: 10),
+            child: Column(
+              children: [
+                _buildExerciseListItem((index + 1).toString(), '${_createWorkOutProvider.getExerciseName(exerciseProvider, configProvider, _createWorkOutProvider.selectedLifts[index].exerciseId ?? -0)}', '0.0', '0.0', _createWorkOutProvider.selectedLifts[index].rm.toString(), Colors.black, 2, _createWorkOutProvider, index, context, configProvider, 'body'),
+                Container(margin: EdgeInsets.only(left: 15.0, right: 15.0), child: Divider(height: 1, color: Color.fromRGBO(170, 170, 170, 1))),
+              ],
+            ));
+      }),
+      onReorder: _createWorkOutProvider.reorderList,
+    );
   }
 
   Widget _buildListView(int count, CreateWorkoutProvider exProvider) {
@@ -262,7 +252,7 @@ class WorkoutCreatorWidget extends StatelessWidget {
                       color: Color.fromRGBO(230, 230, 250, 1),
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(20))),
-                child: _buildExerciseListItem('No.', '${exercisesName[configProvider.activeLanguage()]}', 'KG', 'REP', 'RM', Color.fromRGBO(102, 51, 204, 1), 1, exProvider, index, context, configProvider, 'header'));
+                child: _buildExerciseListItem('No.', '${exercisesName[configProvider.activeLanguage()]}', 'KG', 'REP', 'RM', Color.fromRGBO(102, 51, 204, 1), 1, exProvider, index, context, configProvider, 'header', extraSpace: true));
           } else if (index == 6) {
             return Container(
                 padding: EdgeInsets.only(left: 10, right: 10.0),
@@ -332,9 +322,7 @@ class WorkoutCreatorWidget extends StatelessWidget {
         });
   }
 
-  Widget _buildExerciseListItem(String exerciseNumber, String exerciseName, String kg, String rep, String rm, Color color, int mode, CreateWorkoutProvider mainScreenProvider, int index, BuildContext context, ConfigProvider configProvider, String listMode) {
-    print(mainScreenProvider.unselectedExercise?.kgs.length);
-
+  Widget _buildExerciseListItem(String exerciseNumber, String exerciseName, String kg, String rep, String rm, Color color, int mode, CreateWorkoutProvider mainScreenProvider, int index, BuildContext context, ConfigProvider configProvider, String listMode, {bool extraSpace = false}) {
     return Row(
       children: [
         Expanded(
@@ -368,7 +356,7 @@ class WorkoutCreatorWidget extends StatelessWidget {
             ),
           ),
         ),
-        Expanded(flex: 1, child: Container()),
+        Spacer(),
         Expanded(
           flex: 3,
           child: mode == 2
@@ -476,10 +464,7 @@ class WorkoutCreatorWidget extends StatelessWidget {
                         );
                       }).toList(),
                     )
-                  : Text(
-                      'REP',
-                      style: TextStyle(fontSize: 13.0, color: Color.fromRGBO(102, 51, 204, 1)),
-                    ),
+                  : Text('REP', style: TextStyle(fontSize: 13.0, color: Color.fromRGBO(102, 51, 204, 1))),
         ),
         Expanded(
           flex: 2,
@@ -490,44 +475,33 @@ class WorkoutCreatorWidget extends StatelessWidget {
             ),
           ),
         ),
-        Expanded(
-          flex: 2,
-          child: mode == 1
-              ? Container()
-              : (mode == 2
-                  ? IconButton(
-                      onPressed: () async {
-                        mainScreenProvider.updateLift(index);
-                        mainScreenProvider.saveListToSharePreference();
-                      },
-                      icon: mainScreenProvider.selectedLifts[index].isSelected
-                          ? Icon(
-                              Icons.check_circle,
-                              color: Color.fromRGBO(102, 51, 204, 1),
-                              size: 30,
-                            )
-                          : SvgPicture.asset(
-                              'assets/icons/check.svg',
-                              height: 15,
-                              width: 15,
-                            ))
-                  : IconButton(
-                      onPressed: () async {
-                        if (mainScreenProvider.unselectedExercise?.exerciseName != null) {
-                          mainScreenProvider.addExercise(EditableLift.create(mainScreenProvider.unselectedExercise?.exerciseName, mainScreenProvider.unselectedExercise?.exerciseId, mainScreenProvider.unselectedExercise?.bodyPart, mainScreenProvider.unselectedExercise?.mass ?? 1, mainScreenProvider.unselectedExercise?.rep ?? 1, mainScreenProvider.unselectedExercise?.rm ?? 1.02, true, -1));
-                          await mainScreenProvider.saveListToSharePreference();
-                        } else
-                          showSnackBar('${selectExercise[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
-
-                        //showToast('Please, select exercise!');
-                      },
-                      icon: Icon(
-                        Icons.add_circle,
-                        color: Color.fromRGBO(170, 170, 170, 1),
-                        size: 32,
-                      ),
-                    )),
-        )
+        if (extraSpace)
+          Expanded(
+            flex: 2,
+            child: Container(),
+          ),
+        if (mode == 2)
+          Expanded(
+            flex: 2,
+            child: IconButton(
+              onPressed: () async {
+                mainScreenProvider.updateLift(index);
+                mainScreenProvider.saveListToSharePreference();
+              },
+              icon: mainScreenProvider.selectedLifts[index].isSelected ? Icon(Icons.check_circle, color: Color.fromRGBO(102, 51, 204, 1), size: 30) : SvgPicture.asset('assets/icons/check.svg', height: 15, width: 15),
+            ),
+          ),
+        if (mode > 2)
+          IconButton(
+            onPressed: () async {
+              if (mainScreenProvider.unselectedExercise?.exerciseName != null) {
+                mainScreenProvider.addExercise(EditableLift.create(mainScreenProvider.unselectedExercise?.exerciseName, mainScreenProvider.unselectedExercise?.exerciseId, mainScreenProvider.unselectedExercise?.bodyPart, mainScreenProvider.unselectedExercise?.mass ?? 1, mainScreenProvider.unselectedExercise?.rep ?? 1, mainScreenProvider.unselectedExercise?.rm ?? 1.02, true, -1));
+                await mainScreenProvider.saveListToSharePreference();
+              } else
+                showSnackBar('${selectExercise[configProvider.activeLanguage()]}', context, Colors.red, Colors.white);
+            },
+            icon: Icon(Icons.add_circle, color: Color.fromRGBO(170, 170, 170, 1), size: 32),
+          ),
       ],
     );
   }
