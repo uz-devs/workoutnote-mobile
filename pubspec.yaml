@@ -39,9 +39,9 @@ dependencies:
   flutter_inappwebview: ^5.3.2
   connectivity_plus: ^2.0.2
   percent_indicator: ^3.4.0
-#  flutter_downloader: ^1.7.1
-#  permission_handler: ^8.2.5
-#  path_provider: ^2.0.5
+  share_plus: ^3.0.4
+  path_provider: ^2.0.5
+
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -122,6 +122,12 @@ Map<String, String> plateBarbell5 = {english: 'Plate weight', korean: '프레이
 Map<String, String> plateBarbell6 = {english: 'Number(respectively)', korean: '수량(각각)'};
 Map<String, String> plateBarbell7 = {english: 'Plate weight', korean: '프레이트 무게'};
 Map<String, String> plateBarbell8 = {english: 'Quantity(each side)', korean: '수량(각각)'};
+Map<String, String> share_no = {english: 'Close', korean: '아니요'};
+Map<String, String> share_yes = {english: 'Share', korean: '공유하기'};
+Map<String, String> success = {english: 'Download success!', korean: '다운로드 성공!'};
+
+Map<String, String> downloadSuccess = {english: 'Image downloaded successfully!, So you want to  share it?', korean: '이미지가 다운로드되었습니다!, 공유 하시겠습니까?'};
+
 
 //extra
 Map<String, String> gripTest = {english: 'Grip Strength Test', korean: '그립 강도 테스트'};

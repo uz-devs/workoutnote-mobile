@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
@@ -87,13 +91,20 @@ class _OneRepMaxCalWebViewState extends State<OneRepMaxCalWebView> {
                     // pullToRefreshController: pullToRefreshController,
                     onWebViewCreated: (controller) => webViewController = controller,
                     onDownloadStart: (controller, url) async {
-                      //TODO  implement download functionality later
-                      // final taskId = await FlutterDownloader.enqueue(
-                      //   url: url.toString(),
-                      //   savedDir: (await getExternalStorageDirectory())!.path,
-                      //   showNotification: true, // show download progress in status bar (for Android)
-                      //   openFileFromNotification: true, // click on notification to open downloaded file (for Android)
-                      // );
+                      var myImage = url.toString().split(',')[1];
+
+                      final encodedStr = myImage;
+                      Uint8List bytes = base64.decode(encodedStr);
+                      print(bytes);
+                      String dir = (await getExternalStorageDirectory())!.path;
+                      var fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.png';
+                      var savePath = '$dir/' + fileName;
+                      File file = File(savePath);
+                      file.writeAsBytes(bytes).then((value) async {
+                        print(dir);
+                        //showSnackBar('${downloadSuccess[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
+                        showShareAlertDialog(context, savePath);
+                      });
                     },
                     onLoadStart: (controller, url) => setState(() {
                           this.url = url.toString();
@@ -134,7 +145,7 @@ class _OneRepMaxCalWebViewState extends State<OneRepMaxCalWebView> {
 
     Widget continueButton = Center(
       child: TextButton(
-        child: Text('${quit[configProvider.activeLanguage()]}'),
+        child: Text('${quit[configProvider.activeLanguage()]}',  style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1))),
         onPressed: () {
           Navigator.pop(context);
           Navigator.pop(context);
@@ -144,8 +155,14 @@ class _OneRepMaxCalWebViewState extends State<OneRepMaxCalWebView> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text('${noInternetTitle[configProvider.activeLanguage()]}'),
-      content: Text('${connectInternetMsg[configProvider.activeLanguage()]}'),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15.0))),
+      title: Text(
+        '${noInternetTitle[configProvider.activeLanguage()]}',
+      ),
+      content: Text(
+        '${connectInternetMsg[configProvider.activeLanguage()]}',
+      ),
       actions: [
         continueButton,
       ],
@@ -154,6 +171,56 @@ class _OneRepMaxCalWebViewState extends State<OneRepMaxCalWebView> {
     // show the dialog
     showDialog(
       barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showShareAlertDialog(BuildContext context, String filePath) {
+    // set up the buttons
+
+    Widget canelButton = Center(
+      child: TextButton(
+        child: Text('${share_no[configProvider.activeLanguage()]}', style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1))),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+    Widget shareButton = Center(
+      child: TextButton(
+        child: Text(
+          '${share_yes[configProvider.activeLanguage()]}',
+          style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
+        ),
+        onPressed: () async {
+          await Share.shareFiles([filePath]);
+        },
+      ),
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15.0))),
+      title: Center(
+          child: Text(
+        '${success[configProvider.activeLanguage()]}',
+      )),
+      content: Text(
+        '${downloadSuccess[configProvider.activeLanguage()]}',
+      ),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [canelButton, shareButton],
+        )
+      ],
+    );
+
+    // show the dialog
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return alert;
