@@ -41,5 +41,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Users can save their workout photo cards after workouts, also decorate them with their own photos!</string>
 </dict>
 </plist>

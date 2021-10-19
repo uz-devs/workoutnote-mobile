@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_extend/share_extend.dart';
 import 'package:workoutnote/business_logic/ConfigProvider.dart';
 import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
@@ -84,54 +85,27 @@ class _OneRepMaxCalWebViewState extends State<OneRepMaxCalWebView> {
             Expanded(
               child: Stack(children: [
                 InAppWebView(
-                    key: webViewKey,
-                    initialUrlRequest: URLRequest(url: Uri.parse(widget.fullUrl)),
-                    initialOptions: options,
-                    // pullToRefreshController: pullToRefreshController,
-                    onWebViewCreated: (controller) => webViewController = controller,
-                    onDownloadStart: (controller, url) async {
-                      var myImage = url.toString().split(',')[1];
-
-                      final encodedStr = myImage;
-                      Uint8List bytes = base64.decode(encodedStr);
-                      print(bytes);
-                      String dir = (await getExternalStorageDirectory())!.path;
-                      var fileName = DateTime.now().millisecondsSinceEpoch.toString() + '.png';
-                      var savePath = '$dir/' + fileName;
-                      File file = File(savePath);
-                      file.writeAsBytes(bytes).then((value) async {
-                        print(dir);
-                        //showSnackBar('${downloadSuccess[configProvider.activeLanguage()]}', context, Colors.green, Colors.white);
-                        showShareAlertDialog(context, savePath);
-                      });
-                    },
-                    onLoadStart: (controller, url) => setState(() {
-                          this.url = url.toString();
-                          urlController.text = this.url;
-                        }),
-                    androidOnPermissionRequest: (controller, origin, resources) async {
-                      return PermissionRequestResponse(resources: resources, action: PermissionRequestResponseAction.GRANT);
-                    },
-                    onLoadStop: (controller, url) async {
-                      pullToRefreshController.endRefreshing();
-                      setState(() {
-                        this.url = url.toString();
-                        urlController.text = this.url;
-                      });
-                    },
-                    onLoadError: (controller, url, code, message) => pullToRefreshController.endRefreshing(),
-                    onProgressChanged: (controller, progress) {
-                      if (progress == 100) pullToRefreshController.endRefreshing();
-                      setState(() {
-                        this.progress = progress / 100;
-                        urlController.text = this.url;
-                      });
-                    },
-                    onUpdateVisitedHistory: (controller, url, androidIsReload) => setState(() {
-                          this.url = url.toString();
-                          urlController.text = this.url;
-                        }),
-                    onConsoleMessage: (controller, consoleMessage) => print(consoleMessage)),
+                  key: webViewKey,
+                  initialUrlRequest: URLRequest(url: Uri.parse(widget.fullUrl)),
+                  initialOptions: options,
+                  // pullToRefreshController: pullToRefreshController,
+                  onWebViewCreated: (controller) => webViewController = controller,
+                  onDownloadStart: (controller, url) async {
+                    var myImage = url.toString().split(',')[1];
+                    final encodedStr = myImage;
+                    Uint8List bytes = base64.decode(encodedStr);
+                    print(bytes);
+                    var dir = Platform.isAndroid ? await getExternalStorageDirectory() : await getApplicationSupportDirectory();
+                    if (dir != null) {
+                      File file = File('${dir.path}/myWorkoutnoteCard.png');
+                      if (file.existsSync()) file.deleteSync();
+                      file.writeAsBytes(bytes).then((value) => ShareExtend.share(file.path, 'My workoutnote card'));
+                    }
+                  },
+                  androidOnPermissionRequest: (controller, origin, resources) async {
+                    return PermissionRequestResponse(resources: resources, action: PermissionRequestResponseAction.GRANT);
+                  },
+                ),
                 progress < 1.0 ? LinearProgressIndicator(value: progress) : Container()
               ]),
             )
@@ -144,7 +118,7 @@ class _OneRepMaxCalWebViewState extends State<OneRepMaxCalWebView> {
 
     Widget continueButton = Center(
       child: TextButton(
-        child: Text('${quit[configProvider.activeLanguage()]}',  style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1))),
+        child: Text('${quit[configProvider.activeLanguage()]}', style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1))),
         onPressed: () {
           Navigator.pop(context);
           Navigator.pop(context);
@@ -154,8 +128,7 @@ class _OneRepMaxCalWebViewState extends State<OneRepMaxCalWebView> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15.0))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
       title: Text(
         '${noInternetTitle[configProvider.activeLanguage()]}',
       ),
@@ -170,57 +143,6 @@ class _OneRepMaxCalWebViewState extends State<OneRepMaxCalWebView> {
     // show the dialog
     showDialog(
       barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
-  showShareAlertDialog(BuildContext context, String filePath) {
-    // set up the buttons
-
-    Widget canelButton = Center(
-      child: TextButton(
-        child: Text('${share_no[configProvider.activeLanguage()]}', style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1))),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
-    );
-    Widget shareButton = Center(
-      child: TextButton(
-        child: Text(
-          '${share_yes[configProvider.activeLanguage()]}',
-          style: TextStyle(color: Color.fromRGBO(102, 51, 204, 1)),
-        ),
-        onPressed: () async {
-          Navigator.pop(context);
-
-        },
-      ),
-    );
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15.0))),
-      title: Center(
-          child: Text(
-        '${success[configProvider.activeLanguage()]}',
-      )),
-      content: Text(
-        '${downloadSuccess[configProvider.activeLanguage()]}',
-      ),
-      actions: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [canelButton, shareButton],
-        )
-      ],
-    );
-
-    // show the dialog
-    showDialog(
       context: context,
       builder: (BuildContext context) {
         return alert;
