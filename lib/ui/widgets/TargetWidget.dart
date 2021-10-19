@@ -10,7 +10,6 @@ import 'package:workoutnote/utils/Strings.dart';
 import 'package:workoutnote/utils/Utils.dart';
 
 import '../EditTargetScreen.dart';
-import '../TargetsScreen.dart';
 
 class TargetWidget extends StatelessWidget {
   final Target target;

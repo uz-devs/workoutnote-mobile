@@ -64,7 +64,7 @@ class WorkoutCreatorWidget extends StatelessWidget {
     await showDialog(context: context, builder: (BuildContext context) => SearchDialog(height)).then((value) async {
       if (value != null) {
         Exercise exercise = value;
-        exProvider.unselectedExercise = EditableLift.create(exercise.name, exercise.id, exercise.bodyPart, 1, 1, 1.02, false, -1);
+        exProvider.unselectedExercise = EditableLift.create(exercise.name, exercise.id, exercise.bodyPart, exProvider.unselectedExercise!.mass, exProvider.unselectedExercise!.rep, exProvider.unselectedExercise!.rm, false, -1);
         await exProvider.saveUnselectedExerciseToPreferences();
       }
     });
