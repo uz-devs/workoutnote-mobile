@@ -28,7 +28,6 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     var configProvider = Provider.of<ConfigProvider>(context);
     var userProvider = Provider.of<UserProvider>(context);
 
-
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -217,7 +216,6 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Color.fromRGBO(102, 51, 204, 1)), borderRadius: BorderRadius.circular(25.0)),
                                       ),
                                       child: DropdownButton(
-                                        alignment: Alignment.center,
                                         icon: Icon(
                                           Icons.arrow_drop_down,
                                           color: Color.fromRGBO(102, 51, 204, 1),
