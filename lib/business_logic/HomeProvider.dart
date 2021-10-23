@@ -245,7 +245,7 @@ class MainScreenProvider extends ChangeNotifier {
       }
     }
 
-    await createWorkoutProvider.repeatWorkoutSession(lifts, title ?? '[]');
+    await createWorkoutProvider.repeatWorkoutSession(lifts, title ?? '');
   }
 
   void _updateWorkoutFavoriteStatus(int id, int mode) {
@@ -300,16 +300,23 @@ class MainScreenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void reset() {
+  void  resetHome(){
     workOuts.clear();
-    calendarWorkouts.clear();
     favoriteWorkOuts.clear();
     responseCode = IDLE;
-    calendarResponseCode = IDLE;
     todayWorkoutsFetched = false;
     favoriteWorkoutsFetched = false;
-
+  }
+  void reset() {
+    calendarWorkouts.clear();
+    calendarResponseCode = IDLE;
     isCalendarWorkoutsRequestDone = false;
+
+    workOuts.clear();
+    favoriteWorkOuts.clear();
+    responseCode = IDLE;
+    todayWorkoutsFetched = false;
+    favoriteWorkoutsFetched = false;
     notifyListeners();
   }
 

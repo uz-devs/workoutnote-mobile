@@ -218,7 +218,7 @@ class _NavControllerState extends State<NavController> {
   }
 
   void _onRefresh() async {
-    listProvider.reset();
+    listProvider.resetHome();
     await Future.delayed(Duration(milliseconds: 200));
     _refreshController.refreshCompleted();
   }

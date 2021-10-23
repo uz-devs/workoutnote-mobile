@@ -26,7 +26,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     var configProvider = Provider.of<ConfigProvider>(context);
     var userProvider = Provider.of<UserProvider>(context);
 
-    var height = MediaQuery.of(context).size.height;
+    var height = MediaQuery
+        .of(context)
+        .size
+        .height;
 
     return Scaffold(body: SafeArea(
       child: Consumer<ConfigProvider>(
@@ -158,12 +161,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           borderRadius: const BorderRadius.all(Radius.circular(120)),
                           child: Text('${signUpText['한국어']}', style: TextStyle(fontSize: 16)),
                           onPressed: () async {
-                            showLoadingDialog(context);
 
                             if (_emailController.text.isNotEmpty && _nameController.text.isNotEmpty && _passwordController.text.isNotEmpty) {
+                              showLoadingDialog(context);
+
                               userProvider.sendVerificationCode(user.trimField(_emailController.text), user.trimField(_nameController.text), user.trimField(_passwordController.text)).then((value) async {
                                 Navigator.pop(context);
-                                print("weiufhiuewgifugeoi");
                                 print(value);
                                 if (value) {
                                   await userPreferences!.setBool('signUpDone', true);

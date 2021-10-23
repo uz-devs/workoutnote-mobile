@@ -54,8 +54,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     configProvider = Provider.of<ConfigProvider>(context);
     targetProvider = Provider.of<TargetProvider>(context);
 
-
-
     if (!targetProvider.hasRequestDone && targetProvider.responseCode != SUCCESS) {
       targetProvider.fetchAllTargets().then((value) {});
     }
@@ -63,8 +61,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-
     print(calendarProvider.noteController.text);
     width = MediaQuery.of(context).size.width;
     List<WorkOut> showWorkOuts = [];
